@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuba Tattoo Studio - Albuquerque's Premier Tattoo Experience</title>
+    <meta name="description" content="Cuba Tattoo Studio, el destino en Albuquerque para arte corporal excepcional con auténtica influencia cubana. Descubre nuestros talentosos artistas y estilos únicos.">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Permanent+Marker&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <h1>Cuba Tattoo Studio</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home">Inicio</a></li>
+                    <li><a href="#about">Sobre Nosotros</a></li>
+                    <li><a href="#artists">Artistas</a></li>
+                    <li><a href="#gallery">Galería</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Arte Corporal con Esencia Cubana</h2>
+                    <p>Descubre una experiencia única de tatuaje en Albuquerque</p>
+                    <div class="cta-buttons">
+                        <a href="#contact" class="btn btn-primary">Reserva tu Consulta</a>
+                        <a href="#gallery" class="btn btn-secondary">Ver Nuestro Trabajo</a>
+                    </div>
+                </div>
+                <div class="tattoo-machine-animation">
+                    <!-- Aquí irá la animación de la máquina de tatuar con anime.js -->
+                    <div class="machine-placeholder">Animación de Máquina de Tatuar</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2>Sobre Cuba Tattoo Studio</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Cuba Tattoo Studio nace de la pasión por el arte del tatuaje y la rica herencia cultural cubana. Nuestro estudio en Albuquerque combina técnicas tradicionales con innovación artística para crear piezas únicas que cuentan historias en la piel.</p>
+                        <p>Fundado por artistas cubanos con años de experiencia, nos enorgullece ofrecer un ambiente acogedor, higiénico y profesional donde tu visión se transforma en arte permanente.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="assets/placeholder-studio.jpg" alt="Interior de Cuba Tattoo Studio">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="artists" class="artists-section">
+            <div class="container">
+                <h2>Nuestros Artistas</h2>
+                <div class="artists-grid">
+                    <!-- Artista 1 -->
+                    <div class="artist-card">
+                        <div class="artist-image">
+                            <img src="assets/placeholder-artist1.jpg" alt="Nombre del Artista 1">
+                        </div>
+                        <div class="artist-info">
+                            <h3>Nombre del Artista</h3>
+                            <p class="artist-specialty">Especialidad: Realismo, Blackwork</p>
+                            <p class="artist-bio">Breve biografía del artista y su experiencia...</p>
+                            <a href="#" class="btn btn-small">Ver Portfolio</a>
+                        </div>
+                    </div>
+                    <!-- Artista 2 -->
+                    <div class="artist-card">
+                        <div class="artist-image">
+                            <img src="assets/placeholder-artist2.jpg" alt="Nombre del Artista 2">
+                        </div>
+                        <div class="artist-info">
+                            <h3>Nombre del Artista</h3>
+                            <p class="artist-specialty">Especialidad: Neo-tradicional, Color</p>
+                            <p class="artist-bio">Breve biografía del artista y su experiencia...</p>
+                            <a href="#" class="btn btn-small">Ver Portfolio</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <div class="container">
+                <h2>Galería de Trabajos</h2>
+                <div class="gallery-filters">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="blackwork">Blackwork</button>
+                    <button class="filter-btn" data-filter="color">Color</button>
+                    <button class="filter-btn" data-filter="traditional">Tradicional</button>
+                </div>
+                <div class="gallery-grid">
+                    <!-- Las imágenes de la galería se cargarán dinámicamente con JavaScript -->
+                    <div class="gallery-placeholder">Galería de Imágenes</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2>Contacto y Reservas</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>123 Calle Principal, Albuquerque, NM</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <p>(505) 123-4567</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <p>info@cubatattoostudio.com</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <p>Martes - Sábado: 12PM - 8PM</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form id="booking-form">
+                            <div class="form-group">
+                                <label for="name">Nombre</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Teléfono</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Mensaje / Idea de Tatuaje</label>
+                                <textarea id="message" name="message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Cuba Tattoo Studio</h3>
+                    <p>Arte corporal con esencia cubana en Albuquerque</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#home">Inicio</a></li>
+                        <li><a href="#about">Sobre Nosotros</a></li>
+                        <li><a href="#artists">Artistas</a></li>
+                        <li><a href="#gallery">Galería</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Mantente Conectado</h4>
+                    <p>Suscríbete para recibir noticias y promociones</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu email" required>
+                        <button type="submit">Suscribir</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cuba Tattoo Studio. Todos los derechos reservados.</p>
+                <p>Diseñado con <i class="fas fa-heart"></i> en Albuquerque</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
