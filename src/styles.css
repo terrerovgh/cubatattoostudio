@@ -1,4 +1,4 @@
-/* Reset y configuración base */
+/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -10,648 +10,434 @@ html {
 }
 
 body {
-    font-family: 'Metal Mania', cursive;
-    background-color: #0a0a0a;
+    font-family: 'Butcherman', cursive;
+    background: #0a0a0a;
     color: #e0e0e0;
     line-height: 1.6;
     overflow-x: hidden;
+    min-height: 100vh;
     background-image: 
-        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 25% 25%, rgba(255, 119, 48, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(120, 119, 198, 0.05) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
     background-attachment: fixed;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Header */
-.header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(10, 10, 10, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 2px solid #333;
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-
-.header .container {
+/* Main Content Layout */
+.main-content {
     display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid #ff7730;
-    object-fit: cover;
-    filter: sepia(20%) saturate(120%);
-}
-
-.studio-name {
-    font-family: 'Nosifer', cursive;
-    font-size: 1.5rem;
-    color: #ff7730;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-}
-
-.nav ul {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-}
-
-.nav a {
-    color: #e0e0e0;
-    text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s ease;
+    padding: 40px 20px;
     position: relative;
-    padding: 5px 0;
 }
 
-.nav a:hover {
-    color: #ff7730;
-    transform: translateY(-2px);
-}
-
-.nav a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #ff7730, #7877c6);
-    transition: width 0.3s ease;
-}
-
-.nav a:hover::after {
+/* Logo Section */
+.logo-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    max-width: 800px;
+    margin-bottom: 60px;
 }
 
-/* Hero Section */
-.hero {
-    min-height: 100vh;
+.logo-container {
+    text-align: center;
+    animation: logoFloat 6s ease-in-out infinite;
+}
+
+.main-logo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 4px solid #ff7730;
+    object-fit: cover;
+    margin-bottom: 30px;
+    filter: 
+        drop-shadow(0 0 30px rgba(255, 119, 48, 0.4))
+        drop-shadow(0 0 60px rgba(120, 119, 198, 0.2))
+        contrast(1.3)
+        brightness(1.2);
+    transition: all 0.3s ease;
+    animation: logoGlow 4s ease-in-out infinite alternate;
+}
+
+.studio-title {
+    font-family: 'Eater', cursive;
+    font-size: 4rem;
+    color: #ff7730;
+    margin-bottom: 15px;
+    text-shadow: 
+        4px 4px 0px #000,
+        8px 8px 15px rgba(255, 119, 48, 0.4),
+        0 0 40px rgba(255, 119, 48, 0.3);
+    letter-spacing: 3px;
+    animation: titlePulse 3s ease-in-out infinite;
+}
+
+.studio-location {
+    font-family: 'Chela One', cursive;
+    font-size: 1.8rem;
+    color: #7877c6;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    animation: locationSway 5s ease-in-out infinite;
+}
+
+/* Tattoo Machine Section */
+.machine-section {
+    flex: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
-    overflow: hidden;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 2px,
-            rgba(255, 119, 48, 0.02) 2px,
-            rgba(255, 119, 48, 0.02) 4px
-        );
-    pointer-events: none;
-}
-
-.hero-content {
-    display: flex;
-    align-items: center;
-    gap: 80px;
-    max-width: 1200px;
     width: 100%;
-    padding: 0 20px;
+    max-width: 1000px;
+    position: relative;
 }
 
 .tattoo-machine-container {
     position: relative;
-    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 40px;
+    animation: machineFloat 4s ease-in-out infinite;
 }
 
 .tattoo-machine {
-    width: 400px;
+    width: 500px;
     height: auto;
     filter: 
-        drop-shadow(0 0 20px rgba(255, 119, 48, 0.3))
-        drop-shadow(0 0 40px rgba(120, 119, 198, 0.2))
-        contrast(1.2)
-        brightness(1.1);
+        drop-shadow(0 0 40px rgba(255, 119, 48, 0.4))
+        drop-shadow(0 0 80px rgba(120, 119, 198, 0.3))
+        contrast(1.4)
+        brightness(1.3);
     transform-origin: center;
-    transition: all 0.3s ease;
+    animation: 
+        machineVibration 0.1s linear infinite,
+        machineSuspension 3s ease-in-out infinite;
+    transition: all 0.2s ease;
 }
 
 .needle-container {
     position: absolute;
-    bottom: 10%;
-    left: 50%;
+    bottom: 8%;
+    left: 52%;
     transform: translateX(-50%);
-    width: 4px;
-    height: 60px;
-    overflow: hidden;
+    width: 6px;
+    height: 80px;
+    overflow: visible;
 }
 
 .needle {
-    width: 2px;
-    height: 40px;
-    background: linear-gradient(to bottom, #silver, #333);
+    width: 3px;
+    height: 60px;
+    background: linear-gradient(to bottom, #silver, #333, #000);
     margin: 0 auto;
-    border-radius: 1px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+    box-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.6),
+        0 0 30px rgba(255, 119, 48, 0.3);
     transform-origin: top;
+    animation: needleVibration 0.05s linear infinite;
 }
 
 .ink-drops {
     position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background: #000;
-    border-radius: 50%;
-    opacity: 0;
-}
-
-.hero-text {
-    flex: 1;
-    text-align: left;
-}
-
-.hero-title {
-    font-family: 'Creepster', cursive;
-    font-size: 4rem;
-    color: #ff7730;
-    margin-bottom: 20px;
-    text-shadow: 
-        3px 3px 0px #000,
-        6px 6px 10px rgba(255, 119, 48, 0.3);
-    line-height: 1.2;
-    animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from {
-        text-shadow: 
-            3px 3px 0px #000,
-            6px 6px 10px rgba(255, 119, 48, 0.3),
-            0 0 20px rgba(255, 119, 48, 0.2);
-    }
-    to {
-        text-shadow: 
-            3px 3px 0px #000,
-            6px 6px 10px rgba(255, 119, 48, 0.5),
-            0 0 30px rgba(255, 119, 48, 0.4);
-    }
-}
-
-.hero-subtitle {
-    font-size: 1.5rem;
-    color: #7877c6;
-    margin-bottom: 15px;
-    font-style: italic;
-}
-
-.hero-location {
-    font-size: 1.2rem;
-    color: #ccc;
-    margin-bottom: 30px;
-}
-
-.cta-button {
-    background: linear-gradient(45deg, #ff7730, #7877c6);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    font-family: 'Metal Mania', cursive;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 5px 15px rgba(255, 119, 48, 0.3);
-}
-
-.cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255, 119, 48, 0.5);
-    filter: brightness(1.1);
-}
-
-.scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    color: #7877c6;
-    animation: bounce 2s infinite;
-}
-
-.scroll-arrow {
-    font-size: 2rem;
-    margin-top: 10px;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateX(-50%) translateY(0);
-    }
-    40% {
-        transform: translateX(-50%) translateY(-10px);
-    }
-    60% {
-        transform: translateX(-50%) translateY(-5px);
-    }
-}
-
-/* Sections */
-.section-title {
-    font-family: 'Nosifer', cursive;
-    font-size: 3rem;
-    text-align: center;
-    margin-bottom: 50px;
-    color: #ff7730;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    position: relative;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
     bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 3px;
-    background: linear-gradient(90deg, #ff7730, #7877c6);
-    border-radius: 2px;
-}
-
-/* About Section */
-.about {
-    padding: 100px 0;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #1a1a1a 100%);
-}
-
-.about-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 60px;
-    align-items: center;
-}
-
-.about-text p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    line-height: 1.8;
-    color: #ccc;
-}
-
-.sketch-elements {
-    position: relative;
-    height: 300px;
-}
-
-.sketch-palm,
-.sketch-music,
-.sketch-cigar {
-    position: absolute;
-    border: 2px solid #ff7730;
-    background: transparent;
-    opacity: 0.6;
-}
-
-.sketch-palm {
-    width: 80px;
-    height: 120px;
-    border-radius: 40px 40px 20px 20px;
-    top: 20px;
-    left: 20px;
-    transform: rotate(-15deg);
-}
-
-.sketch-music {
-    width: 60px;
-    height: 60px;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #000 0%, #333 70%, #000 100%);
     border-radius: 50%;
-    top: 80px;
-    right: 40px;
-    transform: rotate(25deg);
-}
-
-.sketch-cigar {
-    width: 100px;
-    height: 20px;
-    border-radius: 10px;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-10deg);
-}
-
-/* Artists Section */
-.artists {
-    padding: 100px 0;
-    background: #0a0a0a;
-}
-
-.artists-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-}
-
-.artist-card {
-    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.artist-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, #ff7730, #7877c6);
     opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
+    animation: inkDrop 2s ease-in-out infinite;
 }
 
-.artist-card:hover {
-    transform: translateY(-10px);
-    border-color: #ff7730;
-}
-
-.artist-card:hover::before {
-    opacity: 0.1;
-}
-
-.artist-photo {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #333, #555);
-    margin: 0 auto 20px;
-    border: 3px solid #ff7730;
-}
-
-.artist-card h3 {
-    font-size: 1.5rem;
-    color: #ff7730;
-    margin-bottom: 10px;
-}
-
-.artist-card p {
-    color: #ccc;
-    font-style: italic;
-}
-
-/* Gallery Section */
-.gallery {
-    padding: 100px 0;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #1a1a1a 100%);
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-.gallery-item {
-    aspect-ratio: 1;
-    background: linear-gradient(45deg, #333, #555);
-    border-radius: 10px;
-    border: 2px solid #ff7730;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
-
-.gallery-item::before {
-    content: '🎨';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    opacity: 0.3;
-}
-
-.gallery-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(255, 119, 48, 0.3);
-}
-
-/* Contact Section */
-.contact {
-    padding: 100px 0;
-    background: #0a0a0a;
-}
-
-.contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-}
-
-.contact-info h3,
-.contact-form h3 {
-    font-size: 2rem;
-    color: #ff7730;
-    margin-bottom: 30px;
-}
-
-.contact-info p {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: #ccc;
-}
-
-.hours {
-    margin-top: 30px;
-    padding: 20px;
-    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-    border-radius: 10px;
-    border-left: 4px solid #ff7730;
-}
-
-.hours h4 {
-    color: #ff7730;
-    margin-bottom: 15px;
-}
-
-.contact-form form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.contact-form input,
-.contact-form textarea {
-    padding: 15px;
-    background: #1a1a1a;
-    border: 2px solid #333;
-    border-radius: 5px;
-    color: #e0e0e0;
-    font-family: inherit;
-    transition: border-color 0.3s ease;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    outline: none;
-    border-color: #ff7730;
-}
-
-.contact-form button {
-    background: linear-gradient(45deg, #ff7730, #7877c6);
-    color: white;
-    border: none;
-    padding: 15px;
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.contact-form button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 119, 48, 0.3);
-}
-
-/* Footer */
-.footer {
-    background: #000;
-    padding: 40px 0;
-    border-top: 2px solid #333;
-}
-
-.footer .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.social-links {
-    display: flex;
-    gap: 20px;
-}
-
-.social-links a {
-    color: #7877c6;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.social-links a:hover {
-    color: #ff7730;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero-content {
-        flex-direction: column;
-        gap: 40px;
-        text-align: center;
-    }
-    
-    .tattoo-machine {
-        width: 300px;
-    }
-    
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .about-content,
-    .contact-content {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    
-    .nav ul {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .header .container {
-        flex-direction: column;
-        gap: 20px;
-    }
-}
-
-/* Animaciones adicionales */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.tattoo-machine {
-    animation: float 3s ease-in-out infinite;
-}
-
-/* Efectos de partículas */
-.hero::after {
-    content: '';
+/* Vibration Effects */
+.vibration-effects {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, rgba(255, 119, 48, 0.3), transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(120, 119, 198, 0.3), transparent),
-        radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.2), transparent),
-        radial-gradient(1px 1px at 130px 80px, rgba(255, 119, 48, 0.2), transparent);
-    background-repeat: repeat;
-    background-size: 150px 100px;
-    animation: sparkle 20s linear infinite;
     pointer-events: none;
 }
 
-@keyframes sparkle {
+.spark {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #fff 0%, #ff7730 50%, transparent 100%);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.spark-1 {
+    top: 30%;
+    left: 45%;
+    animation: sparkle1 1.5s ease-in-out infinite;
+}
+
+.spark-2 {
+    top: 50%;
+    right: 35%;
+    animation: sparkle2 2s ease-in-out infinite 0.5s;
+}
+
+.spark-3 {
+    bottom: 40%;
+    left: 40%;
+    animation: sparkle3 1.8s ease-in-out infinite 1s;
+}
+
+.machine-text {
+    text-align: center;
+    animation: textFloat 5s ease-in-out infinite;
+}
+
+.machine-title {
+    font-family: 'Nosifer', cursive;
+    font-size: 3rem;
+    color: #7877c6;
+    margin-bottom: 15px;
+    text-shadow: 
+        3px 3px 0px #000,
+        6px 6px 12px rgba(120, 119, 198, 0.4);
+    animation: machineTitleGlow 4s ease-in-out infinite alternate;
+}
+
+.machine-subtitle {
+    font-family: 'Metal Mania', cursive;
+    font-size: 1.5rem;
+    color: #ccc;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    font-style: italic;
+}
+
+/* Contact Section */
+.contact-minimal {
+    flex: 0;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 40px;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    text-align: center;
+}
+
+.contact-item {
+    font-family: 'Chela One', cursive;
+    font-size: 1.2rem;
+    color: #ff7730;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    padding: 10px 15px;
+    border: 2px solid rgba(255, 119, 48, 0.3);
+    border-radius: 25px;
+    background: rgba(255, 119, 48, 0.1);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    animation: contactFloat 6s ease-in-out infinite;
+}
+
+.contact-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 119, 48, 0.3);
+    background: rgba(255, 119, 48, 0.2);
+}
+
+/* Animations */
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes logoGlow {
     0% {
-        transform: translateY(0px);
+        filter: 
+            drop-shadow(0 0 30px rgba(255, 119, 48, 0.4))
+            drop-shadow(0 0 60px rgba(120, 119, 198, 0.2))
+            contrast(1.3)
+            brightness(1.2);
     }
     100% {
-        transform: translateY(-100px);
+        filter: 
+            drop-shadow(0 0 50px rgba(255, 119, 48, 0.6))
+            drop-shadow(0 0 100px rgba(120, 119, 198, 0.4))
+            contrast(1.4)
+            brightness(1.4);
+    }
+}
+
+@keyframes titlePulse {
+    0%, 100% {
+        text-shadow: 
+            4px 4px 0px #000,
+            8px 8px 15px rgba(255, 119, 48, 0.4),
+            0 0 40px rgba(255, 119, 48, 0.3);
+    }
+    50% {
+        text-shadow: 
+            4px 4px 0px #000,
+            8px 8px 15px rgba(255, 119, 48, 0.6),
+            0 0 60px rgba(255, 119, 48, 0.5);
+    }
+}
+
+@keyframes locationSway {
+    0%, 100% { transform: translateX(0px); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes machineFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-5px) rotate(0deg); }
+    75% { transform: translateY(-8px) rotate(-1deg); }
+}
+
+@keyframes machineVibration {
+    0% { transform: translateX(0px) translateY(0px); }
+    25% { transform: translateX(1px) translateY(-1px); }
+    50% { transform: translateX(-1px) translateY(1px); }
+    75% { transform: translateX(1px) translateY(1px); }
+    100% { transform: translateX(0px) translateY(0px); }
+}
+
+@keyframes machineSuspension {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-15px) rotate(2deg); }
+    66% { transform: translateY(-8px) rotate(-1deg); }
+}
+
+@keyframes needleVibration {
+    0% { transform: translateX(0px) scaleY(1); }
+    25% { transform: translateX(0.5px) scaleY(1.02); }
+    50% { transform: translateX(-0.5px) scaleY(0.98); }
+    75% { transform: translateX(0.5px) scaleY(1.01); }
+    100% { transform: translateX(0px) scaleY(1); }
+}
+
+@keyframes inkDrop {
+    0% { opacity: 0; transform: translateX(-50%) translateY(0px) scale(0.5); }
+    20% { opacity: 1; transform: translateX(-50%) translateY(0px) scale(1); }
+    80% { opacity: 1; transform: translateX(-50%) translateY(20px) scale(1.2); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(40px) scale(0.8); }
+}
+
+@keyframes sparkle1 {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+@keyframes sparkle2 {
+    0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+    50% { opacity: 0.8; transform: scale(1.2) rotate(180deg); }
+}
+
+@keyframes sparkle3 {
+    0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+    50% { opacity: 0.9; transform: scale(1.3) rotate(-180deg); }
+}
+
+@keyframes textFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes machineTitleGlow {
+    0% {
+        text-shadow: 
+            3px 3px 0px #000,
+            6px 6px 12px rgba(120, 119, 198, 0.4);
+    }
+    100% {
+        text-shadow: 
+            3px 3px 0px #000,
+            6px 6px 12px rgba(120, 119, 198, 0.6),
+            0 0 30px rgba(120, 119, 198, 0.4);
+    }
+}
+
+@keyframes contactFloat {
+    0%, 100% { transform: translateY(0px); }
+    33% { transform: translateY(-3px); }
+    66% { transform: translateY(-1px); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 20px 15px;
+    }
+    
+    .main-logo {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .studio-title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+    }
+    
+    .studio-location {
+        font-size: 1.4rem;
+    }
+    
+    .tattoo-machine {
+        width: 350px;
+    }
+    
+    .machine-title {
+        font-size: 2rem;
+    }
+    
+    .machine-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .contact-info {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .contact-item {
+        font-size: 1rem;
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .studio-title {
+        font-size: 2rem;
+    }
+    
+    .studio-location {
+        font-size: 1.2rem;
+    }
+    
+    .tattoo-machine {
+        width: 280px;
+    }
+    
+    .machine-title {
+        font-size: 1.5rem;
+    }
+    
+    .machine-subtitle {
+        font-size: 1rem;
     }
 }

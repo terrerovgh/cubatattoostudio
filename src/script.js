@@ -1,21 +1,65 @@
-// Cuba Tattoo Studio - Animaciones con Anime.js
-// Inspirado en el proyecto moto-scroll
-
-// Variables globales
-let scrollY = 0;
-let tattooMachine = null;
-let needle = null;
-let inkDrops = null;
-let isAnimating = false;
-
-// Inicialización cuando el DOM esté listo
+// Enhanced animations with anime.js for Cuba Tattoo Studio
 document.addEventListener('DOMContentLoaded', function() {
-    initializeElements();
-    initializeAnimations();
-    setupScrollAnimations();
-    setupIntersectionObserver();
-    setupHeaderAnimation();
-});
+    // Main elements
+    const tattooMachine = document.querySelector('.tattoo-machine');
+    const needle = document.querySelector('.needle');
+    const inkDrops = document.querySelector('.ink-drops');
+    const sparks = document.querySelectorAll('.spark');
+    
+    // Initial entrance animations
+    anime({
+        targets: '.main-logo',
+        scale: [0.5, 1],
+        opacity: [0, 1],
+        duration: 1500,
+        easing: 'easeOutElastic(1, .8)',
+        delay: 300
+    });
+    
+    anime({
+        targets: '.studio-title',
+        translateY: [-50, 0],
+        opacity: [0, 1],
+        duration: 1200,
+        easing: 'easeOutExpo',
+        delay: 800
+    });
+    
+    anime({
+        targets: '.studio-location',
+        translateX: [-30, 0],
+        opacity: [0, 1],
+        duration: 1000,
+        easing: 'easeOutExpo',
+        delay: 1200
+    });
+    
+    anime({
+        targets: '.tattoo-machine',
+        scale: [0.8, 1],
+        opacity: [0, 1],
+        duration: 1500,
+        easing: 'easeOutBack',
+        delay: 1500
+    });
+    
+    anime({
+        targets: '.machine-title, .machine-subtitle',
+        translateY: [30, 0],
+        opacity: [0, 1],
+        duration: 1000,
+        easing: 'easeOutExpo',
+        delay: anime.stagger(200, {start: 2000})
+    });
+    
+    anime({
+        targets: '.contact-item',
+        scale: [0.8, 1],
+        opacity: [0, 1],
+        duration: 800,
+        easing: 'easeOutBack',
+        delay: anime.stagger(150, {start: 2500})
+    });
 
 // Inicializar elementos del DOM
 function initializeElements() {
