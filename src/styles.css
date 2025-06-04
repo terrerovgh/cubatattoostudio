@@ -1,0 +1,657 @@
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Metal Mania', cursive;
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid #333;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #ff7730;
+    object-fit: cover;
+    filter: sepia(20%) saturate(120%);
+}
+
+.studio-name {
+    font-family: 'Nosifer', cursive;
+    font-size: 1.5rem;
+    color: #ff7730;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 5px 0;
+}
+
+.nav a:hover {
+    color: #ff7730;
+    transform: translateY(-2px);
+}
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff7730, #7877c6);
+    transition: width 0.3s ease;
+}
+
+.nav a:hover::after {
+    width: 100%;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 119, 48, 0.02) 2px,
+            rgba(255, 119, 48, 0.02) 4px
+        );
+    pointer-events: none;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.tattoo-machine-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tattoo-machine {
+    width: 400px;
+    height: auto;
+    filter: 
+        drop-shadow(0 0 20px rgba(255, 119, 48, 0.3))
+        drop-shadow(0 0 40px rgba(120, 119, 198, 0.2))
+        contrast(1.2)
+        brightness(1.1);
+    transform-origin: center;
+    transition: all 0.3s ease;
+}
+
+.needle-container {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 60px;
+    overflow: hidden;
+}
+
+.needle {
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(to bottom, #silver, #333);
+    margin: 0 auto;
+    border-radius: 1px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transform-origin: top;
+}
+
+.ink-drops {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #000;
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.hero-text {
+    flex: 1;
+    text-align: left;
+}
+
+.hero-title {
+    font-family: 'Creepster', cursive;
+    font-size: 4rem;
+    color: #ff7730;
+    margin-bottom: 20px;
+    text-shadow: 
+        3px 3px 0px #000,
+        6px 6px 10px rgba(255, 119, 48, 0.3);
+    line-height: 1.2;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 
+            3px 3px 0px #000,
+            6px 6px 10px rgba(255, 119, 48, 0.3),
+            0 0 20px rgba(255, 119, 48, 0.2);
+    }
+    to {
+        text-shadow: 
+            3px 3px 0px #000,
+            6px 6px 10px rgba(255, 119, 48, 0.5),
+            0 0 30px rgba(255, 119, 48, 0.4);
+    }
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #7877c6;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.hero-location {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    background: linear-gradient(45deg, #ff7730, #7877c6);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-family: 'Metal Mania', cursive;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(255, 119, 48, 0.3);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 119, 48, 0.5);
+    filter: brightness(1.1);
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #7877c6;
+    animation: bounce 2s infinite;
+}
+
+.scroll-arrow {
+    font-size: 2rem;
+    margin-top: 10px;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* Sections */
+.section-title {
+    font-family: 'Nosifer', cursive;
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #ff7730;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff7730, #7877c6);
+    border-radius: 2px;
+}
+
+/* About Section */
+.about {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #1a1a1a 100%);
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-text p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    line-height: 1.8;
+    color: #ccc;
+}
+
+.sketch-elements {
+    position: relative;
+    height: 300px;
+}
+
+.sketch-palm,
+.sketch-music,
+.sketch-cigar {
+    position: absolute;
+    border: 2px solid #ff7730;
+    background: transparent;
+    opacity: 0.6;
+}
+
+.sketch-palm {
+    width: 80px;
+    height: 120px;
+    border-radius: 40px 40px 20px 20px;
+    top: 20px;
+    left: 20px;
+    transform: rotate(-15deg);
+}
+
+.sketch-music {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    top: 80px;
+    right: 40px;
+    transform: rotate(25deg);
+}
+
+.sketch-cigar {
+    width: 100px;
+    height: 20px;
+    border-radius: 10px;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-10deg);
+}
+
+/* Artists Section */
+.artists {
+    padding: 100px 0;
+    background: #0a0a0a;
+}
+
+.artists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.artist-card {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.artist-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #ff7730, #7877c6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.artist-card:hover {
+    transform: translateY(-10px);
+    border-color: #ff7730;
+}
+
+.artist-card:hover::before {
+    opacity: 0.1;
+}
+
+.artist-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #333, #555);
+    margin: 0 auto 20px;
+    border: 3px solid #ff7730;
+}
+
+.artist-card h3 {
+    font-size: 1.5rem;
+    color: #ff7730;
+    margin-bottom: 10px;
+}
+
+.artist-card p {
+    color: #ccc;
+    font-style: italic;
+}
+
+/* Gallery Section */
+.gallery {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #1a1a1a 100%);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.gallery-item {
+    aspect-ratio: 1;
+    background: linear-gradient(45deg, #333, #555);
+    border-radius: 10px;
+    border: 2px solid #ff7730;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-item::before {
+    content: '🎨';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    opacity: 0.3;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(255, 119, 48, 0.3);
+}
+
+/* Contact Section */
+.contact {
+    padding: 100px 0;
+    background: #0a0a0a;
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+}
+
+.contact-info h3,
+.contact-form h3 {
+    font-size: 2rem;
+    color: #ff7730;
+    margin-bottom: 30px;
+}
+
+.contact-info p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #ccc;
+}
+
+.hours {
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border-radius: 10px;
+    border-left: 4px solid #ff7730;
+}
+
+.hours h4 {
+    color: #ff7730;
+    margin-bottom: 15px;
+}
+
+.contact-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 15px;
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 5px;
+    color: #e0e0e0;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #ff7730;
+}
+
+.contact-form button {
+    background: linear-gradient(45deg, #ff7730, #7877c6);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 119, 48, 0.3);
+}
+
+/* Footer */
+.footer {
+    background: #000;
+    padding: 40px 0;
+    border-top: 2px solid #333;
+}
+
+.footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+}
+
+.social-links a {
+    color: #7877c6;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #ff7730;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-content {
+        flex-direction: column;
+        gap: 40px;
+        text-align: center;
+    }
+    
+    .tattoo-machine {
+        width: 300px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .about-content,
+    .contact-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .nav ul {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .header .container {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* Animaciones adicionales */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.tattoo-machine {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Efectos de partículas */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, rgba(255, 119, 48, 0.3), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(120, 119, 198, 0.3), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.2), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255, 119, 48, 0.2), transparent);
+    background-repeat: repeat;
+    background-size: 150px 100px;
+    animation: sparkle 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes sparkle {
+    0% {
+        transform: translateY(0px);
+    }
+    100% {
+        transform: translateY(-100px);
+    }
+}
