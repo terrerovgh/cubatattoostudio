@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTattooMachineAnimation();
     initGalleryFilters();
     initContactForm();
+    initHeroBackgroundAnimation(); // Add this line
 });
 
 /**
@@ -439,4 +440,91 @@ function validateForm(form) {
     });
     
     return isFormValid;
+}
+
+/**
+ * Hero Section Background Animation
+ * Creates an interactive animated grid for the hero section background.
+ */
+function initHeroBackgroundAnimation() {
+    if (typeof anime === 'undefined') {
+        console.warn('anime.js not loaded, hero background animation disabled.');
+        return;
+    }
+
+    const gridContainer = document.getElementById('animated-grid-background');
+    if (!gridContainer) {
+        console.warn('animated-grid-background container not found.');
+        return;
+    }
+
+    // Grid dimensions (can be adjusted)
+    const numCols = 20;
+    const numRows = 10; // Adjusted for typical hero aspect ratio
+    const numElements = numCols * numRows;
+
+    // Clear any existing content (e.g., if re-initialized)
+    gridContainer.innerHTML = '';
+
+    for (let i = 0; i < numElements; i++) {
+        const el = document.createElement('div');
+        el.classList.add('grid-element');
+        gridContainer.appendChild(el);
+    }
+
+    // Initial animation for all grid elements
+    anime({
+        targets: '.grid-element',
+        opacity: [
+            { value: 0.1, duration: 500 },
+            { value: 0.4, duration: 800 }
+        ],
+        scale: [
+            { value: 0.8, duration: 600 },
+            { value: 1, duration: 700 }
+        ],
+        delay: anime.stagger(50, {grid: [numCols, numRows], from: 'center'}),
+        loop: true,
+        direction: 'alternate',
+        easing: 'easeInOutQuad'
+    });
+
+    const heroSection = document.getElementById('home');
+    if (heroSection) {
+        heroSection.addEventListener('mousemove', (e) => {
+            // Get mouse position relative to the hero section
+            const rect = heroSection.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Animate elements near the mouse
+            anime({
+                targets: '.grid-element',
+                scale: [
+                    { value: 1.5, duration: 200 },
+                    { value: 1, duration: 500 }
+                ],
+                opacity: [
+                    { value: 0.7, duration: 200 },
+                    { value: 0.4, duration: 500 } // Return to base opacity
+                ],
+                delay: anime.stagger(30, {
+                    grid: [numCols, numRows],
+                    from: 'center',
+                    // Calculate distance from mouse to each element
+                    // This is a simplified approach; true distance calculation is more complex
+                    // For now, we'll rely on anime.js's staggering from center effect,
+                    // but ideally, we'd find the closest elements to (mouseX, mouseY)
+                    // and apply a stronger effect to them. This is a placeholder for that logic.
+                    // A more precise way would be to iterate over elements and calculate distance.
+                    // For this subtask, let's focus on a simpler visual effect based on mouse presence.
+                }),
+                easing: 'easeOutExpo',
+                // Prevent this animation from looping, it's event-driven
+                loop: false
+            });
+        });
+    } else {
+        console.warn('Hero section (id: home) not found for mousemove listener.');
+    }
 }

@@ -249,14 +249,38 @@ section {
     height: 100vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(to right, rgba(0, 48, 73, 0.8), rgba(0, 48, 73, 0.6)), url('../assets/hero-background.jpg');
+    background: var(--color-azul-caribe);
     background-size: cover;
     background-position: center;
     color: var(--color-blanco-lienzo);
     padding-top: 80px; /* Para compensar el header fijo */
+    position: relative; /* Ensure this is present */
+}
+
+#animated-grid-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Behind hero content and tattoo machine */
+    display: grid; /* Use grid for easy layout of elements */
+    grid-template-columns: repeat(20, 1fr); /* Match JS numCols */
+    grid-template-rows: repeat(10, 1fr);    /* Match JS numRows */
+    overflow: hidden; /* Prevent elements from showing outside */
+}
+
+.grid-element {
+    background-color: rgba(252, 191, 73, 0.3); /* var(--color-crema-habana) with alpha */
+    border-radius: 2px; /* Optional: slightly rounded corners for elements */
+    /* Dimensions will be handled by the grid layout */
+    /* Initial opacity and scale are set by anime.js */
+    margin: 2px; /* Optional: small spacing between elements */
 }
 
 .hero-section .container {
+    position: relative; /* Ensure hero content is above the animated grid */
+    z-index: 1; /* Ensure hero content is above the animated grid */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -286,6 +310,17 @@ section {
 .cta-buttons {
     display: flex;
     gap: var(--spacing-md);
+}
+
+/* Specific adjustments for .btn-secondary within .hero-section */
+.hero-section .btn-secondary {
+    color: var(--color-blanco-lienzo);
+    border-color: var(--color-blanco-lienzo);
+}
+
+.hero-section .btn-secondary:hover {
+    background-color: var(--color-blanco-lienzo);
+    color: var(--color-azul-caribe); /* Keep original hover text color for contrast */
 }
 
 .tattoo-machine-animation {
