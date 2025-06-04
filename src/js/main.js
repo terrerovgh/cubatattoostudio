@@ -1,12 +1,9 @@
 /**
  * Cuba Tattoo Studio - Main JavaScript
- * Archivo principal para manejar animaciones e interactividad
+ * Implementa todas las funcionalidades interactivas del sitio web
  */
 
-// Esperar a que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Cuba Tattoo Studio - Sitio web cargado');
-    
+document.addEventListener('DOMContentLoaded', function() {
     // Inicializar todas las funcionalidades
     initNavigation();
     initScrollAnimations();
@@ -20,9 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
  * Maneja el comportamiento del menú de navegación y el header
  */
 function initNavigation() {
-    const header = document.querySelector('.site-header');
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
+    const header = document.querySelector('header');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
     
     // Cambiar estilo del header al hacer scroll
     window.addEventListener('scroll', () => {
@@ -33,24 +30,29 @@ function initNavigation() {
         }
     });
     
-    // Menú móvil toggle
-    if (mobileMenuToggle) {
-        mobileMenuToggle.addEventListener('click', () => {
-            mainNav.classList.toggle('active');
-            mobileMenuToggle.classList.toggle('active');
+    // Toggle del menú móvil
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+            
+            // Accesibilidad: actualizar aria-expanded
+            const expanded = navToggle.getAttribute('aria-expanded') === 'true' || false;
+            navToggle.setAttribute('aria-expanded', !expanded);
+        });
+        
+        // Cerrar menú al hacer clic en un enlace (en móvil)
+        const navLinks = navMenu.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
         });
     }
-    
-    // Cerrar menú móvil al hacer clic en un enlace
-    const navLinks = document.querySelectorAll('.main-nav a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                mainNav.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-            }
-        });
-    });
 }
 
 /**
@@ -119,21 +121,107 @@ function initTattooMachineAnimation() {
         return;
     }
     
-    // Aquí se implementará la animación de la máquina de tatuaje con anime.js
-    // Por ahora, mostraremos un mensaje de placeholder
-    const placeholder = document.querySelector('.machine-placeholder');
-    if (placeholder) {
-        placeholder.textContent = 'Animación de máquina de tatuaje (próximamente)';
-    }
-    
-    // Ejemplo básico de animación para el placeholder
-    anime({
-        targets: '.machine-placeholder',
-        scale: [0.9, 1],
-        opacity: [0, 1],
-        duration: 1500,
-        easing: 'easeOutElastic(1, .5)'
-    });
+    // Cargar la imagen SVG de la máquina de tatuar
+    fetch('/assets/tattoo-machine.svg')
+        .then(response => response.text())
+        .then(svgContent => {
+            // Insertar el SVG en el contenedor
+            machineContainer.innerHTML = svgContent;
+            
+            // Eliminar cualquier placeholder existente
+            const placeholder = document.querySelector('.machine-placeholder');
+            if (placeholder) placeholder.remove();
+            
+            // Iniciar animaciones una vez que el SVG está cargado
+            setTimeout(() => {
+                // Animación de entrada
+                anime({
+                    targets: '.tattoo-machine-animation svg',
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    duration: 1000,
+                    easing: 'easeOutExpo'
+                });
+                
+                // Animación constante de vibración de la máquina
+                const machineVibration = anime({
+                    targets: '.tattoo-machine-animation svg',
+                    translateX: [
+                        {value: -1, duration: 50, delay: 0},
+                        {value: 1, duration: 50, delay: 0}
+                    ],
+                    translateY: [
+                        {value: -0.5, duration: 50, delay: 25},
+                        {value: 0.5, duration: 50, delay: 25}
+                    ],
+                    easing: 'linear',
+                    loop: true,
+                    autoplay: false
+                });
+                
+                // Animación de la aguja
+                const needleAnimation = anime({
+                    targets: '#needle',
+                    translateY: [
+                        {value: 5, duration: 50},
+                        {value: 0, duration: 50}
+                    ],
+                    easing: 'linear',
+                    loop: true,
+                    autoplay: false
+                });
+                
+                // Animación de los resortes
+                const springAnimation = anime({
+                    targets: '#spring',
+                    scaleY: [
+                        {value: 0.95, duration: 50},
+                        {value: 1, duration: 50}
+                    ],
+                    easing: 'linear',
+                    loop: true,
+                    autoplay: false
+                });
+                
+                // Interactividad: iniciar/detener animación al hacer hover/click
+                machineContainer.addEventListener('mouseenter', () => {
+                    machineVibration.play();
+                    needleAnimation.play();
+                    springAnimation.play();
+                });
+                
+                machineContainer.addEventListener('mouseleave', () => {
+                    machineVibration.pause();
+                    needleAnimation.pause();
+                    springAnimation.pause();
+                });
+                
+                // Para dispositivos táctiles
+                machineContainer.addEventListener('click', () => {
+                    if (machineVibration.paused) {
+                        machineVibration.play();
+                        needleAnimation.play();
+                        springAnimation.play();
+                    } else {
+                        machineVibration.pause();
+                        needleAnimation.pause();
+                        springAnimation.pause();
+                    }
+                });
+                
+                // Añadir clase para indicar que está listo para interactuar
+                machineContainer.classList.add('ready');
+            }, 100);
+        })
+        .catch(error => {
+            console.error('Error al cargar la animación de la máquina de tatuaje:', error);
+            // Mostrar un mensaje de error en el placeholder
+            const placeholder = document.querySelector('.machine-placeholder');
+            if (placeholder) {
+                placeholder.textContent = 'No se pudo cargar la animación';
+                placeholder.classList.add('error');
+            }
+        });
 }
 
 /**
@@ -156,32 +244,39 @@ function initGalleryFilters() {
             // Añadir clase activa al botón clicado
             button.classList.add('active');
             
-            // Obtener la categoría a filtrar
+            // Obtener el valor del filtro
             const filterValue = button.getAttribute('data-filter');
             
             // Filtrar los elementos de la galería
             galleryItems.forEach(item => {
                 if (filterValue === 'all' || item.classList.contains(filterValue)) {
-                    // Mostrar el elemento con animación
-                    if (typeof anime !== 'undefined') {
-                        anime({
-                            targets: item,
-                            opacity: [0, 1],
-                            scale: [0.9, 1],
-                            duration: 500,
-                            easing: 'easeOutSine'
-                        });
-                    }
+                    // Mostrar con animación
+                    anime({
+                        targets: item,
+                        opacity: [0, 1],
+                        scale: [0.9, 1],
+                        duration: 300,
+                        easing: 'easeOutSine'
+                    });
                     item.style.display = 'block';
                 } else {
-                    // Ocultar el elemento
-                    item.style.display = 'none';
+                    // Ocultar con animación
+                    anime({
+                        targets: item,
+                        opacity: [1, 0],
+                        scale: [1, 0.9],
+                        duration: 300,
+                        easing: 'easeOutSine',
+                        complete: () => {
+                            item.style.display = 'none';
+                        }
+                    });
                 }
             });
         });
     });
     
-    // Activar el filtro 'all' por defecto
+    // Activar el filtro "todos" por defecto
     const allFilter = document.querySelector('.filter-btn[data-filter="all"]');
     if (allFilter) allFilter.click();
 }
@@ -191,94 +286,136 @@ function initGalleryFilters() {
  * Maneja la validación y envío del formulario de contacto
  */
 function initContactForm() {
-    const contactForm = document.querySelector('#contact-form');
+    const contactForm = document.getElementById('contact-form');
     
     if (!contactForm) return;
     
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
         // Validar el formulario
         const isValid = validateForm(contactForm);
         
         if (isValid) {
-            // Aquí se implementará el envío del formulario
-            // Por ahora, mostraremos un mensaje de éxito simulado
-            showFormMessage('¡Mensaje enviado con éxito! Te contactaremos pronto.', 'success');
-            contactForm.reset();
+            // Simulación de envío (para el MVP)
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            // Cambiar el texto del botón y deshabilitarlo
+            submitButton.textContent = 'Enviando...';
+            submitButton.disabled = true;
+            
+            // Simular una petición de red
+            setTimeout(() => {
+                // Mostrar mensaje de éxito
+                const successMessage = document.createElement('div');
+                successMessage.className = 'form-success';
+                successMessage.textContent = '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.';
+                
+                // Insertar mensaje después del formulario
+                contactForm.parentNode.insertBefore(successMessage, contactForm.nextSibling);
+                
+                // Resetear el formulario
+                contactForm.reset();
+                
+                // Restaurar el botón
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+                
+                // Animar mensaje de éxito
+                anime({
+                    targets: successMessage,
+                    opacity: [0, 1],
+                    translateY: [10, 0],
+                    duration: 800,
+                    easing: 'easeOutExpo'
+                });
+                
+                // Ocultar mensaje después de un tiempo
+                setTimeout(() => {
+                    anime({
+                        targets: successMessage,
+                        opacity: [1, 0],
+                        translateY: [0, -10],
+                        duration: 800,
+                        easing: 'easeInExpo',
+                        complete: () => {
+                            successMessage.remove();
+                        }
+                    });
+                }, 5000);
+            }, 1500);
         }
     });
     
     // Validación en tiempo real
     const formInputs = contactForm.querySelectorAll('input, textarea');
     formInputs.forEach(input => {
-        input.addEventListener('blur', () => {
-            validateInput(input);
+        input.addEventListener('blur', function() {
+            validateInput(this);
         });
     });
 }
 
 /**
- * Valida un formulario completo
- * @param {HTMLFormElement} form - El formulario a validar
- * @returns {boolean} - True si el formulario es válido, false en caso contrario
- */
-function validateForm(form) {
-    const inputs = form.querySelectorAll('input, textarea');
-    let isValid = true;
-    
-    inputs.forEach(input => {
-        if (!validateInput(input)) {
-            isValid = false;
-        }
-    });
-    
-    return isValid;
-}
-
-/**
  * Valida un campo de formulario individual
- * @param {HTMLInputElement|HTMLTextAreaElement} input - El campo a validar
- * @returns {boolean} - True si el campo es válido, false en caso contrario
+ * @param {HTMLElement} input - El campo a validar
+ * @returns {boolean} - Si el campo es válido
  */
 function validateInput(input) {
     const value = input.value.trim();
-    const errorElement = input.parentElement.querySelector('.error-message');
     let isValid = true;
     let errorMessage = '';
     
-    // Eliminar mensaje de error existente
-    if (errorElement) {
-        errorElement.remove();
-    }
+    // Eliminar mensaje de error anterior si existe
+    const existingError = input.parentNode.querySelector('.error-message');
+    if (existingError) existingError.remove();
     
     // Validar según el tipo de campo
-    if (input.required && value === '') {
-        isValid = false;
-        errorMessage = 'Este campo es obligatorio';
-    } else if (input.type === 'email' && value !== '') {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) {
-            isValid = false;
-            errorMessage = 'Por favor, introduce un email válido';
-        }
-    } else if (input.id === 'phone' && value !== '') {
-        const phoneRegex = /^[0-9\s\-\+\(\)]{9,15}$/;
-        if (!phoneRegex.test(value)) {
-            isValid = false;
-            errorMessage = 'Por favor, introduce un número de teléfono válido';
-        }
+    switch(input.id) {
+        case 'name':
+            if (value === '') {
+                isValid = false;
+                errorMessage = 'Por favor, introduce tu nombre';
+            }
+            break;
+            
+        case 'email':
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                isValid = false;
+                errorMessage = 'Por favor, introduce un email válido';
+            }
+            break;
+            
+        case 'phone':
+            // Opcional, pero si se proporciona debe ser válido
+            if (value !== '') {
+                const phoneRegex = /^[0-9\+\-\s]{9,15}$/;
+                if (!phoneRegex.test(value)) {
+                    isValid = false;
+                    errorMessage = 'Por favor, introduce un teléfono válido';
+                }
+            }
+            break;
+            
+        case 'message':
+            if (value === '') {
+                isValid = false;
+                errorMessage = 'Por favor, introduce tu mensaje';
+            } else if (value.length < 10) {
+                isValid = false;
+                errorMessage = 'Tu mensaje es demasiado corto';
+            }
+            break;
     }
     
-    // Mostrar mensaje de error si es necesario
+    // Mostrar error si no es válido
     if (!isValid) {
-        const error = document.createElement('div');
-        error.className = 'error-message';
-        error.textContent = errorMessage;
-        error.style.color = 'var(--color-rojo-cubano)';
-        error.style.fontSize = '0.8rem';
-        error.style.marginTop = '5px';
-        input.parentElement.appendChild(error);
+        const errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        errorElement.textContent = errorMessage;
+        input.parentNode.appendChild(errorElement);
         input.classList.add('invalid');
     } else {
         input.classList.remove('invalid');
@@ -288,71 +425,18 @@ function validateInput(input) {
 }
 
 /**
- * Muestra un mensaje después del envío del formulario
- * @param {string} message - El mensaje a mostrar
- * @param {string} type - El tipo de mensaje ('success' o 'error')
+ * Valida todo el formulario
+ * @param {HTMLFormElement} form - El formulario a validar
+ * @returns {boolean} - Si el formulario es válido
  */
-function showFormMessage(message, type) {
-    const contactForm = document.querySelector('#contact-form');
+function validateForm(form) {
+    const inputs = form.querySelectorAll('input, textarea');
+    let isFormValid = true;
     
-    if (!contactForm) return;
+    inputs.forEach(input => {
+        const isInputValid = validateInput(input);
+        if (!isInputValid) isFormValid = false;
+    });
     
-    // Eliminar mensaje existente
-    const existingMessage = document.querySelector('.form-message');
-    if (existingMessage) {
-        existingMessage.remove();
-    }
-    
-    // Crear nuevo mensaje
-    const messageElement = document.createElement('div');
-    messageElement.className = `form-message ${type}`;
-    messageElement.textContent = message;
-    
-    // Estilos según el tipo
-    if (type === 'success') {
-        messageElement.style.backgroundColor = 'rgba(42, 157, 143, 0.1)';
-        messageElement.style.color = 'var(--color-verde-palma)';
-        messageElement.style.border = '1px solid var(--color-verde-palma)';
-    } else {
-        messageElement.style.backgroundColor = 'rgba(214, 40, 40, 0.1)';
-        messageElement.style.color = 'var(--color-rojo-cubano)';
-        messageElement.style.border = '1px solid var(--color-rojo-cubano)';
-    }
-    
-    // Estilos comunes
-    messageElement.style.padding = 'var(--spacing-md)';
-    messageElement.style.borderRadius = 'var(--border-radius-sm)';
-    messageElement.style.marginTop = 'var(--spacing-md)';
-    
-    // Insertar mensaje después del formulario
-    contactForm.parentNode.insertBefore(messageElement, contactForm.nextSibling);
-    
-    // Animar mensaje si anime.js está disponible
-    if (typeof anime !== 'undefined') {
-        anime({
-            targets: messageElement,
-            opacity: [0, 1],
-            translateY: [10, 0],
-            duration: 500,
-            easing: 'easeOutSine'
-        });
-    }
-    
-    // Eliminar mensaje después de 5 segundos si es de éxito
-    if (type === 'success') {
-        setTimeout(() => {
-            if (typeof anime !== 'undefined') {
-                anime({
-                    targets: messageElement,
-                    opacity: [1, 0],
-                    translateY: [0, -10],
-                    duration: 500,
-                    easing: 'easeOutSine',
-                    complete: () => messageElement.remove()
-                });
-            } else {
-                messageElement.remove();
-            }
-        }, 5000);
-    }
+    return isFormValid;
 }

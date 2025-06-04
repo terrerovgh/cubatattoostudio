@@ -176,6 +176,17 @@ a:hover {
     align-items: center;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
+}
+
 .logo h1 {
     font-size: 1.8rem;
     margin-bottom: 0;
@@ -282,6 +293,23 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tattoo-machine-animation.ready {
+    cursor: pointer;
+}
+
+.tattoo-machine-animation.ready:hover {
+    transform: scale(1.05);
+}
+
+.tattoo-machine-animation svg {
+    width: 300px;
+    height: 300px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    transition: all 0.3s ease;
 }
 
 .machine-placeholder {
@@ -294,6 +322,13 @@ section {
     border-radius: var(--border-radius-lg);
     color: var(--color-blanco-lienzo);
     font-family: var(--font-accent);
+    text-align: center;
+    padding: var(--spacing-md);
+}
+
+.machine-placeholder.error {
+    background-color: rgba(214, 40, 40, 0.2);
+    border: 2px solid var(--color-rojo-cubano);
 }
 
 /* About Section */
@@ -401,6 +436,30 @@ section {
     gap: var(--spacing-md);
 }
 
+.gallery-item {
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-item.hidden {
+    display: none;
+}
+
 .gallery-placeholder {
     height: 400px;
     background-color: #f0f0f0;
@@ -486,6 +545,27 @@ input:focus,
 textarea:focus {
     outline: none;
     border-color: var(--color-azul-caribe);
+}
+
+input.invalid,
+textarea.invalid {
+    border-color: var(--color-rojo-cubano);
+    background-color: rgba(214, 40, 40, 0.05);
+}
+
+.error-message {
+    color: var(--color-rojo-cubano);
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.form-success {
+    background-color: rgba(42, 157, 143, 0.1);
+    color: var(--color-verde-palma);
+    border: 1px solid var(--color-verde-palma);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    margin-top: var(--spacing-md);
 }
 
 /* Footer */
