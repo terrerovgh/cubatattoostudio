@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initScrollAnimations();
     initTattooMachineAnimation();
+    initTattooMachineScrollAnimation(); // Nueva función para animación por scroll
     initGalleryFilters();
     initContactForm();
     initHeroBackgroundAnimation(); // Add this line
@@ -527,4 +528,87 @@ function initHeroBackgroundAnimation() {
     } else {
         console.warn('Hero section (id: home) not found for mousemove listener.');
     }
+}
+
+/**
+ * Animación de la Máquina de Tatuaje controlada por Scroll
+ * Anima la máquina de tatuar basándose en la posición del scroll
+ * Inspirado en el proyecto moto-scroll
+ */
+function initTattooMachineScrollAnimation() {
+    // Comprobar si anime.js está disponible
+    if (typeof anime === 'undefined') {
+        console.warn('anime.js no está cargado. La animación por scroll no funcionará.');
+        return;
+    }
+    
+    // Elemento contenedor de la animación
+    const machineContainer = document.querySelector('.tattoo-machine-animation');
+    
+    if (!machineContainer) {
+        console.warn('No se encontró el contenedor para la animación de la máquina de tatuaje.');
+        return;
+    }
+    
+    // Sección hero para calcular el rango de scroll
+    const heroSection = document.getElementById('home');
+    if (!heroSection) {
+        console.warn('No se encontró la sección hero para la animación por scroll.');
+        return;
+    }
+    
+    // Crear un elemento para la imagen de la animación por scroll
+    const scrollAnimationImg = document.createElement('img');
+    scrollAnimationImg.id = 'tattoo-machine-scroll-img';
+    scrollAnimationImg.alt = 'Máquina de tatuar animada';
+    scrollAnimationImg.style.display = 'none'; // Inicialmente oculta
+    machineContainer.appendChild(scrollAnimationImg);
+    
+    // Usar las variables globales del archivo frames.js
+    const frames = window.TATTOO_FRAMES || [];
+    const maxFrames = window.MAX_TATTOO_FRAMES || frames.length;
+    
+    if (frames.length === 0) {
+        console.warn('No se encontraron frames para la animación de scroll');
+        return;
+    }
+    
+    // Función para actualizar la imagen según el scroll
+    function updateScrollAnimation() {
+        // Calcular la posición relativa del scroll dentro de la sección hero
+        const heroRect = heroSection.getBoundingClientRect();
+        const heroTop = heroRect.top;
+        const heroHeight = heroRect.height;
+        const windowHeight = window.innerHeight;
+        
+        // Si la sección hero está visible
+        if (heroTop < windowHeight && heroTop > -heroHeight) {
+            // Calcular el progreso del scroll (0 a 1)
+            let scrollProgress = 1 - (heroTop / windowHeight);
+            scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+            
+            // Calcular el frame actual basado en el progreso del scroll
+            const frameIndex = Math.floor(scrollProgress * (maxFrames - 1));
+            const frameSrc = frames[frameIndex] || frames[0];
+            
+            // Actualizar la imagen
+            scrollAnimationImg.src = frameSrc;
+            
+            // Mostrar la imagen de scroll y ocultar la SVG animada
+            scrollAnimationImg.style.display = 'block';
+            const svgElement = machineContainer.querySelector('svg');
+            if (svgElement) svgElement.style.display = 'none';
+        } else {
+            // Fuera de la sección hero, mostrar la SVG animada y ocultar la imagen de scroll
+            scrollAnimationImg.style.display = 'none';
+            const svgElement = machineContainer.querySelector('svg');
+            if (svgElement) svgElement.style.display = 'block';
+        }
+    }
+    
+    // Escuchar el evento de scroll
+    window.addEventListener('scroll', updateScrollAnimation);
+    
+    // Llamar una vez para inicializar
+    updateScrollAnimation();
 }
