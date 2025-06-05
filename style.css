@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800');
+/* Assuming "wild_worldbold" is a custom font, it would need to be hosted and imported via @font-face */
+/* For now, we'll use a fallback */
+@font-face {
+    font-family: 'wild_worldbold';
+    src: url('path-to-wild_worldbold.woff2') format('woff2'), /* Modern Browsers */
+         url('path-to-wild_worldbold.woff') format('woff'); /* Legacy Browsers */
+    /* If the font is not available, it will fall back to sans-serif */
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* General styles */
+:root {
+    --primary-color: #c0392b; /* Example: Dark Red */
+    --secondary-color: #2c3e50; /* Example: Dark Blue/Grey */
+    --accent-color: #f39c12; /* Example: Orange */
+    --text-color: #333;
+    --light-text-color: #fff;
+    --background-color: #f4f4f4;
+    --header-font: 'wild_worldbold', sans-serif; /* Fallback to sans-serif */
+    --body-font: 'Open Sans', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--body-font);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: var(--background-color);
+    color: var(--text-color);
+}
+
+.container {
+    width: 90%; /* Adjusted for a potentially more modern feel */
+    max-width: 1200px; /* Max width for larger screens */
+    margin: auto;
+    overflow: hidden;
+    padding: 0 20px;
+}
+
+/* Header */
+header {
+    background: var(--secondary-color);
+    color: var(--light-text-color);
+    padding-top: 20px; /* Adjusted padding */
+    padding-bottom: 20px; /* Added padding */
+    min-height: 70px;
+    border-bottom: var(--primary-color) 5px solid; /* Branding color */
+    position: fixed; /* Sticky header */
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+header.scrolled { /* For potential scroll effects */
+    background-color: rgba(44, 62, 80, 0.9); /* Slightly transparent on scroll */
+}
+
+
+header a {
+    color: var(--light-text-color);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1em; /* Relative font size */
+    transition: color 0.3s ease;
+}
+
+header a:hover {
+    color: var(--accent-color);
+}
+
+header ul {
+    padding: 0;
+    list-style: none;
+    margin: 0; /* Reset margin */
+}
+
+header li {
+    float: left;
+    display: inline;
+    padding: 0 15px; /* Adjusted padding */
+}
+
+header #logo {
+    float: left;
+    margin-top: 0; /* Adjusted margin */
+}
+
+header #logo h1 {
+    margin: 0;
+    font-family: var(--header-font);
+    font-size: 1.8em; /* Relative font size */
+    color: var(--primary-color);
+}
+
+header nav {
+    float: right;
+    margin-top: 5px; /* Adjusted margin */
+}
+
+/* Body padding for fixed header */
+body {
+    padding-top: 120px; /* Adjust based on header height */
+}
+
+
+/* Hero Section - Parallax Idea */
+#hero {
+    /* Assuming a background image will be set here for parallax */
+    background-attachment: fixed; /* This is key for basic parallax */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--light-text-color);
+    position: relative; /* For pseudo-elements if needed for overlay */
+}
+
+#hero::before { /* Optional overlay for text readability */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    z-index: 1;
+}
+
+#hero .container {
+    position: relative; /* To ensure content is above overlay */
+    z-index: 2;
+}
+
+
+#hero h2 {
+    font-family: var(--header-font);
+    font-size: 3.5em; /* Larger font size */
+    margin-bottom: 20px; /* Adjusted margin */
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+#hero p {
+    font-size: 1.5em; /* Larger font size */
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--light-text-color);
+    padding: 15px 30px;
+    text-decoration: none;
+    font-family: var(--header-font);
+    font-size: 1.2em;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.cta-button:hover {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+
+/* Content sections */
+#content section {
+    padding: 60px 0; /* More padding */
+    border-bottom: 1px solid #ddd; /* Softer border */
+}
+
+#content section:last-child {
+    border-bottom: none;
+}
+
+#content section h2 {
+    font-family: var(--header-font);
+    font-size: 2.5em;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+
+/* Artist Profiles */
+.artist-profile {
+    margin-bottom: 30px; /* Increased margin */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.artist-profile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.artist-profile img {
+    width: 180px; /* Larger image */
+    height: 180px; /* Larger image */
+    border-radius: 50%;
+    margin-bottom: 15px; /* Increased margin */
+    border: 5px solid var(--accent-color); /* Branded border */
+    transition: border-color 0.3s ease;
+}
+
+.artist-profile:hover img {
+    border-color: var(--primary-color);
+}
+
+.artist-profile h3 {
+    font-family: var(--header-font);
+    font-size: 1.5em;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.artist-profile p {
+    font-size: 1em;
+    color: #555;
+}
+
+
+/* Gallery */
+#gallery {
+    text-align: center;
+}
+
+.gallery-item {
+    display: inline-block;
+    margin: 15px; /* Increased margin */
+    overflow: hidden; /* For hover effect */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.gallery-item img {
+    width: 300px;
+    height: 200px;
+    border: none; /* Remove previous border */
+    display: block; /* Remove extra space below image */
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1); /* Zoom effect on image hover */
+}
+
+
+/* Contact Section */
+#contact {
+    text-align: center;
+    background-color: var(--secondary-color); /* Darker background for contrast */
+    color: var(--light-text-color);
+    padding: 60px 20px;
+}
+
+#contact h2 {
+    color: var(--primary-color);
+}
+
+#contact p {
+    font-size: 1.1em; /* Adjusted font size */
+    margin-bottom: 10px;
+    line-height: 1.8;
+}
+
+#contact a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+#contact a:hover {
+    text-decoration: underline;
+}
+
+
+/* Footer */
+footer {
+    padding: 30px 20px; /* Increased padding */
+    margin-top: 0; /* Remove margin if contact section has background */
+    color: var(--light-text-color);
+    background-color: #222; /* Darker footer */
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.social-links {
+    margin-top: 15px;
+}
+
+.social-links a {
+    display: inline-block;
+    margin: 0 10px;
+    transition: transform 0.3s ease;
+}
+
+.social-links img {
+    width: 30px; /* Adjust size as needed */
+    height: 30px;
+    border-radius: 50%; /* Optional: makes them circular if source images are square */
+}
+
+.social-links a:hover {
+    transform: translateY(-3px);
+}
