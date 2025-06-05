@@ -1,135 +1,89 @@
 # Cuba Tattoo Studio - Website & Automated Management System
 
-<div align="center">
-  <img src="src/assets/logo.svg" alt="Cuba Tattoo Studio Logo" width="400"/>
-  <h1>Cuba Tattoo Studio</h1>
-  <p><strong>Professional Tattoo Studio & Automated Management System</strong></p>
-  <p>Authentic Cuban artistry in Albuquerque, New Mexico</p>
-</div>
+![Estado del Proyecto](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
+![Versión](https://img.shields.io/badge/Versión-0.1%20MVP-blue)
 
-## Overview
+Sitio web y sistema de gestión automatizado para Cuba Tattoo Studio en Albuquerque, combinando un diseño atractivo con animaciones fluidas y un backend eficiente para la gestión del estudio.
 
-Welcome to the official repository of Cuba Tattoo Studio! This project combines rich Cuban artistic tradition with modern technology to create a unique experience for both our clients and studio management. Our website and management system aim to showcase our artists' work while providing efficient booking and operational tools.
+## 🎯 Objetivos del Proyecto <a name="objetivos"></a>
 
-## Features <a name="features"></a>
+- Crear un sitio web único y atractivo que aumente la visibilidad del estudio en Albuquerque
+- Implementar animaciones fluidas y profesionales utilizando anime.js y GSAP
+- Desarrollar un sistema de gestión eficiente utilizando n8n y AI
+- Automatizar procesos de reserva y gestión de clientes
 
-### Immersive Web Experience
-- **Responsive Design** with authentic Cuban visual identity
-- **Fluid Animations** using anime.js for a memorable experience
-- **Interactive Gallery** with filters by style and artist
-- **Smart Forms** with real-time validation
-
-### Intelligent Booking System
-- **Integrated Calendar** for appointments and consultations
-- **Automated Notifications** via email and SMS
-- **Real-time Artist Availability** management
-- **Personalized Reminders** for clients
-
-### Advanced Design Collaboration
-- **Automated Concept Generation** based on client preferences
-- **Style Analysis** and personalized recommendations
-- **Digital Visualization** of designs on different body parts
-- **Smart Library** of Cuban cultural references
-
-### Efficient Studio Operations
-- **Administrative Dashboard** with real-time metrics
-- **Automated Inventory Management**
-- **Performance Analysis** of artists and services
-- **Financial Integration** for billing and payments
-
-## Tech Stack <a name="tech-stack"></a>
+## 🛠️ Tech Stack <a name="tech-stack"></a>
 
 ### Frontend
-- **HTML5** - Semantic and accessible structure
-- **CSS3** - Modern styles with CSS variables and Grid/Flexbox
-- **JavaScript ES6+** - Interactive functionality
-- **anime.js** - Fluid and professional animations
 
-### Backend & Automation
-- **n8n** - Visual automation workflows
-- **Docker** - Containerization for consistent deployment
-- **GitHub Pages** - Frontend MVP hosting
+- **HTML5** - Estructura semántica y accesible
+- **CSS3** - Estilos modernos con variables CSS y Grid/Flexbox
+- **JavaScript ES6+** - Funcionalidad interactiva
+- **GSAP & ScrollSmoother** - Animaciones fluidas y scroll suave
+- **anime.js** - Animaciones avanzadas (próximamente)
 
-### Automation & Integration
-- **Advanced Design Tools** - Automated design assistance
-- **Natural Language Processing** - Smart text understanding
-- **Image Processing** - Automated image generation and manipulation
-- **Content Processing** - Advanced text and image workflows
+### Backend & Automatización
 
-### Development Tools
-- **Git & GitHub** - Version control and collaboration
-- **ESLint & Prettier** - Code quality and formatting
-- **GitHub Actions** - CI/CD automation
-- **GitHub Projects** - Kanban-style project management
+- **n8n** - Flujos de trabajo de automatización visual
+- **Docker** - Contenedorización para despliegue consistente
+- **GitHub Pages** - Alojamiento del MVP frontend
 
-## Project Status <a name="project-status"></a>
+### Herramientas de Desarrollo
 
-### Completed
-- Initial design system and branding
-- Responsive layout structure
-- Core animations and interactions
-- Basic form validation
+- **Git & GitHub** - Control de versiones y colaboración
+- **ESLint & Prettier** - Calidad de código y formateo
+- **GitHub Actions** - Automatización CI/CD
+- **GitHub Projects** - Gestión de proyectos estilo Kanban
 
-### In Progress
-- Gallery implementation with filtering
-- Artist profiles and portfolios
-- Contact form with validation
-- Tattoo machine animation
+## 📋 Instalación <a name="installation"></a>
 
-### Next Iterations
-- Booking system integration
-- Admin dashboard
-- Automated design assistant
-- Mobile app development
+### Requisitos Previos
 
-## Installation <a name="installation"></a>
-
-### Prerequisites
-- Node.js (v18 or higher)
+- Node.js (v18 o superior)
 - Git
-- Modern web browser
+- Navegador web moderno
 
-### Quick Start
+### Inicio Rápido
 
 ```bash
-# Clone the repository
+# Clonar el repositorio
 git clone https://github.com/terrerovgh/cubatattoostudio.git
 
-# Navigate to project directory
+# Navegar al directorio del proyecto
 cd cubatattoostudio
 
-# Install dependencies (if using npm packages)
+# Instalar dependencias (si se usan paquetes npm)
 npm install
 
-# Start development server
+# Iniciar servidor de desarrollo
 python3 -m http.server 8000
-# or
+# o
 npx serve src
 ```
 
-## Usage <a name="usage"></a>
+## 🚀 Uso <a name="usage"></a>
 
-### Development
+### Desarrollo
 
 ```bash
-# Start local development server
+# Iniciar servidor de desarrollo local
 cd src
 python3 -m http.server 8000
 
-# Open browser to http://localhost:8000
+# Abrir navegador en http://localhost:8000
 ```
 
 ### Testing
 
 ```bash
-# Run linting
+# Ejecutar linting
 npx eslint src/js/
 
-# Format code
+# Formatear código
 npx prettier --write src/
 ```
 
-## Project Structure <a name="project-structure"></a>
+## 📁 Estructura del Proyecto <a name="project-structure"></a>
 
 ```
 cubatattoostudio/
@@ -151,164 +105,87 @@ cubatattoostudio/
     └── workflows/
 ```
 
-## Roadmap <a name="roadmap"></a>
+## 🗺️ Roadmap <a name="roadmap"></a>
 
-### Phase 1: MVP Frontend (Current)
-- Static website with core functionality
-- Responsive design and animations
-- Gallery and contact forms
-- GitHub Pages deployment
+### Fase 1: MVP Frontend (Actual)
 
-### Phase 2: Backend Integration
-- n8n workflow automation
-- Database integration
-- User authentication
-- Booking system
+- Sitio web estático con funcionalidad básica
+- Diseño responsive y animaciones
+- Galería y formularios de contacto
+- Despliegue en GitHub Pages
 
-### Phase 3: Advanced Automation
-- Automated design generation
-- Style recommendations
-- Virtual tattoo preview
-- Automated customer service
+### Fase 2: Integración Backend
 
-## Contributing <a name="contributing"></a>
+- Implementación de n8n para flujos de trabajo
+- Sistema de reservas básico
+- Integración con redes sociales
 
-We welcome contributions from the community! Please read our contributing guidelines before submitting pull requests.
+### Fase 3: Sistema Completo
 
-### Development Workflow
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+- Sistema de gestión de clientes
+- Automatización completa de procesos
+- Análisis y reportes
 
-## License <a name="license"></a>
+## 📚 Documentación
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+La documentación detallada está disponible en el directorio `docs/`:
+- [Reglas del Proyecto](docs/project_rules.md) - Directrices y estándares de desarrollo
+- [Guía de Estilos](docs/diseno/guia-estilos.md) - Directrices de diseño visual
+- [Arquitectura](docs/arquitectura/) - Documentación de arquitectura del sistema
 
-## Visual Identity
+## 🛠️ Configuración de Desarrollo
 
-Our design system reflects the rich Cuban cultural heritage:
-- **Colors**: Warm earth tones with vibrant accent colors
-- **Typography**: Modern fonts with Cuban-inspired elements
-- **Imagery**: Authentic Cuban art and cultural references
-- **Animations**: Smooth, professional transitions using anime.js
+### Requisitos Previos
 
-## Documentation
-
-Detailed documentation is available in the `docs/` directory:
-- [Project Rules](docs/project_rules.md) - Development guidelines and standards
-- [Style Guide](docs/design/style-guide.md) - Visual design guidelines
-- [Architecture](docs/architecture/) - System architecture documentation
-- [API Documentation](docs/api/) - Backend API reference
-
-## Development Setup
-
-### Prerequisites
 - Node.js 18+
 - Git
-- Code editor (VS Code recommended)
-- Modern web browser
+- Editor de código (VS Code recomendado)
+- Navegador web moderno
 
-### Environment Setup
+### Configuración del Entorno
 
 ```bash
-# Clone repository
+# Clonar repositorio
 git clone https://github.com/terrerovgh/cubatattoostudio.git
 cd cubatattoostudio
 
-# Install dependencies
+# Instalar dependencias
 npm install
 
-# Start development server
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-## Testing
+## 🚀 Despliegue
 
-- Unit tests for JavaScript functionality
-- Cross-browser compatibility testing
-- Performance testing
-- Accessibility testing
-
-## Deployment
-
-### MVP Deployment (GitHub Pages)
+### Despliegue MVP (GitHub Pages)
 
 ```bash
-# Build and deploy to GitHub Pages
-# (Automated through GitHub Actions - coming soon)
+# Construir y desplegar en GitHub Pages
+# (Automatizado a través de GitHub Actions - próximamente)
 ```
 
-### Production Deployment (Docker)
+## 🤝 Contribución
 
-```bash
-# Build Docker image
-docker build -t cubatattoostudio .
+Las contribuciones son bienvenidas. Por favor, sigue estos pasos:
 
-# Run container
-docker run -p 80:80 cubatattoostudio
-```
+1. Haz fork del proyecto
+2. Crea una rama para tu característica (`git checkout -b feature/amazing-feature`)
+3. Haz commit de tus cambios (`git commit -m 'feat: add amazing feature'`)
+4. Haz push a la rama (`git push origin feature/amazing-feature`)
+5. Abre un Pull Request
 
-## Performance
+## 📄 Licencia
 
-- **Lighthouse Score**: Target 90+ for all metrics
-- **Page Load Time**: < 3 seconds
-- **Mobile Optimization**: Fully responsive design
-- **SEO Optimized**: Semantic HTML and meta tags
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
-## Security
+## 🔗 Enlaces
 
-- Input validation on all forms
-- HTTPS enforcement
-- Secure headers implementation
-- Regular dependency updates
-
-## Acknowledgments
-
-- Cuban artistic community for inspiration
-- Open source libraries and frameworks
-- Development team and contributors
+- [Demo en Vivo](https://terrerovgh.github.io/cubatattoostudio/) (Próximamente)
+- [Tablero del Proyecto](https://github.com/users/terrerovgh/projects/3)
+- [Documentación](docs/)
+- [Guía de Estilos](docs/diseno/guia-estilos.md)
 
 ---
 
-<div align="center">
-  <p>Made with passion by the Cuba Tattoo Studio team</p>
-  <p>Albuquerque, New Mexico</p>
-</div>
-
-## Project Management
-
-We use **GitHub Projects** with Kanban methodology:
-- **[Main Board](https://github.com/users/terrerovgh/projects/3)** - Tracking all tasks
-- **Columns**: Ideas → To Do → In Progress → Done
-- **Labels**: Effort (XS, S, M, L, XL), Type (feature, bug, docs), Priority
-
-## Contact
-
-**Cuba Tattoo Studio**
-- Location: Albuquerque, New Mexico
-- Website: [https://terrerovgh.github.io/cubatattoostudio/](https://terrerovgh.github.io/cubatattoostudio/) (Coming Soon)
-- Email: info@cubatattoostudio.com
-- Instagram: @cubatattoostudio
-
-## Links
-
-- [Live Demo](https://terrerovgh.github.io/cubatattoostudio/) (Coming Soon)
-- [Project Board](https://github.com/users/terrerovgh/projects/3)
-- [Documentation](docs/)
-- [Style Guide](docs/diseno/guia-estilos.md)
-
-## Project Stats
-
-![GitHub last commit](https://img.shields.io/github/last-commit/terrerovgh/cubatattoostudio)
-![GitHub issues](https://img.shields.io/github/issues/terrerovgh/cubatattoostudio)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/terrerovgh/cubatattoostudio)
-![GitHub stars](https://img.shields.io/github/stars/terrerovgh/cubatattoostudio)
-
----
-
-<div align="center">
-  <p><strong>Cuban Art on Your Skin</strong></p>
-  <p><em>Where tradition meets innovation</em></p>
-</div>
+Desarrollado con ❤️ para Cuba Tattoo Studio
