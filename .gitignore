@@ -35,7 +35,7 @@ yarn-error.log*
 *.log
 *.tmp
 *.swp
-
+/.trae
 # Archivos de configuración local
 .prettierrc.local
 .eslintrc.local
