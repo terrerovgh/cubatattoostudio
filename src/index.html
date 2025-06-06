@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Cuba Tattoo Studio - Albuquerque</title>
+  <link rel='stylesheet' href='https://webflow-assets.papertigerhq.com/Paper-Tiger-Website/build/style.css'>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/dark-theme.css">
+  <link rel="stylesheet" href="./css/artists.css">
+  <meta name="theme-color" content="#121212">
+  <meta name="color-scheme" content="dark">
+  <style>
+    .logo-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .logo-svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--accent-color, #ff3c31);
+      transition: fill 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+<!-- Logo that will animate on scroll -->
+<div class="logo-container" id="logo-container">
+  <img src="./img/logo.png" alt="Cuba Tattoo Studio Logo" class="logo-img" id="logo-img">
+</div>
+
+<!-- partial:index.partial.html -->
+<div id="homepage" class="o-page">
+  <div class="c-home-hero">
+    <div class="o-container">
+      <div class="c-hm-hero_head">
+        <div class="c-hm-hero_top">
+          <h1 class="t-lead">AN INTERACTIVE DESIGN AGENCY</h1>
+        </div>
+        <div class="c-ticker">
+          <div class="c-ticker_side">
+            <h2 class="t-micro-1">
+              BUILDING BADASS<br />WEBSITES
+            </h2>
+          </div>
+          <div class="c-ticker_title">
+            <h2 class="t-d1-fluid ticker-line">BRAND VISION</h2>
+            <h2 class="t-d1-fluid ticker-line">DESIGN CULTURE</h2>
+
+            <h3 class="t-d1-fluid ticker-line">TECHNICAL PROWESS</h3>
+          </div>
+          <div class="c-ticker_side rt">
+            <h2 class="t-micro-1">
+              FOR AMBITIOUS<br />BRANDS
+            </h2>
+          </div>
+        </div>
+      </div>
+      <a href="#" class="c-hm-hero_media w-inline-block has-cursor">
+        <div class="c-md-cursor">
+          <div class="c-md-cursor_txt red">
+            <div class="t-lead-2">Show me the work</div>
+          </div>
+          <div class="c-md-cursor_icn red">
+            <div class="o-icon-svg flipped w-embed">
+              <svg viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.6956 13.5481L14.8853 1.8188L17.3143 4.30854L17.1159 16.5742L17.0961 17.7981L15.9021 17.8184L3.93557 18.0217L1.50655 15.532L12.9498 15.3375L0.466606 2.54228L2.21242 0.752827L14.6956 13.5481Z" fill="currentColor" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="o-media hm-reel">
+          <div class="o-media_obj">
+            <video id="video-player" autoplay loop muted playsinline width="100%" height="100%" style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000;">
+              <source src="./media/video2.webm" type="video/webm" />
+              Su navegador no soporta el elemento de video.
+            </video>
+          </div>
+        </div>
+      </a>
+      <div class="c-hm-hero_btm">
+        <h3 class="t-lead narrow">WE'RE AN OG CLASS OF CREATIVES WITH AN EYE FOR MAGIC, A KNACK FOR SCROLL-STOPPING DESIGN, AND A DIY MENTALITY THAT GETS SHIT DONE.</h3>
+        <p class="t-body-2 narrow">
+          Synapse was established in the millennium year 2000, in the heart of Goa, to create powerful storytelling for businesses. And here we are, working with some of the top global brands, solving their business communication problems like our own.
+
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- partial -->
+  <script src='https://unpkg.co/gsap@3/dist/gsap.min.js'></script>
+  <script src='https://unpkg.co/gsap@3/dist/ScrollTrigger.min.js'></script>
+  <script src='https://unpkg.co/gsap@3/dist/SplitText.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js'></script>
+  <script src="./js/script.js"></script>
+
+</body>
+</html>

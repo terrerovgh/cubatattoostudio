@@ -1,0 +1,149 @@
+/* Añadir estilos para el logo */
+.logo-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(255, 60, 49, 0.5));
+  transition: all 0.3s ease;
+}
+
+.logo-container:hover .logo-img {
+  filter: drop-shadow(0 0 12px rgba(255, 60, 49, 0.8));
+}
+
+.logo-svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--accent-color, #ff3c31);
+  filter: drop-shadow(0 0 8px rgba(255, 60, 49, 0.5));
+  transition: all 0.3s ease;
+}
+
+.logo-container:hover .logo-svg {
+  filter: drop-shadow(0 0 12px rgba(255, 60, 49, 0.8));
+}
+
+/* Añadir efecto de desplazamiento suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Variables de color para el tema oscuro */
+:root {
+  --background-color: #121212;
+  --secondary-bg: #1e1e1e;
+  --text-color: #f2f3f4;
+  --accent-color: #ff3c31;
+  --border-color: #333;
+  --hover-color: #ff5a4f;
+  --muted-text: #a0a0a0;
+}
+
+/* Estilos globales */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Contenedores */
+.o-page, .c-home-hero {
+  background-color: var(--background-color);
+}
+
+/* Tipografía */
+h1, h2, h3, h4, h5, h6,
+.t-lead, .t-d1-fluid, .t-micro-1, .t-body-2 {
+  color: var(--text-color);
+}
+
+/* Elementos interactivos */
+a {
+  color: var(--accent-color);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--hover-color);
+}
+
+/* Botones */
+.w-button {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.w-button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Elementos de formulario */
+input, optgroup, select, textarea {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+/* Video */
+video {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+/* Cursor */
+.c-md-cursor {
+  background-color: var(--background-color);
+  border: 1px solid var(--accent-color);
+}
+
+.c-md-cursor_txt {
+  color: var(--text-color);
+}
+
+/* Ticker */
+.c-ticker {
+  border-color: var(--border-color);
+}
+
+/* Webflow específicos */
+.w-background-video {
+  background-color: var(--secondary-bg);
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hover-color);
+}

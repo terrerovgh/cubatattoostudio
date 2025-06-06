@@ -1,0 +1,75 @@
+/* Estilos para la sección de artistas */
+.artists-section {
+  padding: 80px 0;
+  background-color: var(--background-color, #121212);
+  margin-top: 100px;
+}
+
+.artists-section h2 {
+  text-align: center;
+  margin-bottom: 60px;
+  color: var(--accent-color, #ff3c31);
+  font-size: 3rem;
+}
+
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 40px;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.artist {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.artist:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.artist h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: var(--accent-color, #ff3c31);
+}
+
+.artist-portfolio {
+  height: 200px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.artist-bio {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-color, #f2f3f4);
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .artists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .artists-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .artists-section h2 {
+    font-size: 2.5rem;
+  }
+}
