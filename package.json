@@ -1,0 +1,17 @@
+{
+  "name": "cuba-tattoo-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Cuba Tattoo Studio - Sitio web oficial con arte auténtico cubano en Albuquerque, NM",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["tattoo", "cuba", "albuquerque", "art", "cuban-art"],
+  "author": "Cuba Tattoo Studio",
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
