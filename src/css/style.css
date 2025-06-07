@@ -776,15 +776,42 @@ body.menu-expanded .page-container {
   padding: 0;
 }
 
-/* Parallax effects */
+/* Parallax effects with ultra-slow smooth zoom */
 .parallax {
   will-change: transform;
-  transition: opacity var(--transition-medium);
+  transition: opacity var(--transition-medium), transform 2.5s cubic-bezier(0.23, 1, 0.32, 1);
   opacity: 0;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .parallax.loaded {
   opacity: 1;
+}
+
+.parallax.zoom-enabled {
+  transform-style: preserve-3d;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Ultra-smooth zoom transitions for images */
+.parallax img,
+img.parallax {
+  transition: transform 2.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center center;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Enhanced image quality during zoom */
+.parallax img:hover,
+img.parallax:hover {
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 /* Navigation */

@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 400);
   });
 
-  // Improved parallax effect with more subtle movement
+  // Improved parallax effect with zoom and movement - Ultra slow motion
   const updateParallax = () => {
     parallaxElements.forEach((element) => {
       if (!element) return;
@@ -107,8 +107,34 @@ document.addEventListener("DOMContentLoaded", () => {
       // Use negative values for the parallax effect
       const moveX = -currentX * speed * PARALLAX_INTENSITY;
 
-      // Apply translation to create parallax effect
-      element.style.transform = `translateX(${moveX}px)`;
+      // Calculate zoom effect based on scroll direction and position
+      const scrollProgress = currentX / maxScroll;
+      const elementRect = element.getBoundingClientRect();
+      const elementCenter = elementRect.left + elementRect.width / 2;
+      const screenCenter = window.innerWidth / 2;
+      
+      // Distance from center of screen (normalized)
+      const distanceFromCenter = Math.abs(elementCenter - screenCenter) / (window.innerWidth / 2);
+      
+      // Base zoom scale (1 = normal size)
+      let zoomScale = 1;
+      
+      // Apply zoom based on element visibility and scroll direction
+       if (elementRect.left < window.innerWidth && elementRect.right > 0) {
+         // Element is visible
+         const visibility = Math.max(0, Math.min(1, 1 - distanceFromCenter));
+         
+         // Smooth zoom effect: zoom in when element is centered, zoom out when moving away
+         zoomScale = 1 + (visibility * 0.4); // Max 40% zoom
+         
+         // Add subtle breathing effect based on scroll position (reduced range)
+         const breathingEffect = Math.sin(scrollProgress * Math.PI * 2) * 0.02;
+         zoomScale += breathingEffect;
+       }
+       
+       // Apply both translation and scale transforms
+       element.style.transform = `translateX(${moveX}px) scale(${zoomScale})`;
+       element.style.transition = 'transform 2.5s cubic-bezier(0.23, 1, 0.32, 1)'; // Ultra slow and smooth
     });
   };
 
@@ -275,10 +301,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Event handlers
+  // Event handlers with enhanced zoom effect
   const handleWheel = (e) => {
     e.preventDefault();
+    
+    // Store previous position to determine scroll direction
+    const previousX = targetX;
     targetX = clamp(targetX + e.deltaY * WHEEL_SENSITIVITY, 0, maxScroll);
+    
+    // Determine scroll direction for zoom effect
+    const scrollDirection = targetX > previousX ? 'down' : 'up';
+    
+    // Apply immediate zoom feedback for smooth feeling
+    parallaxElements.forEach((element) => {
+      if (!element) return;
+      
+      const elementRect = element.getBoundingClientRect();
+      if (elementRect.left < window.innerWidth && elementRect.right > 0) {
+        // Add subtle temporary zoom boost during scroll
+        const tempZoom = scrollDirection === 'down' ? 1.02 : 0.99;
+        
+        // Extract existing translateX value
+        const translateMatch = currentTransform.match(/translateX\(([^)]+)\)/);
+        const translateX = translateMatch ? translateMatch[1] : '0px';
+        
+        element.style.transform = `translateX(${translateX}) scale(${tempZoom})`;
+         element.style.transition = 'transform 1.2s cubic-bezier(0.19, 1, 0.22, 1)';
+         
+         // Reset to normal zoom after extended delay
+         setTimeout(() => {
+           element.style.transition = 'transform 2.5s cubic-bezier(0.23, 1, 0.32, 1)';
+         }, 400);
+      }
+    });
+    
     startAnimation();
   };
 
@@ -389,9 +445,12 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDimensions();
   });
 
-  // Make sure parallax elements are loaded
+  // Make sure parallax elements are loaded and set up zoom
   parallaxElements.forEach((img) => {
     if (img.tagName === "IMG") {
+      // Add zoom-ready class for CSS styling
+      img.classList.add("zoom-enabled");
+      
       if (img.complete) {
         // Image already loaded
         img.classList.add("loaded");
@@ -421,8 +480,14 @@ document.addEventListener("DOMContentLoaded", () => {
     sectionNavItems[0].classList.add("active");
   }, 100);
 
-  // Force parallax update on load
+  // Force parallax update on load and set up smooth zoom transitions
   setTimeout(() => {
     updateParallax();
+    
+    // Ensure all images have smooth zoom transitions
+     parallaxElements.forEach((element) => {
+       element.style.transformOrigin = 'center center';
+       element.style.transition = 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
+     });
   }, 200);
 });
