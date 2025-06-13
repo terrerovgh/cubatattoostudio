@@ -32,12 +32,12 @@ Thumbs.db
 # IDEs y editores
 .vscode/
 .idea/
+.trae/
 *.swp
 *.swo
 *~
 
 # Carpetas específicas del proyecto
-.trae/
 .env/
 
 # Build y distribución
