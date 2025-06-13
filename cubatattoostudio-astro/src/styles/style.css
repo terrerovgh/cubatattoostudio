@@ -15,16 +15,14 @@ body {
 .container {
   min-height: 100svh;
   position: relative;
-  background: linear-gradient(
-    223.17deg,
-    rgb(28, 24, 41) 0%,
-    rgb(27, 24, 40) 8.61%,
-    rgb(25, 23, 36) 17.21%,
-    rgb(22, 21, 32) 25.82%,
-    rgb(20, 19, 28) 34.42%,
-    rgb(18, 18, 24) 43.03%,
-    rgb(17, 17, 23) 51.63%
-  );
+  background: #000;
+
+
+
+
+
+
+
 }
 
 .overlay {
@@ -43,15 +41,10 @@ body {
   height: 100vh;
   position: relative;
   transform: scale(1.25);
-  background-image: url("/public/logo_white.svg");
-  background-size: 1000vh;
-  background-position: 50% 41.7%;
-  background-repeat: no-repeat;
-  background-origin: content-box;
-  padding-bottom: 200px;
 }
 
 .hero-main-image {
+  display: none;
   width: 100%;
   height: 100vh;
   /* transform: scale(1.25); */
@@ -61,12 +54,13 @@ body {
 }
 
 .hero-main-logo {
-  width: 100%;
-  height: 100vh;
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  object-fit: cover;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30vw;
+  height: auto;
+  z-index: 100;
 }
 
 .hero-text-logo-container {
