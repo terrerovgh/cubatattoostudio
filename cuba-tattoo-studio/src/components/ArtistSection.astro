@@ -1,0 +1,36 @@
+---
+// Define the props the component accepts
+// The 'artist' prop is expected to be an object,
+// where artist.data contains the fields from the content collection
+export interface Props {
+  artist: {
+    data: {
+      name: string;
+      style: string;
+      description: string;
+      // video and images are part of the schema but not used in this component version
+      video?: string;
+      images?: string[];
+      slug?: string; // slug is also part of schema but not directly displayed here
+    }
+  }
+}
+
+const { artist } = Astro.props;
+---
+
+<div class="p-8 mb-8 bg-gray-800 rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold text-pink-500 mb-2">{artist.data.name}</h2>
+  <p class="text-lg text-gray-300 mb-1">Style: {artist.data.style}</p>
+  <div class="text-gray-400 prose prose-sm prose-invert">
+    <p>{artist.data.description}</p>
+  </div>
+</div>
+
+<!--
+  The 'prose' classes from Tailwind Typography can be useful for rendering markdown content,
+  but here description is a simple string. If it were markdown content from the body
+  of the .md file, <Content /> component from Astro would be used, often with prose.
+  For simple string display, <p> is fine.
+  Using prose-sm and prose-invert for basic text styling if description contains multiple paragraphs.
+-->
