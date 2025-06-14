@@ -1,0 +1,32 @@
+---
+// Import global styles. Ensure this path is correct.
+// The astro add tailwind command should have set up global.css.
+// If it's not automatically imported by Astro's Tailwind integration,
+// uncommenting this is necessary. For now, we assume Tailwind's Vite plugin
+// handles global style injection or Astro does it based on astro.config.mjs.
+// import '../styles/global.css';
+
+// Props can be defined for the layout, e.g., title
+export interface Props {
+	title?: string;
+}
+
+const { title = 'Cuba Tattoo Studio' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <!--
+      Astro's Tailwind integration typically injects styles automatically.
+      If not, ensure global.css (with @tailwind directives) is imported.
+      The astro.config.mjs setup with @tailwindcss/vite should handle this.
+      <link rel="stylesheet" href="/styles/global.css"> would be another way if not using imports.
+    -->
+</head>
+<body class="bg-black text-white">
+    <slot />
+</body>
+</html>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArtistSection from '../components/ArtistSection.astro';
+import { getCollection } from 'astro:content'; // Corrected import syntax
+
+// Fetch all entries from the 'artists' collection
+const allArtists = await getCollection('artists');
+
+import HeroSection from '../components/HeroSection.astro';
+---
+<BaseLayout title="Home | Cuba Tattoo Studio">
+  <HeroSection />
+
+  <main class="container mx-auto px-4">
+    <h2 class="text-4xl font-bold text-center my-12 text-purple-400">Meet Our Artists</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {allArtists.length > 0 ? (
+        allArtists.map(artist => (
+          <ArtistSection artist={artist} />
+        ))
+      ) : (
+        <p class="text-center text-gray-500 col-span-full">No artists currently listed. Check back soon!</p>
+      )}
+    </div>
+  </main>
+
+  <footer class="text-center py-8 mt-16 border-t border-gray-700">
+    <p class="text-gray-500">&copy; {new Date().getFullYear()} Cuba Tattoo Studio. All rights reserved.</p>
+  </footer>
+</BaseLayout>
