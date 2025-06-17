@@ -1,0 +1,45 @@
+---
+// Hero.astro
+import ImageOptimized from './ImageOptimized.astro';
+import Button from './Button.astro';
+import Heading from './Heading.astro';
+
+// Props for the Hero section, e.g., for different hero images or text
+export interface Props {
+  headline: string;
+  subheadline?: string;
+  imageUrl: string;
+  imageAlt: string;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
+const {
+  headline = "Welcome to Cuba Tattoo Studio",
+  subheadline = "Where art meets skin. Discover our talented artists.",
+  imageUrl = "https://via.placeholder.com/1200x600.png?text=Hero+Image+Placeholder", // Placeholder image
+  imageAlt = "Hero image for Cuba Tattoo Studio",
+  ctaText = "Book Appointment",
+  ctaLink = "/contact" // Assuming a contact page will exist
+} = Astro.props;
+---
+<section class="relative text-white bg-negro py-16 md:py-24">
+  <div class="absolute inset-0 opacity-50">
+    <ImageOptimized
+      src={imageUrl}
+      alt={imageAlt}
+      class="object-cover w-full h-full"
+      width={1200}
+      height={600}
+    />
+  </div>
+  <div class="container mx-auto px-4 relative z-10 text-center">
+    <Heading level={1} text={headline} class="text-4xl md:text-6xl font-bold mb-4" />
+    {subheadline && <p class="text-lg md:text-2xl mb-8">{subheadline}</p>}
+    {ctaText && ctaLink && (
+      <Button variant="primary">
+        <a href={ctaLink}>{ctaText}</a>
+      </Button>
+    )}
+  </div>
+</section>
