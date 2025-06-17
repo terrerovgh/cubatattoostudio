@@ -1,0 +1,13 @@
+---
+// ImageOptimized.astro
+// Placeholder for an optimized image component.
+// Will likely use @astrojs/image integration later.
+export interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+}
+const { src, alt, width, height } = Astro.props;
+---
+<img {src} {alt} {width} {height} loading="lazy" />
