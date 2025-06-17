@@ -1,0 +1,102 @@
+@import url(https://fonts.googleapis.com/css?family=Vibur);
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: #112 url(https://images.weserv.nl/?url=i.imgur.com/6QJjYMe.jpg) center no-repeat;
+  background-size: cover;
+  margin: 0;
+  position: relative; /* Needed for absolute positioning of the pseudo-element */
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 5vh; /* Use vh for responsive top positioning */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30vw; /* Use vw for responsive width, max-width can be added */
+  max-width: 300px; /* Max width for larger screens */
+  height: 30vw; /* Use vw for responsive height, max-height can be added */
+  max-height: 300px; /* Max height for larger screens */
+  background-image: url('./logo.png');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: contain;
+  opacity: 0.2; /* Adjusted for graffiti and more pronounced neon effect */
+  filter: drop-shadow(0 0 5px rgba(0,0,0,1)) drop-shadow(0 0 10px rgba(0,0,0,0.8)) drop-shadow(0 0 15px rgba(0,0,0,0.6));
+  /* z-index might not be needed or could be adjusted depending on layering needs */
+}
+
+.logo {
+  text-align: center;
+  width: 90%; /* Make width responsive */
+  max-width: 800px; /* Max width for very large screens */
+  margin: auto;
+  position: absolute;
+  top: 40vh; /* Adjust top to be below the logo, use vh for responsiveness */
+  left: 50%;
+  transform: translateX(-50%);
+  /* bottom: 0; remove bottom to allow content to flow naturally if it exceeds viewport height */
+  padding-top: 5vh; /* Add padding to ensure space from the logo image */
+}
+
+:root {
+  --neon-text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #8e8a29, 0 0 0.5em #d2c9b6, 0 0 0.1em #ff9300, 0 10px 3px #000;
+}
+
+
+.logo b {
+  font: 100 clamp(4vh, 8vw, 10vh) "Vibur"; /* Responsive font size using clamp */
+  color: #fee;
+  text-shadow: var(--neon-text-shadow);
+}
+
+.logo b span {
+  animation: blink-effect linear infinite 2s;
+}
+
+
+@keyframes blink-effect {
+  78% {
+    color: inherit;
+    text-shadow: var(--neon-text-shadow);
+    /* SVG filter is removed from keyframes to keep it static */
+  }
+  79%{
+     color: #333;
+  }
+  80% {
+    text-shadow: none;
+    /* SVG filter is removed from keyframes */
+  }
+  81% {
+    color: inherit;
+    text-shadow: var(--neon-text-shadow);
+    /* SVG filter is removed from keyframes */
+  }
+  82% {
+    color: #333;
+    text-shadow: none;
+    /* SVG filter is removed from keyframes */
+  }
+  83% {
+    color: inherit;
+    text-shadow: var(--neon-text-shadow);
+    /* SVG filter is removed from keyframes */
+  }
+  92% {
+    color: #333;
+    text-shadow: none;
+    /* SVG filter is removed from keyframes */
+  }
+  92.5% {
+    color: inherit;
+    text-shadow: var(--neon-text-shadow);
+    /* SVG filter is removed from keyframes */
+  }
+}
