@@ -1,0 +1,11 @@
+---
+const { locale } = Astro.props;
+---
+<header class="header">
+  <div class="logo">Cuba Tattoo Studio</div>
+  <nav>
+    <a href={locale === 'en' ? '/es/' : '/en/'} class="lang-switch">
+      {locale === 'en' ? 'ES' : 'EN'}
+    </a>
+  </nav>
+</header>

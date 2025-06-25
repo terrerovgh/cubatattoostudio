@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #000;
+  color: #fff;
+}
+.header, .footer {
+  padding: 1rem;
+  text-align: center;
+}
+.artist-section {
+  padding: 2rem 1rem;
+}
+
+.history-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+.history-section video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.history-section .history-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.booking-section {
+  padding: 2rem 1rem;
+  text-align: center;
+}

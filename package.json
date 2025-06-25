@@ -1,0 +1,14 @@
+{
+  "name": "cubatattoostudio",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^4.0.0",
+    "gsap": "^3.0.0"
+  }
+}

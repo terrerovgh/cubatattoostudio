@@ -1,0 +1,21 @@
+---
+const { locale } = Astro.props;
+---
+<section id="booking" class="booking-section">
+  <h2>{locale === 'en' ? 'Book an Appointment' : 'Agendar Cita'}</h2>
+  <p>{locale === 'en' ? 'Booking system placeholder.' : 'Aquí irá el formulario de reserva.'}</p>
+
+  <script client:load>
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from('#booking', {
+      opacity: 0,
+      y: 50,
+      scrollTrigger: {
+        trigger: '#booking',
+        start: 'top 80%'
+      }
+    });
+  </script>
+</section>
