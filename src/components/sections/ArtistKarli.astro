@@ -4,4 +4,18 @@ const { locale } = Astro.props;
 <section id="karli" class="artist-section">
   <h2>Karli</h2>
   <p>{locale === 'en' ? 'Tattoo artist bio placeholder.' : 'Biografía de Karli.'}</p>
+
+  <script client:load>
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from('#karli', {
+      opacity: 0,
+      y: 50,
+      scrollTrigger: {
+        trigger: '#karli',
+        start: 'top 80%'
+      }
+    });
+  </script>
 </section>

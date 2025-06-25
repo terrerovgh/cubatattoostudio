@@ -4,7 +4,30 @@ import contentEn from '../../content/historia.en.md';
 import contentEs from '../../content/historia.es.md';
 const Content = locale === 'en' ? contentEn : contentEs;
 ---
-<section id="history">
-  <h2>{locale === 'en' ? 'Our Story' : 'Nuestra Historia'}</h2>
-  <Content />
+<section id="history" class="history-section">
+  <video id="history-video" src="/video/studio.mp4" playsinline muted preload="auto"></video>
+  <div class="history-content">
+    <h2>{locale === 'en' ? 'Our Story' : 'Nuestra Historia'}</h2>
+    <Content />
+  </div>
+
+  <script client:load>
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+    const video = document.querySelector('#history-video');
+    ScrollTrigger.create({
+      trigger: '#history',
+      start: 'top center',
+      onEnter: () => video && video.play(),
+    });
+    gsap.from('#history .history-content', {
+      opacity: 0,
+      y: 50,
+      scrollTrigger: {
+        trigger: '#history',
+        start: 'top 80%'
+      }
+    });
+  </script>
 </section>
