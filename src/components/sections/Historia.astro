@@ -1,0 +1,10 @@
+---
+const { locale } = Astro.props;
+import contentEn from '../../content/historia.en.md';
+import contentEs from '../../content/historia.es.md';
+const Content = locale === 'en' ? contentEn : contentEs;
+---
+<section id="history">
+  <h2>{locale === 'en' ? 'Our Story' : 'Nuestra Historia'}</h2>
+  <Content />
+</section>
