@@ -1,0 +1,7 @@
+---
+const { locale } = Astro.props;
+---
+<section id="booking" class="booking-section">
+  <h2>{locale === 'en' ? 'Book an Appointment' : 'Agendar Cita'}</h2>
+  <p>{locale === 'en' ? 'Booking system placeholder.' : 'Aquí irá el formulario de reserva.'}</p>
+</section>
