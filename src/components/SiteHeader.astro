@@ -1,0 +1,10 @@
+---
+import { Markdown } from 'astro/components';
+import enContent from '../content/en/header.md';
+import esContent from '../content/es/header.md';
+const { lang = 'en' } = Astro.props;
+const content = lang === 'es' ? esContent : enContent;
+---
+<header class="site-header">
+  <Markdown content={content} />
+</header>

@@ -1,0 +1,43 @@
+---
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<header class={`fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 ${className}`}>
+  <nav class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <img src="/logo.svg" alt="Cuba Tattoo Studio" class="h-8 w-auto" />
+        <span class="text-xl font-bold">Cuba Tattoo Studio</span>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="/" class="text-gray-700 hover:text-black transition-colors">Inicio</a>
+        <a href="/artists" class="text-gray-700 hover:text-black transition-colors">Artistas</a>
+        <a href="/gallery" class="text-gray-700 hover:text-black transition-colors">Galería</a>
+        <a href="/booking" class="text-gray-700 hover:text-black transition-colors">Reservas</a>
+        <a href="/contact" class="text-gray-700 hover:text-black transition-colors">Contacto</a>
+      </div>
+
+      <!-- Language Selector -->
+      <div class="flex items-center space-x-4">
+        <select class="text-sm border border-gray-300 rounded-md px-2 py-1">
+          <option value="en">EN</option>
+          <option value="es">ES</option>
+        </select>
+        
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden p-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>

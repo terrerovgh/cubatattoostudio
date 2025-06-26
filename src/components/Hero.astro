@@ -1,0 +1,129 @@
+---
+import Heading from './Heading.astro';
+import Button from './Button.astro';
+import { onMount } from 'astro/client';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+onMount(() => {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Parallax para el video
+  gsap.to('.hero-video', {
+    yPercent: 20,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '.hero-section',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true,
+    }
+  });
+
+  // Animación de entrada para el título
+  gsap.from('.hero-title', {
+    y: 60,
+    opacity: 0,
+    duration: 1,
+    ease: 'power3.out'
+  });
+  // Animación de entrada para el botón principal
+  gsap.from('.cta-button', {
+    scale: 0.8,
+    opacity: 0,
+    delay: 0.5,
+    duration: 0.6
+  });
+});
+---
+
+<section class={`hero-section relative min-h-screen flex items-center justify-center overflow-hidden ${className}`}>
+  <!-- Background Video/Image -->
+  <div class="absolute inset-0 z-0">
+    <video 
+      autoplay 
+      muted 
+      loop 
+      class="hero-video w-full h-full object-cover"
+      poster="/hero-poster.jpg"
+    >
+      <source src="/hero-video.mp4" type="video/mp4">
+      <!-- Fallback image if video doesn't load -->
+      <img src="/hero-fallback.jpg" alt="Cuba Tattoo Studio" class="w-full h-full object-cover" />
+    </video>
+    <!-- Dark overlay -->
+    <div class="absolute inset-0 bg-black/40"></div>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="relative z-10 text-center text-white px-4">
+    <div class="max-w-4xl mx-auto">
+      <Heading level={1} class="hero-title mb-6 text-white">
+        Cuba Tattoo Studio
+      </Heading>
+      
+      <p class="text-xl md:text-2xl mb-8 text-gray-200">
+        Arte corporal único en el corazón de Cuba. 
+        Donde la tradición se encuentra con la innovación.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button 
+          href="/booking" 
+          variant="primary" 
+          size="lg"
+          class="cta-button bg-red-600 hover:bg-red-700 border-none"
+        >
+          Reservar Cita
+        </Button>
+        
+        <Button 
+          href="/gallery" 
+          variant="outline" 
+          size="lg"
+          class="border-white text-white hover:bg-white hover:text-black"
+        >
+          Ver Galería
+        </Button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+    <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+      <div class="w-1 h-3 bg-white rounded-full mt-2 animate-bounce"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 1s ease-out;
+  }
+
+  .animate-fade-in-delay {
+    animation: fade-in 1s ease-out 0.3s both;
+  }
+
+  .animate-fade-in-delay-2 {
+    animation: fade-in 1s ease-out 0.6s both;
+  }
+</style>

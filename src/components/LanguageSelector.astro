@@ -1,0 +1,8 @@
+---
+const { lang = 'en' } = Astro.props;
+---
+<nav class="language-selector">
+  <a href="/" aria-current={lang === 'en' ? 'page' : undefined}>EN</a>
+  <span> | </span>
+  <a href="/es/" aria-current={lang === 'es' ? 'page' : undefined}>ES</a>
+</nav>

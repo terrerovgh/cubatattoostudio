@@ -1,0 +1,10 @@
+---
+import { Markdown } from 'astro/components';
+import enContent from '../content/en/artists.md';
+import esContent from '../content/es/artists.md';
+const { lang = 'en' } = Astro.props;
+const content = lang === 'es' ? esContent : enContent;
+---
+<section id="artists" class="artists-section">
+  <Markdown content={content} />
+</section>

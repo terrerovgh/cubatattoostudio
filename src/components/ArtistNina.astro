@@ -1,0 +1,83 @@
+---
+import Heading from './Heading.astro';
+import Button from './Button.astro';
+
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<section class={`py-20 bg-gray-50 ${className}`}>
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Artist Info -->
+      <div>
+        <Heading level={2} class="mb-6">
+          Nina
+          <span class="block text-lg font-normal text-gray-600 mt-2">
+            Experta en Estilo Tradicional y Color
+          </span>
+        </Heading>
+
+        <div class="prose prose-lg mb-8">
+          <p class="text-gray-700 mb-4">
+            Nina es una artista versátil con una pasión especial por el tatuaje tradicional 
+            y el uso vibrante del color. Su estilo único combina elementos clásicos con 
+            toques contemporáneos, creando diseños llenos de vida y personalidad.
+          </p>
+          
+          <p class="text-gray-700 mb-6">
+            Con formación en diseño gráfico y más de 6 años en el mundo del tatuaje, 
+            Nina se ha establecido como una referente en el estilo tradicional cubano.
+          </p>
+        </div>
+
+        <!-- Specialties -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Especialidades:</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Tradicional</span>
+            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Old School</span>
+            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Color Vibrante</span>
+            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Neo-Tradicional</span>
+          </div>
+        </div>
+
+        <!-- Portfolio Preview -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Trabajos Destacados:</h3>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="aspect-square bg-red-200 rounded-lg"></div>
+            <div class="aspect-square bg-red-200 rounded-lg"></div>
+            <div class="aspect-square bg-red-200 rounded-lg"></div>
+          </div>
+        </div>
+
+        <!-- CTA Button -->
+        <Button 
+          href="/booking?artist=nina" 
+          variant="primary" 
+          size="lg"
+          class="bg-red-600 hover:bg-red-700 border-none"
+        >
+          Reservar con Nina
+        </Button>
+      </div>
+
+      <!-- Artist Image -->
+      <div class="relative order-first lg:order-last">
+        <div class="aspect-[4/5] bg-red-200 rounded-lg overflow-hidden">
+          <!-- Placeholder for artist image -->
+          <div class="w-full h-full bg-gradient-to-br from-red-300 to-red-400 flex items-center justify-center">
+            <span class="text-red-700 text-lg">Foto de Nina</span>
+          </div>
+        </div>
+        
+        <!-- Decorative element -->
+        <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-red-600 rounded-lg opacity-20"></div>
+      </div>
+    </div>
+  </div>
+</section>

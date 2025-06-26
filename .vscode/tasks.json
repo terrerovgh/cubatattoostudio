@@ -1,0 +1,61 @@
+{
+  "name": "Cuba Tattoo Studio Development",
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "preview",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "preview"],
+      "group": "build",
+      "dependsOn": "build"
+    },
+    {
+      "label": "docker:build",
+      "type": "shell", 
+      "command": "docker",
+      "args": ["build", "-t", "cuba-tattoo-studio", "."],
+      "group": "build"
+    },
+    {
+      "label": "docker:run",
+      "type": "shell",
+      "command": "docker",
+      "args": ["run", "-p", "3000:3000", "cuba-tattoo-studio"],
+      "group": "build",
+      "dependsOn": "docker:build"
+    },
+    {
+      "label": "docker:compose",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["up", "--build"],
+      "group": "build"
+    }
+  ]
+}
