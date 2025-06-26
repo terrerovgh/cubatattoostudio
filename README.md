@@ -56,7 +56,7 @@
 - **Locomotive Scroll** - Scroll suave
 
 ### Desarrollo
-- **Docker** - Contenedorización
+- **Docker** - Contenerización
 - **Vite** - Build tool rápido
 
 ## 🚀 Inicio Rápido
