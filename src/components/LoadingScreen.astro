@@ -1,0 +1,319 @@
+---
+---
+
+<div id="loading-screen" class="fixed inset-0 z-50 bg-black flex items-center justify-center">
+  <!-- Background with subtle pattern -->
+  <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800"></div>
+  <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,rgba(251,191,36,0.1),transparent_70%)]"></div>
+  
+  <!-- Main loading content -->
+  <div class="relative z-10 text-center">
+    <!-- Logo or brand -->
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-wider">
+        CUBA TATTOO STUDIO
+      </h1>
+      <div class="w-32 h-1 bg-amber-400 mx-auto"></div>
+    </div>
+    
+    <!-- Loading animation container -->
+    <div class="relative mb-8">
+      <!-- Tattoo machine -->
+      <div id="tattoo-machine" class="absolute z-20 w-24 h-24 md:w-32 md:h-32">
+        <img 
+          src="/tatto-machine.png" 
+          alt="Tattoo Machine" 
+          class="w-full h-full object-contain filter drop-shadow-lg"
+        />
+        <!-- Machine vibration effect -->
+        <div class="absolute inset-0 bg-amber-400/20 rounded-full blur-sm opacity-0" id="machine-glow"></div>
+      </div>
+      
+      <!-- Loading text that gets "tattooed" -->
+      <div class="relative">
+        <h2 id="loading-text" class="text-6xl md:text-8xl font-bold text-transparent tracking-wider select-none">
+          LOADING...
+        </h2>
+        <!-- Text shadow/outline -->
+        <h2 class="absolute inset-0 text-6xl md:text-8xl font-bold text-gray-600 tracking-wider select-none -z-10">
+          LOADING...
+        </h2>
+        <!-- Tattooed letters overlay -->
+        <h2 id="tattooed-text" class="absolute inset-0 text-6xl md:text-8xl font-bold text-white tracking-wider select-none overflow-hidden">
+          <span class="inline-block opacity-0">LOADING...</span>
+        </h2>
+      </div>
+      
+      <!-- Ink effect -->
+      <div id="ink-trail" class="absolute h-1 bg-amber-400 shadow-lg shadow-amber-400/50 opacity-0"></div>
+    </div>
+    
+    <!-- Progress bar -->
+    <div class="w-80 md:w-96 mx-auto mb-8">
+      <div class="bg-gray-800 h-2 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+      </div>
+      <div class="flex justify-between text-amber-400 text-sm mt-2">
+        <span>Preparando el estudio...</span>
+        <span id="progress-percentage">0%</span>
+      </div>
+    </div>
+    
+    <!-- Loading messages -->
+    <p id="loading-message" class="text-gray-400 text-lg md:text-xl">
+      Cargando experiencia de tatuaje...
+    </p>
+  </div>
+  
+  <!-- Particles effect -->
+  <div id="particles-container" class="absolute inset-0 pointer-events-none"></div>
+</div>
+
+<style>
+  @keyframes machineVibrate {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+    20% { transform: translate(1px, -1px) rotate(0.5deg); }
+    30% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+    40% { transform: translate(1px, 1px) rotate(0.5deg); }
+    50% { transform: translate(-1px, 0px) rotate(0deg); }
+    60% { transform: translate(1px, -1px) rotate(-0.5deg); }
+    70% { transform: translate(-1px, 1px) rotate(0.5deg); }
+    80% { transform: translate(1px, 0px) rotate(-0.5deg); }
+    90% { transform: translate(-1px, -1px) rotate(0.5deg); }
+  }
+  
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+  }
+  
+  @keyframes sparkle {
+    0% { opacity: 0; transform: scale(0) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1) rotate(180deg); }
+    100% { opacity: 0; transform: scale(0) rotate(360deg); }
+  }
+  
+  .vibrating {
+    animation: machineVibrate 0.1s infinite;
+  }
+  
+  .glowing {
+    animation: glowPulse 0.2s infinite;
+  }
+  
+  .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fbbf24;
+    border-radius: 50%;
+    animation: sparkle 1s ease-out forwards;
+    box-shadow: 0 0 6px #fbbf24;
+  }
+</style>
+
+<script>
+  class LoadingScreen {
+    constructor() {
+      this.machine = document.getElementById('tattoo-machine');
+      this.machineGlow = document.getElementById('machine-glow');
+      this.loadingText = document.getElementById('loading-text');
+      this.tattooedText = document.getElementById('tattooed-text');
+      this.inkTrail = document.getElementById('ink-trail');
+      this.progressBar = document.getElementById('progress-bar');
+      this.progressPercentage = document.getElementById('progress-percentage');
+      this.loadingMessage = document.getElementById('loading-message');
+      this.particlesContainer = document.getElementById('particles-container');
+      
+      this.currentProgress = 0;
+      this.targetProgress = 0;
+      this.isAnimating = false;
+      
+      this.messages = [
+        "Preparando el estudio...",
+        "Cargando máquinas de tatuar...",
+        "Mezclando tintas...",
+        "Ajustando agujas...",
+        "Preparando diseños...",
+        "Calentando motores...",
+        "Sincronizando artistas...",
+        "Finalizando preparativos..."
+      ];
+      
+      this.init();
+    }
+    
+    init() {
+      this.startAnimation();
+      this.simulateLoading();
+    }
+    
+    startAnimation() {
+      this.isAnimating = true;
+      
+      // Start machine vibration
+      this.machine.classList.add('vibrating');
+      this.machineGlow.classList.add('glowing');
+      
+      // Position machine at start of text
+      this.positionMachine(0);
+      
+      // Start tattooing animation
+      this.animateTattooing();
+    }
+    
+    positionMachine(progress) {
+      const textRect = this.loadingText.getBoundingClientRect();
+      const containerRect = this.loadingText.parentElement.getBoundingClientRect();
+      
+      const startX = textRect.left - containerRect.left - 40;
+      const endX = textRect.right - containerRect.left + 20;
+      const currentX = startX + (endX - startX) * progress;
+      
+      const currentY = textRect.top - containerRect.top - 40;
+      
+      this.machine.style.left = `${currentX}px`;
+      this.machine.style.top = `${currentY}px`;
+      
+      // Update ink trail
+      this.inkTrail.style.left = `${currentX + 40}px`;
+      this.inkTrail.style.top = `${currentY + 60}px`;
+      this.inkTrail.style.width = `${(endX - startX) * progress}px`;
+      this.inkTrail.style.opacity = progress > 0 ? '0.8' : '0';
+    }
+    
+    animateTattooing() {
+      const text = "LOADING...";
+      let currentChar = 0;
+      
+      const revealChar = () => {
+        if (currentChar < text.length) {
+          const progress = currentChar / text.length;
+          
+          // Update machine position
+          this.positionMachine(progress);
+          
+          // Reveal character
+          const tattooedSpan = this.tattooedText.querySelector('span');
+          tattooedSpan.style.opacity = '1';
+          tattooedSpan.style.width = `${(currentChar + 1) * (100 / text.length)}%`;
+          tattooedSpan.style.overflow = 'hidden';
+          tattooedSpan.style.whiteSpace = 'nowrap';
+          
+          // Create sparks effect
+          this.createSparks(currentChar / text.length);
+          
+          currentChar++;
+          
+          // Random timing for more realistic tattooing
+          const delay = 100 + Math.random() * 200;
+          setTimeout(revealChar, delay);
+        } else {
+          // Animation complete
+          this.positionMachine(1);
+          setTimeout(() => {
+            this.machine.classList.remove('vibrating');
+            this.machineGlow.classList.remove('glowing');
+          }, 500);
+        }
+      };
+      
+      setTimeout(revealChar, 500);
+    }
+    
+    createSparks(progress) {
+      const machineRect = this.machine.getBoundingClientRect();
+      const containerRect = this.particlesContainer.getBoundingClientRect();
+      
+      for (let i = 0; i < 3; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const x = machineRect.left - containerRect.left + Math.random() * 20;
+        const y = machineRect.bottom - containerRect.top + Math.random() * 10;
+        
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        
+        this.particlesContainer.appendChild(particle);
+        
+        // Remove particle after animation
+        setTimeout(() => {
+          if (particle.parentNode) {
+            particle.parentNode.removeChild(particle);
+          }
+        }, 1000);
+      }
+    }
+    
+    simulateLoading() {
+      let messageIndex = 0;
+      
+      const updateProgress = () => {
+        if (this.currentProgress < 100) {
+          this.targetProgress = Math.min(100, this.targetProgress + Math.random() * 15);
+          
+          // Update message
+          if (this.targetProgress > messageIndex * (100 / this.messages.length)) {
+            this.loadingMessage.textContent = this.messages[messageIndex];
+            messageIndex = Math.min(messageIndex + 1, this.messages.length - 1);
+          }
+          
+          // Smooth progress animation
+          this.animateProgress();
+          
+          setTimeout(updateProgress, 300 + Math.random() * 500);
+        } else {
+          this.completeLoading();
+        }
+      };
+      
+      setTimeout(updateProgress, 1000);
+    }
+    
+    animateProgress() {
+      const animate = () => {
+        if (this.currentProgress < this.targetProgress) {
+          this.currentProgress += 1;
+          this.progressBar.style.width = `${this.currentProgress}%`;
+          this.progressPercentage.textContent = `${Math.round(this.currentProgress)}%`;
+          requestAnimationFrame(animate);
+        }
+      };
+      animate();
+    }
+    
+    completeLoading() {
+      this.loadingMessage.textContent = "¡Listo para tatuar!";
+      
+      // Final machine effects
+      this.createSparks(1);
+      
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        loadingScreen.style.transition = 'opacity 1.5s ease-out, transform 1.5s ease-out';
+        loadingScreen.style.opacity = '0';
+        loadingScreen.style.transform = 'scale(1.05)';
+        
+        // Add body loaded class
+        document.body.classList.add('loaded');
+        
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+          // Trigger any post-loading callbacks
+          window.dispatchEvent(new CustomEvent('loadingComplete'));
+        }, 1500);
+      }, 1000);
+    }
+  }
+  
+  // Initialize loading screen
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new LoadingScreen();
+    });
+  } else {
+    new LoadingScreen();
+  }
+</script>
