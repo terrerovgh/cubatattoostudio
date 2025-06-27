@@ -16,7 +16,34 @@
     <title>Cuba Tattoo Studio - Arte Corporal Profesional</title>
   </head>
   <body>
-    <slot />
+    <!-- Global Animated Background System -->
+    <div id="global-background" class="fixed inset-0 z-0">
+      <!-- Black & White Image (bottom layer) -->
+      <img 
+        id="global-bg-bw"
+        src="/hero-tattoo-background.jpeg" 
+        alt="Cuba Tattoo Studio Background Black and White" 
+        class="w-full h-full object-cover scale-110 absolute inset-0"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <!-- Color Image (top layer) -->
+      <img 
+        id="global-bg-color"
+        src="/hero-tattoo-background-color.jpeg" 
+        alt="Cuba Tattoo Studio Background Color" 
+        class="w-full h-full object-cover scale-110 absolute inset-0 opacity-0"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-black/40 z-10"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10"></div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="relative z-20">
+      <slot />
+    </div>
     
     <script>
       import { gsap } from "gsap"
@@ -26,6 +53,7 @@
       gsap.registerPlugin(ScrollTrigger)
       
       let isInitialized = false
+      let globalBackgroundTl = null
       
       function initStudio() {
         try {
@@ -37,6 +65,9 @@
             autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
             ignoreMobileResize: true
           })
+          
+          // Inicializar sistema de fondo global
+          initGlobalBackground()
           
           // Navegación suave
           setupSmoothNavigation()
@@ -53,6 +84,109 @@
         } catch (error) {
           console.error("Error initializing:", error)
         }
+      }
+
+      function initGlobalBackground() {
+        const bgElements = {
+          bwImage: document.querySelector('#global-bg-bw'),
+          colorImage: document.querySelector('#global-bg-color'),
+          container: document.querySelector('#global-background')
+        }
+
+        if (!bgElements.bwImage || !bgElements.colorImage) {
+          console.warn("Global background elements not found")
+          return
+        }
+
+        // === ANIMACIÓN CONTINUA DE ZOOM (12 segundos por ciclo) ===
+        gsap.to([bgElements.bwImage, bgElements.colorImage], {
+          scale: 1.2,
+          duration: 6,
+          ease: "power2.inOut",
+          yoyo: true,
+          repeat: -1,
+          repeatDelay: 0
+        })
+
+        // === TRANSICIÓN CONTINUA DE COLOR BASADA EN SCROLL ===
+        
+        // Dividir la página en secciones para diferentes efectos
+        const sections = document.querySelectorAll('section, main, div[id]')
+        
+        sections.forEach((section, index) => {
+          const isEven = index % 2 === 0
+          
+          ScrollTrigger.create({
+            trigger: section,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => {
+              // Alternar entre B&N y color basado en la sección
+              gsap.to(bgElements.colorImage, {
+                opacity: isEven ? 1 : 0,
+                duration: 2,
+                ease: "power2.inOut"
+              })
+              
+              // Agregar un sutil cambio de filtro para más dinamismo
+              gsap.to(bgElements.bwImage, {
+                filter: isEven ? "contrast(1) brightness(1)" : "contrast(1.1) brightness(0.95)",
+                duration: 2,
+                ease: "power2.inOut"
+              })
+            },
+            onEnterBack: () => {
+              // Mismo efecto al volver hacia arriba
+              gsap.to(bgElements.colorImage, {
+                opacity: isEven ? 1 : 0,
+                duration: 2,
+                ease: "power2.inOut"
+              })
+              
+              gsap.to(bgElements.bwImage, {
+                filter: isEven ? "contrast(1) brightness(1)" : "contrast(1.1) brightness(0.95)",
+                duration: 2,
+                ease: "power2.inOut"
+              })
+            },
+            markers: false
+          })
+        })
+
+        // === PARALLAX SUAVE DURANTE SCROLL ===
+        gsap.to([bgElements.bwImage, bgElements.colorImage], {
+          yPercent: -20,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.5,
+            markers: false
+          }
+        })
+
+        // === ENTRADA INICIAL CINEMATOGRÁFICA ===
+        gsap.fromTo([bgElements.bwImage, bgElements.colorImage], 
+          { scale: 1.15, opacity: 0 },
+          { 
+            scale: 1.1, 
+            opacity: 1,
+            duration: 3, 
+            ease: "power2.out",
+            stagger: 0.2
+          }
+        )
+
+        // Transición inicial de color después de 2 segundos
+        gsap.to(bgElements.colorImage, {
+          opacity: 1,
+          duration: 3,
+          delay: 2,
+          ease: "power2.inOut"
+        })
+
+        console.log("Global background system initialized")
       }
       
       function setupSmoothNavigation() {
@@ -116,7 +250,8 @@
             ease: "power2.out",
             scrollTrigger: {
               trigger: element,
-              start: "top 85%",
+              start: "top 80%",
+              end: "top 20%", // Más tiempo visible en pantalla
               toggleActions: "play none none reverse",
               markers: true // Cambiar a true para debug
             }
@@ -212,7 +347,7 @@
 
   html,
   body {
-    background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+    background: #000000; /* Fallback while images load */
     min-height: 100vh;
     overflow-x: hidden;
     overscroll-behavior: none;
@@ -220,6 +355,71 @@
     margin: 0;
     width: 100%;
     scroll-behavior: smooth;
+  }
+
+  /* Global Background Animation System */
+  #global-background {
+    will-change: transform;
+    contain: layout style paint;
+    pointer-events: none; /* Allow clicks to pass through */
+  }
+
+  #global-bg-bw,
+  #global-bg-color {
+    will-change: transform, opacity, filter;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* Continuous zoom animation base */
+  .zoom-cycle {
+    animation: continuousZoom 12s ease-in-out infinite;
+  }
+
+  @keyframes continuousZoom {
+    0%, 100% { 
+      transform: scale(1.1) translateZ(0); 
+    }
+    50% { 
+      transform: scale(1.2) translateZ(0); 
+    }
+  }
+
+  /* Color transition animation base */
+  .color-cycle {
+    animation: colorTransition 12s ease-in-out infinite;
+  }
+
+  @keyframes colorTransition {
+    0%, 100% { 
+      opacity: 0; 
+    }
+    50% { 
+      opacity: 1; 
+    }
+  }
+
+  /* Scroll-triggered variations */
+  .color-cycle-reverse {
+    animation: colorTransitionReverse 12s ease-in-out infinite;
+  }
+
+  @keyframes colorTransitionReverse {
+    0%, 100% { 
+      opacity: 1; 
+    }
+    50% { 
+      opacity: 0; 
+    }
+  }
+
+  /* Optimize image loading */
+  #global-bg-bw,
+  #global-bg-color {
+    content-visibility: auto;
+    contain-intrinsic-size: 1920px 1080px;
   }
 
   html {

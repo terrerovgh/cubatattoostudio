@@ -2,122 +2,139 @@
 // Cuba Tattoo Studio Hero Section
 ---
 
-<section id="hero-section" class="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
-  <!-- Background Pattern -->
-  <div class="absolute inset-0 opacity-10">
-    <div class="absolute inset-0 bg-gradient-to-br from-amber-400/5 via-transparent to-amber-400/5"></div>
-  </div>
+---
+// Cuba Tattoo Studio Hero Section - Cinematic Experience
+---
 
-  <!-- Main Content -->
-  <div class="relative z-10 flex flex-col min-h-screen">
+<section id="hero-section" class="relative h-screen overflow-hidden">
+  <!-- Main Hero Content (fondo global se maneja en Layout) -->
+  <div class="relative z-20 h-full flex flex-col">
     <!-- Navigation Header -->
-    <header class="flex justify-between items-center p-6 md:p-8">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-amber-400 rounded-full flex items-center justify-center">
+    <header class="flex justify-between items-center p-6 md:p-8 absolute top-0 w-full z-30">
+      <div class="flex items-center space-x-3 opacity-0" id="nav-logo">
+        <div class="w-12 h-12 bg-amber-400 rounded-full flex items-center justify-center">
           <span class="text-black font-bold text-xl">C</span>
         </div>
         <span class="text-white font-bold text-xl tracking-wider">CUBA TATTOO</span>
       </div>
       
       <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center space-x-8">
-        <a href="#gallery" class="text-white hover:text-amber-400 transition-colors font-medium scroll-animate" data-animation="fadeIn" data-delay="0.2">Galería</a>
-        <a href="#services" class="text-white hover:text-amber-400 transition-colors font-medium scroll-animate" data-animation="fadeIn" data-delay="0.3">Servicios</a>
-        <a href="#artists" class="text-white hover:text-amber-400 transition-colors font-medium scroll-animate" data-animation="fadeIn" data-delay="0.4">Artistas</a>
-        <a href="#contact" class="bg-amber-400 text-black px-6 py-2 rounded-full hover:bg-amber-300 transition-colors font-semibold scroll-animate" data-animation="fadeIn" data-delay="0.5">Contacto</a>
+      <nav class="hidden md:flex items-center space-x-6 opacity-0" id="nav-menu">
+        <a href="#gallery" class="text-white/80 hover:text-amber-400 transition-all duration-300 font-medium">Galería</a>
+        <a href="#services" class="text-white/80 hover:text-amber-400 transition-all duration-300 font-medium">Servicios</a>
+        <a href="#artists" class="text-white/80 hover:text-amber-400 transition-all duration-300 font-medium">Artistas</a>
       </nav>
 
       <!-- Mobile Menu Button -->
-      <button class="md:hidden text-white p-2">
+      <button class="md:hidden text-white p-2 opacity-0" id="mobile-menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </header>
 
-    <!-- Hero Content -->
+    <!-- Central Hero Content -->
     <div class="flex-1 flex items-center justify-center px-6 md:px-8">
-      <div class="text-center max-w-4xl mx-auto">
-        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight scroll-animate" data-animation="fadeIn" data-delay="0.1">
-          ARTE EN TU
-          <span class="text-amber-400 block">PIEL</span>
-        </h1>
+      <div class="text-center max-w-5xl mx-auto">
+        <!-- Main Logo/Title -->
+        <div class="mb-8 opacity-0" id="hero-logo">
+          <h1 class="text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-4 tracking-wide">
+            CUBA
+          </h1>
+          <div class="flex items-center justify-center space-x-4">
+            <div class="h-0.5 bg-amber-400 w-16 md:w-24"></div>
+            <h2 class="text-2xl md:text-4xl font-light text-amber-400 tracking-[0.3em]">
+              TATTOO STUDIO
+            </h2>
+            <div class="h-0.5 bg-amber-400 w-16 md:w-24"></div>
+          </div>
+        </div>
         
-        <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed scroll-animate" data-animation="fadeIn" data-delay="0.3">
-          Transforma tus ideas en obras de arte permanentes. Diseños únicos, técnicas profesionales y la mejor experiencia en tatuajes en Cuba.
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center scroll-animate" data-animation="fadeIn" data-delay="0.5">
-          <a href="#contact" class="bg-amber-400 text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-300 transition-all duration-300 hover:scale-105 shadow-lg">
-            Reservar Cita
-          </a>
-          <a href="#gallery" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-black transition-all duration-300 hover:scale-105">
-            Ver Trabajos
-          </a>
+        <!-- Slogan with Elegant Animation -->
+        <div class="opacity-0" id="hero-slogan">
+          <p class="text-xl md:text-2xl lg:text-3xl text-white/90 mb-3 font-light italic">
+            "Donde el arte se encuentra con la piel"
+          </p>
+          <p class="text-lg md:text-xl text-amber-300/80 font-light tracking-wide">
+            Diseños únicos • Técnicas profesionales • Experiencia inigualable
+          </p>
         </div>
 
-        <!-- Features -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 scroll-animate" data-animation="fadeIn" data-delay="0.7">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-amber-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-              </svg>
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 opacity-0" id="scroll-hint">
+          <div class="flex flex-col items-center text-amber-400/80">
+            <span class="text-sm font-medium mb-3 tracking-wider animate-pulse">DESCUBRE MÁS</span>
+            <div class="w-6 h-10 border-2 border-amber-400/60 rounded-full flex justify-center">
+              <div class="w-1 h-3 bg-amber-400/60 rounded-full mt-2 animate-bounce"></div>
             </div>
-            <h3 class="text-white font-bold text-lg mb-2">Diseños Únicos</h3>
-            <p class="text-gray-400">Cada tatuaje es una obra de arte personalizada</p>
-          </div>
-          
-          <div class="text-center">
-            <div class="w-16 h-16 bg-amber-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-white font-bold text-lg mb-2">Técnicas Profesionales</h3>
-            <p class="text-gray-400">Equipos de última generación y máxima higiene</p>
-          </div>
-          
-          <div class="text-center">
-            <div class="w-16 h-16 bg-amber-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-white font-bold text-lg mb-2">Experiencia Única</h3>
-            <p class="text-gray-400">Atención personalizada en ambiente cómodo</p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Scroll Indicator -->
-    <div class="text-center pb-8 scroll-animate" data-animation="fadeIn" data-delay="1">
-      <div class="inline-flex flex-col items-center text-amber-400">
-        <span class="text-sm font-medium mb-2 tracking-wider">EXPLORA NUESTRO TRABAJO</span>
-        <svg class="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+  <!-- Floating CTA Button (appears on scroll) -->
+  <div id="floating-cta" class="fixed bottom-8 right-8 z-50 opacity-0 transform translate-y-20">
+    <a href="#contact" class="group relative">
+      <div class="bg-amber-400 hover:bg-amber-300 text-black font-bold px-6 py-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-amber-400/25 flex items-center space-x-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
         </svg>
+        <span>Agendar Cita</span>
       </div>
-    </div>
+      <!-- Pulse Animation -->
+      <div class="absolute inset-0 bg-amber-400/30 rounded-full animate-ping"></div>
+    </a>
   </div>
 </section>
 
 <style>
-  /* Custom animations for hero section */
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+  /* Floating CTA Pulse Effect */
+  @keyframes ctaPulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 20px rgba(251, 191, 36, 0);
+    }
   }
 
-  .float-animation {
-    animation: float 3s ease-in-out infinite;
+  #floating-cta .group:hover::before {
+    animation: ctaPulse 1.5s infinite;
   }
 
-  /* Smooth hover transitions */
-  .hover-glow:hover {
-    box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
-    transition: all 0.3s ease;
+  /* Elegant scroll hint animation */
+  @keyframes scrollHint {
+    0%, 100% { opacity: 0.6; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-5px); }
+  }
+
+  #scroll-hint {
+    animation: scrollHint 2s ease-in-out infinite;
+  }
+
+  /* Custom smooth transitions */
+  .smooth-entrance {
+    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Typography improvements */
+  .tracking-luxury {
+    letter-spacing: 0.15em;
+  }
+
+  /* Gradient text effect */
+  .gradient-text {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Hero specific optimizations */
+  #hero-section {
+    contain: layout style paint;
+    transform: translateZ(0);
   }
 </style>
 
@@ -125,111 +142,203 @@
   import { gsap } from "gsap"
   import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-  function initHeroAnimations() {
+  function initCinematicHero() {
     gsap.registerPlugin(ScrollTrigger)
 
-    // Hero entrance animation
-    const heroElements = {
-      logo: document.querySelector('header'),
-      title: document.querySelector('h1'),
-      subtitle: document.querySelector('p'),
-      buttons: document.querySelectorAll('a[href="#contact"], a[href="#gallery"]'),
-      features: document.querySelectorAll('.grid > div'),
-      scrollIndicator: document.querySelector('.inline-flex')
+    // Elementos del hero (sin elementos de fondo)
+    const elements = {
+      navLogo: document.querySelector('#nav-logo'),
+      navMenu: document.querySelector('#nav-menu'),
+      mobileMenu: document.querySelector('#mobile-menu'),
+      heroLogo: document.querySelector('#hero-logo'),
+      heroSlogan: document.querySelector('#hero-slogan'),
+      scrollHint: document.querySelector('#scroll-hint'),
+      floatingCTA: document.querySelector('#floating-cta')
     }
 
-    // Initial states
-    gsap.set([heroElements.logo, heroElements.title, heroElements.subtitle], { 
-      opacity: 0, 
-      y: 30 
-    })
-    gsap.set(heroElements.buttons, { 
-      opacity: 0, 
-      scale: 0.8 
-    })
-    gsap.set(heroElements.features, { 
-      opacity: 0, 
-      y: 50 
-    })
-    gsap.set(heroElements.scrollIndicator, { 
-      opacity: 0 
+    // Verificar que los elementos existen
+    if (!elements.heroLogo) {
+      console.warn("Hero elements not found, skipping animations")
+      return
+    }
+
+    // === ENTRADA CINEMATOGRÁFICA DE CONTENIDO ===
+    
+    // Timeline de entrada de elementos (el fondo se maneja globalmente)
+    const entranceTl = gsap.timeline({ delay: 1 })
+
+    // Navegación aparece suavemente
+    entranceTl.to([elements.navLogo, elements.navMenu, elements.mobileMenu], {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power2.out"
     })
 
-    // Main hero timeline
-    const heroTl = gsap.timeline({ delay: 0.5 })
+    // Logo principal con efecto dramático
+    .fromTo(elements.heroLogo,
+      { opacity: 0, y: 50, scale: 0.9 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1,
+        duration: 1.5,
+        ease: "power3.out"
+      }, "-=0.5"
+    )
 
-    heroTl
-      .to(heroElements.logo, { 
+    // Slogan con efecto elegante
+    .fromTo(elements.heroSlogan,
+      { opacity: 0, y: 30 },
+      { 
         opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: "power2.out" 
-      })
-      .to(heroElements.title, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 1, 
-        ease: "power2.out" 
-      }, "-=0.4")
-      .to(heroElements.subtitle, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        ease: "power2.out" 
-      }, "-=0.6")
-      .to(heroElements.buttons, { 
-        opacity: 1, 
-        scale: 1, 
-        duration: 0.6, 
-        stagger: 0.1, 
-        ease: "back.out(1.7)" 
-      }, "-=0.4")
-      .to(heroElements.features, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8, 
-        stagger: 0.2, 
-        ease: "power2.out" 
-      }, "-=0.2")
-      .to(heroElements.scrollIndicator, { 
-        opacity: 1, 
-        duration: 0.5 
-      }, "-=0.5")
+        y: 0,
+        duration: 1.2,
+        ease: "power2.out"
+      }, "-=0.8"
+    )
 
-    // Parallax effect for hero background
-    gsap.to("#hero-section", {
-      yPercent: -50,
-      ease: "none",
+    // Scroll hint con retraso
+    .to(elements.scrollHint, {
+      opacity: 1,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.3")
+
+    // === ANIMACIONES DE SCROLL ===
+
+    // Fade out de elementos del hero
+    gsap.to([elements.heroLogo, elements.heroSlogan], {
+      opacity: 0,
+      y: -50,
+      ease: "power2.in",
       scrollTrigger: {
         trigger: "#hero-section",
-        start: "top top",
-        end: "200% top",
-        scrub: true,
+        start: "20% top",
+        end: "80% top",
+        scrub: 1,
         markers: false
       }
     })
 
-    // Button hover animations
-    const buttons = document.querySelectorAll('a[href="#contact"], a[href="#gallery"]')
-    buttons.forEach(button => {
-      button.addEventListener('mouseenter', () => {
-        gsap.to(button, { scale: 1.05, duration: 0.3, ease: "power2.out" })
+    // Navegación se vuelve más opaca al hacer scroll
+    gsap.to([elements.navLogo, elements.navMenu], {
+      opacity: 0.8,
+      backdropFilter: "blur(10px)",
+      backgroundColor: "rgba(0, 0, 0, 0.3)",
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: "#hero-section",
+        start: "50% top",
+        end: "bottom top",
+        scrub: 1,
+        markers: false
+      }
+    })
+
+    // === BOTÓN FLOTANTE CTA ===
+    
+    // Aparece al empezar a hacer scroll
+    ScrollTrigger.create({
+      trigger: "#hero-section",
+      start: "30% top",
+      end: "#contact",
+      onEnter: () => {
+        gsap.to(elements.floatingCTA, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        })
+      },
+      onLeave: () => {
+        gsap.to(elements.floatingCTA, {
+          opacity: 0,
+          y: 20,
+          duration: 0.5,
+          ease: "power2.in"
+        })
+      },
+      onEnterBack: () => {
+        gsap.to(elements.floatingCTA, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        })
+      },
+      onLeaveBack: () => {
+        gsap.to(elements.floatingCTA, {
+          opacity: 0,
+          y: 20,
+          duration: 0.5,
+          ease: "power2.in"
+        })
+      },
+      markers: false
+    })
+
+    // === INTERACCIONES ===
+
+    // Hover effects para el CTA flotante
+    if (elements.floatingCTA) {
+      elements.floatingCTA.addEventListener('mouseenter', () => {
+        const ctaButton = elements.floatingCTA?.querySelector('div')
+        if (ctaButton) {
+          gsap.to(ctaButton, {
+            scale: 1.05,
+            duration: 0.3,
+            ease: "power2.out"
+          })
+        }
       })
-      button.addEventListener('mouseleave', () => {
-        gsap.to(button, { scale: 1, duration: 0.3, ease: "power2.out" })
+
+      elements.floatingCTA.addEventListener('mouseleave', () => {
+        const ctaButton = elements.floatingCTA?.querySelector('div')
+        if (ctaButton) {
+          gsap.to(ctaButton, {
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out"
+          })
+        }
+      })
+    }
+
+    // Smooth scroll para enlaces internos
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault()
+        const href = link.getAttribute('href')
+        if (href) {
+          const targetId = href.substring(1)
+          const targetElement = document.getElementById(targetId)
+          
+          if (targetElement) {
+            gsap.to(window, {
+              duration: 1.5,
+              scrollTo: {
+                y: targetElement,
+                offsetY: 80
+              },
+              ease: "power2.inOut"
+            })
+          }
+        }
       })
     })
 
-    console.log("Hero animations initialized for Cuba Tattoo Studio")
+    console.log("Cinematic Hero initialized for Cuba Tattoo Studio")
   }
 
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHeroAnimations)
+    document.addEventListener('DOMContentLoaded', initCinematicHero)
   } else {
-    initHeroAnimations()
+    initCinematicHero()
   }
 
   // Re-initialize for Astro navigation
-  document.addEventListener('astro:page-load', initHeroAnimations)
+  document.addEventListener('astro:page-load', initCinematicHero)
 </script>
