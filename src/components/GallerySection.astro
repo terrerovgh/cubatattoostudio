@@ -1,0 +1,197 @@
+---
+// Datos de la galería (en un proyecto real, esto podría venir de un CMS o API)
+const galleryItems = [
+  { id: 1, category: 'traditional', title: 'Rosa Tradicional', image: 'https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje tradicional de rosa' },
+  { id: 2, category: 'realistic', title: 'Retrato Realista', image: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje realista de retrato' },
+  { id: 3, category: 'geometric', title: 'Mandala', image: 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje geométrico mandala' },
+  { id: 4, category: 'color', title: 'Acuarela', image: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje de colores acuarela' },
+  { id: 5, category: 'traditional', title: 'Ancla Marina', image: 'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje tradicional ancla' },
+  { id: 6, category: 'realistic', title: 'Animal Realista', image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje realista de animal' },
+  { id: 7, category: 'geometric', title: 'Lineas Abstractas', image: 'https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje geométrico abstracto' },
+  { id: 8, category: 'color', title: 'Flores Coloridas', image: 'https://images.unsplash.com/photo-1617394737943-0671da375709?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje de flores a color' },
+  { id: 9, category: 'traditional', title: 'Calavera Clásica', image: 'https://images.unsplash.com/photo-1578868211175-9b8fe6a2f512?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje tradicional calavera' },
+  { id: 10, category: 'realistic', title: 'Ojo Realista', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje realista de ojo' },
+  { id: 11, category: 'geometric', title: 'Patrón Tribal', image: 'https://images.unsplash.com/photo-1566228015668-4c45dbc4e2f5?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje geométrico tribal' },
+  { id: 12, category: 'color', title: 'Mariposa Colorida', image: 'https://images.unsplash.com/photo-1578761499019-d2123b6f89b7?w=400&h=400&fit=crop&crop=center', alt: 'Tatuaje de mariposa a color' }
+]
+---
+
+<section id="gallery" class="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-20 px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 scroll-animate" data-animation="fadeIn">
+      <h2 class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-wider">
+        GALERÍA
+      </h2>
+      <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        Explora nuestra colección de trabajos realizados. Cada tatuaje cuenta una historia única.
+      </p>
+    </div>
+
+    <!-- Filtros de Galería -->
+    <div class="flex flex-wrap justify-center gap-4 mb-12 scroll-animate" data-animation="fadeIn" data-delay="0.2">
+      <button class="gallery-filter active bg-amber-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-amber-300 transition-colors duration-300" data-filter="all">
+        Todos
+      </button>
+      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="traditional">
+        Tradicional
+      </button>
+      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="realistic">
+        Realista
+      </button>
+      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="geometric">
+        Geométrico
+      </button>
+      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="color">
+        Color
+      </button>
+    </div>
+
+    <!-- Grid de Galería -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Placeholder para imágenes de tatuajes -->
+      <div class="gallery-item traditional group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="0.3">
+        <div class="w-full h-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-black">Tradicional 1</span>
+        </div>
+      </div>
+
+      <div class="gallery-item realistic group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="0.4">
+        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Realista 1</span>
+        </div>
+      </div>
+
+      <div class="gallery-item geometric group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="0.5">
+        <div class="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Geométrico 1</span>
+        </div>
+      </div>
+
+      <div class="gallery-item color group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="0.6">
+        <div class="w-full h-full bg-gradient-to-br from-red-400 to-pink-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Color 1</span>
+        </div>
+      </div>
+
+      <div class="gallery-item traditional group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="0.7">
+        <div class="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Tradicional 2</span>
+        </div>
+      </div>
+
+      <div class="gallery-item realistic group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="0.8">
+        <div class="w-full h-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Realista 2</span>
+        </div>
+      </div>
+
+      <div class="gallery-item geometric group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="0.9">
+        <div class="w-full h-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Geométrico 2</span>
+        </div>
+      </div>
+
+      <div class="gallery-item color group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="1.0">
+        <div class="w-full h-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Color 2</span>
+        </div>
+      </div>
+
+      <!-- Más elementos de galería -->
+      <div class="gallery-item traditional group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="1.1">
+        <div class="w-full h-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-black">Tradicional 3</span>
+        </div>
+      </div>
+
+      <div class="gallery-item realistic group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="1.2">
+        <div class="w-full h-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Realista 3</span>
+        </div>
+      </div>
+
+      <div class="gallery-item geometric group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="1.3">
+        <div class="w-full h-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-white">Geométrico 3</span>
+        </div>
+      </div>
+
+      <div class="gallery-item color group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate" data-animation="scaleIn" data-delay="1.4">
+        <div class="w-full h-full bg-gradient-to-br from-lime-400 to-lime-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <span class="text-2xl font-bold text-black">Color 3</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-16 scroll-animate" data-animation="fadeIn" data-delay="1.5">
+      <button class="bg-amber-400 text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-300 transition-colors duration-300 hover:scale-105 transform">
+        Ver Más Trabajos
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap"
+  import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+  // Solo funcionalidad de filtro de galería
+  function initGalleryFilters() {
+    const filterButtons = document.querySelectorAll('.gallery-filter')
+    const galleryItems = document.querySelectorAll('.gallery-item')
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remover clase active de todos los botones
+        filterButtons.forEach(btn => {
+          btn.classList.remove('active', 'bg-amber-400', 'text-black')
+          btn.classList.add('bg-gray-700', 'text-white')
+        })
+
+        // Agregar clase active al botón clickeado
+        button.classList.add('active', 'bg-amber-400', 'text-black')
+        button.classList.remove('bg-gray-700', 'text-white')
+
+        const filterValue = button.getAttribute('data-filter') || 'all'
+
+        // Animar la salida de elementos no coincidentes
+        galleryItems.forEach(item => {
+          const htmlItem = item as HTMLElement
+          if (filterValue === 'all' || item.classList.contains(filterValue)) {
+            gsap.to(item, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.4,
+              ease: "power2.out",
+              onComplete: () => {
+                htmlItem.style.display = 'block'
+              }
+            })
+          } else {
+            gsap.to(item, {
+              opacity: 0,
+              scale: 0.8,
+              duration: 0.3,
+              ease: "power2.in",
+              onComplete: () => {
+                htmlItem.style.display = 'none'
+                ScrollTrigger.refresh()
+              }
+            })
+          }
+        })
+      })
+    })
+
+    console.log("Gallery filters initialized")
+  }
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGalleryFilters)
+  } else {
+    initGalleryFilters()
+  }
+
+  document.addEventListener('astro:page-load', initGalleryFilters)
+</script>

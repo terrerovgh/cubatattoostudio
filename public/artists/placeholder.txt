@@ -1,0 +1,27 @@
+# Directorio de Artistas
+
+Este directorio debe contener las imágenes y videos de cada artista organizados en subcarpetas:
+
+- /artists/david/
+  - portrait-realistic-01.webp (imagen de perfil)
+  - realistic-work-01.jpg
+  - realistic-work-02.jpg
+  - tattoo-process-01.mov (video)
+
+- /artists/nina/
+  - portrait-colorful-01.png (imagen de perfil)
+  - colorful-work-01.jpg
+  - colorful-work-02.jpg  
+  - tattoo-process-01.mp4 (video)
+
+- /artists/karli/
+  - portrait-geometric-01.jpg (imagen de perfil)
+  - geometric-work-01.jpg
+  - geometric-work-02.jpg
+  - tattoo-process-01.mov (video)
+
+Formatos recomendados:
+- Imágenes: .webp, .jpg, .png
+- Videos: .mp4 (preferido), .mov
+
+Asegúrate de que los nombres de archivo coincidan exactamente con los definidos en los archivos Markdown de contenido.
