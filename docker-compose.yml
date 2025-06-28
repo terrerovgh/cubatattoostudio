@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
+    networks:
+      - cuba-tattoo-net
+
+networks:
+  cuba-tattoo-net:
+    driver: bridge
+
+volumes:
+  node_modules:

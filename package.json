@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.9",
     "astro": "^5.9.2",
     "gsap": "^3.13.0",
+    "locomotive-scroll": "^4.1.4",
     "tailwindcss": "^4.1.9"
   }
 }

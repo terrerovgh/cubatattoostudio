@@ -1,0 +1,162 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  priority?: boolean;
+  sizes?: string;
+  quality?: number;
+  format?: 'webp' | 'avif' | 'jpg' | 'png';
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = '',
+  loading = 'lazy',
+  priority = false,
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  quality = 80,
+  format = 'webp',
+  ...rest
+} = Astro.props;
+
+// Generar diferentes tamaños para responsive images
+const generateSrcSet = (baseSrc: string, baseWidth: number) => {
+  const sizes = [320, 640, 768, 1024, 1280, 1920];
+  return sizes
+    .filter(size => size <= baseWidth * 2) // No generar imágenes más grandes que 2x el original
+    .map(size => `${baseSrc}?w=${size}&q=${quality}&f=${format} ${size}w`)
+    .join(', ');
+};
+
+// Detectar si es una URL externa o archivo local
+const isExternal = src.startsWith('http') || src.startsWith('//');
+const optimizedSrc = isExternal ? src : `${src}?w=${width}&q=${quality}&f=${format}`;
+const srcSet = width && !isExternal ? generateSrcSet(src, width) : undefined;
+
+// Clases para lazy loading y animaciones
+const baseClasses = 'transition-all duration-300 ease-in-out';
+const loadingClasses = loading === 'lazy' ? 'opacity-0 scale-95' : '';
+const classes = `${baseClasses} ${loadingClasses} ${className}`;
+---
+
+<picture class="block">
+  <!-- WebP/AVIF para navegadores compatibles -->
+  {!isExternal && (
+    <>
+      {format === 'avif' && (
+        <source
+          srcset={srcSet || `${src}?f=avif&w=${width}&q=${quality}`}
+          sizes={sizes}
+          type="image/avif"
+        />
+      )}
+      <source
+        srcset={srcSet || `${src}?f=webp&w=${width}&q=${quality}`}
+        sizes={sizes}
+        type="image/webp"
+      />
+    </>
+  )}
+  
+  <!-- Imagen fallback -->
+  <img
+    src={optimizedSrc}
+    srcset={srcSet}
+    sizes={sizes}
+    {alt}
+    {width}
+    {height}
+    loading={priority ? 'eager' : loading}
+    decoding="async"
+    class={classes}
+    data-optimized-image
+    {...rest}
+  />
+</picture>
+
+<script is:inline>
+  // Sistema de lazy loading personalizado con IntersectionObserver
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          
+          // Aplicar animación de entrada
+          img.classList.remove('opacity-0', 'scale-95');
+          img.classList.add('opacity-100', 'scale-100');
+          
+          // Dejar de observar esta imagen
+          observer.unobserve(img);
+        }
+      });
+    }, {
+      rootMargin: '50px 0px',
+      threshold: 0.1
+    });
+
+    // Observar todas las imágenes optimizadas
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = document.querySelectorAll('[data-optimized-image]');
+      images.forEach(img => {
+        if (img.loading === 'lazy') {
+          imageObserver.observe(img);
+        } else {
+          // Para imágenes eager, aplicar animación inmediatamente
+          img.classList.add('opacity-100', 'scale-100');
+        }
+      });
+    });
+  } else {
+    // Fallback para navegadores sin IntersectionObserver
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = document.querySelectorAll('[data-optimized-image]');
+      images.forEach(img => {
+        img.classList.add('opacity-100', 'scale-100');
+      });
+    });
+  }
+</script>
+
+<style>
+  /* Placeholder mientras carga */
+  img[data-optimized-image] {
+    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 1.5s infinite;
+  }
+  
+  img[data-optimized-image].opacity-100 {
+    background: none;
+    animation: none;
+  }
+  
+  @keyframes loading-shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  /* Mejoras de performance */
+  picture {
+    contain: layout style paint;
+  }
+  
+  img[data-optimized-image] {
+    will-change: opacity, transform;
+  }
+  
+  img[data-optimized-image].opacity-100 {
+    will-change: auto;
+  }
+</style>
