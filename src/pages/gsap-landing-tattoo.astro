@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ServicesSection from '../components/ServicesSection.astro';
+import GallerySection from '../components/GallerySection.astro';
+import ArtistsSection from '../components/ArtistsSection.astro';
+import ContactSection from '../components/ContactSection.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Cuba Tattoo Studio - Arte Corporal Profesional con GSAP">
+  <main>
+    <!-- Hero Section con animaciones completas -->
+    <HeroSection />
+    
+    <!-- Services Section -->
+    <ServicesSection />
+    
+    <!-- Gallery Section -->
+    <GallerySection />
+    
+    <!-- Artists Section -->
+    <ArtistsSection />
+    
+    <!-- Contact Section -->
+    <ContactSection />
+    
+    <!-- Footer -->
+    <Footer />
+  </main>
+  
+  <!-- Cargar el script específico para esta página -->
+  <script src="/gsap-tattoo.js" is:inline></script>
+  
+  <script is:inline>
+    // Script inline simple para verificación
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('GSAP Landing Tattoo page loaded');
+      
+      // Verificar que el sistema global esté funcionando (sin TypeScript)
+      setTimeout(function() {
+        var globalBg = document.getElementById('global-background');
+        var bgBw = document.getElementById('global-bg-bw');
+        var bgColor = document.getElementById('global-bg-color');
+        
+        if (globalBg && bgBw && bgColor) {
+          console.log('✅ Global background system active');
+        } else {
+          console.warn('⚠️ Global background elements missing');
+        }
+      }, 1000);
+    });
+  </script>
+</Layout>
+
+<style>
+  /* Estilos específicos para la landing page */
+  main {
+    position: relative;
+    z-index: 20;
+  }
+  
+  /* Asegurar que todas las secciones tengan altura mínima para el scroll */
+  section {
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  /* Optimizaciones para el performance de las animaciones */
+  * {
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+</style>

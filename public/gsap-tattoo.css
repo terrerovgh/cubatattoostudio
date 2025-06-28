@@ -1,0 +1,140 @@
+/* 
+ * Cuba Tattoo Studio - GSAP Landing CSS
+ * Estilos específicos para la landing page con animaciones GSAP
+ */
+
+/* === VARIABLES CSS === */
+:root {
+  --primary-gold: #fbbf24;
+  --primary-gold-light: #fcd34d;
+  --primary-gold-dark: #f59e0b;
+  --text-white: #ffffff;
+  --text-gray-light: rgba(255, 255, 255, 0.8);
+  --background-dark: #000000;
+  --background-overlay: rgba(0, 0, 0, 0.4);
+}
+
+/* === OPTIMIZACIONES PARA FONDOS ANIMADOS === */
+#global-background {
+  /* Performance optimizations for animated backgrounds */
+  contain: layout style paint;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+#global-bg-bw,
+#global-bg-color {
+  /* Smooth image rendering for animations */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  will-change: transform, opacity, filter;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* === EFECTOS ESPECÍFICOS DE TRANSICIÓN === */
+.background-transition {
+  transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Color overlay effects for different sections */
+.section-overlay-warm {
+  background: linear-gradient(
+    45deg,
+    rgba(251, 191, 36, 0.1) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+.section-overlay-cool {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+.section-overlay-dark {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+/* === ANIMACIONES ESPECÍFICAS PARA ELEMENTOS === */
+.hero-title {
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+  backface-visibility: hidden;
+}
+
+.hero-subtitle {
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+}
+
+/* Efecto de resplandor para elementos importantes */
+.glow-effect {
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));
+}
+
+.glow-effect:hover {
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.8));
+  transition: filter 0.3s ease;
+}
+
+/* === RESPONSIVE OPTIMIZATIONS === */
+@media (max-width: 768px) {
+  #global-bg-bw,
+  #global-bg-color {
+    /* Menor escala en móviles para mejor performance */
+    transform: scale(1.05) translateZ(0);
+  }
+}
+
+/* === STATES PARA DEBUGGING === */
+.debug-mode #global-background {
+  border: 2px solid var(--primary-gold);
+}
+
+.debug-mode #global-bg-bw {
+  border: 1px solid red;
+}
+
+.debug-mode #global-bg-color {
+  border: 1px solid blue;
+}
+
+/* === LOADING STATES === */
+.background-loading {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.background-loaded {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 2s ease-out, transform 2s ease-out;
+}
+
+/* === SCROLL INDICATORS === */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-white);
+  opacity: 0.8;
+  animation: bounce-fade 2s ease-in-out infinite;
+}
+
+@keyframes bounce-fade {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+    opacity: 1;
+  }
+}
