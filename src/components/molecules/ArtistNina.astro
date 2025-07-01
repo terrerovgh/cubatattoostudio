@@ -1,7 +1,7 @@
 ---
-import ImageOptimized from './ImageOptimized.astro';
-import Button from './Button.astro';
-import Heading from './Heading.astro';
+import ImageOptimized from '../atoms/ImageOptimized.astro';
+import Button from '../atoms/Button.astro';
+import Heading from '../atoms/Heading.astro';
 
 interface Props {
   class?: string;
@@ -17,8 +17,8 @@ const { class: className = '' } = Astro.props;
   <!-- Artist Image -->
   <div class="relative h-96 md:h-[500px] overflow-hidden">
     <ImageOptimized
-      src="/artists/karli/artist-karli.jpg"
-      alt="Karli - Especialista en Tatuajes Geométricos y Minimalistas"
+      src="/artists/nina/artist-nina.jpg"
+      alt="Nina - Especialista en Tatuajes Tradicionales y Neo-Tradicionales"
       width={400}
       height={500}
       class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
@@ -30,49 +30,49 @@ const { class: className = '' } = Astro.props;
   <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-20">
     <!-- Artist Name -->
     <Heading level={3} size="2xl" variant="primary" class="mb-2">
-      Karli
+      Nina
     </Heading>
     
     <!-- Specialty -->
     <p class="text-amber-400 font-semibold text-lg mb-3">
-      Geométrico & Minimalista
+      Tradicional & Neo-Tradicional
     </p>
     
     <!-- Description -->
     <p class="text-gray-300 text-sm md:text-base mb-4 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
-      Especialista en diseños geométricos y minimalistas con 5 años de experiencia. 
-      Karli crea composiciones precisas y elegantes que combinan matemática y arte. 
-      Experta en líneas limpias, patrones complejos y diseños contemporáneos que perduran en el tiempo.
+      Artista versátil con 6 años de experiencia especializada en estilos tradicionales y neo-tradicionales. 
+      Nina combina técnicas clásicas con toques modernos, creando diseños únicos y vibrantes. 
+      Experta en líneas sólidas, colores brillantes y composiciones que destacan.
     </p>
     
     <!-- Specialties List -->
     <div class="flex flex-wrap gap-2 mb-4">
       <span class="px-3 py-1 bg-amber-400/10 text-amber-400 text-xs rounded-full border border-amber-400/20">
-        Geométrico
+        Tradicional
       </span>
       <span class="px-3 py-1 bg-amber-400/10 text-amber-400 text-xs rounded-full border border-amber-400/20">
-        Minimalista
+        Neo-Tradicional
       </span>
       <span class="px-3 py-1 bg-amber-400/10 text-amber-400 text-xs rounded-full border border-amber-400/20">
-        Líneas Finas
+        Color
       </span>
       <span class="px-3 py-1 bg-amber-400/10 text-amber-400 text-xs rounded-full border border-amber-400/20">
-        Contemporáneo
+        Ilustrativo
       </span>
     </div>
     
     <!-- Stats -->
     <div class="grid grid-cols-3 gap-4 mb-6 text-center">
       <div>
-        <div class="text-amber-400 font-bold text-lg">5+</div>
+        <div class="text-amber-400 font-bold text-lg">6+</div>
         <div class="text-gray-400 text-xs">Años</div>
       </div>
       <div>
-        <div class="text-amber-400 font-bold text-lg">280+</div>
+        <div class="text-amber-400 font-bold text-lg">350+</div>
         <div class="text-gray-400 text-xs">Tatuajes</div>
       </div>
       <div>
-        <div class="text-amber-400 font-bold text-lg">★ 4.9</div>
+        <div class="text-amber-400 font-bold text-lg">★ 4.8</div>
         <div class="text-gray-400 text-xs">Rating</div>
       </div>
     </div>

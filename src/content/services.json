@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Tatuajes Tradicionales",
+    "description": "Diseños clásicos y atemporales con técnicas tradicionales.",
+    "icon": "/gallery/traditional/tattoo-traditional-1.jpg"
+  },
+  {
+    "title": "Tatuajes Realistas",
+    "description": "Retratos y diseños hiperrealistas de alta precisión.",
+    "icon": "/gallery/realistic/tattoo-realistic-1.jpg"
+  },
+  {
+    "title": "Tatuajes Geométricos",
+    "description": "Patrones geométricos perfectos combinando arte y matemática.",
+    "icon": "/gallery/geometric/tattoo-geometric-1.jpg"
+  }
+]
