@@ -1,0 +1,209 @@
+{
+  "common": {
+    "navigation": {
+      "home": "Home",
+      "gallery": "Gallery",
+      "services": "Services",
+      "artists": "Artists",
+      "contact": "Contact"
+    },
+    "buttons": {
+      "book_appointment": "Book Appointment",
+      "view_portfolio": "View Portfolio",
+      "learn_more": "Learn More",
+      "send_message": "Send Message",
+      "get_started": "Get Started",
+      "contact_us": "Contact Us",
+      "discover_more": "Discover More",
+      "schedule_consultation": "Schedule Consultation",
+      "view_work": "View Work"
+    },
+    "contact": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Hours",
+      "social_media": "Follow Us on Social Media"
+    },
+    "services": {
+      "traditional": "Traditional Tattoos",
+      "realistic": "Realistic Tattoos",
+      "geometric": "Geometric Tattoos",
+      "color": "Color Tattoos",
+      "coverup": "Cover-ups",
+      "consultation": "Design Consultation"
+    }
+  },
+  "pages": {
+    "home": {
+      "title": "Cuba Tattoo Studio - Professional Body Art",
+      "meta": {
+        "description": "Cuba Tattoo Studio - Professional body art in Cuba. Unique designs, advanced techniques and the best tattoo experience.",
+        "keywords": "tattoos, tattoo, Cuba, body art, unique designs, tattoo studio"
+      },
+      "hero": {
+        "title": "CUBA",
+        "subtitle": "TATTOO STUDIO",
+        "slogan": "Where art meets skin",
+        "description": "Unique designs • Professional techniques • Unmatched experience",
+        "cta": "Book Now"
+      },
+      "artists": {
+        "title": "OUR ARTISTS",
+        "subtitle": "Meet the talented artists who bring your ideas to life. Each with their unique style and years of experience.",
+        "cta_title": "Ready to work with us?",
+        "cta_description": "Our artists are ready to turn your vision into reality. Schedule a consultation and discover which artist is perfect for your next tattoo.",
+        "cta_button": "Meet Our Team"
+      },
+      "services": {
+        "title": "OUR SERVICES",
+        "subtitle": "We offer a wide range of professional tattoo services with the highest standards of quality and safety.",
+        "traditional": {
+          "title": "Traditional Tattoos",
+          "description": "Classic and timeless designs with traditional techniques perfected over the years."
+        },
+        "realistic": {
+          "title": "Realistic Tattoos",
+          "description": "Portraits and hyperrealistic designs that capture every detail with photographic precision."
+        },
+        "geometric": {
+          "title": "Geometric Tattoos",
+          "description": "Perfect geometric patterns and shapes that combine modern art with mathematical precision."
+        },
+        "color": {
+          "title": "Color Tattoos",
+          "description": "Vibrant and colorful designs that bring your skin to life with the highest quality pigments."
+        },
+        "coverup": {
+          "title": "Cover-ups",
+          "description": "We transform old tattoos into new works of art with specialized cover-up techniques."
+        },
+        "consultation": {
+          "title": "Design Consultation",
+          "description": "We work with you to create the perfect design that captures your unique vision and personality."
+        }
+      },
+      "gallery": {
+        "title": "GALLERY",
+        "subtitle": "Explore our collection of completed works. Each tattoo tells a unique story.",
+        "filters": {
+          "all": "All",
+          "traditional": "Traditional",
+          "realistic": "Realistic",
+          "geometric": "Geometric",
+          "color": "Color"
+        }
+      },
+      "contact": {
+        "title": "CONTACT",
+        "subtitle": "Have an idea for your next tattoo? Contact us and let's make your vision a reality.",
+        "info": {
+          "title": "Contact Information",
+          "address": {
+            "title": "Address",
+            "line1": "Calle 23 #456, Vedado",
+            "line2": "Havana, Cuba 10400"
+          },
+          "phone": {
+            "title": "Phone",
+            "line1": "+53 7 832-1234",
+            "line2": "+53 5 234-5678 (WhatsApp)"
+          },
+          "email": {
+            "title": "Email",
+            "line1": "info@cubatattoostudio.com",
+            "line2": "appointments@cubatattoostudio.com"
+          },
+          "hours": {
+            "title": "Hours",
+            "weekdays": "Mon - Fri: 10:00 AM - 8:00 PM",
+            "saturday": "Saturday: 10:00 AM - 6:00 PM",
+            "sunday": "Sunday: Closed"
+          }
+        },
+        "form": {
+          "title": "Send us a Message",
+          "fields": {
+            "name": "Name",
+            "email": "Email",
+            "phone": "Phone",
+            "service": "Service Type",
+            "message": "Message"
+          },
+          "placeholders": {
+            "name": "Your name",
+            "email": "your@email.com",
+            "phone": "+53 5 234-5678",
+            "message": "Tell us about your tattoo idea..."
+          },
+          "service_options": {
+            "select": "Select a service",
+            "consultation": "Design Consultation",
+            "traditional": "Traditional Tattoo",
+            "realistic": "Realistic Tattoo",
+            "geometric": "Geometric Tattoo",
+            "color": "Color Tattoo",
+            "coverup": "Cover-up",
+            "other": "Other"
+          },
+          "submit": "Send Message",
+          "sending": "Sending...",
+          "sent": "Message Sent!"
+        }
+      },
+      "footer": {
+        "description": "The art of tattooing in the heart of Cuba. We create unique experiences that last a lifetime, combining Cuban tradition with world-class modern techniques.",
+        "quick_links": "Quick Links",
+        "links": {
+          "gallery": "Gallery",
+          "services": "Services", 
+          "artists": "Artists",
+          "contact": "Contact",
+          "aftercare": "Aftercare",
+          "pricing": "Pricing"
+        },
+        "legal": {
+          "privacy": "Privacy Policy",
+          "terms": "Terms of Service",
+          "cookies": "Cookie Policy"
+        },
+        "copyright": "© 2025 Cuba Tattoo Studio. All rights reserved."
+      }
+    },
+    "artists": {
+      "david": {
+        "name": "David",
+        "specialty": "Realism Specialist",
+        "description": "Over 8 years of experience in realistic tattoos and portraits. David masters shading and detail techniques that bring each design to life. Specialized in portraits, animals, and still life with exceptional detail.",
+        "specialties": ["Portraits", "Realism", "Animals", "Still Life"],
+        "stats": {
+          "years": "Years",
+          "tattoos": "Tattoos",
+          "rating": "Rating"
+        }
+      },
+      "nina": {
+        "name": "Nina",
+        "specialty": "Traditional & Neo-Traditional",
+        "description": "Versatile artist with 6 years of experience specialized in traditional and neo-traditional styles. Nina combines classic techniques with modern touches, creating unique and vibrant designs. Expert in solid lines, bright colors, and standout compositions.",
+        "specialties": ["Traditional", "Neo-Traditional", "Color", "Illustrative"],
+        "stats": {
+          "years": "Years",
+          "tattoos": "Tattoos",
+          "rating": "Rating"
+        }
+      },
+      "karli": {
+        "name": "Karli",
+        "specialty": "Geometric & Minimalist",
+        "description": "Specialist in geometric and minimalist designs with 5 years of experience. Karli creates precise and elegant compositions that combine mathematics and art. Expert in clean lines, complex patterns, and contemporary designs that stand the test of time.",
+        "specialties": ["Geometric", "Minimalist", "Fine Lines", "Contemporary"],
+        "stats": {
+          "years": "Years",
+          "tattoos": "Tattoos", 
+          "rating": "Rating"
+        }
+      }
+    }
+  }
+}

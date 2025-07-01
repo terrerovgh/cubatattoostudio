@@ -26,34 +26,13 @@ const { title = "Cuba Tattoo Studio - Arte Corporal Profesional" } = Astro.props
     <!-- Loading Screen -->
     <LoadingScreen />
     
-    <!-- Global Animated Background System -->
-    <div id="global-background" class="fixed inset-0 z-0">
-      <!-- Black & White Image (bottom layer) -->
-      <img 
-        id="global-bg-bw"
-        src="/hero-tattoo-background.jpeg" 
-        alt="Cuba Tattoo Studio Background Black and White" 
-        class="w-full h-full object-cover scale-110 absolute inset-0"
-        loading="eager"
-        fetchpriority="high"
-      />
-      <!-- Color Image (top layer) -->
-      <img 
-        id="global-bg-color"
-        src="/hero-tattoo-background-color.jpeg" 
-        alt="Cuba Tattoo Studio Background Color" 
-        class="w-full h-full object-cover scale-110 absolute inset-0 opacity-0"
-        loading="eager"
-        fetchpriority="high"
-      />
-      <div class="absolute inset-0 bg-black/40 z-10"></div>
-      <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10"></div>
-    </div>
-
     <!-- Page Content -->
     <div id="main-content" class="relative z-20 opacity-0">
       <slot />
     </div>
+
+    <!-- Particles Background Container -->
+    <div id="container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
     
     <!-- GSAP CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" is:inline></script>
@@ -61,6 +40,14 @@ const { title = "Cuba Tattoo Studio - Arte Corporal Profesional" } = Astro.props
     
     <!-- Script principal -->
     <script src="/gsap-tattoo.js" is:inline></script>
+    <script type="module" src="/scripts/interactive-particles.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const mainContent = document.getElementById('main-content');
+        console.log('Estado de #main-content:', mainContent?.className);
+      });
+    </script>
   </body>
 </html>
 
@@ -95,72 +82,14 @@ const { title = "Cuba Tattoo Studio - Arte Corporal Profesional" } = Astro.props
 
   html,
   body {
-    background: #000000; /* Fallback while images load */
+    background: #ffffff; /* Fallback while images load */
     min-height: 100vh;
     overflow-x: hidden;
     overscroll-behavior: none;
-    color: white;
+    color: black;
     margin: 0;
     width: 100%;
     scroll-behavior: smooth;
-  }
-
-  /* Global Background Animation System */
-  #global-background {
-    will-change: transform;
-    contain: layout style paint;
-    pointer-events: none; /* Allow clicks to pass through */
-  }
-
-  #global-bg-bw,
-  #global-bg-color {
-    will-change: transform, opacity, filter;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: optimize-contrast;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-  }
-
-  /* Continuous zoom animation base */
-  .zoom-cycle {
-    animation: continuousZoom 12s ease-in-out infinite;
-  }
-
-  @keyframes continuousZoom {
-    0%, 100% { 
-      transform: scale(1.1) translateZ(0); 
-    }
-    50% { 
-      transform: scale(1.2) translateZ(0); 
-    }
-  }
-
-  /* Color transition animation base */
-  .color-cycle {
-    animation: colorTransition 12s ease-in-out infinite;
-  }
-
-  @keyframes colorTransition {
-    0%, 100% { 
-      opacity: 0; 
-    }
-    50% { 
-      opacity: 1; 
-    }
-  }
-
-  /* Scroll-triggered variations */
-  .color-cycle-reverse {
-    animation: colorTransitionReverse 12s ease-in-out infinite;
-  }
-
-  @keyframes colorTransitionReverse {
-    0%, 100% { 
-      opacity: 1; 
-    }
-    50% { 
-      opacity: 0; 
-    }
   }
 
   /* Optimize image loading */
@@ -234,15 +163,38 @@ const { title = "Cuba Tattoo Studio - Arte Corporal Profesional" } = Astro.props
   }
 
   ::-webkit-scrollbar-track {
-    background: #111;
+    background: #f1f1f1;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #fbbf24;
+    background: #888;
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #f59e0b;
+    background: #555;
   }
 </style>
+
+<style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: url('/image.png') no-repeat center center fixed !important;
+        background-size: cover !important;
+        animation: zoomOut 30s infinite linear;
+      }
+
+      @keyframes zoomOut {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1.1);
+        }
+      }
+    </style>

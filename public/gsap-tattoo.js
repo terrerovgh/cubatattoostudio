@@ -4,11 +4,8 @@
  */
 
 // Variables globales
-var isInitialized = false;
-var globalBackgroundTl = null;
-
-// Configuración global para efectos adicionales
 const TattooStudio = {
+  isInitialized: false,
   config: {
     backgroundTransitionDuration: 2,
     parallaxStrength: 0.5,
@@ -19,10 +16,30 @@ const TattooStudio = {
   init() {
     console.log('🎨 Cuba Tattoo Studio - GSAP Landing Effects Initialized');
     
-    // Registrar plugin de ScrollTrigger
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-      gsap.registerPlugin(ScrollTrigger);
+    // Función para verificar y esperar la carga de dependencias
+    function waitForDependencies() {
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        console.log('All dependencies loaded, initializing...');
+        initStudio();
+      } else {
+        console.log('Waiting for dependencies...');
+        setTimeout(waitForDependencies, 100);
+      }
     }
+    
+    // Esperar a que todos los scripts estén cargados
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', waitForDependencies);
+    } else {
+      waitForDependencies();
+    }
+    
+    // También intentar después del evento load
+    window.addEventListener('load', function() {
+      if (!TattooStudio.isInitialized) {
+        waitForDependencies();
+      }
+    });
     
     // Esperar a que el loading termine
     window.addEventListener('loadingComplete', function() {
@@ -48,106 +65,46 @@ const TattooStudio = {
 
 // Función principal de inicialización
 function initStudio() {
-  if (isInitialized || typeof gsap === 'undefined') return;
+  if (TattooStudio.isInitialized) return;
+  
+  console.log('Initializing Cuba Tattoo Studio...');
+  console.log('GSAP available:', typeof gsap !== 'undefined');
+  console.log('ScrollTrigger available:', typeof ScrollTrigger !== 'undefined');
+  
+  if (typeof gsap === 'undefined') {
+    console.error('GSAP is not loaded');
+    return;
+  }
   
   try {
+    // Registrar plugins de GSAP
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+    if (typeof ScrollToPlugin !== 'undefined') {
+      gsap.registerPlugin(ScrollToPlugin);
+    }
+
     // Configuración inicial
     gsap.set("body", { visibility: "visible" });
-    
-    // Configurar ScrollTrigger
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.config({
-        autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
-        ignoreMobileResize: true
-      });
-    }
-    
-    // Inicializar sistema de fondo global
-    initGlobalBackground();
     
     // Navegación suave
     setupSmoothNavigation();
     
-    // Animaciones automáticas
-    setupAutoAnimations();
+    // Esperar un poco más antes de configurar las animaciones
+    setTimeout(function() {
+      setupAutoAnimations();
+    }, 100);
     
-    // Manejar redimensionamiento
-    setupResizeHandler();
-    
-    isInitialized = true;
+    TattooStudio.isInitialized = true;
     console.log("Cuba Tattoo Studio initialized successfully");
     
+    // Disparar evento global para notificar que el estudio está listo
+    window.dispatchEvent(new CustomEvent('TattooStudioInitialized'));
+
   } catch (error) {
     console.error("Error initializing:", error);
   }
-}
-
-function initGlobalBackground() {
-  var bgElements = {
-    bwImage: document.querySelector('#global-bg-bw'),
-    colorImage: document.querySelector('#global-bg-color'),
-    container: document.querySelector('#global-background')
-  };
-
-  if (!bgElements.bwImage || !bgElements.colorImage) {
-    console.warn("Global background elements not found");
-    return;
-  }
-
-  // Animación continua de zoom (12 segundos por ciclo)
-  gsap.to([bgElements.bwImage, bgElements.colorImage], {
-    scale: 1.2,
-    duration: 6,
-    ease: "power2.inOut",
-    yoyo: true,
-    repeat: -1,
-    repeatDelay: 0
-  });
-
-  // Transición continua de color basada en scroll
-  var sections = document.querySelectorAll('section, main, div[id]');
-  
-  sections.forEach(function(section, index) {
-    var isEven = index % 2 === 0;
-    
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top center",
-        end: "bottom center",
-        onEnter: function() {
-          gsap.to(bgElements.colorImage, {
-            opacity: isEven ? 0.7 : 0.3,
-            duration: 2,
-            ease: "power2.inOut"
-          });
-        },
-        onLeave: function() {
-          gsap.to(bgElements.colorImage, {
-            opacity: 0.5,
-            duration: 1,
-            ease: "power2.inOut"
-          });
-        },
-        onEnterBack: function() {
-          gsap.to(bgElements.colorImage, {
-            opacity: isEven ? 0.7 : 0.3,
-            duration: 2,
-            ease: "power2.inOut"
-          });
-        },
-        onLeaveBack: function() {
-          gsap.to(bgElements.colorImage, {
-            opacity: 0.5,
-            duration: 1,
-            ease: "power2.inOut"
-          });
-        }
-      });
-    }
-  });
-  
-  console.log("Global background system initialized");
 }
 
 function setupSmoothNavigation() {
@@ -177,8 +134,20 @@ function setupSmoothNavigation() {
 }
 
 function setupAutoAnimations() {
+  // Verificar que GSAP y ScrollTrigger estén disponibles
+  if (typeof gsap === 'undefined') {
+    console.error('GSAP not available');
+    return;
+  }
+
+  if (typeof ScrollTrigger === 'undefined') {
+    console.error('ScrollTrigger not available');
+    return;
+  }
+
   // Elementos con clase .scroll-animate
   var scrollElements = document.querySelectorAll('.scroll-animate');
+  console.log('Found scroll elements:', scrollElements.length);
   
   scrollElements.forEach(function(element, index) {
     var animationType = element.dataset.animation || 'fadeIn';
@@ -202,7 +171,7 @@ function setupAutoAnimations() {
         fromVars = { y: 30, opacity: 0 };
     }
     
-    if (typeof gsap !== 'undefined') {
+    try {
       gsap.fromTo(element, fromVars, {
         y: 0,
         x: 0,
@@ -219,35 +188,21 @@ function setupAutoAnimations() {
           markers: false
         }
       });
+    } catch (error) {
+      console.error('Error creating animation for element:', element, error);
     }
   });
   
   console.log("Animation system initialized");
 }
 
-function setupResizeHandler() {
-  var resizeTimer;
-  window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(function() {
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.refresh();
-      }
-    }, 250);
-  });
-}
-
-function refreshAnimations() {
-  if (isInitialized && typeof ScrollTrigger !== 'undefined') {
-    ScrollTrigger.refresh();
-  }
-}
-
 // Exponer funciones globalmente
 window.TattooStudio = TattooStudio;
 window.CubaTattooStudio = {
-  refresh: refreshAnimations,
-  init: initStudio
+  init: initStudio,
+  get isInitialized() {
+    return TattooStudio.isInitialized;
+  }
 };
 
 // Auto-inicializar

@@ -36,19 +36,6 @@ import Footer from '../components/Footer.astro';
     // Script inline simple para verificación
     document.addEventListener('DOMContentLoaded', function() {
       console.log('GSAP Landing Tattoo page loaded');
-      
-      // Verificar que el sistema global esté funcionando (sin TypeScript)
-      setTimeout(function() {
-        var globalBg = document.getElementById('global-background');
-        var bgBw = document.getElementById('global-bg-bw');
-        var bgColor = document.getElementById('global-bg-color');
-        
-        if (globalBg && bgBw && bgColor) {
-          console.log('✅ Global background system active');
-        } else {
-          console.warn('⚠️ Global background elements missing');
-        }
-      }, 1000);
     });
   </script>
 </Layout>

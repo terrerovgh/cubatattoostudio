@@ -1,344 +1,108 @@
 ---
-// Cuba Tattoo Studio Hero Section
+// Hero Section Rediseñado para Cuba Tattoo Studio
+import { onMount } from 'solid-js';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+onMount(() => {
+  const timeline = gsap.timeline({ delay: 0.5 });
+
+  // Animación del logo
+  timeline.fromTo(
+    '#hero-logo',
+    { opacity: 0, scale: 0.8 },
+    { opacity: 1, scale: 1, duration: 1.5, ease: 'power3.out' }
+  );
+
+  // Animación del texto
+  timeline.fromTo(
+    '#hero-text',
+    { opacity: 0, y: 50 },
+    { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
+    '-=1'
+  );
+
+  // Indicador de scroll
+  timeline.fromTo(
+    '#scroll-indicator',
+    { opacity: 0 },
+    { opacity: 1, duration: 1, ease: 'power2.out' },
+    '-=0.5'
+  );
+
+  // Efecto de desvanecimiento al hacer scroll
+  ScrollTrigger.create({
+    trigger: "#hero-section",
+    start: "top top",
+    end: "bottom top",
+    scrub: true,
+    onUpdate: (self) => {
+      const progress = self.progress;
+      gsap.to("#hero-section", {
+        opacity: 1 - progress,
+        duration: 0.1,
+        ease: "none",
+      });
+      gsap.to("#second-section", {
+        opacity: progress,
+        duration: 0.1,
+        ease: "none",
+      });
+    },
+  });
+});
 ---
 
----
-// Cuba Tattoo Studio Hero Section - Cinematic Experience
----
+<section id="hero-section" class="relative h-screen w-full overflow-hidden">
+  <!-- Fondo del Hero -->
+  <!-- <div class="absolute inset-0">
+    <img src="/hero-tattoo-background.jpeg" alt="Hero Background" class="w-full h-full object-cover">
+  </div> -->
 
-<section id="hero-section" class="relative h-screen overflow-hidden">
-  <!-- Main Hero Content (fondo global se maneja en Layout) -->
-  <div class="relative z-20 h-full flex flex-col">
-    <!-- Navigation Header -->
-    <header class="flex justify-between items-center p-6 md:p-8 absolute top-0 w-full z-30">
-      <div class="flex items-center space-x-3 opacity-0" id="nav-logo">
-        <div class="w-12 h-12 bg-amber-400 rounded-full flex items-center justify-center">
-          <span class="text-black font-bold text-xl">C</span>
-        </div>
-        <span class="text-white font-bold text-xl tracking-wider">CUBA TATTOO</span>
-      </div>
-      
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center space-x-6 opacity-0" id="nav-menu">
-        <a href="#gallery" class="text-white/80 hover:text-amber-400 transition-all duration-300 font-medium">Galería</a>
-        <a href="#services" class="text-white/80 hover:text-amber-400 transition-all duration-300 font-medium">Servicios</a>
-        <a href="#artists" class="text-white/80 hover:text-amber-400 transition-all duration-300 font-medium">Artistas</a>
-      </nav>
+  <!-- Contenido del Hero -->
+  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
+    <!-- Logo -->
+    <div id="hero-logo" class="mb-6">
+      <img src="/logo-black.png" alt="Cuba Tattoo Studio Logo" class="w-48 h-auto">
+    </div>
 
-      <!-- Mobile Menu Button -->
-      <button class="md:hidden text-white p-2 opacity-0" id="mobile-menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
-    </header>
+    <!-- Texto Principal -->
+    <div id="hero-text" class="max-w-3xl">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">Donde el arte se encuentra con la piel</h1>
+      <p class="text-lg md:text-xl font-light">Diseños únicos, técnicas profesionales y una experiencia inigualable.</p>
+    </div>
 
-    <!-- Central Hero Content -->
-    <div class="flex-1 flex items-center justify-center px-6 md:px-8">
-      <div class="text-center max-w-5xl mx-auto">
-        <!-- Main Logo/Title -->
-        <div class="mb-8 opacity-0" id="hero-logo">
-          <h1 class="text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-4 tracking-wide">
-            CUBA
-          </h1>
-          <div class="flex items-center justify-center space-x-4">
-            <div class="h-0.5 bg-amber-400 w-16 md:w-24"></div>
-            <h2 class="text-2xl md:text-4xl font-light text-amber-400 tracking-[0.3em]">
-              TATTOO STUDIO
-            </h2>
-            <div class="h-0.5 bg-amber-400 w-16 md:w-24"></div>
-          </div>
-        </div>
-        
-        <!-- Slogan with Elegant Animation -->
-        <div class="opacity-0" id="hero-slogan">
-          <p class="text-xl md:text-2xl lg:text-3xl text-white/90 mb-3 font-light italic">
-            "Donde el arte se encuentra con la piel"
-          </p>
-          <p class="text-lg md:text-xl text-amber-300/80 font-light tracking-wide">
-            Diseños únicos • Técnicas profesionales • Experiencia inigualable
-          </p>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 opacity-0" id="scroll-hint">
-          <div class="flex flex-col items-center text-amber-400/80">
-            <span class="text-sm font-medium mb-3 tracking-wider animate-pulse">DESCUBRE MÁS</span>
-            <div class="w-6 h-10 border-2 border-amber-400/60 rounded-full flex justify-center">
-              <div class="w-1 h-3 bg-amber-400/60 rounded-full mt-2 animate-bounce"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Indicador de Scroll -->
+    <div id="scroll-indicator" class="absolute bottom-8 animate-bounce">
+      <span class="text-sm font-medium">Descubre más</span>
+      <div class="w-6 h-6 border-2 border-white rounded-full mt-2"></div>
     </div>
   </div>
+</section>
 
-  <!-- Floating CTA Button (appears on scroll) -->
-  <div id="floating-cta" class="fixed bottom-8 right-8 z-50 opacity-0 transform translate-y-20">
-    <a href="#contact" class="group relative">
-      <div class="bg-amber-400 hover:bg-amber-300 text-black font-bold px-6 py-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-amber-400/25 flex items-center space-x-2">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-        </svg>
-        <span>Agendar Cita</span>
-      </div>
-      <!-- Pulse Animation -->
-      <div class="absolute inset-0 bg-amber-400/30 rounded-full animate-ping"></div>
-    </a>
+<section id="second-section" class="relative h-screen w-full bg-gray-900 text-white opacity-0">
+  <div class="flex items-center justify-center h-full">
+    <h2 class="text-3xl md:text-5xl font-bold">Bienvenido a la siguiente sección</h2>
   </div>
 </section>
 
 <style>
-  /* Floating CTA Pulse Effect */
-  @keyframes ctaPulse {
-    0%, 100% {
-      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
-    }
-    50% {
-      box-shadow: 0 0 0 20px rgba(251, 191, 36, 0);
-    }
-  }
-
-  #floating-cta .group:hover::before {
-    animation: ctaPulse 1.5s infinite;
-  }
-
-  /* Elegant scroll hint animation */
-  @keyframes scrollHint {
-    0%, 100% { opacity: 0.6; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-5px); }
-  }
-
-  #scroll-hint {
-    animation: scrollHint 2s ease-in-out infinite;
-  }
-
-  /* Custom smooth transitions */
-  .smooth-entrance {
-    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  /* Typography improvements */
-  .tracking-luxury {
-    letter-spacing: 0.15em;
-  }
-
-  /* Gradient text effect */
-  .gradient-text {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Hero specific optimizations */
   #hero-section {
-    contain: layout style paint;
-    transform: translateZ(0);
+    position: relative;
+    background: inherit;
+  }
+
+  #scroll-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #second-section {
+    transition: opacity 0.5s ease-in-out;
   }
 </style>
-
-<script>
-  import { gsap } from "gsap"
-  import { ScrollTrigger } from "gsap/ScrollTrigger"
-
-  function initCinematicHero() {
-    gsap.registerPlugin(ScrollTrigger)
-
-    // Elementos del hero (sin elementos de fondo)
-    const elements = {
-      navLogo: document.querySelector('#nav-logo'),
-      navMenu: document.querySelector('#nav-menu'),
-      mobileMenu: document.querySelector('#mobile-menu'),
-      heroLogo: document.querySelector('#hero-logo'),
-      heroSlogan: document.querySelector('#hero-slogan'),
-      scrollHint: document.querySelector('#scroll-hint'),
-      floatingCTA: document.querySelector('#floating-cta')
-    }
-
-    // Verificar que los elementos existen
-    if (!elements.heroLogo) {
-      console.warn("Hero elements not found, skipping animations")
-      return
-    }
-
-    // === ENTRADA CINEMATOGRÁFICA DE CONTENIDO ===
-    
-    // Timeline de entrada de elementos (el fondo se maneja globalmente)
-    const entranceTl = gsap.timeline({ delay: 1 })
-
-    // Navegación aparece suavemente
-    entranceTl.to([elements.navLogo, elements.navMenu, elements.mobileMenu], {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power2.out"
-    })
-
-    // Logo principal con efecto dramático
-    .fromTo(elements.heroLogo,
-      { opacity: 0, y: 50, scale: 0.9 },
-      { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1,
-        duration: 1.5,
-        ease: "power3.out"
-      }, "-=0.5"
-    )
-
-    // Slogan con efecto elegante
-    .fromTo(elements.heroSlogan,
-      { opacity: 0, y: 30 },
-      { 
-        opacity: 1, 
-        y: 0,
-        duration: 1.2,
-        ease: "power2.out"
-      }, "-=0.8"
-    )
-
-    // Scroll hint con retraso
-    .to(elements.scrollHint, {
-      opacity: 1,
-      duration: 0.8,
-      ease: "power2.out"
-    }, "-=0.3")
-
-    // === ANIMACIONES DE SCROLL ===
-
-    // Fade out de elementos del hero
-    gsap.to([elements.heroLogo, elements.heroSlogan], {
-      opacity: 0,
-      y: -50,
-      ease: "power2.in",
-      scrollTrigger: {
-        trigger: "#hero-section",
-        start: "20% top",
-        end: "80% top",
-        scrub: 1,
-        markers: false
-      }
-    })
-
-    // Navegación se vuelve más opaca al hacer scroll
-    gsap.to([elements.navLogo, elements.navMenu], {
-      opacity: 0.8,
-      backdropFilter: "blur(10px)",
-      backgroundColor: "rgba(0, 0, 0, 0.3)",
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: "#hero-section",
-        start: "50% top",
-        end: "bottom top",
-        scrub: 1,
-        markers: false
-      }
-    })
-
-    // === BOTÓN FLOTANTE CTA ===
-    
-    // Aparece al empezar a hacer scroll
-    ScrollTrigger.create({
-      trigger: "#hero-section",
-      start: "30% top",
-      end: "#contact",
-      onEnter: () => {
-        gsap.to(elements.floatingCTA, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "back.out(1.7)"
-        })
-      },
-      onLeave: () => {
-        gsap.to(elements.floatingCTA, {
-          opacity: 0,
-          y: 20,
-          duration: 0.5,
-          ease: "power2.in"
-        })
-      },
-      onEnterBack: () => {
-        gsap.to(elements.floatingCTA, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "back.out(1.7)"
-        })
-      },
-      onLeaveBack: () => {
-        gsap.to(elements.floatingCTA, {
-          opacity: 0,
-          y: 20,
-          duration: 0.5,
-          ease: "power2.in"
-        })
-      },
-      markers: false
-    })
-
-    // === INTERACCIONES ===
-
-    // Hover effects para el CTA flotante
-    if (elements.floatingCTA) {
-      elements.floatingCTA.addEventListener('mouseenter', () => {
-        const ctaButton = elements.floatingCTA?.querySelector('div')
-        if (ctaButton) {
-          gsap.to(ctaButton, {
-            scale: 1.05,
-            duration: 0.3,
-            ease: "power2.out"
-          })
-        }
-      })
-
-      elements.floatingCTA.addEventListener('mouseleave', () => {
-        const ctaButton = elements.floatingCTA?.querySelector('div')
-        if (ctaButton) {
-          gsap.to(ctaButton, {
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out"
-          })
-        }
-      })
-    }
-
-    // Smooth scroll para enlaces internos
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault()
-        const href = link.getAttribute('href')
-        if (href) {
-          const targetId = href.substring(1)
-          const targetElement = document.getElementById(targetId)
-          
-          if (targetElement) {
-            gsap.to(window, {
-              duration: 1.5,
-              scrollTo: {
-                y: targetElement,
-                offsetY: 80
-              },
-              ease: "power2.inOut"
-            })
-          }
-        }
-      })
-    })
-
-    console.log("Cinematic Hero initialized for Cuba Tattoo Studio")
-  }
-
-  // Initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCinematicHero)
-  } else {
-    initCinematicHero()
-  }
-
-  // Re-initialize for Astro navigation
-  document.addEventListener('astro:page-load', initCinematicHero)
-</script>

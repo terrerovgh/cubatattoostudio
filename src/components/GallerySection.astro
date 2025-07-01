@@ -1,4 +1,9 @@
 ---
+// Convertido en una isla para encapsular lógica y estilos
+import { createSignal } from 'solid-js';
+
+const [activeFilter, setActiveFilter] = createSignal('all');
+
 // Datos de la galería con imágenes reales
 const galleryItems = [
   { id: 1, category: 'traditional', title: 'Rosa Tradicional', image: '/gallery/traditional/tattoo-traditional-1.jpg', alt: 'Tatuaje tradicional de rosa' },
@@ -29,113 +34,31 @@ const galleryItems = [
 
     <!-- Filtros de Galería -->
     <div class="flex flex-wrap justify-center gap-4 mb-12 scroll-animate" data-animation="fadeIn" data-delay="0.2">
-      <button class="gallery-filter active bg-amber-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-amber-300 transition-colors duration-300" data-filter="all">
+      <button class="gallery-filter active bg-amber-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-amber-300 transition-colors duration-300" data-filter="all" onClick={() => setActiveFilter('all')}>
         Todos
       </button>
-      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="traditional">
+      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="traditional" onClick={() => setActiveFilter('traditional')}>
         Tradicional
       </button>
-      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="realistic">
+      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="realistic" onClick={() => setActiveFilter('realistic')}>
         Realista
       </button>
-      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="geometric">
+      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="geometric" onClick={() => setActiveFilter('geometric')}>
         Geométrico
       </button>
-      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="color">
+      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="color" onClick={() => setActiveFilter('color')}>
         Color
       </button>
     </div>
 
     <!-- Grid de Galería -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {galleryItems.map((item, index) => (
-        <div class={`gallery-item ${item.category} group cursor-pointer overflow-hidden rounded-xl bg-gray-800 aspect-square scroll-animate`} data-animation="scaleIn" data-delay={0.3 + (index * 0.1)}>
-          <div class="relative w-full h-full">
-            <img 
-              src={item.image}
-              alt={item.alt}
-              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              loading="lazy"
-            />
-            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-500"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <h3 class="text-white font-bold text-lg">{item.title}</h3>
-              <p class="text-amber-400 text-sm capitalize">{item.category}</p>
-            </div>
-          </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {galleryItems.filter(item => activeFilter() === 'all' || item.category === activeFilter()).map(item => (
+        <div key={item.id} class="gallery-item">
+          <img src={item.image} alt={item.alt} class="w-full h-auto rounded-lg shadow-lg" />
+          <h3 class="text-lg font-semibold text-white mt-4">{item.title}</h3>
         </div>
       ))}
     </div>
-
-    <div class="text-center mt-16 scroll-animate" data-animation="fadeIn" data-delay="1.5">
-      <button class="bg-amber-400 text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-300 transition-colors duration-300 hover:scale-105 transform">
-        Ver Más Trabajos
-      </button>
-    </div>
   </div>
 </section>
-
-<script>
-  import { gsap } from "gsap"
-  import { ScrollTrigger } from "gsap/ScrollTrigger"
-
-  // Solo funcionalidad de filtro de galería
-  function initGalleryFilters() {
-    const filterButtons = document.querySelectorAll('.gallery-filter')
-    const galleryItems = document.querySelectorAll('.gallery-item')
-
-    filterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        // Remover clase active de todos los botones
-        filterButtons.forEach(btn => {
-          btn.classList.remove('active', 'bg-amber-400', 'text-black')
-          btn.classList.add('bg-gray-700', 'text-white')
-        })
-
-        // Agregar clase active al botón clickeado
-        button.classList.add('active', 'bg-amber-400', 'text-black')
-        button.classList.remove('bg-gray-700', 'text-white')
-
-        const filterValue = button.getAttribute('data-filter') || 'all'
-
-        // Animar la salida de elementos no coincidentes
-        galleryItems.forEach(item => {
-          const htmlItem = item as HTMLElement
-          if (filterValue === 'all' || item.classList.contains(filterValue)) {
-            gsap.to(item, {
-              opacity: 1,
-              scale: 1,
-              duration: 0.4,
-              ease: "power2.out",
-              onComplete: () => {
-                htmlItem.style.display = 'block'
-              }
-            })
-          } else {
-            gsap.to(item, {
-              opacity: 0,
-              scale: 0.8,
-              duration: 0.3,
-              ease: "power2.in",
-              onComplete: () => {
-                htmlItem.style.display = 'none'
-                ScrollTrigger.refresh()
-              }
-            })
-          }
-        })
-      })
-    })
-
-    console.log("Gallery filters initialized")
-  }
-
-  // Inicializar cuando el DOM esté listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGalleryFilters)
-  } else {
-    initGalleryFilters()
-  }
-
-  document.addEventListener('astro:page-load', initGalleryFilters)
-</script>

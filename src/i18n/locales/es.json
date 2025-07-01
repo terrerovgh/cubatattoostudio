@@ -1,0 +1,209 @@
+{
+  "common": {
+    "navigation": {
+      "home": "Inicio",
+      "gallery": "Galería",
+      "services": "Servicios",
+      "artists": "Artistas",
+      "contact": "Contacto"
+    },
+    "buttons": {
+      "book_appointment": "Reservar Cita",
+      "view_portfolio": "Ver Portfolio",
+      "learn_more": "Saber Más",
+      "send_message": "Enviar Mensaje",
+      "get_started": "Comenzar",
+      "contact_us": "Contáctanos",
+      "discover_more": "Descubre Más",
+      "schedule_consultation": "Agenda tu Consulta",
+      "view_work": "Ver Trabajos"
+    },
+    "contact": {
+      "address": "Dirección",
+      "phone": "Teléfono",
+      "email": "Email",
+      "hours": "Horarios",
+      "social_media": "Síguenos en Redes Sociales"
+    },
+    "services": {
+      "traditional": "Tatuajes Tradicionales",
+      "realistic": "Tatuajes Realistas",
+      "geometric": "Tatuajes Geométricos",
+      "color": "Tatuajes en Color",
+      "coverup": "Cover-ups",
+      "consultation": "Consultoría de Diseño"
+    }
+  },
+  "pages": {
+    "home": {
+      "title": "Cuba Tattoo Studio - Arte Corporal Profesional",
+      "meta": {
+        "description": "Cuba Tattoo Studio - Arte corporal profesional en Cuba. Diseños únicos, técnicas avanzadas y la mejor experiencia en tatuajes.",
+        "keywords": "tatuajes, tattoo, Cuba, arte corporal, diseños únicos, tattoo studio"
+      },
+      "hero": {
+        "title": "CUBA",
+        "subtitle": "TATTOO STUDIO",
+        "slogan": "Donde el arte se encuentra con la piel",
+        "description": "Diseños únicos • Técnicas profesionales • Experiencia inigualable",
+        "cta": "Reserva Ahora"
+      },
+      "artists": {
+        "title": "NUESTROS ARTISTAS",
+        "subtitle": "Conoce a los talentosos artistas que dan vida a tus ideas. Cada uno con su estilo único y años de experiencia.",
+        "cta_title": "¿Listo para trabajar con nosotros?",
+        "cta_description": "Nuestros artistas están listos para convertir tu visión en realidad. Agenda una consulta y descubre cuál es el artista perfecto para tu próximo tatuaje.",
+        "cta_button": "Conoce a Nuestro Equipo"
+      },
+      "services": {
+        "title": "NUESTROS SERVICIOS",
+        "subtitle": "Ofrecemos una amplia gama de servicios de tatuaje profesional con los más altos estándares de calidad y seguridad.",
+        "traditional": {
+          "title": "Tatuajes Tradicionales",
+          "description": "Diseños clásicos y atemporales con técnicas tradicionales perfeccionadas a lo largo de los años."
+        },
+        "realistic": {
+          "title": "Tatuajes Realistas",
+          "description": "Retratos y diseños hiperrealistas que capturan cada detalle con precisión fotográfica."
+        },
+        "geometric": {
+          "title": "Tatuajes Geométricos",
+          "description": "Patrones y formas geométricas perfectas que combinan arte moderno con precisión matemática."
+        },
+        "color": {
+          "title": "Tatuajes en Color",
+          "description": "Diseños vibrantes y coloridos que dan vida a tu piel con pigmentos de la más alta calidad."
+        },
+        "coverup": {
+          "title": "Cover-ups",
+          "description": "Transformamos tatuajes antiguos en obras de arte nuevas con técnicas especializadas de cover-up."
+        },
+        "consultation": {
+          "title": "Consultoría de Diseño",
+          "description": "Trabajamos contigo para crear el diseño perfecto que capture tu visión y personalidad única."
+        }
+      },
+      "gallery": {
+        "title": "GALERÍA",
+        "subtitle": "Explora nuestra colección de trabajos realizados. Cada tatuaje cuenta una historia única.",
+        "filters": {
+          "all": "Todos",
+          "traditional": "Tradicional",
+          "realistic": "Realista",
+          "geometric": "Geométrico",
+          "color": "Color"
+        }
+      },
+      "contact": {
+        "title": "CONTACTO",
+        "subtitle": "¿Tienes una idea para tu próximo tatuaje? Contáctanos y hagamos realidad tu visión.",
+        "info": {
+          "title": "Información de Contacto",
+          "address": {
+            "title": "Dirección",
+            "line1": "Calle 23 #456, Vedado",
+            "line2": "La Habana, Cuba 10400"
+          },
+          "phone": {
+            "title": "Teléfono",
+            "line1": "+53 7 832-1234",
+            "line2": "+53 5 234-5678 (WhatsApp)"
+          },
+          "email": {
+            "title": "Email",
+            "line1": "info@cubatattoostudio.com",
+            "line2": "citas@cubatattoostudio.com"
+          },
+          "hours": {
+            "title": "Horarios",
+            "weekdays": "Lun - Vie: 10:00 AM - 8:00 PM",
+            "saturday": "Sábados: 10:00 AM - 6:00 PM",
+            "sunday": "Domingos: Cerrado"
+          }
+        },
+        "form": {
+          "title": "Envíanos un Mensaje",
+          "fields": {
+            "name": "Nombre",
+            "email": "Email",
+            "phone": "Teléfono",
+            "service": "Tipo de Servicio",
+            "message": "Mensaje"
+          },
+          "placeholders": {
+            "name": "Tu nombre",
+            "email": "tu@email.com",
+            "phone": "+53 5 234-5678",
+            "message": "Cuéntanos sobre tu idea de tatuaje..."
+          },
+          "service_options": {
+            "select": "Selecciona un servicio",
+            "consultation": "Consulta de Diseño",
+            "traditional": "Tatuaje Tradicional",
+            "realistic": "Tatuaje Realista",
+            "geometric": "Tatuaje Geométrico",
+            "color": "Tatuaje en Color",
+            "coverup": "Cover-up",
+            "other": "Otro"
+          },
+          "submit": "Enviar Mensaje",
+          "sending": "Enviando...",
+          "sent": "¡Mensaje Enviado!"
+        }
+      },
+      "footer": {
+        "description": "El arte del tatuaje en el corazón de Cuba. Creamos experiencias únicas que duran para toda la vida, combinando tradición cubana con técnicas modernas de primer nivel.",
+        "quick_links": "Enlaces Rápidos",
+        "links": {
+          "gallery": "Galería",
+          "services": "Servicios",
+          "artists": "Artistas",
+          "contact": "Contacto",
+          "aftercare": "Cuidados",
+          "pricing": "Precios"
+        },
+        "legal": {
+          "privacy": "Política de Privacidad",
+          "terms": "Términos de Servicio",
+          "cookies": "Política de Cookies"
+        },
+        "copyright": "© 2025 Cuba Tattoo Studio. Todos los derechos reservados."
+      }
+    },
+    "artists": {
+      "david": {
+        "name": "David",
+        "specialty": "Especialista en Realismo",
+        "description": "Más de 8 años de experiencia en tatuajes realistas y retratos. David domina las técnicas de sombreado y detalle que dan vida a cada diseño. Especializado en retratos, animales y naturaleza muerta con un nivel de detalle excepcional.",
+        "specialties": ["Retratos", "Realismo", "Animales", "Naturaleza Muerta"],
+        "stats": {
+          "years": "Años",
+          "tattoos": "Tatuajes",
+          "rating": "Rating"
+        }
+      },
+      "nina": {
+        "name": "Nina",
+        "specialty": "Tradicional & Neo-Tradicional",
+        "description": "Artista versátil con 6 años de experiencia especializada en estilos tradicionales y neo-tradicionales. Nina combina técnicas clásicas con toques modernos, creando diseños únicos y vibrantes. Experta en líneas sólidas, colores brillantes y composiciones que destacan.",
+        "specialties": ["Tradicional", "Neo-Tradicional", "Color", "Ilustrativo"],
+        "stats": {
+          "years": "Años",
+          "tattoos": "Tatuajes",
+          "rating": "Rating"
+        }
+      },
+      "karli": {
+        "name": "Karli",
+        "specialty": "Geométrico & Minimalista",
+        "description": "Especialista en diseños geométricos y minimalistas con 5 años de experiencia. Karli crea composiciones precisas y elegantes que combinan matemática y arte. Experta en líneas limpias, patrones complejos y diseños contemporáneos que perduran en el tiempo.",
+        "specialties": ["Geométrico", "Minimalista", "Líneas Finas", "Contemporáneo"],
+        "stats": {
+          "years": "Años",
+          "tattoos": "Tatuajes",
+          "rating": "Rating"
+        }
+      }
+    }
+  }
+}

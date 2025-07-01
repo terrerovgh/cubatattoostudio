@@ -1,0 +1,5 @@
+### Cleanup Log - July 1, 2025
+
+1. Removed `dark-pattern.css` import from `global.css` as it was unused.
+2. Deleted unused functions `setupResizeHandler` and `refreshAnimations` from `gsap-tattoo.js`.
+3. Pending: Review and delete unused images in `public/gallery/` and `public/artists/`.

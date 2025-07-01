@@ -14,25 +14,6 @@
   --background-overlay: rgba(0, 0, 0, 0.4);
 }
 
-/* === OPTIMIZACIONES PARA FONDOS ANIMADOS === */
-#global-background {
-  /* Performance optimizations for animated backgrounds */
-  contain: layout style paint;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-#global-bg-bw,
-#global-bg-color {
-  /* Smooth image rendering for animations */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: optimize-contrast;
-  will-change: transform, opacity, filter;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
 /* === EFECTOS ESPECÍFICOS DE TRANSICIÓN === */
 .background-transition {
   transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);

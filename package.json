@@ -10,10 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.9",
+    "@astrojs/solid-js": "^5.1.0",
+    "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.9.2",
     "gsap": "^3.13.0",
-    "locomotive-scroll": "^4.1.4",
+    "solid-js": "^1.9.7",
     "tailwindcss": "^4.1.9"
   }
 }
