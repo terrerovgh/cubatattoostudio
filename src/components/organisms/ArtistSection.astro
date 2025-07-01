@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import ArtistCard from '../molecules/ArtistCard.astro';
+import Heading from '../atoms/Heading.astro';
+const entries = await getCollection('artists');
+const artists = entries.map(e => e.data);
+---
+<section id="artistas" class="py-20 px-8">
+  <div class="text-center mb-8">
+    <Heading level={2} text="Nuestros Artistas" class="mb-4" />
+  </div>
+  <div class="grid md:grid-cols-3 gap-8">
+    {artists.map(artist => <ArtistCard artist={artist} />)}
+  </div>
+</section>

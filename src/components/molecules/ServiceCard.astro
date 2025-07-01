@@ -1,0 +1,11 @@
+---
+import Heading from '../atoms/Heading.astro';
+import Icon from '../atoms/ImageOptimized.astro';
+const { service } = Astro.props;
+const { title, description, icon } = service;
+---
+<div class="service-card p-4 bg-gray-800/50 rounded-lg text-center">
+  <Icon src={icon} alt="" class="mx-auto mb-2 w-12 h-12" />
+  <Heading level={4} text={title} class="text-lg font-semibold mb-1" />
+  <p class="text-sm text-gray-300">{description}</p>
+</div>

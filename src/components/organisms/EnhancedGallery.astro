@@ -1,0 +1,14 @@
+---
+import images from '../../content/gallery.json';
+import ImageOptimized from '../atoms/ImageOptimized.astro';
+---
+<section id="galeria" class="py-20 px-8">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl mb-4">Galería de Tatuajes</h2>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    {images.map(img => (
+      <ImageOptimized src={img.src} alt={img.alt} class="w-full h-auto rounded" />
+    ))}
+  </div>
+</section>
