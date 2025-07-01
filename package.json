@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "@astrojs/solid-js": "^5.1.0",
@@ -16,5 +17,8 @@
     "gsap": "^3.13.0",
     "solid-js": "^1.9.7",
     "tailwindcss": "^4.1.9"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.2"
   }
 }

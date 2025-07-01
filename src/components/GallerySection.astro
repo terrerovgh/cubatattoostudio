@@ -1,24 +1,6 @@
 ---
-// Convertido en una isla para encapsular lógica y estilos
-import { createSignal } from 'solid-js';
-
-const [activeFilter, setActiveFilter] = createSignal('all');
-
-// Datos de la galería con imágenes reales
-const galleryItems = [
-  { id: 1, category: 'traditional', title: 'Rosa Tradicional', image: '/gallery/traditional/tattoo-traditional-1.jpg', alt: 'Tatuaje tradicional de rosa' },
-  { id: 2, category: 'realistic', title: 'Retrato Realista', image: '/gallery/realistic/tattoo-realistic-1.jpg', alt: 'Tatuaje realista de retrato' },
-  { id: 3, category: 'geometric', title: 'Mandala', image: '/gallery/geometric/tattoo-geometric-1.jpg', alt: 'Tatuaje geométrico mandala' },
-  { id: 4, category: 'color', title: 'Acuarela', image: '/gallery/color/tattoo-color-1.jpg', alt: 'Tatuaje de colores acuarela' },
-  { id: 5, category: 'traditional', title: 'Ancla Marina', image: '/gallery/traditional/tattoo-traditional-2.jpg', alt: 'Tatuaje tradicional ancla' },
-  { id: 6, category: 'realistic', title: 'Animal Realista', image: '/gallery/realistic/tattoo-realistic-2.jpg', alt: 'Tatuaje realista de animal' },
-  { id: 7, category: 'geometric', title: 'Lineas Abstractas', image: '/gallery/geometric/tattoo-geometric-2.jpg', alt: 'Tatuaje geométrico abstracto' },
-  { id: 8, category: 'color', title: 'Flores Coloridas', image: '/gallery/color/tattoo-color-2.jpg', alt: 'Tatuaje de flores a color' },
-  { id: 9, category: 'traditional', title: 'Diseño Clásico', image: '/gallery/traditional/tattoo-traditional-3.jpg', alt: 'Tatuaje tradicional clásico' },
-  { id: 10, category: 'realistic', title: 'Arte Realista', image: '/gallery/realistic/tattoo-realistic-3.jpg', alt: 'Tatuaje hiperrealista' },
-  { id: 11, category: 'color', title: 'Vibrante', image: '/gallery/color/tattoo-color-3.jpg', alt: 'Tatuaje a todo color' },
-  { id: 12, category: 'geometric', title: 'Patrón Geométrico', image: '/gallery/geometric/tattoo-geometric-3.jpg', alt: 'Diseño geométrico complejo' }
-]
+// Lógica de SolidJS y datos movidos a InteractiveGallery.jsx
+import InteractiveGallery from './islands/InteractiveGallery.jsx';
 ---
 
 <section id="gallery" class="min-h-screen py-20 px-8 relative z-20">
@@ -32,33 +14,7 @@ const galleryItems = [
       </p>
     </div>
 
-    <!-- Filtros de Galería -->
-    <div class="flex flex-wrap justify-center gap-4 mb-12 scroll-animate" data-animation="fadeIn" data-delay="0.2">
-      <button class="gallery-filter active bg-amber-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-amber-300 transition-colors duration-300" data-filter="all" onClick={() => setActiveFilter('all')}>
-        Todos
-      </button>
-      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="traditional" onClick={() => setActiveFilter('traditional')}>
-        Tradicional
-      </button>
-      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="realistic" onClick={() => setActiveFilter('realistic')}>
-        Realista
-      </button>
-      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="geometric" onClick={() => setActiveFilter('geometric')}>
-        Geométrico
-      </button>
-      <button class="gallery-filter bg-gray-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-400 hover:text-black transition-colors duration-300" data-filter="color" onClick={() => setActiveFilter('color')}>
-        Color
-      </button>
-    </div>
+    <InteractiveGallery client:visible />
 
-    <!-- Grid de Galería -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      {galleryItems.filter(item => activeFilter() === 'all' || item.category === activeFilter()).map(item => (
-        <div key={item.id} class="gallery-item">
-          <img src={item.image} alt={item.alt} class="w-full h-auto rounded-lg shadow-lg" />
-          <h3 class="text-lg font-semibold text-white mt-4">{item.title}</h3>
-        </div>
-      ))}
-    </div>
   </div>
 </section>

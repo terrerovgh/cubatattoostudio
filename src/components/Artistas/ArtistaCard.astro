@@ -1,0 +1,40 @@
+---
+// src/components/Artistas/ArtistaCard.astro
+export interface Props {
+  artista: {
+    slug: string;
+    nombre: string;
+    especialidad: string;
+    imagenPerfil: string;
+    // bio?: string; // Opcional si no se muestra en la tarjeta
+  };
+  delay?: string; // Para la animación
+}
+
+const { artista, delay } = Astro.props;
+const artistLink = `/artistas/${artista.slug}`; // Enlace a la página de detalle del artista
+---
+
+<div
+  class="group bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl shadow-xl hover:shadow-amber-500/30 transition-all duration-500 hover:scale-105 border border-gray-700 text-center scroll-animate"
+  data-animation="fadeInUp"
+  data-delay={delay || '0'}
+>
+  <a href={artistLink} aria-label={`Ver más sobre ${artista.nombre}`}>
+    <img
+      src={artista.imagenPerfil}
+      alt={`Foto de ${artista.nombre}`}
+      class="w-40 h-40 md:w-48 md:h-48 rounded-full mx-auto mb-6 object-cover border-4 border-gray-700 group-hover:border-amber-400 transition-colors duration-300"
+      loading="lazy"
+    />
+    <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors duration-300">{artista.nombre}</h3>
+  </a>
+  <p class="text-amber-400 mb-3 text-sm uppercase tracking-wider">{artista.especialidad}</p>
+  <!-- <p class="text-gray-400 text-sm mb-4 px-2">{artista.bio?.substring(0, 100)}...</p> -->
+  <a
+    href={artistLink}
+    class="inline-block mt-2 px-5 py-2 bg-amber-400 text-black text-sm font-semibold rounded-full hover:bg-amber-300 transition-colors duration-300"
+  >
+    Ver Perfil
+  </a>
+</div>
