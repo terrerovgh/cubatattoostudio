@@ -1,0 +1,14 @@
+---
+---
+<div class="pointer-events-none absolute inset-0 z-0">
+  <div class="w-6 h-6 bg-amber-400 rounded-full opacity-30 animate-float" style="left:10%;top:20%"></div>
+  <div class="w-4 h-4 bg-amber-500 rounded-full opacity-30 animate-float" style="left:80%;top:40%"></div>
+</div>
+
+<style>
+  .animate-float {
+    position:absolute;
+    animation: float 6s ease-in-out infinite alternate;
+  }
+  @keyframes float { from{transform:translateY(0)} to{transform:translateY(-20px)} }
+</style>

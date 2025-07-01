@@ -1,108 +1,21 @@
 ---
-// Hero Section Rediseñado para Cuba Tattoo Studio
-import { onMount } from 'solid-js';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-onMount(() => {
-  const timeline = gsap.timeline({ delay: 0.5 });
-
-  // Animación del logo
-  timeline.fromTo(
-    '#hero-logo',
-    { opacity: 0, scale: 0.8 },
-    { opacity: 1, scale: 1, duration: 1.5, ease: 'power3.out' }
-  );
-
-  // Animación del texto
-  timeline.fromTo(
-    '#hero-text',
-    { opacity: 0, y: 50 },
-    { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
-    '-=1'
-  );
-
-  // Indicador de scroll
-  timeline.fromTo(
-    '#scroll-indicator',
-    { opacity: 0 },
-    { opacity: 1, duration: 1, ease: 'power2.out' },
-    '-=0.5'
-  );
-
-  // Efecto de desvanecimiento al hacer scroll
-  ScrollTrigger.create({
-    trigger: "#hero-section",
-    start: "top top",
-    end: "bottom top",
-    scrub: true,
-    onUpdate: (self) => {
-      const progress = self.progress;
-      gsap.to("#hero-section", {
-        opacity: 1 - progress,
-        duration: 0.1,
-        ease: "none",
-      });
-      gsap.to("#second-section", {
-        opacity: progress,
-        duration: 0.1,
-        ease: "none",
-      });
-    },
-  });
-});
+import DynamicBackground from './DynamicBackground.astro';
+import FloatingVisuals from './FloatingVisuals.astro';
 ---
-
-<section id="hero-section" class="relative h-screen w-full overflow-hidden">
-  <!-- Fondo del Hero -->
-  <!-- <div class="absolute inset-0">
-    <img src="/hero-tattoo-background.jpeg" alt="Hero Background" class="w-full h-full object-cover">
-  </div> -->
-
-  <!-- Contenido del Hero -->
-  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
-    <!-- Logo -->
-    <div id="hero-logo" class="mb-6">
-      <img src="/logo-black.png" alt="Cuba Tattoo Studio Logo" class="w-48 h-auto">
-    </div>
-
-    <!-- Texto Principal -->
-    <div id="hero-text" class="max-w-3xl">
-      <h1 class="text-4xl md:text-6xl font-bold mb-4">Donde el arte se encuentra con la piel</h1>
-      <p class="text-lg md:text-xl font-light">Diseños únicos, técnicas profesionales y una experiencia inigualable.</p>
-    </div>
-
-    <!-- Indicador de Scroll -->
-    <div id="scroll-indicator" class="absolute bottom-8 animate-bounce">
-      <span class="text-sm font-medium">Descubre más</span>
-      <div class="w-6 h-6 border-2 border-white rounded-full mt-2"></div>
-    </div>
+<section id="hero-section" class="relative h-screen w-full flex items-center justify-center text-center text-white overflow-hidden">
+  <DynamicBackground images={["/gallery/color/tattoo-color-1.jpg","/gallery/geometric/tattoo-geometric-1.jpg","/gallery/realistic/tattoo-realistic-1.jpg"]} />
+  <FloatingVisuals />
+  <div class="relative z-10">
+    <img id="hero-logo" src="/logo-black.png" alt="Cuba Tattoo Studio Logo" class="w-48 mx-auto mb-4" />
+    <h1 id="hero-text" class="text-4xl md:text-6xl font-bold mb-4">Donde el arte se encuentra con la piel</h1>
+    <a href="#contacto" class="bg-amber-400 text-black px-6 py-3 rounded-lg hover:bg-amber-500 transition">Reserva tu cita</a>
   </div>
 </section>
 
-<section id="second-section" class="relative h-screen w-full bg-gray-900 text-white opacity-0">
-  <div class="flex items-center justify-center h-full">
-    <h2 class="text-3xl md:text-5xl font-bold">Bienvenido a la siguiente sección</h2>
-  </div>
-</section>
-
-<style>
-  #hero-section {
-    position: relative;
-    background: inherit;
-  }
-
-  #scroll-indicator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #second-section {
-    transition: opacity 0.5s ease-in-out;
-  }
-</style>
+<script is:client="load">
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.from('#hero-logo',{opacity:0,scale:0.8,duration:1});
+  gsap.from('#hero-text',{opacity:0,y:40,duration:1,delay:0.5});
+</script>

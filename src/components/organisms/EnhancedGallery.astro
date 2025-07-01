@@ -5,10 +5,30 @@ import ImageOptimized from '../atoms/ImageOptimized.astro';
 <section id="galeria" class="py-20 px-8">
   <div class="text-center mb-8">
     <h2 class="text-3xl mb-4">Galería de Tatuajes</h2>
+    <div class="flex justify-center space-x-2" id="filters">
+      <button class="px-3 py-1 bg-gray-700 text-white rounded" data-cat="all">Todos</button>
+      <button class="px-3 py-1 bg-gray-700 text-white rounded" data-cat="traditional">Tradicional</button>
+      <button class="px-3 py-1 bg-gray-700 text-white rounded" data-cat="realistic">Realismo</button>
+      <button class="px-3 py-1 bg-gray-700 text-white rounded" data-cat="geometric">Geométrico</button>
+      <button class="px-3 py-1 bg-gray-700 text-white rounded" data-cat="color">Color</button>
+    </div>
   </div>
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="gallery-grid">
     {images.map(img => (
-      <ImageOptimized src={img.src} alt={img.alt} class="w-full h-auto rounded" />
+      <div class="gallery-item" data-cat={img.category}>
+        <ImageOptimized src={img.src} alt={img.alt} class="w-full h-auto rounded" />
+      </div>
     ))}
   </div>
 </section>
+
+<script is:client="load">
+  const filters = document.querySelectorAll('#filters button');
+  const items = document.querySelectorAll('#gallery-grid .gallery-item');
+  filters.forEach(btn => btn.addEventListener('click', () => {
+    const cat = btn.dataset.cat;
+    items.forEach(it => {
+      it.classList.toggle('hidden', cat !== 'all' && it.dataset.cat !== cat);
+    });
+  }));
+</script>
