@@ -1,0 +1,8 @@
+---
+const { type = 'text', textarea = false, rows = 3, class: cls = '', ...rest } = Astro.props;
+---
+{ textarea ? (
+  <textarea rows={rows} class={`p-2 rounded bg-gray-800 text-white ${cls}`} {...rest}></textarea>
+) : (
+  <input type={type} class={`p-2 rounded bg-gray-800 text-white ${cls}`} {...rest} />
+)}

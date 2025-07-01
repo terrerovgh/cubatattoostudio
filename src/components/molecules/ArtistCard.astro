@@ -1,0 +1,12 @@
+---
+import ImageOptimized from '../atoms/ImageOptimized.astro';
+import Heading from '../atoms/Heading.astro';
+const { artist } = Astro.props;
+const { name, specialty, bio, photo, instagram, facebook } = artist;
+---
+<div class="artist-card p-4 text-center">
+  <ImageOptimized src={photo} alt={`Foto de ${name}`} class="mx-auto mb-2 rounded-full w-40 h-40 object-cover" />
+  <Heading level={3} text={name} class="text-xl font-bold mt-2" />
+  <p class="text-sm text-gray-400">{specialty}</p>
+  <p class="mt-2 text-base text-gray-200">{bio}</p>
+</div>
