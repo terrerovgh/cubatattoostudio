@@ -1,0 +1,6 @@
+[
+  { "category": "traditional", "src": "/gallery/traditional/tattoo-traditional-1.jpg", "alt": "Rosa Tradicional" },
+  { "category": "realistic", "src": "/gallery/realistic/tattoo-realistic-1.jpg", "alt": "Retrato Realista" },
+  { "category": "geometric", "src": "/gallery/geometric/tattoo-geometric-1.jpg", "alt": "Mandala" },
+  { "category": "color", "src": "/gallery/color/tattoo-color-1.jpg", "alt": "Acuarela" }
+]

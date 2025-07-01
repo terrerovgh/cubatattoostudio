@@ -1,0 +1,12 @@
+---
+import InputField from '../atoms/InputField.astro';
+import Button from '../atoms/Button.astro';
+---
+<form class="space-y-4" on:submit|prevent={(e) => console.log('submit') }>
+  <InputField type="text" name="name" placeholder="Nombre completo" required />
+  <InputField type="email" name="email" placeholder="Correo" required />
+  <InputField type="tel" name="phone" placeholder="Teléfono" />
+  <InputField type="date" name="date" required />
+  <InputField textarea name="message" rows={4} placeholder="Mensaje" />
+  <Button type="submit" variant="primary" class="w-full">Enviar</Button>
+</form>

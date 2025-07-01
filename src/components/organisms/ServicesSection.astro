@@ -1,0 +1,13 @@
+---
+import services from '../../content/services.json';
+import ServiceCard from '../molecules/ServiceCard.astro';
+import Heading from '../atoms/Heading.astro';
+---
+<section id="servicios" class="py-20 px-8">
+  <div class="text-center mb-8">
+    <Heading level={2} text="Nuestros Servicios" class="mb-4" />
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {services.map(service => <ServiceCard service={service} />)}
+  </div>
+</section>
