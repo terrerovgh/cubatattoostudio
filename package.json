@@ -7,14 +7,21 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
+    "@astrojs/react": "^4.3.0",
     "@astrojs/solid-js": "^5.1.0",
     "@tailwindcss/vite": "^4.1.11",
-    "astro": "^5.9.2",
+    "astro": "^5.10.1",
     "gsap": "^3.13.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "solid-js": "^1.9.7",
     "tailwindcss": "^4.1.9"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.4"
   }
 }

@@ -1,0 +1,13 @@
+/* Estilos para el hero */
+.hero {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.hero__title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.hero__subtitle {
+  font-size: 1.5rem;
+  color: #888;
+}
