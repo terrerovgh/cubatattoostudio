@@ -1,0 +1,28 @@
+title: Cubatattoo Studio Docs
+url: https://docs.cubatattoostudio.com
+baseurl: ""
+theme: minima
+logo: assets/images/logo.png
+description: >-
+  Professional documentation for Cubatattoo Studio, featuring architecture, workflows, and advanced UI/UX guides.
+highlight:
+  theme: "monokai"
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-redirect-from
+  - jekyll-archives
+  - jekyll-toc
+minima:
+  skin: dark
+  social_links:
+    github: https://github.com/terrerovgh/cubatattoostudio
+    email: info@cubatattoostudio.com
+  header_pages:
+    - 1-introduction_overview.md
+    - 2-architectural_strategic_fundamentals.md
+    - 3-component_mapping_functional_overview.md
+    - 4-ejecucion_agentes_flujos_operativos.md
+    - 5-roadmap_temporal_planning.md
+    - 6-annexes_references.md
