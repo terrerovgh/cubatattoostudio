@@ -1,7 +1,7 @@
 title: Cubatattoo Studio Docs
 url: https://docs.cubatattoostudio.com
 baseurl: ""
-theme: jekyll-theme-cayman
+theme: minimal-mistakes-jekyll
 logo: assets/images/logo.png
 description: >-
   Professional documentation for Cubatattoo Studio, featuring architecture, workflows, and advanced UI/UX guides.
@@ -15,24 +15,23 @@ plugins:
   - jekyll-archives
   - jekyll-toc
 
-# Custom colors for Cayman theme
+# Minimal Mistakes settings
+minimal_mistakes_skin: "dark"
+search: true
+repository: "cubatattoostudio/docs"
+nav:
+  - title: "Inicio"
+    url: index.md
+  - title: "Guía Rápida"
+    url: 0-project_rules.md
+  - title: "Blueprint"
+    url: 1-introduccion_vision_general.md
+  - title: "Mapeo de Componentes"
+    url: 2-feature_implemetation_component_mapping.md
+  - title: "Gobernanza"
+    url: info.md
 colors:
-  background: "#181818"
-  header: "#1a1a1a"
-  accent: "#e94560"
-  text: "#f5f5f5"
-  link: "#e94560"
-  nav: "#232323"
-
-minima:
-  skin: dark
-  social_links:
-    github: https://github.com/terrerovgh/cubatattoostudio
-    email: info@cubatattoostudio.com
-  header_pages:
-    - 1-introduction_overview.md
-    - 2-architectural_strategic_fundamentals.md
-    - 3-component_mapping_functional_overview.md
-    - 4-ejecucion_agentes_flujos_operativos.md
-    - 5-roadmap_temporal_planning.md
-    - 6-annexes_references.md
+  background: "#111111"
+  accent: "#B91C1C"
+  text: "#FFFFFF"
+  secondary: "#A1A1AA"
