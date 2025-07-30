@@ -1,3 +1,25 @@
+---
+layout: page
+title: Component Mapping & Functional Overview
+---
+
+<link rel="stylesheet" href="assets/css/custom.css">
+<script src="assets/js/animations.js"></script>
+
+<div class="docs-hero">
+  <img src="assets/images/logo.png" alt="Cubatattoo Studio Banner" style="max-width:220px;margin-bottom:1rem;">
+  <h1>Component Mapping & Functional Overview</h1>
+  <p>Detailed mapping of UI components and their roles.</p>
+  <nav class="docs-nav">
+    <a href="index.html">Home</a>
+    <a href="1-introduction_overview.html">Overview</a>
+    <a href="2-architectural_strategic_fundamentals.html">Architecture</a>
+    <a href="4-ejecucion_agentes_flujos_operativos.html">Agents & Flows</a>
+    <a href="5-roadmap_temporal_planning.html">Roadmap</a>
+    <a href="6-annexes_references.html">Annexes</a>
+  </nav>
+</div>
+
 # Component Mapping and Functional Overview
 
 This document provides a detailed mapping between system components and implemented functionalities, enabling AI agents and developers to understand technical relationships and plan development efficiently.

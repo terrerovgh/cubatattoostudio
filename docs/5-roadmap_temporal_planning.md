@@ -1,3 +1,25 @@
+---
+layout: page
+title: Roadmap & Temporal Planning
+---
+
+<link rel="stylesheet" href="assets/css/custom.css">
+<script src="assets/js/animations.js"></script>
+
+<div class="docs-hero">
+  <img src="assets/images/logo.png" alt="Cubatattoo Studio Banner" style="max-width:220px;margin-bottom:1rem;">
+  <h1>Roadmap & Temporal Planning</h1>
+  <p>Timeline, milestones, and future plans for Cubatattoo Studio.</p>
+  <nav class="docs-nav">
+    <a href="index.html">Home</a>
+    <a href="1-introduction_overview.html">Overview</a>
+    <a href="2-architectural_strategic_fundamentals.html">Architecture</a>
+    <a href="3-component_mapping_functional_overview.html">Components</a>
+    <a href="4-ejecucion_agentes_flujos_operativos.html">Agents & Flows</a>
+    <a href="6-annexes_references.html">Annexes</a>
+  </nav>
+</div>
+
 # Roadmap and Temporal Planning
 
 This document presents the project roadmap, key milestones, and temporal planning for the development and deployment of cubatattoostudio.com. It is structured for AI agents and project managers to ensure transparent progress tracking and timely delivery.

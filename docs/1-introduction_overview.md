@@ -1,3 +1,25 @@
+---
+layout: page
+title: Introduction & Overview
+---
+
+<link rel="stylesheet" href="assets/css/custom.css">
+<script src="assets/js/animations.js"></script>
+
+<div class="docs-hero">
+  <img src="assets/images/logo.png" alt="Cubatattoo Studio Banner" style="max-width:220px;margin-bottom:1rem;">
+  <h1>Introduction & Overview</h1>
+  <p>Discover the vision, mission, and high-level goals of Cubatattoo Studio.</p>
+  <nav class="docs-nav">
+    <a href="index.html">Home</a>
+    <a href="2-architectural_strategic_fundamentals.html">Architecture</a>
+    <a href="3-component_mapping_functional_overview.html">Components</a>
+    <a href="4-ejecucion_agentes_flujos_operativos.html">Agents & Flows</a>
+    <a href="5-roadmap_temporal_planning.html">Roadmap</a>
+    <a href="6-annexes_references.html">Annexes</a>
+  </nav>
+</div>
+
 # Project Introduction and Executive Overview
 
 This document provides a comprehensive vision, objectives, and scope for the cubatattoostudio.com web project. It is designed for AI agents and technical teams to understand the strategic context, operational requirements, and expected outcomes, ensuring alignment and clarity throughout the development lifecycle.

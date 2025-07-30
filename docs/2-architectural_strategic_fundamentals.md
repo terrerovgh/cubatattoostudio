@@ -1,3 +1,25 @@
+---
+layout: page
+title: Architectural & Strategic Fundamentals
+---
+
+<link rel="stylesheet" href="assets/css/custom.css">
+<script src="assets/js/animations.js"></script>
+
+<div class="docs-hero">
+  <img src="assets/images/logo.png" alt="Cubatattoo Studio Banner" style="max-width:220px;margin-bottom:1rem;">
+  <h1>Architectural & Strategic Fundamentals</h1>
+  <p>Core principles and strategic decisions behind the platform.</p>
+  <nav class="docs-nav">
+    <a href="index.html">Home</a>
+    <a href="1-introduction_overview.html">Overview</a>
+    <a href="3-component_mapping_functional_overview.html">Components</a>
+    <a href="4-ejecucion_agentes_flujos_operativos.html">Agents & Flows</a>
+    <a href="5-roadmap_temporal_planning.html">Roadmap</a>
+    <a href="6-annexes_references.html">Annexes</a>
+  </nav>
+</div>
+
 # Architectural and Strategic Fundamentals
 
 This document defines the architectural principles and strategic guidelines for cubatattoostudio.com. All technical decisions, implementations, and future changes must strictly adhere to these standards to ensure consistency, scalability, and maintainability, especially for autonomous AI agents.

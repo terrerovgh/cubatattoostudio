@@ -1,3 +1,25 @@
+---
+layout: page
+title: Agents & Operational Flows
+---
+
+<link rel="stylesheet" href="assets/css/custom.css">
+<script src="assets/js/animations.js"></script>
+
+<div class="docs-hero">
+  <img src="assets/images/logo.png" alt="Cubatattoo Studio Banner" style="max-width:220px;margin-bottom:1rem;">
+  <h1>Agents & Operational Flows</h1>
+  <p>Execution flows and agent interactions within the studio platform.</p>
+  <nav class="docs-nav">
+    <a href="index.html">Home</a>
+    <a href="1-introduction_overview.html">Overview</a>
+    <a href="2-architectural_strategic_fundamentals.html">Architecture</a>
+    <a href="3-component_mapping_functional_overview.html">Components</a>
+    <a href="5-roadmap_temporal_planning.html">Roadmap</a>
+    <a href="6-annexes_references.html">Annexes</a>
+  </nav>
+</div>
+
 # Agent Execution and Operational Workflows
 
 This document explains the roles of AI agents and the operational workflows that enable seamless interaction and functionality for cubatattoostudio.com. It is designed for autonomous agents and technical teams to coordinate actions and maintain system integrity.
