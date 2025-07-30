@@ -63,7 +63,7 @@ cubatattoo-studio/
 - [Annexes & References](docs/6-annexes_references.md)
 
 ## Contact
-- Email: [email@example.com]
+- Email: [info@cubatattoostudio.com](mailto:info@cubatattoostudio.com)
 - Studio: [Google Maps Location](https://goo.gl/maps/example)
 
 ---
