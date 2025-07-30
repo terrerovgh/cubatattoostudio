@@ -1,0 +1,64 @@
+# Ignore dependencies, build artifacts, environment files, and editor settings
+node_modules/
+dist/
+build/
+.env
+.env.*
+*.log
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+coverage/
+*.coverage
+*.sqlite3
+*.db
+*.tgz
+*.tar.gz
+*.zip
+*.egg-info/
+# Ignore Trae and AI agent config
+.trae/
+# Ignore OS-specific files
+Thumbs.db
+Desktop.ini
+# Ignore test and report files
+junit.xml
+*.out
+*.spec.js
+*.spec.ts
+*.test.js
+*.test.ts
+# Ignore documentation build artifacts
+docs/_build/
+# Ignore Python virtual environments
+venv/
+.envrc
+pip-wheel-metadata/
+# Ignore npm/yarn/pnpm lock files (if not needed)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+# Ignore macOS system files
+.AppleDouble
+.LSOverride
+# Ignore SASS/SCSS cache
+.sass-cache/
+# Ignore log and cache folders
+logs/
+.cache/
+# Ignore temporary files from editors
+*.orig
+*.rej
+# Ignore backup files
+*~
+# Ignore output folders for static site generators
+public/
+static/
