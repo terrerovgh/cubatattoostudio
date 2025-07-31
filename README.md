@@ -1,71 +1,67 @@
-# CubatattooStudio.com
+# Cubatattoo Studio
 
-![Cubatattoo Studio Banner](docs/assets/images/logo.png)
+![Cubatattoo Studio Logo](docs/assets/images/logo.png)
+
+Cubatattoo Studio's digital flagship: a high-end, user-centric web experience designed to merge artistry with functionality. This project serves as the nerve center for client acquisition, brand communication, and establishing the studio's authority in the tattoo industry.
 
 ---
 
-## Executive Overview
-Cubatattoostudio.com is the digital flagship for Cubatattoo Studio, blending high-end tattoo artistry with robust, user-centric technology. The site combines immersive visuals, advanced UI, and operational excellence to convert visitors into loyal clients.
+## Features
 
-## Key Features
-- **Immersive Homepage:** Full-screen hero, animated headlines, curated artist showcase.
-- **Portfolio Gallery:** Filterable, high-res grid powered by React.
-- **Artist Profiles:** Bios, galleries, direct booking.
-- **Studio Tour & Hygiene:** Safety protocols, virtual walkthroughs.
-- **Contact & Booking:** Streamlined forms, Google Maps, clear policies.
-- **Custom UI Effects:** Artistic cursors, interactive layouts, 3D/AR support.
-- **Premium Animations:** GSAP-powered transitions and effects.
+-   **Homepage**: An immersive landing experience with animated headlines and a curated artist showcase.
+-   **Portfolio Gallery**: A dynamic, filterable, and high-resolution grid to display tattoo artwork.
+-   **Artist Profiles**: Dedicated pages with bios, individual galleries, and direct booking CTAs.
+-   **Studio Information**: A virtual tour of the studio, highlighting hygiene standards and our mission.
+-   **Contact & Booking**: A streamlined form, location info, and clear booking policies.
 
 ## Technology Stack
-- **Frontend:** React + Next.js (TypeScript)
-- **Styling:** Tailwind CSS
-- **Animation:** Framer Motion, GSAP
-- **UI Library:** [reactbits.dev](https://reactbits.dev)
-- **Backend:** Node.js (Express) / Python (FastAPI)
-- **Database:** PostgreSQL / MongoDB
-- **CI/CD:** GitHub Actions
-- **Containerization:** Docker (`cubatattoostudio-web`)
-- **Deployment:** Cloudflare Pages
-- **Docs:** GitHub Pages ([docs.cubatattoostudio.com](https://docs.cubatattoostudio.com))
 
-## Project Structure
-```
-cubatattoo-studio/
-├── public/assets/images/
-├── src/app/(pages)/
-│   ├── page.tsx
-│   ├── artists/
-│   ├── portfolio/
-│   ├── studio/
-│   └── contact/
-├── src/components/react-bits/
-├── src/styles/globals.css
-├── docker/
-│   └── Dockerfile
-│   └── docker-compose.yml
-├── .github/workflows/
-├── package.json
-└── tsconfig.json
-```
+This project is built with a modern, performance-oriented technology stack, optimized for deployment on **Cloudflare Pages**.
 
-## Quick Start
-1. **Read the docs:** [Full Documentation](docs/)
-2. **Dev environment:** Use Docker (`docker/README.md`)
-3. **Scripts:**
-   - `npm run dev` – Start development server
-   - `npm run build` – Build for production
-   - `npm run lint` – Lint codebase
-   - `npm run format` – Format codebase
+-   **Framework**: [Next.js](https://nextjs.org/) (with React)
+-   **Language**: [TypeScript](https://www.typescriptlang.org/)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+-   **Animation**: [Framer Motion](https://www.framer.com/motion/) & [GSAP](https://greensock.com/gsap/)
+-   **UI Components**: A selection of components from [reactbits.dev](https://reactbits.dev)
+-   **Deployment**: [Cloudflare Pages](https://pages.cloudflare.com/)
 
-## Resources
-- [Roadmap](docs/5-roadmap_temporal_planning.md)
-- [Component Mapping](docs/2-feature_implementation_component_mapping.md)
-- [Annexes & References](docs/6-annexes_references.md)
+## Getting Started
 
-## Contact
-- Email: [info@cubatattoostudio.com](mailto:info@cubatattoostudio.com)
-- Studio: [Google Maps Location](https://goo.gl/maps/example)
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+-   Node.js (v18 or later)
+-   npm or yarn
+
+### Installation
+
+1.  Clone the repo
+    ```sh
+    git clone https://github.com/terrerovgh/cubatattoostudio.git
+    ```
+2.  Navigate to the project directory
+    ```sh
+    cd cubatattoostudio
+    ```
+3.  Install NPM packages
+    ```sh
+    npm install
+    ```
+4.  Run the development server
+    ```sh
+    npm run dev
+    ```
+
+The application will be available at `http://localhost:3000`.
+
+## Project Documentation
+
+For a deeper dive into the project's architecture, vision, and development guidelines, please refer to our comprehensive documentation:
+
+-   [**01 - Introduction**](docs/01-introduction.md): Project vision, brand identity, and target audience.
+-   [**02 - Technical Architecture**](docs/02-technical-architecture.md): Tech stack, project structure, and design system.
+-   [**03 - Feature & Component Map**](docs/03-feature-and-component-map.md): A page-by-page blueprint and component mapping.
+-   [**04 - Developer Guide**](docs/04-developer-guide.md): Protocols for development and component integration.
 
 ---
-
-> For full guidelines, workflows, and internal rules, see the documentation in `docs/`.
