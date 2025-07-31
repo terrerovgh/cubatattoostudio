@@ -6,9 +6,10 @@ This document outlines the technical specifications, project structure, and desi
 
 The technology stack is selected to ensure performance, scalability, and a seamless integration with the specified tools and libraries. As the project is deployed on **Cloudflare Pages**, the stack is streamlined for a static and server-side rendering (SSR) environment.
 
--   **Framework**: **React with Next.js**. Chosen for its Server-Side Rendering (SSR) and Static Site Generation (SSG) capabilities, which are crucial for superior Search Engine Optimization (SEO) and fast load times.
--   **Language**: **TypeScript**. Used to ensure type safety throughout the application, which is essential for building a scalable and maintainable codebase.
--   **Styling**: **Tailwind CSS**. A utility-first CSS framework adopted for rapid and consistent UI development directly within the JSX code.
+-   **Framework**: **Astro**. Chosen for its focus on content-rich websites, delivering exceptional performance by shipping zero JavaScript by default.
+-   **Styling**: **Tailwind CSS**. A utility-first CSS framework adopted for rapid and consistent UI development.
+-   **Animation**: **Framer Motion & GSAP**. A combination of powerful animation libraries to create fluid and engaging user experiences.
+-   **UI Components**: A selection of components from **reactbits.dev**. Leveraged to accelerate development with pre-built, high-quality UI elements.
 -   **Deployment**: **Cloudflare Pages**. A platform for deploying and hosting modern web projects, providing a global CDN, continuous deployment from GitHub, and serverless functions.
 
 ## Project Directory Structure
