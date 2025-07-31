@@ -8,16 +8,17 @@ This document provides all essential context and operational rules for Gemini ag
 - All documentation and code comments must be written in English.
 
 ## Key Documents
-- Architectural Fundamentals: docs/2-fundamentos_arquitectonicos_estrategicos.md
-- Component Mapping: docs/3-mapeo_componentes_funcionalidades.md
-- Agent Execution: docs/4-ejecucion_agentes_flujos_operativos.md
-- Roadmap: docs/5-roadmap_planificacion_temporal.md
-- Project Rules for AI Agents: .trae/project_rules.md
+- **Introduction**: `docs/01-introduction.md`
+- **Technical Architecture**: `docs/02-technical-architecture.md`
+- **Feature & Component Map**: `docs/03-feature-and-component-map.md`
+- **Developer Guide**: `docs/04-developer-guide.md`
+- **Project Rules for Trae Agents**: `.trae/project_rules.md`
 
 ## Operational Rules for Gemini Agents
-- Always read and reference the documentation in the `docs/` folder before starting any task.
-- Strictly follow architectural, functional, and roadmap decisions as documented.
-- Use semantic search and code navigation to understand dependencies, relationships, and flows.
+- **Adhere to Brand Identity**: All development must strictly follow the **"Classic Americana Grit"** brand identity detailed in `docs/01-introduction.md`.
+- **Implement High-Quality Animations**: Use **GSAP** for complex timeline animations and **Framer Motion** for UI micro-interactions and page transitions. Refer to the component map in `docs/03-feature-and-component-map.md` for specific animation components.
+- **Follow the Blueprint**: Always read and reference the documentation in the `docs/` folder before starting any task. The documentation is the single source of truth.
+- **Use Semantic Search**: Use semantic search and code navigation to understand dependencies, relationships, and flows.
 - For any new feature, bugfix, or refactor, update the relevant documentation and cross-reference affected components.
 - Use descriptive and English names for all files, folders, variables, functions, and classes.
 - Separate source code, static resources, and documentation into clearly defined directories.
