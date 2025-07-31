@@ -19,30 +19,45 @@ The following directory structure is to be strictly followed to ensure modularit
 ```
 cubatattoo-studio/
 ├── public/
-│   └── assets/
-│       ├── images/
-│       └── fonts/
+│   ├── assets/
+│   │   ├── images/
+│   │   └── fonts/
+│   ├── robots.txt
+│   └── favicon.svg
 ├── src/
-│   ├── app/              # Next.js 13+ App Router
-│   │   ├── (pages)/
-│   │   │   ├── page.tsx          # Homepage
-│   │   │   ├── artists/
-│   │   │   │   ├── page.tsx
-│   │   │   │   └── [artistId]/page.tsx
-│   │   │   ├── portfolio/page.tsx
-│   │   │   ├── studio/page.tsx
-│   │   │   └── contact/page.tsx
-│   │   └── layout.tsx
 │   ├── components/
-│   │   ├── common/             # Reusable components (e.g., Button, Footer)
-│   │   ├── layout/             # Layout components (e.g., Navbar, Wrapper)
-│   │   └── react-bits/         # CRITICAL: For components copied from reactbits.dev
-│   ├── lib/                  # Helper functions, constants
-│   └── styles/
-│       └── globals.css
+│   │   ├── common/
+│   │   │   ├── Button.astro
+│   │   │   └── Footer.astro
+│   │   └── layout/
+│   │       ├── Header.astro
+│   │       └── Navbar.astro
+│   ├── layouts/
+│   │   └── BaseLayout.astro
+│   ├── pages/
+│   │   ├── index.astro
+│   │   ├── artists/
+│   │   │   ├── index.astro
+│   │   │   └── [artist].astro
+│   │   ├── portfolio.astro
+│   │   ├── studio.astro
+│   │   └── contact.astro
+│   ├── styles/
+│   │   └── global.css
+│   └── env.d.ts
 ├── package.json
+├── astro.config.mjs
 └── tsconfig.json
 ```
+
+## Routing
+
+Astro uses a file-based routing system. Each `.astro` file in the `src/pages` directory becomes a page on the website.
+
+-   **Static Routes**: A file at `src/pages/about.astro` will be available at `/about`.
+-   **Dynamic Routes**: A file at `src/pages/artists/[artist].astro` will generate a page for each artist. The `getStaticPaths` function is used to define the paths that will be pre-rendered at build time.
+
+This approach simplifies the routing logic and keeps it co-located with the page content.
 
 ## Design System
 

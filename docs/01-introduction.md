@@ -26,3 +26,19 @@ The aesthetic is not about being "edgy," but about being **authentic** and **mas
 -   A high-contrast black and white color palette, punctuated by a bold red accent.
 -   Strong, classic typography.
 -   Dramatic, high-resolution photography of the artists' work.
+
+## Core Astro Concepts
+
+This project is built using the Astro framework. Understanding the following core concepts is essential for working with the codebase.
+
+### `.astro` Files
+
+Astro components are the basic building blocks of any Astro project. They are HTML-only templates with no client-side runtime. You can spot them by their `.astro` file extension. Astro components are written in a superset of HTML, which includes support for JavaScript expressions, and a "code fence" for writing component-level JavaScript.
+
+### Components
+
+Components are reusable units of code. In Astro, you can create your own components or import them from popular frameworks like React, Svelte, or Vue. This project uses a mix of `.astro` components and components from `reactbits.dev`.
+
+### Islands Architecture
+
+Astro uses a concept called "Islands Architecture" to avoid shipping unnecessary JavaScript to the client. An "island" is an interactive UI component on an otherwise static page. By default, Astro renders all components to static HTML. If a component needs to be interactive, you can mark it as an island using a `client:*` directive. This tells Astro to load the component's JavaScript on the client-side, while the rest of the page remains static. This results in faster page loads and better performance.
