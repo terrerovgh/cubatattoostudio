@@ -58,5 +58,5 @@ The color palette is selected to evoke sophistication and boldness.
 
 The typography choice is fundamental to communicating the brand's duality: strength and clarity.
 
--   **Headings**: A bold, slightly condensed sans-serif font (e.g., **Anton** or **Oswald**). This typeface conveys strength and confidence.
+-   **Headings**: A bold, slightly condensed sans-serif font (e.g., **Anton** or **Oswald**). This typeface conveys strength and confidence. A **slab serif** font could also be a strong alternative to better match the logo's "Americana" aesthetic.
 -   **Body Text**: A clean, highly readable sans-serif font (e.g., **Inter** or **Roboto**). Clarity is paramount for functional information like artist bios, policies, and FAQs.

@@ -14,8 +14,15 @@ The target user for this website is not the impulsive, first-time tattoo custome
 
 This user profile is digitally savvy, active on visual platforms like Instagram, and expects a flawless and professional online experience from initial research to booking and aftercare. The website must therefore appeal to their appreciation for art while satisfying their expectation of efficient, professional service.
 
-## Brand Aesthetic: "Modern Grit"
+## Location
 
-The project's visual identity is defined as **"Modern Grit."** This concept combines the raw, edgy energy of classic tattoo culture with the clean, sophisticated presentation of modern digital design. The result should be a visual experience that feels both authentic and professional.
+Cubatattoo Studio is located in the heart of Albuquerque, New Mexico, a city with a rich cultural tapestry that influences the studio's artistic direction.
 
-This aesthetic will be achieved through the use of dramatic, high-resolution photography, presented on a minimalist layout that generously uses white space to allow the images to breathe and speak for themselves.
+## Brand Aesthetic: "Classic Americana Grit"
+
+The project's visual identity is defined as **"Classic Americana Grit."** This concept is inspired by the studio's logo, which features a vintage, bold, and timeless "Americana" style. The brand identity fuses the handcrafted feel of American traditional tattoos with a clean, modern digital presentation.
+
+The aesthetic is not about being "edgy," but about being **authentic** and **master-crafted**. It respects the history and craft of tattooing while presenting it professionally online. This will be achieved through:
+-   A high-contrast black and white color palette, punctuated by a bold red accent.
+-   Strong, classic typography.
+-   Dramatic, high-resolution photography of the artists' work.

@@ -2,7 +2,9 @@
 
 ![Cubatattoo Studio Logo](docs/assets/images/logo.png)
 
-Cubatattoo Studio's digital flagship: a high-end, user-centric web experience designed to merge artistry with functionality. This project serves as the nerve center for client acquisition, brand communication, and establishing the studio's authority in the tattoo industry.
+Welcome to the digital home of **Cubatattoo Studio**, located in the heart of Albuquerque, New Mexico.
+
+This project is the studio's digital flagship, a web experience designed to reflect our commitment to **authentic, master-crafted tattoo art**. It serves as the nerve center for client acquisition, brand communication, and establishing our authority as a premier destination for timeless tattoo design.
 
 ---
 
