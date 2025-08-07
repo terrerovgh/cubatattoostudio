@@ -1,0 +1,289 @@
+---
+import Button from "@/components/ui/Button.astro"
+import artistsData from "@/data/artists.json"
+import stylesData from "@/data/tattoo-styles.json"
+
+const { artists } = artistsData;
+const { styles } = stylesData;
+---
+
+<div class="portfolio-filters bg-gray-800 p-6 mb-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Filtro por Artista -->
+    <div>
+      <label for="artist-filter" class="block text-sm font-body text-gray-400 uppercase tracking-wider mb-3">
+        Filtrar por Artista
+      </label>
+      <select 
+        id="artist-filter" 
+        class="w-full bg-black text-white border border-gray-400 px-4 py-3 font-body focus:outline-none focus:border-white transition-colors duration-300"
+      >
+        <option value="all">Todos los Artistas</option>
+        {artists.map((artist) => (
+          <option value={artist.slug}>{artist.name}</option>
+        ))}
+      </select>
+    </div>
+    
+    <!-- Filtro por Estilo -->
+    <div>
+      <label for="style-filter" class="block text-sm font-body text-gray-400 uppercase tracking-wider mb-3">
+        Filtrar por Estilo
+      </label>
+      <select 
+        id="style-filter" 
+        class="w-full bg-black text-white border border-gray-400 px-4 py-3 font-body focus:outline-none focus:border-white transition-colors duration-300"
+      >
+        <option value="all">Todos los Estilos</option>
+        {styles.map((style) => (
+          <option value={style.name.toLowerCase().replace(/\s+/g, '-')}>{style.name}</option>
+        ))}
+      </select>
+    </div>
+    
+    <!-- Botones de Acción -->
+    <div class="flex flex-col justify-end">
+      <div class="flex gap-3">
+        <Button 
+          id="apply-filters" 
+          variant="primary" 
+          size="sm" 
+          class="flex-1"
+        >
+          Aplicar Filtros
+        </Button>
+        <Button 
+          id="clear-filters" 
+          variant="outline" 
+          size="sm" 
+          class="flex-1"
+        >
+          Limpiar
+        </Button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Filtros Rápidos por Estilo -->
+  <div class="mt-6 pt-6 border-t border-gray-400">
+    <h3 class="text-sm font-body text-gray-400 uppercase tracking-wider mb-4">
+      Filtros Rápidos
+    </h3>
+    <div class="flex flex-wrap gap-2">
+      <button 
+        class="quick-filter-btn px-3 py-1 bg-black text-white text-xs font-body uppercase tracking-wider border border-gray-400 hover:bg-white hover:text-black transition-all duration-300 active"
+        data-filter="all"
+      >
+        Todos
+      </button>
+      {styles.filter(style => style.featured).map((style) => (
+        <button 
+          class="quick-filter-btn px-3 py-1 bg-black text-white text-xs font-body uppercase tracking-wider border border-gray-400 hover:bg-white hover:text-black transition-all duration-300"
+          data-filter={style.name.toLowerCase().replace(/\s+/g, '-')}
+        >
+          {style.name}
+        </button>
+      ))}
+    </div>
+  </div>
+  
+  <!-- Contador de Resultados -->
+  <div class="mt-4 text-center">
+    <span id="results-count" class="text-gray-400 font-body text-sm">
+      Mostrando todos los trabajos
+    </span>
+  </div>
+</div>
+
+<script>
+  // Funcionalidad de filtros
+  class PortfolioFilters {
+    constructor() {
+      this.artistFilter = document.getElementById('artist-filter');
+      this.styleFilter = document.getElementById('style-filter');
+      this.applyBtn = document.getElementById('apply-filters');
+      this.clearBtn = document.getElementById('clear-filters');
+      this.quickFilterBtns = document.querySelectorAll('.quick-filter-btn');
+      this.resultsCount = document.getElementById('results-count');
+      
+      this.init();
+    }
+    
+    init() {
+      // Event listeners
+      this.applyBtn?.addEventListener('click', () => this.applyFilters());
+      this.clearBtn?.addEventListener('click', () => this.clearFilters());
+      
+      // Quick filter buttons
+      this.quickFilterBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const filter = e.target.dataset.filter;
+          this.setQuickFilter(filter);
+        });
+      });
+      
+      // Auto-apply filters on select change
+      this.artistFilter?.addEventListener('change', () => this.applyFilters());
+      this.styleFilter?.addEventListener('change', () => this.applyFilters());
+      
+      // Initialize with URL parameters if any
+      this.initFromURL();
+    }
+    
+    initFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const artist = urlParams.get('artist');
+      const style = urlParams.get('style');
+      
+      if (artist && this.artistFilter) {
+        this.artistFilter.value = artist;
+      }
+      
+      if (style && this.styleFilter) {
+        this.styleFilter.value = style;
+      }
+      
+      // Apply filters if any were set from URL
+      if (artist || style) {
+        this.applyFilters();
+      }
+    }
+    
+    applyFilters() {
+      const artistValue = this.artistFilter?.value || 'all';
+      const styleValue = this.styleFilter?.value || 'all';
+      
+      // Get all portfolio items
+      const portfolioItems = document.querySelectorAll('.portfolio-item');
+      let visibleCount = 0;
+      
+      portfolioItems.forEach(item => {
+        const itemArtist = item.dataset.artist;
+        const itemStyle = item.dataset.style;
+        
+        const artistMatch = artistValue === 'all' || itemArtist === artistValue;
+        const styleMatch = styleValue === 'all' || itemStyle === styleValue;
+        
+        if (artistMatch && styleMatch) {
+          item.style.display = 'block';
+          item.classList.remove('hidden');
+          visibleCount++;
+          
+          // Animate in with GSAP if available
+          if (window.gsap) {
+            window.gsap.fromTo(item, 
+              { opacity: 0, y: 20 }, 
+              { opacity: 1, y: 0, duration: 0.5, delay: visibleCount * 0.1 }
+            );
+          }
+        } else {
+          item.style.display = 'none';
+          item.classList.add('hidden');
+        }
+      });
+      
+      // Update results count
+      this.updateResultsCount(visibleCount, portfolioItems.length);
+      
+      // Update URL without page reload
+      this.updateURL(artistValue, styleValue);
+      
+      // Update quick filter buttons
+      this.updateQuickFilterButtons(styleValue);
+    }
+    
+    clearFilters() {
+      if (this.artistFilter) this.artistFilter.value = 'all';
+      if (this.styleFilter) this.styleFilter.value = 'all';
+      
+      // Clear quick filter active state
+      this.quickFilterBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.filter === 'all') {
+          btn.classList.add('active');
+        }
+      });
+      
+      this.applyFilters();
+    }
+    
+    setQuickFilter(filter) {
+      // Update quick filter buttons
+      this.quickFilterBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.filter === filter) {
+          btn.classList.add('active');
+        }
+      });
+      
+      // Update style filter
+      if (this.styleFilter) {
+        this.styleFilter.value = filter;
+      }
+      
+      this.applyFilters();
+    }
+    
+    updateQuickFilterButtons(activeFilter) {
+      this.quickFilterBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.filter === activeFilter) {
+          btn.classList.add('active');
+        }
+      });
+    }
+    
+    updateResultsCount(visible, total) {
+      if (this.resultsCount) {
+        if (visible === total) {
+          this.resultsCount.textContent = `Mostrando todos los ${total} trabajos`;
+        } else {
+          this.resultsCount.textContent = `Mostrando ${visible} de ${total} trabajos`;
+        }
+      }
+    }
+    
+    updateURL(artist, style) {
+      const url = new URL(window.location);
+      
+      if (artist !== 'all') {
+        url.searchParams.set('artist', artist);
+      } else {
+        url.searchParams.delete('artist');
+      }
+      
+      if (style !== 'all') {
+        url.searchParams.set('style', style);
+      } else {
+        url.searchParams.delete('style');
+      }
+      
+      window.history.replaceState({}, '', url);
+    }
+  }
+  
+  // Initialize filters when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    new PortfolioFilters();
+  });
+</script>
+
+<style>
+  .quick-filter-btn.active {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  
+  .portfolio-item.hidden {
+    display: none !important;
+  }
+  
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+</style>

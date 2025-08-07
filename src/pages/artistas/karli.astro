@@ -1,0 +1,351 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Header from "@/components/layout/Header.astro"
+import Footer from "@/components/layout/Footer.astro"
+import Button from "@/components/ui/Button.astro"
+import Card from "@/components/ui/Card.astro"
+import GSAPWrapper from "@/components/animations/GSAPWrapper.astro"
+import artistsData from "@/data/artists.json"
+
+const { artists } = artistsData;
+const artist = artists.find(a => a.slug === 'karli');
+
+if (!artist) {
+  return Astro.redirect('/artistas');
+}
+---
+
+<Layout 
+  title={`${artist.name} - Artista de Tatuajes | Cuba Tattoo Studio`}
+  description={`Conoce a ${artist.name}, especialista en ${artist.specialties.join(', ')}. ${artist.bio.substring(0, 150)}...`}
+>
+  <Header />
+  
+  <main class="pt-20 bg-cuba-black min-h-screen">
+    <!-- Hero Section del Artista -->
+    <section class="py-16 bg-gradient-to-b from-cuba-black to-cuba-gray-600">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Imagen del Artista -->
+          <GSAPWrapper animation="fade-in" delay={0.2}>
+            <div class="aspect-[4/5] bg-cuba-gray-600 overflow-hidden">
+              <img 
+                src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20artist%20${artist.name.toLowerCase()}%20portrait%20black%20and%20white%20studio%20lighting%20confident%20creative%20pose&image_size=portrait_4_3`}
+                alt={`${artist.name} - Artista de tatuajes especializado en ${artist.specialties.join(', ')}`}
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </GSAPWrapper>
+          
+          <!-- Información del Artista -->
+          <GSAPWrapper animation="slide-up" delay={0.4}>
+            <div class="space-y-6">
+              <div>
+                <h1 class="text-5xl md:text-7xl font-heading text-cuba-white uppercase tracking-wider mb-4">
+                  {artist.name}
+                </h1>
+                <div class="w-24 h-1 bg-cuba-white mb-6"></div>
+              </div>
+              
+              <!-- Especialidades -->
+              <div>
+                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
+                  Especialidades
+                </h2>
+                <div class="flex flex-wrap gap-3">
+                  {artist.specialties.map((specialty) => (
+                    <span class="px-4 py-2 bg-cuba-gray-600 text-cuba-white text-sm font-body uppercase tracking-wider">
+                      {specialty}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <!-- Experiencia -->
+              <div>
+                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
+                  Experiencia
+                </h2>
+                <p class="text-cuba-white font-body text-xl">
+                  {artist.experience}
+                </p>
+              </div>
+              
+              <!-- Contacto -->
+              <div>
+                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
+                  Contacto
+                </h2>
+                <div class="space-y-2">
+                  <a 
+                    href={`https://instagram.com/${artist.contact.instagram.replace('@', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300 font-body"
+                  >
+                    {artist.contact.instagram}
+                  </a>
+                  <a 
+                    href={`mailto:${artist.contact.email}`}
+                    class="block text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300 font-body"
+                  >
+                    {artist.contact.email}
+                  </a>
+                </div>
+              </div>
+              
+              <!-- CTA -->
+              <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button 
+                  href={`/reservas?artist=${artist.slug}`} 
+                  variant="primary" 
+                  size="lg"
+                >
+                  Reservar con {artist.name}
+                </Button>
+                <Button 
+                  href="/portfolio" 
+                  variant="outline" 
+                  size="lg"
+                >
+                  Ver Portfolio Completo
+                </Button>
+              </div>
+            </div>
+          </GSAPWrapper>
+        </div>
+      </div>
+    </section>
+
+    <!-- Biografía -->
+    <GSAPWrapper animation="fade-in" class="py-20">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-8 text-center">
+            Sobre {artist.name}
+          </h2>
+          <div class="prose prose-invert max-w-none">
+            <p class="text-cuba-gray-400 font-body text-lg leading-relaxed text-center">
+              {artist.bio}
+            </p>
+          </div>
+        </div>
+      </section>
+    </GSAPWrapper>
+
+    <!-- Portfolio del Artista -->
+    <section class="py-20 bg-gradient-to-b from-cuba-black to-cuba-gray-600">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <GSAPWrapper animation="fade-in">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-6">
+              Portfolio de {artist.name}
+            </h2>
+            <p class="text-cuba-gray-400 font-body text-lg max-w-2xl mx-auto">
+              Una selección de los mejores trabajos realizados por {artist.name}, mostrando su maestría en {artist.specialties.join(', ').toLowerCase()}.
+            </p>
+          </div>
+        </GSAPWrapper>
+        
+        <!-- Grid de Portfolio -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {artist.portfolio.map((work, index) => (
+            <GSAPWrapper animation="stagger" delay={index * 0.2}>
+              <Card class="group overflow-hidden">
+                <div class="aspect-square bg-cuba-gray-600 overflow-hidden">
+                  <img 
+                    src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=${work.style.toLowerCase()}%20tattoo%20${work.description.toLowerCase()}%20${work.bodyPart.toLowerCase()}%20black%20and%20white%20detailed%20professional&image_size=square_hd`}
+                    alt={`${work.title} - ${work.style} por ${artist.name}`}
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    loading="lazy"
+                  />
+                </div>
+                
+                <div class="p-6">
+                  <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-2">
+                    {work.title}
+                  </h3>
+                  
+                  <div class="space-y-2 mb-4">
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                        Estilo
+                      </span>
+                      <span class="text-sm font-body text-cuba-white">
+                        {work.style}
+                      </span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                        Tamaño
+                      </span>
+                      <span class="text-sm font-body text-cuba-white">
+                        {work.size}
+                      </span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                        Ubicación
+                      </span>
+                      <span class="text-sm font-body text-cuba-white">
+                        {work.bodyPart}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                    {work.description}
+                  </p>
+                </div>
+              </Card>
+            </GSAPWrapper>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Enfoque Artístico -->
+    <GSAPWrapper animation="fade-in" class="py-20">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-12">
+            Mi Enfoque
+          </h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <GSAPWrapper animation="stagger" delay={0.1}>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-cuba-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
+                  Creatividad
+                </h3>
+                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                  Cada diseño es una oportunidad de explorar nuevas formas y conceptos, fusionando tradición con innovación.
+                </p>
+              </div>
+            </GSAPWrapper>
+            
+            <GSAPWrapper animation="stagger" delay={0.2}>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-cuba-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 102 0V3h4v1a1 1 0 102 0V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45-1.5a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
+                  Versatilidad
+                </h3>
+                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                  Mi experiencia abarca múltiples estilos, desde el neo-tradicional hasta el geométrico más complejo.
+                </p>
+              </div>
+            </GSAPWrapper>
+            
+            <GSAPWrapper animation="stagger" delay={0.3}>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-cuba-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
+                  Calidad
+                </h3>
+                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                  Cada línea, cada sombra y cada detalle son ejecutados con la máxima precisión y cuidado artístico.
+                </p>
+              </div>
+            </GSAPWrapper>
+          </div>
+        </div>
+      </section>
+    </GSAPWrapper>
+
+    <!-- Testimonios -->
+    <section class="py-20 bg-gradient-to-b from-cuba-black to-cuba-gray-600">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <GSAPWrapper animation="fade-in">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-6">
+              Lo que dicen mis clientes
+            </h2>
+          </div>
+        </GSAPWrapper>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <GSAPWrapper animation="stagger" delay={0.1}>
+            <Card class="p-8">
+              <div class="mb-6">
+                <div class="flex text-cuba-white mb-4">
+                  {[...Array(5)].map(() => (
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p class="text-cuba-gray-400 font-body leading-relaxed italic">
+                  "Karli transformó mi idea vaga en una obra de arte increíble. Su atención al detalle y creatividad superaron todas mis expectativas."
+                </p>
+              </div>
+              <div class="text-cuba-white font-body text-sm">
+                — Sarah M.
+              </div>
+            </Card>
+          </GSAPWrapper>
+          
+          <GSAPWrapper animation="stagger" delay={0.2}>
+            <Card class="p-8">
+              <div class="mb-6">
+                <div class="flex text-cuba-white mb-4">
+                  {[...Array(5)].map(() => (
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p class="text-cuba-gray-400 font-body leading-relaxed italic">
+                  "El diseño geométrico que me hizo Karli es perfecto. Cada línea está exactamente donde debe estar. Un verdadero profesional."
+                </p>
+              </div>
+              <div class="text-cuba-white font-body text-sm">
+                — Mike R.
+              </div>
+            </Card>
+          </GSAPWrapper>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Final -->
+    <GSAPWrapper animation="fade-in" class="py-20 bg-gradient-to-t from-cuba-black to-cuba-gray-600">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto">
+          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-6">
+            ¿Listo para algo único?
+          </h2>
+          <p class="text-cuba-gray-400 font-body text-lg leading-relaxed mb-8">
+            Especializado en diseños personalizados que combinan técnica impecable con creatividad sin límites. Hablemos de tu próximo tatuaje.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button href={`/reservas?artist=${artist.slug}`} variant="primary" size="lg">
+              Reservar con {artist.name}
+            </Button>
+            <Button href="/artistas" variant="outline" size="lg">
+              Ver Otros Artistas
+            </Button>
+          </div>
+        </div>
+      </section>
+    </GSAPWrapper>
+  </main>
+  
+  <Footer />
+</Layout>

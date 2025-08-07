@@ -1,0 +1,239 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Header from "@/components/layout/Header.astro"
+import Footer from "@/components/layout/Footer.astro"
+import Button from "@/components/ui/Button.astro"
+import Card from "@/components/ui/Card.astro"
+import GSAPWrapper from "@/components/animations/GSAPWrapper.astro"
+import artistsData from "@/data/artists.json"
+
+const { artists } = artistsData;
+---
+
+<Layout 
+  title="Nuestros Artistas | Cuba Tattoo Studio"
+  description="Conoce a nuestros talentosos artistas especializados en diferentes estilos de tatuaje. David, Nina y Karli te esperan en Cuba Tattoo Studio, Albuquerque."
+>
+  <Header />
+  
+  <main class="pt-20 bg-cuba-black min-h-screen">
+    <!-- Hero Section -->
+    <GSAPWrapper animation="fade-in" class="py-16 bg-gradient-to-b from-cuba-black to-cuba-gray-600">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-4xl mx-auto">
+          <h1 class="text-5xl md:text-7xl font-heading text-cuba-white uppercase tracking-wider mb-6">
+            Nuestros Artistas
+          </h1>
+          <p class="text-xl md:text-2xl text-cuba-gray-400 font-body leading-relaxed mb-8">
+            Cada uno de nuestros artistas aporta años de experiencia, técnica especializada y una pasión única por el arte del tatuaje. Conoce a los profesionales que convertirán tu visión en realidad.
+          </p>
+          <div class="w-24 h-1 bg-cuba-white mx-auto"></div>
+        </div>
+      </section>
+    </GSAPWrapper>
+
+    <!-- Grid de Artistas -->
+    <section class="py-20">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {artists.map((artist, index) => (
+            <GSAPWrapper animation="stagger" delay={index * 0.3}>
+              <Card 
+                variant="hover" 
+                href={`/artistas/${artist.slug}`} 
+                class="h-full p-0 rounded-lg"
+                animated={true}
+              >
+                <!-- Imagen del Artista -->
+                <div class="aspect-[4/5] bg-cuba-gray-600 mb-6 overflow-hidden relative">
+                  <img 
+                    src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20artist%20${artist.name.toLowerCase()}%20portrait%20black%20and%20white%20studio%20lighting%20confident%20pose&image_size=portrait_4_3`}
+                    alt={`${artist.name} - Artista de tatuajes`}
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    loading="lazy"
+                  />
+                  <!-- Overlay con gradiente -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-cuba-black via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-500"></div>
+                  <!-- Efecto de brillo -->
+                  <div class="absolute inset-0 bg-gradient-to-br from-cuba-white via-transparent to-transparent opacity-0 group-hover:opacity-5 transition-opacity duration-700"></div>
+                </div>
+                
+                <!-- Información del Artista -->
+                <div class="p-6">
+                  <h2 class="text-3xl font-heading text-cuba-white uppercase tracking-wider mb-3 group-hover:text-cuba-gray-300 transition-colors duration-300 transform group-hover:translate-x-1">
+                    {artist.name}
+                  </h2>
+                  
+                  <!-- Especialidades -->
+                  <div class="mb-4">
+                    <h3 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-2 group-hover:text-cuba-gray-300 transition-colors duration-300">
+                      Especialidades
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                      {artist.specialties.map((specialty, idx) => (
+                        <span class="px-3 py-1 bg-cuba-gray-600 text-cuba-white text-xs font-body uppercase tracking-wider group-hover:bg-cuba-gray-500 transition-all duration-300 transform group-hover:scale-105" style={`transition-delay: ${idx * 50}ms`}>
+                          {specialty}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <!-- Experiencia -->
+                  <div class="mb-6">
+                    <h3 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-2 group-hover:text-cuba-gray-300 transition-colors duration-300">
+                      Experiencia
+                    </h3>
+                    <p class="text-cuba-white font-body text-lg group-hover:text-cuba-gray-200 transition-colors duration-300">
+                      {artist.experience}
+                    </p>
+                  </div>
+                  
+                  <!-- Biografía Corta -->
+                  <p class="text-cuba-gray-400 font-body text-sm leading-relaxed mb-6 line-clamp-4 group-hover:text-cuba-gray-300 transition-colors duration-300">
+                    {artist.bio}
+                  </p>
+                  
+                  <!-- Contacto -->
+                  <div class="mb-6">
+                    <h3 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-2 group-hover:text-cuba-gray-300 transition-colors duration-300">
+                      Contacto
+                    </h3>
+                    <div class="space-y-1">
+                      <a 
+                        href={`https://instagram.com/${artist.contact.instagram.replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="block text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300 text-sm font-body transform hover:translate-x-1"
+                        onclick="event.stopPropagation()"
+                      >
+                        {artist.contact.instagram}
+                      </a>
+                      <a 
+                        href={`mailto:${artist.contact.email}`}
+                        class="block text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300 text-sm font-body transform hover:translate-x-1"
+                        onclick="event.stopPropagation()"
+                      >
+                        {artist.contact.email}
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <!-- CTA -->
+                  <div class="flex flex-col sm:flex-row gap-3 transform group-hover:translate-y-1 transition-transform duration-300">
+                    <Button 
+                      href={`/artistas/${artist.slug}`} 
+                      variant="primary" 
+                      size="sm" 
+                      class="flex-1"
+                      animated={true}
+                    >
+                      Ver Portfolio
+                    </Button>
+                    <Button 
+                      href={`/reservas?artist=${artist.slug}`} 
+                      variant="outline" 
+                      size="sm" 
+                      class="flex-1"
+                      animated={true}
+                    >
+                      Reservar
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            </GSAPWrapper>
+          ))}
+        </div>
+      </section>
+    </section>
+
+    <!-- Sección de CTA -->
+    <GSAPWrapper animation="fade-in" class="py-20 bg-gradient-to-t from-cuba-black to-cuba-gray-600">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto">
+          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-6">
+            ¿No sabes qué artista elegir?
+          </h2>
+          <p class="text-cuba-gray-400 font-body text-lg leading-relaxed mb-8">
+            Nuestro equipo te ayudará a encontrar al artista perfecto según tu estilo preferido, ubicación del tatuaje y visión personal. Cada artista tiene su especialidad única.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button href="/reservas" variant="primary" size="lg">
+              Consulta Gratuita
+            </Button>
+            <Button href="/portfolio" variant="outline" size="lg">
+              Ver Todo el Portfolio
+            </Button>
+          </div>
+        </div>
+      </section>
+    </GSAPWrapper>
+
+    <!-- Información Adicional -->
+    <section class="py-16">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <GSAPWrapper animation="scale-in" intensity="strong" easing="back" delay={0.1}>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center">
+                <svg class="w-8 h-8 text-cuba-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-2">
+                Certificados
+              </h3>
+              <p class="text-cuba-gray-400 font-body text-sm">
+                Todos nuestros artistas están certificados y cumplen con los más altos estándares de higiene y seguridad.
+              </p>
+            </div>
+          </GSAPWrapper>
+          
+          <GSAPWrapper animation="blur-in" intensity="medium" delay={0.2}>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center">
+                <svg class="w-8 h-8 text-cuba-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-2">
+                Experiencia
+              </h3>
+              <p class="text-cuba-gray-400 font-body text-sm">
+                Más de 10 años de experiencia combinada en diferentes estilos y técnicas de tatuaje.
+              </p>
+            </div>
+          </GSAPWrapper>
+          
+          <GSAPWrapper animation="rotate-in" intensity="subtle" easing="power3" delay={0.3}>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center">
+                <svg class="w-8 h-8 text-cuba-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-2">
+                Pasión
+              </h3>
+              <p class="text-cuba-gray-400 font-body text-sm">
+                Cada artista aporta su pasión única y visión artística para crear tatuajes verdaderamente únicos.
+              </p>
+            </div>
+          </GSAPWrapper>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

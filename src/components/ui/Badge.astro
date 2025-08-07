@@ -1,0 +1,171 @@
+---
+export interface Props {
+  variant?: 'default' | 'outline' | 'ghost' | 'glow' | 'animated';
+  size?: 'sm' | 'md' | 'lg';
+  color?: 'white' | 'gray' | 'accent';
+  pulse?: boolean;
+  interactive?: boolean;
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  size = 'md',
+  color = 'white',
+  pulse = false,
+  interactive = false,
+  class: className = ''
+} = Astro.props;
+
+// Base classes
+const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-300 ease-out';
+
+// Variant classes
+const variantClasses = {
+  default: 'bg-cuba-white text-cuba-black border border-transparent',
+  outline: 'bg-transparent text-cuba-white border border-cuba-white hover:bg-cuba-white hover:text-cuba-black',
+  ghost: 'bg-transparent text-cuba-gray-300 hover:bg-cuba-gray-600 hover:text-cuba-white border border-transparent',
+  glow: 'bg-cuba-white text-cuba-black border border-transparent shadow-lg shadow-white/20 hover:shadow-white/40',
+  animated: 'bg-gradient-to-r from-cuba-white to-cuba-gray-300 text-cuba-black border border-transparent hover:from-cuba-gray-300 hover:to-cuba-white'
+};
+
+// Size classes
+const sizeClasses = {
+  sm: 'px-2 py-1 text-xs rounded-md',
+  md: 'px-3 py-1.5 text-sm rounded-lg',
+  lg: 'px-4 py-2 text-base rounded-xl'
+};
+
+// Interactive classes
+const interactiveClasses = interactive ? 'cursor-pointer hover:scale-105 active:scale-95' : '';
+
+// Pulse classes
+const pulseClasses = pulse ? 'animate-pulse' : '';
+
+const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${interactiveClasses} ${pulseClasses} ${className}`;
+---
+
+<span class={classes} data-badge-variant={variant} data-badge-interactive={interactive}>
+  <slot />
+  
+  {variant === 'glow' && (
+    <div class="absolute inset-0 rounded-inherit bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+  )}
+  
+  {variant === 'animated' && (
+    <div class="absolute inset-0 rounded-inherit bg-gradient-to-r from-white/20 via-transparent to-white/20 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none animate-pulse"></div>
+  )}
+</span>
+
+<style>
+  [data-badge-variant="glow"] {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  [data-badge-variant="glow"]:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+  
+  [data-badge-variant="glow"]:hover:before {
+    opacity: 1;
+  }
+  
+  [data-badge-variant="animated"] {
+    position: relative;
+    overflow: hidden;
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  [data-badge-interactive="true"]:hover {
+    transform: translateY(-1px);
+  }
+  
+  [data-badge-interactive="true"]:active {
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  
+  function initBadgeAnimations() {
+    const badges = document.querySelectorAll('[data-badge-interactive="true"]');
+    
+    badges.forEach(badge => {
+      badge.addEventListener('mouseenter', () => {
+        gsap.to(badge, {
+          scale: 1.05,
+          duration: 0.2,
+          ease: 'power2.out'
+        });
+        
+        // Efecto de brillo
+        if (badge.dataset.badgeVariant === 'glow') {
+          gsap.to(badge, {
+            boxShadow: '0 0 20px rgba(255, 255, 255, 0.6)',
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        }
+      });
+      
+      badge.addEventListener('mouseleave', () => {
+        gsap.to(badge, {
+          scale: 1,
+          duration: 0.2,
+          ease: 'power2.out'
+        });
+        
+        if (badge.dataset.badgeVariant === 'glow') {
+          gsap.to(badge, {
+            boxShadow: '0 0 10px rgba(255, 255, 255, 0.2)',
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        }
+      });
+      
+      badge.addEventListener('click', () => {
+        // Efecto de click con ondas
+        const ripple = document.createElement('div');
+        ripple.className = 'absolute inset-0 rounded-inherit bg-white/20 animate-ping pointer-events-none';
+        badge.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBadgeAnimations);
+  } else {
+    initBadgeAnimations();
+  }
+  
+  // Reinitialize on page navigation
+  document.addEventListener('astro:page-load', initBadgeAnimations);
+</script>

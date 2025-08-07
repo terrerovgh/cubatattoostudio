@@ -1,0 +1,85 @@
+---
+export interface Props {
+  variant?: 'default' | 'hover' | 'glass';
+  class?: string;
+  animated?: boolean;
+  href?: string;
+}
+
+const {
+  variant = 'default',
+  class: className = '',
+  animated = true,
+  href,
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'relative overflow-hidden transition-all duration-500 group';
+
+const variantClasses = {
+  default: 'bg-cuba-gray-600 hover:bg-cuba-gray-500 transform hover:scale-105 hover:shadow-2xl',
+  hover: 'bg-cuba-black border border-cuba-gray-600 hover:border-cuba-white hover:bg-cuba-gray-800 transform hover:scale-105 hover:shadow-xl',
+  glass: 'bg-cuba-black bg-opacity-50 backdrop-blur-sm border border-cuba-gray-600 hover:border-cuba-white hover:bg-opacity-70 transform hover:scale-105'
+};
+
+const animatedClasses = animated ? 'hover:animate-pulse' : '';
+const classes = `${baseClasses} ${variantClasses[variant]} ${animatedClasses} ${className}`;
+---
+
+{href ? (
+  <a href={href} class={classes} {...rest}>
+    <!-- Efecto de resplandor en hover -->
+    {animated && (
+      <div class="absolute inset-0 bg-gradient-to-br from-cuba-white via-transparent to-cuba-gray-400 opacity-0 group-hover:opacity-10 transition-all duration-700"></div>
+    )}
+    
+    <!-- Efecto de líneas decorativas -->
+    {animated && (
+      <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cuba-white to-transparent opacity-0 group-hover:opacity-60 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></div>
+    )}
+    {animated && (
+      <div class="absolute bottom-0 right-0 w-full h-px bg-gradient-to-l from-transparent via-cuba-white to-transparent opacity-0 group-hover:opacity-60 transform translate-x-full group-hover:translate-x-0 transition-all duration-500 delay-100"></div>
+    )}
+    
+    <!-- Contenido de la card -->
+    <div class="relative z-10">
+      <slot />
+    </div>
+    
+    <!-- Efecto de esquinas -->
+    {animated && (
+      <div class="absolute top-2 left-2 w-4 h-4 border-t border-l border-cuba-white opacity-0 group-hover:opacity-60 transition-all duration-300 delay-200"></div>
+    )}
+    {animated && (
+      <div class="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-cuba-white opacity-0 group-hover:opacity-60 transition-all duration-300 delay-200"></div>
+    )}
+  </a>
+) : (
+  <div class={classes} {...rest}>
+    <!-- Efecto de resplandor en hover -->
+    {animated && (
+      <div class="absolute inset-0 bg-gradient-to-br from-cuba-white via-transparent to-cuba-gray-400 opacity-0 group-hover:opacity-10 transition-all duration-700"></div>
+    )}
+    
+    <!-- Efecto de líneas decorativas -->
+    {animated && (
+      <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cuba-white to-transparent opacity-0 group-hover:opacity-60 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></div>
+    )}
+    {animated && (
+      <div class="absolute bottom-0 right-0 w-full h-px bg-gradient-to-l from-transparent via-cuba-white to-transparent opacity-0 group-hover:opacity-60 transform translate-x-full group-hover:translate-x-0 transition-all duration-500 delay-100"></div>
+    )}
+    
+    <!-- Contenido de la card -->
+    <div class="relative z-10">
+      <slot />
+    </div>
+    
+    <!-- Efecto de esquinas -->
+    {animated && (
+      <div class="absolute top-2 left-2 w-4 h-4 border-t border-l border-cuba-white opacity-0 group-hover:opacity-60 transition-all duration-300 delay-200"></div>
+    )}
+    {animated && (
+      <div class="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-cuba-white opacity-0 group-hover:opacity-60 transition-all duration-300 delay-200"></div>
+    )}
+  </div>
+)}

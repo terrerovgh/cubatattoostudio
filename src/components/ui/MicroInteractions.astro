@@ -1,0 +1,102 @@
+---
+export interface Props {
+  type?: 'hover-lift' | 'pulse' | 'ripple' | 'magnetic' | 'glow-border';
+  class?: string;
+  intensity?: 'subtle' | 'medium' | 'strong';
+  trigger?: 'hover' | 'focus' | 'active';
+}
+
+const {
+  type = 'hover-lift',
+  class: className = '',
+  intensity = 'medium',
+  trigger = 'hover',
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'relative transition-all duration-300 ease-out';
+
+const typeClasses = {
+  'hover-lift': {
+    subtle: 'hover:transform hover:-translate-y-1 hover:shadow-lg',
+    medium: 'hover:transform hover:-translate-y-2 hover:shadow-xl hover:scale-105',
+    strong: 'hover:transform hover:-translate-y-3 hover:shadow-2xl hover:scale-110'
+  },
+  'pulse': {
+    subtle: 'hover:animate-pulse',
+    medium: 'hover:animate-pulse hover:scale-105',
+    strong: 'hover:animate-pulse hover:scale-110 hover:shadow-xl'
+  },
+  'ripple': {
+    subtle: 'overflow-hidden',
+    medium: 'overflow-hidden hover:shadow-lg',
+    strong: 'overflow-hidden hover:shadow-xl hover:scale-105'
+  },
+  'magnetic': {
+    subtle: 'hover:transform hover:scale-102',
+    medium: 'hover:transform hover:scale-105 hover:rotate-1',
+    strong: 'hover:transform hover:scale-110 hover:rotate-2 hover:shadow-xl'
+  },
+  'glow-border': {
+    subtle: 'hover:shadow-sm',
+    medium: 'hover:shadow-lg hover:shadow-cuba-white/20',
+    strong: 'hover:shadow-xl hover:shadow-cuba-white/30 hover:scale-105'
+  }
+};
+
+const classes = `${baseClasses} ${typeClasses[type][intensity]} ${className}`;
+---
+
+<div class={classes} {...rest}>
+  <!-- Efecto Ripple -->
+  {type === 'ripple' && (
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-cuba-white to-transparent opacity-0 hover:opacity-20 transform -skew-x-12 -translate-x-full hover:translate-x-full transition-all duration-700 ease-out"></div>
+    </div>
+  )}
+  
+  <!-- Efecto Glow Border -->
+  {type === 'glow-border' && (
+    <>
+      <div class="absolute inset-0 rounded-inherit border border-cuba-white opacity-0 hover:opacity-60 transition-opacity duration-300"></div>
+      <div class="absolute inset-0 rounded-inherit bg-gradient-to-r from-cuba-white via-transparent to-cuba-white opacity-0 hover:opacity-10 transition-opacity duration-500"></div>
+    </>
+  )}
+  
+  <!-- Contenido -->
+  <div class="relative z-10">
+    <slot />
+  </div>
+  
+  <!-- Efectos adicionales para intensidad strong -->
+  {intensity === 'strong' && (
+    <>
+      <!-- Partículas en hover -->
+      <div class="absolute inset-0 pointer-events-none opacity-0 hover:opacity-100 transition-opacity duration-300">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div 
+            class="absolute w-1 h-1 bg-cuba-white rounded-full animate-ping"
+            style={`
+              left: ${20 + i * 30}%;
+              top: ${20 + i * 20}%;
+              animation-delay: ${i * 200}ms;
+            `}
+          ></div>
+        ))}
+      </div>
+      
+      <!-- Efecto de brillo -->
+      <div class="absolute inset-0 bg-gradient-to-br from-cuba-white via-transparent to-cuba-white opacity-0 hover:opacity-5 transition-opacity duration-500 rounded-inherit"></div>
+    </>
+  )}
+</div>
+
+<style>
+  .scale-102 {
+    transform: scale(1.02);
+  }
+  
+  .rounded-inherit {
+    border-radius: inherit;
+  }
+</style>

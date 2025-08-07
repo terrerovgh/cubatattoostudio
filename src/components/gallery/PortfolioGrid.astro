@@ -1,0 +1,294 @@
+---
+import Card from "@/components/ui/Card.astro"
+import Button from "@/components/ui/Button.astro"
+import GSAPWrapper from "@/components/animations/GSAPWrapper.astro"
+import artistsData from "@/data/artists.json"
+
+const { artists } = artistsData;
+
+// Combinar todos los portfolios de todos los artistas
+const allPortfolioItems = artists.flatMap(artist => 
+  artist.portfolio.map(work => ({
+    ...work,
+    artistName: artist.name,
+    artistSlug: artist.slug,
+    artistSpecialties: artist.specialties
+  }))
+);
+
+// Función para normalizar nombres de estilos para filtrado
+const normalizeStyle = (style: string) => {
+  return style.toLowerCase().replace(/\s+/g, '-');
+};
+---
+
+<div class="portfolio-grid">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    {allPortfolioItems.map((work, index) => (
+      <GSAPWrapper animation="stagger" delay={index * 0.1}>
+        <div 
+          class="portfolio-item group"
+          data-artist={work.artistSlug}
+          data-style={normalizeStyle(work.style)}
+          data-size={work.size.toLowerCase()}
+          data-body-part={work.bodyPart.toLowerCase().replace(/\s+/g, '-')}
+        >
+          <Card class="overflow-hidden h-full">
+            <!-- Imagen del Trabajo -->
+            <div class="aspect-square bg-cuba-gray-600 overflow-hidden relative">
+              <img 
+                src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=${work.style.toLowerCase()}%20tattoo%20${work.description.toLowerCase()}%20${work.bodyPart.toLowerCase()}%20black%20and%20white%20detailed%20professional%20high%20quality&image_size=square_hd`}
+                alt={`${work.title} - ${work.style} por ${work.artistName}`}
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                loading="lazy"
+              />
+              
+              <!-- Overlay con información rápida -->
+              <div class="absolute inset-0 bg-cuba-black bg-opacity-0 group-hover:bg-opacity-80 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <div class="text-center p-4">
+                  <h3 class="text-cuba-white font-heading text-lg uppercase tracking-wider mb-2">
+                    {work.title}
+                  </h3>
+                  <p class="text-cuba-gray-400 font-body text-sm mb-4">
+                    por {work.artistName}
+                  </p>
+                  <div class="flex flex-col gap-2">
+                    <Button 
+                      href={`/artistas/${work.artistSlug}`} 
+                      variant="primary" 
+                      size="sm"
+                    >
+                      Ver Artista
+                    </Button>
+                    <Button 
+                      href={`/reservas?artist=${work.artistSlug}`} 
+                      variant="outline" 
+                      size="sm"
+                    >
+                      Reservar
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Información del Trabajo -->
+            <div class="p-6">
+              <div class="mb-4">
+                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-2 group-hover:text-cuba-gray-400 transition-colors duration-300">
+                  {work.title}
+                </h3>
+                <p class="text-cuba-gray-400 font-body text-sm">
+                  por <a href={`/artistas/${work.artistSlug}`} class="text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300">{work.artistName}</a>
+                </p>
+              </div>
+              
+              <!-- Detalles del Trabajo -->
+              <div class="space-y-2 mb-4">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-body text-cuba-gray-400 uppercase tracking-wider">
+                    Estilo
+                  </span>
+                  <span class="text-xs font-body text-cuba-white">
+                    {work.style}
+                  </span>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-body text-cuba-gray-400 uppercase tracking-wider">
+                    Tamaño
+                  </span>
+                  <span class="text-xs font-body text-cuba-white">
+                    {work.size}
+                  </span>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-body text-cuba-gray-400 uppercase tracking-wider">
+                    Ubicación
+                  </span>
+                  <span class="text-xs font-body text-cuba-white">
+                    {work.bodyPart}
+                  </span>
+                </div>
+              </div>
+              
+              <!-- Descripción -->
+              <p class="text-cuba-gray-400 font-body text-sm leading-relaxed mb-4 line-clamp-3">
+                {work.description}
+              </p>
+              
+              <!-- Tags de Especialidades del Artista -->
+              <div class="flex flex-wrap gap-1 mb-4">
+                {work.artistSpecialties.slice(0, 2).map((specialty) => (
+                  <span class="px-2 py-1 bg-cuba-gray-600 text-cuba-white text-xs font-body uppercase tracking-wider">
+                    {specialty}
+                  </span>
+                ))}
+                {work.artistSpecialties.length > 2 && (
+                  <span class="px-2 py-1 bg-cuba-gray-600 text-cuba-gray-400 text-xs font-body">
+                    +{work.artistSpecialties.length - 2}
+                  </span>
+                )}
+              </div>
+              
+              <!-- Acciones -->
+              <div class="flex gap-2">
+                <Button 
+                  href={`/artistas/${work.artistSlug}`} 
+                  variant="outline" 
+                  size="sm" 
+                  class="flex-1 text-xs"
+                >
+                  Ver Más
+                </Button>
+                <Button 
+                  href={`/reservas?artist=${work.artistSlug}`} 
+                  variant="primary" 
+                  size="sm" 
+                  class="flex-1 text-xs"
+                >
+                  Reservar
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </GSAPWrapper>
+    ))}
+  </div>
+  
+  <!-- Mensaje cuando no hay resultados -->
+  <div id="no-results" class="hidden text-center py-20">
+    <div class="max-w-md mx-auto">
+      <div class="w-24 h-24 bg-cuba-gray-600 mx-auto mb-6 flex items-center justify-center">
+        <svg class="w-12 h-12 text-cuba-gray-400" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <h3 class="text-2xl font-heading text-cuba-white uppercase tracking-wider mb-4">
+        No se encontraron resultados
+      </h3>
+      <p class="text-cuba-gray-400 font-body mb-6">
+        No hay trabajos que coincidan con los filtros seleccionados. Intenta con diferentes criterios de búsqueda.
+      </p>
+      <Button id="clear-filters-no-results" variant="primary" size="md">
+        Limpiar Filtros
+      </Button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Funcionalidad adicional para el grid
+  class PortfolioGrid {
+    constructor() {
+      this.portfolioItems = document.querySelectorAll('.portfolio-item');
+      this.noResultsMessage = document.getElementById('no-results');
+      this.clearFiltersBtn = document.getElementById('clear-filters-no-results');
+      
+      this.init();
+    }
+    
+    init() {
+      // Observar cambios en la visibilidad de items
+      this.observeVisibilityChanges();
+      
+      // Event listener para limpiar filtros desde mensaje de no resultados
+      this.clearFiltersBtn?.addEventListener('click', () => {
+        // Trigger clear filters event
+        const clearEvent = new CustomEvent('clearFilters');
+        document.dispatchEvent(clearEvent);
+      });
+      
+      // Listen for filter changes
+      document.addEventListener('filtersApplied', (e) => {
+        this.handleFilterChange(e.detail);
+      });
+    }
+    
+    observeVisibilityChanges() {
+      // Usar MutationObserver para detectar cambios en la visibilidad
+      const observer = new MutationObserver(() => {
+        this.checkVisibleItems();
+      });
+      
+      this.portfolioItems.forEach(item => {
+        observer.observe(item, {
+          attributes: true,
+          attributeFilter: ['style', 'class']
+        });
+      });
+    }
+    
+    checkVisibleItems() {
+      const visibleItems = Array.from(this.portfolioItems).filter(item => {
+        return !item.classList.contains('hidden') && item.style.display !== 'none';
+      });
+      
+      if (visibleItems.length === 0) {
+        this.showNoResults();
+      } else {
+        this.hideNoResults();
+      }
+    }
+    
+    showNoResults() {
+      if (this.noResultsMessage) {
+        this.noResultsMessage.classList.remove('hidden');
+        
+        // Animate in with GSAP if available
+        if (window.gsap) {
+          window.gsap.fromTo(this.noResultsMessage, 
+            { opacity: 0, y: 20 }, 
+            { opacity: 1, y: 0, duration: 0.5 }
+          );
+        }
+      }
+    }
+    
+    hideNoResults() {
+      if (this.noResultsMessage) {
+        this.noResultsMessage.classList.add('hidden');
+      }
+    }
+    
+    handleFilterChange(filterData) {
+      // Aquí se puede agregar lógica adicional cuando cambien los filtros
+      console.log('Filters changed:', filterData);
+    }
+  }
+  
+  // Initialize grid when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    new PortfolioGrid();
+  });
+  
+  // Listen for clear filters event
+  document.addEventListener('clearFilters', () => {
+    // Find and trigger clear filters button in filters component
+    const clearBtn = document.getElementById('clear-filters');
+    if (clearBtn) {
+      clearBtn.click();
+    }
+  });
+</script>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .portfolio-item {
+    transition: all 0.3s ease;
+  }
+  
+  .portfolio-item.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+  }
+</style>

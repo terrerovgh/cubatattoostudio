@@ -1,0 +1,377 @@
+---
+import Input from '../ui/Input.astro';
+import Button from '../ui/Button.astro';
+
+const artists = [
+  { value: '', label: 'Sin preferencia' },
+  { value: 'david', label: 'David' },
+  { value: 'nina', label: 'Nina' },
+  { value: 'karli', label: 'Karli' }
+];
+
+const tattooSizes = [
+  { value: 'small', label: 'Pequeño (menos de 5cm)' },
+  { value: 'medium', label: 'Mediano (5-15cm)' },
+  { value: 'large', label: 'Grande (15-25cm)' },
+  { value: 'extra-large', label: 'Extra Grande (más de 25cm)' }
+];
+
+const bodyParts = [
+  { value: 'arm', label: 'Brazo' },
+  { value: 'leg', label: 'Pierna' },
+  { value: 'back', label: 'Espalda' },
+  { value: 'chest', label: 'Pecho' },
+  { value: 'shoulder', label: 'Hombro' },
+  { value: 'wrist', label: 'Muñeca' },
+  { value: 'ankle', label: 'Tobillo' },
+  { value: 'other', label: 'Otro' }
+];
+---
+
+<form id="booking-form" class="space-y-6" novalidate>
+  <!-- Información Personal -->
+  <div class="space-y-4">
+    <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider">
+      Información Personal
+    </h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Input
+        type="text"
+        name="firstName"
+        label="Nombre"
+        placeholder="Tu nombre"
+        variant="floating"
+        required
+      />
+      
+      <Input
+        type="text"
+        name="lastName"
+        label="Apellido"
+        placeholder="Tu apellido"
+        variant="floating"
+        required
+      />
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Input
+        type="email"
+        name="email"
+        label="Email"
+        placeholder="tu@email.com"
+        variant="glow"
+        icon="mail"
+        required
+      />
+      
+      <Input
+        type="tel"
+        name="phone"
+        label="Teléfono"
+        placeholder="(505) 123-4567"
+        variant="glow"
+        icon="phone"
+        required
+      />
+    </div>
+  </div>
+
+  <!-- Detalles del Tatuaje -->
+  <div class="space-y-4">
+    <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider">
+      Detalles del Tatuaje
+    </h3>
+    
+    <Input
+      type="textarea"
+      name="description"
+      label="Descripción del Tatuaje"
+      placeholder="Describe tu idea de tatuaje con el mayor detalle posible..."
+      variant="minimal"
+      required
+      rows="4"
+    />
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Tamaño -->
+      <div class="space-y-2">
+        <label class="block text-sm font-body text-cuba-white uppercase tracking-wider">
+          Tamaño Aproximado *
+        </label>
+        <select
+          name="size"
+          required
+          class="w-full px-4 py-3 bg-cuba-black border border-cuba-gray-600 text-cuba-white font-body focus:border-cuba-white focus:outline-none transition-colors duration-300"
+        >
+          <option value="">Selecciona un tamaño</option>
+          {tattooSizes.map(({ value, label }) => (
+            <option value={value}>{label}</option>
+          ))}
+        </select>
+        <div class="error-message hidden text-red-400 text-sm mt-1"></div>
+      </div>
+      
+      <!-- Ubicación -->
+      <div class="space-y-2">
+        <label class="block text-sm font-body text-cuba-white uppercase tracking-wider">
+          Ubicación en el Cuerpo *
+        </label>
+        <select
+          name="bodyPart"
+          required
+          class="w-full px-4 py-3 bg-cuba-black border border-cuba-gray-600 text-cuba-white font-body focus:border-cuba-white focus:outline-none transition-colors duration-300"
+        >
+          <option value="">Selecciona una ubicación</option>
+          {bodyParts.map(({ value, label }) => (
+            <option value={value}>{label}</option>
+          ))}
+        </select>
+        <div class="error-message hidden text-red-400 text-sm mt-1"></div>
+      </div>
+    </div>
+    
+    <!-- Artista Preferido -->
+    <div class="space-y-2">
+      <label class="block text-sm font-body text-cuba-white uppercase tracking-wider">
+        Artista Preferido
+      </label>
+      <select
+        name="artist"
+        class="w-full px-4 py-3 bg-cuba-black border border-cuba-gray-600 text-cuba-white font-body focus:border-cuba-white focus:outline-none transition-colors duration-300"
+      >
+        {artists.map(({ value, label }) => (
+          <option value={value}>{label}</option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  <!-- Imágenes de Referencia -->
+  <div class="space-y-4">
+    <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider">
+      Imágenes de Referencia
+    </h3>
+    
+    <div class="space-y-2">
+      <label class="block text-sm font-body text-cuba-gray-400">
+        Sube imágenes que te inspiren o referencias del diseño que quieres
+      </label>
+      <div class="border-2 border-dashed border-cuba-gray-600 hover:border-cuba-gray-400 transition-colors duration-300 p-6 text-center">
+        <input
+          type="file"
+          name="references"
+          id="file-upload"
+          multiple
+          accept="image/*"
+          class="hidden"
+        />
+        <label for="file-upload" class="cursor-pointer">
+          <div class="space-y-2">
+            <svg class="mx-auto h-12 w-12 text-cuba-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+              <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="text-cuba-gray-400 font-body">
+              <span class="text-cuba-white">Haz clic para subir</span> o arrastra archivos aquí
+            </div>
+            <p class="text-xs text-cuba-gray-400">PNG, JPG, GIF hasta 10MB cada una</p>
+          </div>
+        </label>
+      </div>
+      <div id="file-list" class="space-y-2"></div>
+    </div>
+  </div>
+
+  <!-- Información Adicional -->
+  <div class="space-y-4">
+    <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider">
+      Información Adicional
+    </h3>
+    
+    <Input
+      type="textarea"
+      name="additionalInfo"
+      label="Comentarios Adicionales"
+      placeholder="¿Tienes alguna alergia? ¿Es tu primer tatuaje? ¿Alguna consideración especial?"
+      variant="minimal"
+      rows="3"
+    />
+  </div>
+
+  <!-- Términos y Condiciones -->
+  <div class="space-y-4">
+    <div class="flex items-start space-x-3">
+      <input
+        type="checkbox"
+        name="terms"
+        id="terms"
+        required
+        class="mt-1 w-4 h-4 text-cuba-white bg-cuba-black border border-cuba-gray-600 focus:ring-cuba-white focus:ring-2"
+      />
+      <label for="terms" class="text-sm font-body text-cuba-gray-400">
+        Acepto los <a href="/terminos" class="text-cuba-white hover:underline">términos y condiciones</a> 
+        y confirmo que tengo al menos 18 años de edad.
+      </label>
+    </div>
+    <div class="error-message hidden text-red-400 text-sm"></div>
+  </div>
+
+  <!-- Botón de Envío -->
+  <div class="pt-6">
+    <Button type="submit" variant="primary" size="lg" class="w-full">
+      Enviar Solicitud de Reserva
+    </Button>
+  </div>
+
+  <!-- Mensaje de Estado -->
+  <div id="form-message" class="hidden p-4 rounded text-center font-body"></div>
+</form>
+
+<script>
+  // Validación y manejo del formulario
+  const form = document.getElementById('booking-form') as HTMLFormElement;
+  const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+  const fileList = document.getElementById('file-list') as HTMLElement;
+  const formMessage = document.getElementById('form-message') as HTMLElement;
+  
+  // Manejo de archivos
+  if (fileInput && fileList) {
+    fileInput.addEventListener('change', handleFileUpload);
+  }
+  
+  function handleFileUpload(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
+    
+    if (!files) return;
+    
+    fileList.innerHTML = '';
+    
+    Array.from(files).forEach((file, index) => {
+      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+        showError(`El archivo ${file.name} es demasiado grande. Máximo 10MB.`);
+        return;
+      }
+      
+      const fileItem = document.createElement('div');
+      fileItem.className = 'flex items-center justify-between p-2 bg-cuba-gray-600 rounded';
+      fileItem.innerHTML = `
+        <span class="text-sm text-cuba-white">${file.name}</span>
+        <button type="button" onclick="removeFile(${index})" class="text-cuba-gray-400 hover:text-cuba-white">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      `;
+      fileList.appendChild(fileItem);
+    });
+  }
+  
+  // Función global para remover archivos
+  (window as any).removeFile = function(index: number) {
+    const dt = new DataTransfer();
+    const files = Array.from(fileInput.files || []);
+    
+    files.forEach((file, i) => {
+      if (i !== index) dt.items.add(file);
+    });
+    
+    fileInput.files = dt.files;
+    handleFileUpload({ target: fileInput } as any);
+  };
+  
+  // Validación del formulario
+  if (form) {
+    form.addEventListener('submit', handleSubmit);
+    
+    // Validación en tiempo real
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+      input.addEventListener('blur', () => validateField(input as HTMLInputElement));
+    });
+  }
+  
+  function validateField(field: HTMLInputElement) {
+    const errorElement = field.parentElement?.querySelector('.error-message') as HTMLElement;
+    if (!errorElement) return;
+    
+    let isValid = true;
+    let errorMessage = '';
+    
+    // Validaciones específicas
+    if (field.hasAttribute('required') && !field.value.trim()) {
+      isValid = false;
+      errorMessage = 'Este campo es obligatorio';
+    } else if (field.type === 'email' && field.value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(field.value)) {
+        isValid = false;
+        errorMessage = 'Ingresa un email válido';
+      }
+    } else if (field.type === 'tel' && field.value) {
+      const phoneRegex = /^[\d\s\(\)\-\+]+$/;
+      if (!phoneRegex.test(field.value)) {
+        isValid = false;
+        errorMessage = 'Ingresa un teléfono válido';
+      }
+    }
+    
+    // Mostrar/ocultar error
+    if (isValid) {
+      errorElement.classList.add('hidden');
+      field.classList.remove('border-red-400');
+      field.classList.add('border-cuba-gray-600');
+    } else {
+      errorElement.textContent = errorMessage;
+      errorElement.classList.remove('hidden');
+      field.classList.add('border-red-400');
+      field.classList.remove('border-cuba-gray-600');
+    }
+    
+    return isValid;
+  }
+  
+  function handleSubmit(event: Event) {
+    event.preventDefault();
+    
+    // Validar todos los campos
+    const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+    let isFormValid = true;
+    
+    inputs.forEach(input => {
+      if (!validateField(input as HTMLInputElement)) {
+        isFormValid = false;
+      }
+    });
+    
+    // Validar términos y condiciones
+    const termsCheckbox = form.querySelector('input[name="terms"]') as HTMLInputElement;
+    if (!termsCheckbox.checked) {
+      isFormValid = false;
+      showError('Debes aceptar los términos y condiciones');
+    }
+    
+    if (!isFormValid) {
+      showError('Por favor, corrige los errores en el formulario');
+      return;
+    }
+    
+    // Simular envío del formulario
+    showSuccess('¡Solicitud enviada correctamente! Te contactaremos pronto.');
+    form.reset();
+    fileList.innerHTML = '';
+  }
+  
+  function showError(message: string) {
+    formMessage.textContent = message;
+    formMessage.className = 'block p-4 rounded text-center font-body bg-red-900 text-red-200 border border-red-700';
+    formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  
+  function showSuccess(message: string) {
+    formMessage.textContent = message;
+    formMessage.className = 'block p-4 rounded text-center font-body bg-green-900 text-green-200 border border-green-700';
+    formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>

@@ -1,0 +1,322 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import GSAPWrapper from '../components/animations/GSAPWrapper.astro';
+---
+
+<Layout title="Sobre el Estudio | Cuba Tattoo Studio" description="Conoce la historia, filosofía y proceso de Cuba Tattoo Studio. Preguntas frecuentes sobre tatuajes, precios y cuidados.">
+  <Header />
+  
+  <main class="bg-black text-white min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black z-10"></div>
+      <img 
+        src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20studio%20interior%2C%20clean%20modern%20design%2C%20black%20and%20white%20aesthetic%2C%20tattoo%20chairs%2C%20equipment%2C%20sterile%20environment%2C%20dramatic%20lighting%2C%20minimalist%20decor&image_size=landscape_16_9" 
+        alt="Interior del estudio Cuba Tattoo Studio" 
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      
+      <GSAPWrapper animation="fade-in" delay="0.5">
+        <div class="relative z-20 text-center max-w-4xl mx-auto px-6">
+          <h1 class="font-heading text-6xl md:text-8xl lg:text-9xl uppercase tracking-wider mb-6">
+            Nuestro
+            <span class="block">Estudio</span>
+          </h1>
+          <p class="font-body text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Más que un estudio de tatuajes, somos artistas dedicados a crear arte corporal excepcional
+          </p>
+        </div>
+      </GSAPWrapper>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <GSAPWrapper animation="slide-up" trigger="scroll">
+          <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide mb-8">
+                Nuestra Historia
+              </h2>
+              <div class="space-y-6 font-body text-lg leading-relaxed text-gray-300">
+                <p>
+                  Cuba Tattoo Studio nació en el corazón de Albuquerque con una visión clara: 
+                  elevar el arte del tatuaje a su máxima expresión. Fundado por artistas apasionados, 
+                  nuestro estudio se ha convertido en un referente de calidad y profesionalismo.
+                </p>
+                <p>
+                  Cada línea, cada sombra, cada detalle es ejecutado con precisión quirúrgica y 
+                  sensibilidad artística. No solo creamos tatuajes; creamos historias permanentes 
+                  en la piel de nuestros clientes.
+                </p>
+                <p>
+                  Nuestro compromiso va más allá del arte: mantenemos los más altos estándares 
+                  de higiene y seguridad, utilizando equipos esterilizados y técnicas que garantizan 
+                  una experiencia segura y memorable.
+                </p>
+              </div>
+            </div>
+            <div class="relative">
+              <img 
+                src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20artist%20working%2C%20professional%20setup%2C%20black%20and%20white%20photography%2C%20detailed%20tattoo%20process%2C%20sterile%20gloves%2C%20tattoo%20machine%2C%20focused%20concentration%2C%20artistic%20precision&image_size=portrait_4_3" 
+                alt="Artista trabajando en Cuba Tattoo Studio" 
+                class="w-full h-auto rounded-lg shadow-2xl"
+              />
+            </div>
+          </div>
+        </GSAPWrapper>
+      </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="py-20 px-6 bg-gray-900">
+      <div class="max-w-4xl mx-auto text-center">
+        <GSAPWrapper animation="fade-in" trigger="scroll">
+          <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide mb-12">
+            Nuestra Filosofía
+          </h2>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="space-y-4">
+              <div class="w-16 h-16 mx-auto border-2 border-white rounded-full flex items-center justify-center">
+                <span class="font-heading text-2xl">01</span>
+              </div>
+              <h3 class="font-heading text-xl uppercase tracking-wide">Excelencia</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                Cada tatuaje es una obra maestra. No aceptamos menos que la perfección en cada trazo.
+              </p>
+            </div>
+            <div class="space-y-4">
+              <div class="w-16 h-16 mx-auto border-2 border-white rounded-full flex items-center justify-center">
+                <span class="font-heading text-2xl">02</span>
+              </div>
+              <h3 class="font-heading text-xl uppercase tracking-wide">Seguridad</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                Protocolos de higiene y esterilización que superan los estándares de la industria.
+              </p>
+            </div>
+            <div class="space-y-4">
+              <div class="w-16 h-16 mx-auto border-2 border-white rounded-full flex items-center justify-center">
+                <span class="font-heading text-2xl">03</span>
+              </div>
+              <h3 class="font-heading text-xl uppercase tracking-wide">Personalización</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                Cada diseño es único, adaptado a la visión y personalidad de nuestros clientes.
+              </p>
+            </div>
+          </div>
+        </GSAPWrapper>
+      </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <GSAPWrapper animation="slide-up" trigger="scroll">
+          <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide text-center mb-16">
+            Nuestro Proceso
+          </h2>
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center space-y-4">
+              <div class="w-20 h-20 mx-auto bg-white text-black rounded-full flex items-center justify-center">
+                <span class="font-heading text-2xl">01</span>
+              </div>
+              <h3 class="font-heading text-xl uppercase tracking-wide">Consulta</h3>
+              <p class="font-body text-gray-400 text-sm leading-relaxed">
+                Discutimos tu idea, estilo preferido y ubicación. Evaluamos la viabilidad y te asesoramos.
+              </p>
+            </div>
+            <div class="text-center space-y-4">
+              <div class="w-20 h-20 mx-auto bg-white text-black rounded-full flex items-center justify-center">
+                <span class="font-heading text-2xl">02</span>
+              </div>
+              <h3 class="font-heading text-xl uppercase tracking-wide">Diseño</h3>
+              <p class="font-body text-gray-400 text-sm leading-relaxed">
+                Creamos un diseño personalizado basado en tus referencias y preferencias estéticas.
+              </p>
+            </div>
+            <div class="text-center space-y-4">
+              <div class="w-20 h-20 mx-auto bg-white text-black rounded-full flex items-center justify-center">
+                <span class="font-heading text-2xl">03</span>
+              </div>
+              <h3 class="font-heading text-xl uppercase tracking-wide">Sesión</h3>
+              <p class="font-body text-gray-400 text-sm leading-relaxed">
+                Ejecutamos el tatuaje con precisión, manteniendo comunicación constante contigo.
+              </p>
+            </div>
+            <div class="text-center space-y-4">
+              <div class="w-20 h-20 mx-auto bg-white text-black rounded-full flex items-center justify-center">
+                <span class="font-heading text-2xl">04</span>
+              </div>
+              <h3 class="font-heading text-xl uppercase tracking-wide">Cuidados</h3>
+              <p class="font-body text-gray-400 text-sm leading-relaxed">
+                Te proporcionamos instrucciones detalladas para el cuidado y seguimiento post-tatuaje.
+              </p>
+            </div>
+          </div>
+        </GSAPWrapper>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 px-6 bg-gray-900">
+      <div class="max-w-4xl mx-auto">
+        <GSAPWrapper animation="fade-in" trigger="scroll">
+          <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide text-center mb-16">
+            Preguntas Frecuentes
+          </h2>
+          <div class="space-y-8">
+            <div class="border-b border-gray-700 pb-6">
+              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Cuánto cuesta un tatuaje?</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                Los precios varían según el tamaño, complejidad y ubicación del tatuaje. 
+                Ofrecemos consultas gratuitas donde evaluamos tu proyecto y te proporcionamos 
+                un presupuesto detallado. Nuestras tarifas por hora oscilan entre $150-$200 
+                dependiendo del artista y la complejidad del diseño.
+              </p>
+            </div>
+            <div class="border-b border-gray-700 pb-6">
+              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Requieren depósito?</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                Sí, solicitamos un depósito de $100 para reservar tu cita. Este depósito 
+                se descuenta del costo total del tatuaje y no es reembolsable en caso de 
+                cancelación con menos de 48 horas de anticipación.
+              </p>
+            </div>
+            <div class="border-b border-gray-700 pb-6">
+              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Qué debo hacer antes de mi cita?</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                Asegúrate de comer bien antes de tu sesión, mantente hidratado y evita el alcohol 
+                24 horas antes. Usa ropa cómoda que permita acceso fácil al área a tatuar. 
+                Si tomas medicamentos anticoagulantes, consulta con tu médico antes de la cita.
+              </p>
+            </div>
+            <div class="border-b border-gray-700 pb-6">
+              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Cuánto tiempo tarda en sanar un tatuaje?</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                La sanación completa toma entre 2-4 semanas. Los primeros 3-5 días son críticos 
+                para el cuidado inicial. Te proporcionaremos instrucciones detalladas de cuidado 
+                y estaremos disponibles para resolver cualquier duda durante el proceso.
+              </p>
+            </div>
+            <div class="border-b border-gray-700 pb-6">
+              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Hacen retoques gratuitos?</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                Ofrecemos retoques gratuitos dentro de los primeros 6 meses, siempre que 
+                hayas seguido correctamente las instrucciones de cuidado. Los retoques 
+                por mal cuidado o exposición excesiva al sol pueden tener costo adicional.
+              </p>
+            </div>
+            <div class="pb-6">
+              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Qué medidas de seguridad mantienen?</h3>
+              <p class="font-body text-gray-400 leading-relaxed">
+                Utilizamos agujas desechables de un solo uso, equipos esterilizados en autoclave, 
+                y seguimos protocolos estrictos de desinfección. Nuestro estudio cumple con todas 
+                las regulaciones de salud de Nuevo México y mantenemos certificaciones actualizadas 
+                en primeros auxilios y patógenos transmitidos por sangre.
+              </p>
+            </div>
+          </div>
+        </GSAPWrapper>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <GSAPWrapper animation="fade-in" trigger="scroll">
+          <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide mb-8">
+            ¿Listo para tu próximo tatuaje?
+          </h2>
+          <p class="font-body text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Agenda tu consulta gratuita y comencemos a crear tu obra de arte personalizada
+          </p>
+          <div class="flex flex-col sm:flex-row gap-6 justify-center">
+            <Button href="/reservas" variant="primary" size="lg">
+              Reservar Consulta
+            </Button>
+            <Button href="/portfolio" variant="secondary" size="lg">
+              Ver Portfolio
+            </Button>
+          </div>
+        </GSAPWrapper>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .gsap-element {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  
+  gsap.registerPlugin(ScrollTrigger);
+  
+  // Hero animation
+  gsap.timeline()
+    .from('h1', { 
+      duration: 1.2, 
+      y: 100, 
+      opacity: 0, 
+      ease: 'power3.out',
+      delay: 0.5
+    })
+    .from('h1 + p', { 
+      duration: 1, 
+      y: 50, 
+      opacity: 0, 
+      ease: 'power2.out'
+    }, '-=0.6');
+  
+  // Scroll-triggered animations for sections
+  gsap.utils.toArray('.gsap-element').forEach((element) => {
+    gsap.to(element, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: element,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  });
+  
+  // Stagger animation for process steps
+  gsap.from('.text-center.space-y-4', {
+    y: 50,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.2,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.grid.md\\:grid-cols-2.lg\\:grid-cols-4',
+      start: 'top 70%'
+    }
+  });
+  
+  // FAQ items animation
+  gsap.from('.border-b.border-gray-700', {
+    x: -50,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.1,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.space-y-8',
+      start: 'top 70%'
+    }
+  });
+</script>

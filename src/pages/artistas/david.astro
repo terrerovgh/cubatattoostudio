@@ -1,0 +1,289 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Header from "@/components/layout/Header.astro"
+import Footer from "@/components/layout/Footer.astro"
+import Button from "@/components/ui/Button.astro"
+import Card from "@/components/ui/Card.astro"
+import GSAPWrapper from "@/components/animations/GSAPWrapper.astro"
+import artistsData from "@/data/artists.json"
+
+const { artists } = artistsData;
+const artist = artists.find(a => a.slug === 'david');
+
+if (!artist) {
+  return Astro.redirect('/artistas');
+}
+---
+
+<Layout 
+  title={`${artist.name} - Artista de Tatuajes | Cuba Tattoo Studio`}
+  description={`Conoce a ${artist.name}, especialista en ${artist.specialties.join(', ')}. ${artist.bio.substring(0, 150)}...`}
+>
+  <Header />
+  
+  <main class="pt-20 bg-cuba-black min-h-screen">
+    <!-- Hero Section del Artista -->
+    <section class="py-16 bg-gradient-to-b from-cuba-black to-cuba-gray-600">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Imagen del Artista -->
+          <GSAPWrapper animation="fade-in" delay={0.2}>
+            <div class="aspect-[4/5] bg-cuba-gray-600 overflow-hidden">
+              <img 
+                src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20artist%20${artist.name.toLowerCase()}%20portrait%20black%20and%20white%20studio%20lighting%20confident%20pose%20detailed&image_size=portrait_4_3`}
+                alt={`${artist.name} - Artista de tatuajes especializado en ${artist.specialties.join(', ')}`}
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </GSAPWrapper>
+          
+          <!-- Información del Artista -->
+          <GSAPWrapper animation="slide-up" delay={0.4}>
+            <div class="space-y-6">
+              <div>
+                <h1 class="text-5xl md:text-7xl font-heading text-cuba-white uppercase tracking-wider mb-4">
+                  {artist.name}
+                </h1>
+                <div class="w-24 h-1 bg-cuba-white mb-6"></div>
+              </div>
+              
+              <!-- Especialidades -->
+              <div>
+                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
+                  Especialidades
+                </h2>
+                <div class="flex flex-wrap gap-3">
+                  {artist.specialties.map((specialty) => (
+                    <span class="px-4 py-2 bg-cuba-gray-600 text-cuba-white text-sm font-body uppercase tracking-wider">
+                      {specialty}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <!-- Experiencia -->
+              <div>
+                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
+                  Experiencia
+                </h2>
+                <p class="text-cuba-white font-body text-xl">
+                  {artist.experience}
+                </p>
+              </div>
+              
+              <!-- Contacto -->
+              <div>
+                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
+                  Contacto
+                </h2>
+                <div class="space-y-2">
+                  <a 
+                    href={`https://instagram.com/${artist.contact.instagram.replace('@', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300 font-body"
+                  >
+                    {artist.contact.instagram}
+                  </a>
+                  <a 
+                    href={`mailto:${artist.contact.email}`}
+                    class="block text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300 font-body"
+                  >
+                    {artist.contact.email}
+                  </a>
+                </div>
+              </div>
+              
+              <!-- CTA -->
+              <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button 
+                  href={`/reservas?artist=${artist.slug}`} 
+                  variant="primary" 
+                  size="lg"
+                >
+                  Reservar con {artist.name}
+                </Button>
+                <Button 
+                  href="/portfolio" 
+                  variant="outline" 
+                  size="lg"
+                >
+                  Ver Portfolio Completo
+                </Button>
+              </div>
+            </div>
+          </GSAPWrapper>
+        </div>
+      </div>
+    </section>
+
+    <!-- Biografía -->
+    <GSAPWrapper animation="fade-in" class="py-20">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-8 text-center">
+            Sobre {artist.name}
+          </h2>
+          <div class="prose prose-invert max-w-none">
+            <p class="text-cuba-gray-400 font-body text-lg leading-relaxed text-center">
+              {artist.bio}
+            </p>
+          </div>
+        </div>
+      </section>
+    </GSAPWrapper>
+
+    <!-- Portfolio del Artista -->
+    <section class="py-20 bg-gradient-to-b from-cuba-black to-cuba-gray-600">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <GSAPWrapper animation="fade-in">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-6">
+              Portfolio de {artist.name}
+            </h2>
+            <p class="text-cuba-gray-400 font-body text-lg max-w-2xl mx-auto">
+              Una selección de los mejores trabajos realizados por {artist.name}, mostrando su maestría en {artist.specialties.join(', ').toLowerCase()}.
+            </p>
+          </div>
+        </GSAPWrapper>
+        
+        <!-- Grid de Portfolio -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {artist.portfolio.map((work, index) => (
+            <GSAPWrapper animation="stagger" delay={index * 0.2}>
+              <Card class="group overflow-hidden">
+                <div class="aspect-square bg-cuba-gray-600 overflow-hidden">
+                  <img 
+                    src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=${work.style.toLowerCase()}%20tattoo%20${work.description.toLowerCase()}%20${work.bodyPart.toLowerCase()}%20black%20and%20white%20detailed%20professional&image_size=square_hd`}
+                    alt={`${work.title} - ${work.style} por ${artist.name}`}
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    loading="lazy"
+                  />
+                </div>
+                
+                <div class="p-6">
+                  <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-2">
+                    {work.title}
+                  </h3>
+                  
+                  <div class="space-y-2 mb-4">
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                        Estilo
+                      </span>
+                      <span class="text-sm font-body text-cuba-white">
+                        {work.style}
+                      </span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                        Tamaño
+                      </span>
+                      <span class="text-sm font-body text-cuba-white">
+                        {work.size}
+                      </span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                        Ubicación
+                      </span>
+                      <span class="text-sm font-body text-cuba-white">
+                        {work.bodyPart}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                    {work.description}
+                  </p>
+                </div>
+              </Card>
+            </GSAPWrapper>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Proceso de Trabajo -->
+    <GSAPWrapper animation="fade-in" class="py-20">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-12">
+            Mi Proceso
+          </h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <GSAPWrapper animation="stagger" delay={0.1}>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center text-cuba-white font-heading text-2xl">
+                  01
+                </div>
+                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
+                  Consulta
+                </h3>
+                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                  Discutimos tu idea, estilo preferido y ubicación. Analizamos referencias y definimos el concepto final.
+                </p>
+              </div>
+            </GSAPWrapper>
+            
+            <GSAPWrapper animation="stagger" delay={0.2}>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center text-cuba-white font-heading text-2xl">
+                  02
+                </div>
+                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
+                  Diseño
+                </h3>
+                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                  Creo un diseño personalizado adaptado a tu anatomía y preferencias. Refinamos hasta lograr la perfección.
+                </p>
+              </div>
+            </GSAPWrapper>
+            
+            <GSAPWrapper animation="stagger" delay={0.3}>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center text-cuba-white font-heading text-2xl">
+                  03
+                </div>
+                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
+                  Ejecución
+                </h3>
+                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                  Realizo el tatuaje con la máxima precisión y cuidado, asegurando tu comodidad durante todo el proceso.
+                </p>
+              </div>
+            </GSAPWrapper>
+          </div>
+        </div>
+      </section>
+    </GSAPWrapper>
+
+    <!-- CTA Final -->
+    <GSAPWrapper animation="fade-in" class="py-20 bg-gradient-to-t from-cuba-black to-cuba-gray-600">
+      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto">
+          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-6">
+            ¿Listo para tu próximo tatuaje?
+          </h2>
+          <p class="text-cuba-gray-400 font-body text-lg leading-relaxed mb-8">
+            Contacta conmigo para discutir tu proyecto. Juntos crearemos una pieza única que refleje tu personalidad y estilo.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button href={`/reservas?artist=${artist.slug}`} variant="primary" size="lg">
+              Reservar con {artist.name}
+            </Button>
+            <Button href="/artistas" variant="outline" size="lg">
+              Ver Otros Artistas
+            </Button>
+          </div>
+        </div>
+      </section>
+    </GSAPWrapper>
+  </main>
+  
+  <Footer />
+</Layout>

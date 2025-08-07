@@ -1,0 +1,309 @@
+---
+export interface Props {
+  type?: 'text' | 'email' | 'tel' | 'password' | 'textarea';
+  variant?: 'default' | 'floating' | 'minimal' | 'glow';
+  size?: 'sm' | 'md' | 'lg';
+  label?: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  error?: string;
+  success?: boolean;
+  icon?: string;
+  class?: string;
+  id?: string;
+  name?: string;
+  value?: string;
+  rows?: number;
+}
+
+const {
+  type = 'text',
+  variant = 'default',
+  size = 'md',
+  label,
+  placeholder,
+  required = false,
+  disabled = false,
+  error,
+  success = false,
+  icon,
+  class: className = '',
+  id,
+  name,
+  value,
+  rows = 4
+} = Astro.props;
+
+// Generate unique ID if not provided
+const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+
+// Base classes
+const baseClasses = 'w-full transition-all duration-300 ease-out focus:outline-none';
+
+// Variant classes
+const variantClasses = {
+  default: 'bg-cuba-gray-800 border border-cuba-gray-600 text-cuba-white placeholder-cuba-gray-400 focus:border-cuba-white focus:bg-cuba-gray-700',
+  floating: 'bg-transparent border-b-2 border-cuba-gray-600 text-cuba-white placeholder-transparent focus:border-cuba-white',
+  minimal: 'bg-transparent border border-transparent border-b-cuba-gray-600 text-cuba-white placeholder-cuba-gray-400 focus:border-b-cuba-white',
+  glow: 'bg-cuba-gray-800 border border-cuba-gray-600 text-cuba-white placeholder-cuba-gray-400 focus:border-cuba-white focus:shadow-lg focus:shadow-white/10'
+};
+
+// Size classes
+const sizeClasses = {
+  sm: 'px-3 py-2 text-sm rounded-md',
+  md: 'px-4 py-3 text-base rounded-lg',
+  lg: 'px-5 py-4 text-lg rounded-xl'
+};
+
+// State classes
+const stateClasses = {
+  error: 'border-red-500 focus:border-red-400 bg-red-900/10',
+  success: 'border-green-500 focus:border-green-400 bg-green-900/10',
+  disabled: 'opacity-50 cursor-not-allowed bg-cuba-gray-900'
+};
+
+// Floating label adjustments
+const floatingAdjustments = variant === 'floating' ? 'pt-6 pb-2' : '';
+const minimalAdjustments = variant === 'minimal' ? 'rounded-none' : '';
+
+let inputClasses = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${floatingAdjustments} ${minimalAdjustments}`;
+
+if (error) inputClasses += ` ${stateClasses.error}`;
+else if (success) inputClasses += ` ${stateClasses.success}`;
+if (disabled) inputClasses += ` ${stateClasses.disabled}`;
+if (className) inputClasses += ` ${className}`;
+
+// Container classes
+const containerClasses = 'relative group';
+
+// Label classes
+const labelClasses = variant === 'floating' 
+  ? 'absolute left-4 top-3 text-cuba-gray-400 transition-all duration-300 pointer-events-none peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm peer-focus:text-cuba-white'
+  : 'block text-cuba-white font-medium mb-2';
+---
+
+<div class={containerClasses} data-input-variant={variant}>
+  {label && variant !== 'floating' && (
+    <label for={inputId} class={labelClasses}>
+      {label}
+      {required && <span class="text-red-400 ml-1">*</span>}
+    </label>
+  )}
+  
+  <div class="relative">
+    {icon && (
+      <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-cuba-gray-400 group-focus-within:text-cuba-white transition-colors duration-300">
+        <i class={`lucide-${icon} w-5 h-5`}></i>
+      </div>
+    )}
+    
+    {type === 'textarea' ? (
+      <textarea
+        id={inputId}
+        name={name}
+        class={`${inputClasses} ${icon ? 'pl-10' : ''} peer resize-none`}
+        placeholder={placeholder}
+        required={required}
+        disabled={disabled}
+        rows={rows}
+        data-input-type="textarea"
+      >{value}</textarea>
+    ) : (
+      <input
+        type={type}
+        id={inputId}
+        name={name}
+        class={`${inputClasses} ${icon ? 'pl-10' : ''} peer`}
+        placeholder={variant === 'floating' ? ' ' : placeholder}
+        required={required}
+        disabled={disabled}
+        value={value}
+        data-input-type={type}
+      />
+    )}
+    
+    {label && variant === 'floating' && (
+      <label for={inputId} class={labelClasses}>
+        {label}
+        {required && <span class="text-red-400 ml-1">*</span>}
+      </label>
+    )}
+    
+    <!-- Glow effect for glow variant -->
+    {variant === 'glow' && (
+      <div class="absolute inset-0 rounded-inherit bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+    )}
+    
+    <!-- Focus indicator line -->
+    {(variant === 'floating' || variant === 'minimal') && (
+      <div class="absolute bottom-0 left-0 h-0.5 bg-cuba-white transform scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 origin-left"></div>
+    )}
+  </div>
+  
+  <!-- Error message -->
+  {error && (
+    <div class="mt-2 text-red-400 text-sm flex items-center">
+      <i class="lucide-alert-circle w-4 h-4 mr-1"></i>
+      {error}
+    </div>
+  )}
+  
+  <!-- Success message -->
+  {success && !error && (
+    <div class="mt-2 text-green-400 text-sm flex items-center">
+      <i class="lucide-check-circle w-4 h-4 mr-1"></i>
+      Campo válido
+    </div>
+  )}
+</div>
+
+<style>
+  /* Custom focus styles */
+  [data-input-variant="glow"] input:focus,
+  [data-input-variant="glow"] textarea:focus {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Floating label animation */
+  [data-input-variant="floating"] input:focus + label,
+  [data-input-variant="floating"] input:not(:placeholder-shown) + label,
+  [data-input-variant="floating"] textarea:focus + label,
+  [data-input-variant="floating"] textarea:not(:placeholder-shown) + label {
+    transform: translateY(-1.5rem) scale(0.85);
+    color: #ffffff;
+  }
+  
+  /* Minimal variant focus line */
+  [data-input-variant="minimal"] .group:focus-within .absolute.bottom-0 {
+    transform: scaleX(1);
+  }
+  
+  /* Smooth transitions for all states */
+  input, textarea {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Custom scrollbar for textarea */
+  textarea::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  textarea::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  
+  textarea::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+  
+  textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  
+  function initInputAnimations() {
+    const inputs = document.querySelectorAll('input, textarea');
+    
+    inputs.forEach(input => {
+      const container = input.closest('.group');
+      const variant = container?.dataset.inputVariant;
+      
+      // Focus animations
+      input.addEventListener('focus', () => {
+        if (variant === 'glow') {
+          gsap.to(input, {
+            scale: 1.02,
+            duration: 0.2,
+            ease: 'power2.out'
+          });
+        }
+        
+        // Icon animation
+        const icon = container?.querySelector('i');
+        if (icon) {
+          gsap.to(icon, {
+            scale: 1.1,
+            color: '#ffffff',
+            duration: 0.2,
+            ease: 'power2.out'
+          });
+        }
+      });
+      
+      input.addEventListener('blur', () => {
+        if (variant === 'glow') {
+          gsap.to(input, {
+            scale: 1,
+            duration: 0.2,
+            ease: 'power2.out'
+          });
+        }
+        
+        // Icon animation
+        const icon = container?.querySelector('i');
+        if (icon) {
+          gsap.to(icon, {
+            scale: 1,
+            color: '#9CA3AF',
+            duration: 0.2,
+            ease: 'power2.out'
+          });
+        }
+      });
+      
+      // Typing animation for floating labels
+      if (variant === 'floating') {
+        input.addEventListener('input', () => {
+          const label = container?.querySelector('label');
+          if (label && input.value.length > 0) {
+            gsap.to(label, {
+              color: '#ffffff',
+              duration: 0.2,
+              ease: 'power2.out'
+            });
+          }
+        });
+      }
+      
+      // Error shake animation
+      const errorElement = container?.querySelector('.text-red-400');
+      if (errorElement) {
+        gsap.fromTo(errorElement, 
+          { x: -10, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.3, ease: 'power2.out' }
+        );
+        
+        gsap.to(input, {
+          x: [0, -5, 5, -5, 5, 0],
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+      }
+      
+      // Success animation
+      const successElement = container?.querySelector('.text-green-400');
+      if (successElement) {
+        gsap.fromTo(successElement,
+          { scale: 0.8, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' }
+        );
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initInputAnimations);
+  } else {
+    initInputAnimations();
+  }
+  
+  // Reinitialize on page navigation
+  document.addEventListener('astro:page-load', initInputAnimations);
+</script>

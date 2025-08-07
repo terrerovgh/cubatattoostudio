@@ -1,0 +1,141 @@
+---
+export interface Props {
+  variant?: 'gradient' | 'particles' | 'lines' | 'glow' | 'noise';
+  class?: string;
+  animated?: boolean;
+  intensity?: 'low' | 'medium' | 'high';
+}
+
+const {
+  variant = 'gradient',
+  class: className = '',
+  animated = true,
+  intensity = 'medium',
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'absolute inset-0 pointer-events-none';
+const classes = `${baseClasses} ${className}`;
+---
+
+{variant === 'gradient' && (
+  <div class={classes} {...rest}>
+    <!-- Gradiente animado de fondo -->
+    <div class="absolute inset-0 bg-gradient-to-br from-cuba-black via-cuba-gray-600 to-cuba-black opacity-50">
+      {animated && (
+        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-cuba-white to-transparent opacity-5 animate-pulse"></div>
+      )}
+    </div>
+    
+    <!-- Efectos de luz sutil -->
+    {intensity !== 'low' && (
+      <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-cuba-white rounded-full opacity-5 blur-3xl animate-pulse"></div>
+    )}
+    {intensity === 'high' && (
+      <div class="absolute bottom-1/4 right-1/4 w-24 h-24 bg-cuba-gray-400 rounded-full opacity-10 blur-2xl animate-pulse" style="animation-delay: 1s"></div>
+    )}
+  </div>
+)}
+
+{variant === 'particles' && (
+  <div class={classes} {...rest}>
+    <!-- Sistema de partículas sutiles -->
+    <div class="absolute inset-0 overflow-hidden">
+      {Array.from({ length: intensity === 'low' ? 3 : intensity === 'medium' ? 6 : 12 }).map((_, i) => (
+        <div 
+          class="absolute w-1 h-1 bg-cuba-white rounded-full opacity-20"
+          style={`
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
+            animation-delay: ${Math.random() * 2}s;
+          `}
+        ></div>
+      ))}
+    </div>
+  </div>
+)}
+
+{variant === 'lines' && (
+  <div class={classes} {...rest}>
+    <!-- Líneas decorativas -->
+    <div class="absolute inset-0">
+      <!-- Líneas horizontales -->
+      <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cuba-white to-transparent opacity-20"></div>
+      <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cuba-white to-transparent opacity-20"></div>
+      
+      <!-- Líneas verticales -->
+      <div class="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-cuba-white to-transparent opacity-20"></div>
+      <div class="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cuba-white to-transparent opacity-20"></div>
+      
+      {intensity !== 'low' && (
+        <>
+          <!-- Líneas diagonales -->
+          <div class="absolute top-0 left-0 w-full h-full">
+            <div class="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-cuba-white to-transparent opacity-10 transform rotate-45 origin-top-left"></div>
+            <div class="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cuba-white to-transparent opacity-10 transform -rotate-45 origin-top-right"></div>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+)}
+
+{variant === 'glow' && (
+  <div class={classes} {...rest}>
+    <!-- Efectos de resplandor -->
+    <div class="absolute inset-0">
+      <!-- Resplandor central -->
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cuba-white rounded-full opacity-5 blur-3xl"></div>
+      
+      {intensity !== 'low' && (
+        <>
+          <!-- Resplandores secundarios -->
+          <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-cuba-gray-400 rounded-full opacity-10 blur-2xl animate-pulse"></div>
+          <div class="absolute bottom-1/4 right-1/4 w-24 h-24 bg-cuba-white rounded-full opacity-8 blur-xl animate-pulse" style="animation-delay: 1.5s"></div>
+        </>
+      )}
+      
+      {intensity === 'high' && (
+        <>
+          <!-- Resplandores adicionales -->
+          <div class="absolute top-3/4 left-1/2 w-16 h-16 bg-cuba-gray-300 rounded-full opacity-15 blur-lg animate-pulse" style="animation-delay: 0.5s"></div>
+          <div class="absolute top-1/2 right-1/4 w-20 h-20 bg-cuba-white rounded-full opacity-12 blur-xl animate-pulse" style="animation-delay: 2s"></div>
+        </>
+      )}
+    </div>
+  </div>
+)}
+
+{variant === 'noise' && (
+  <div class={classes} {...rest}>
+    <!-- Efecto de ruido sutil -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute inset-0 bg-gradient-to-br from-cuba-white via-transparent to-cuba-gray-400 mix-blend-overlay"></div>
+      {animated && (
+        <div class="absolute inset-0 bg-gradient-to-tl from-transparent via-cuba-white to-transparent opacity-20 animate-pulse"></div>
+      )}
+    </div>
+  </div>
+)}
+
+<style>
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px);
+      opacity: 0.2;
+    }
+    25% {
+      transform: translateY(-10px) translateX(5px);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateY(-5px) translateX(-5px);
+      opacity: 0.6;
+    }
+    75% {
+      transform: translateY(-15px) translateX(10px);
+      opacity: 0.3;
+    }
+  }
+</style>

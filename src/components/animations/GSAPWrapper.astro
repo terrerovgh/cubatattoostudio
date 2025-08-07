@@ -1,0 +1,268 @@
+---
+export interface Props {
+  animation?: 'fade-in' | 'slide-up' | 'stagger' | 'parallax' | 'scale-in' | 'rotate-in' | 'blur-in' | 'magnetic' | 'float';
+  delay?: number;
+  duration?: number;
+  trigger?: string;
+  class?: string;
+  id?: string;
+  intensity?: 'subtle' | 'medium' | 'strong';
+  easing?: 'power1' | 'power2' | 'power3' | 'back' | 'elastic' | 'bounce';
+}
+
+const {
+  animation = 'fade-in',
+  delay = 0,
+  duration = 0.8,
+  trigger,
+  class: className = '',
+  id,
+  intensity = 'medium',
+  easing = 'power2',
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'gsap-element';
+const classes = `${baseClasses} ${className}`;
+---
+
+<div
+  class={classes}
+  id={id}
+  data-gsap-animation={animation}
+  data-gsap-delay={delay}
+  data-gsap-duration={duration}
+  data-gsap-trigger={trigger}
+  {...rest}
+>
+  <slot />
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Función para inicializar animaciones GSAP optimizadas
+  function initGSAPAnimations() {
+    const elements = document.querySelectorAll('[data-gsap-animation]');
+    
+    elements.forEach((element) => {
+      const animation = element.getAttribute('data-gsap-animation');
+      const delay = parseFloat(element.getAttribute('data-gsap-delay') || '0');
+      const duration = parseFloat(element.getAttribute('data-gsap-duration') || '0.8');
+      const trigger = element.getAttribute('data-gsap-trigger');
+      const intensity = element.getAttribute('data-gsap-intensity') || 'medium';
+      const easing = element.getAttribute('data-gsap-easing') || 'power2';
+      
+      let animationConfig = {};
+      let targetConfig = {};
+      let easingFunction = `${easing}.out`;
+      
+      // Configuraciones de intensidad
+      const intensityValues = {
+        subtle: { y: 15, scale: 0.98, rotation: 1, blur: 2 },
+        medium: { y: 30, scale: 0.95, rotation: 3, blur: 4 },
+        strong: { y: 50, scale: 0.9, rotation: 5, blur: 8 }
+      };
+      
+      const values = intensityValues[intensity];
+      
+      switch (animation) {
+        case 'fade-in':
+          animationConfig = {
+            opacity: 0,
+            y: values.y,
+            scale: values.scale
+          };
+          targetConfig = {
+            opacity: 1,
+            y: 0,
+            scale: 1
+          };
+          break;
+          
+        case 'slide-up':
+          animationConfig = {
+            opacity: 0,
+            y: values.y * 1.5,
+            scale: values.scale
+          };
+          targetConfig = {
+            opacity: 1,
+            y: 0,
+            scale: 1
+          };
+          break;
+          
+        case 'stagger':
+          animationConfig = {
+            opacity: 0,
+            y: values.y,
+            scale: values.scale,
+            rotation: values.rotation
+          };
+          targetConfig = {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotation: 0
+          };
+          break;
+          
+        case 'scale-in':
+          animationConfig = {
+            opacity: 0,
+            scale: 0.5,
+            rotation: values.rotation
+          };
+          targetConfig = {
+            opacity: 1,
+            scale: 1,
+            rotation: 0
+          };
+          easingFunction = 'back.out(1.7)';
+          break;
+          
+        case 'rotate-in':
+          animationConfig = {
+            opacity: 0,
+            rotation: values.rotation * 10,
+            scale: values.scale
+          };
+          targetConfig = {
+            opacity: 1,
+            rotation: 0,
+            scale: 1
+          };
+          break;
+          
+        case 'blur-in':
+          animationConfig = {
+            opacity: 0,
+            filter: `blur(${values.blur}px)`,
+            y: values.y
+          };
+          targetConfig = {
+            opacity: 1,
+            filter: 'blur(0px)',
+            y: 0
+          };
+          break;
+          
+        case 'magnetic':
+          animationConfig = {
+            opacity: 0,
+            scale: values.scale,
+            x: values.y * 0.5,
+            y: values.y * 0.3
+          };
+          targetConfig = {
+            opacity: 1,
+            scale: 1,
+            x: 0,
+            y: 0
+          };
+          easingFunction = 'elastic.out(1, 0.3)';
+          break;
+          
+        case 'float':
+          // Animación continua de flotación
+          gsap.set(element, { opacity: 1 });
+          gsap.to(element, {
+            y: -10,
+            duration: 2,
+            ease: 'power1.inOut',
+            yoyo: true,
+            repeat: -1,
+            delay: delay
+          });
+          return; // Salir temprano para float
+          
+        case 'parallax':
+          animationConfig = {
+            y: -values.y
+          };
+          break;
+      }
+      
+      // Configurar animación inicial
+      gsap.set(element, animationConfig);
+      
+      // Configurar animación con ScrollTrigger
+      if (animation !== 'parallax' && animation !== 'float') {
+        gsap.to(element, {
+          ...targetConfig,
+          duration,
+          delay,
+          ease: easingFunction,
+          scrollTrigger: {
+            trigger: trigger ? document.querySelector(trigger) : element,
+            start: 'top 85%',
+            end: 'bottom 15%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              // Efecto adicional al entrar
+              if (intensity === 'strong') {
+                gsap.to(element, {
+                  boxShadow: '0 10px 30px rgba(255, 255, 255, 0.1)',
+                  duration: 0.3,
+                  delay: duration * 0.5
+                });
+              }
+            }
+          }
+        });
+      }
+      
+      // Configuración especial para parallax mejorado
+      if (animation === 'parallax') {
+        gsap.to(element, {
+          y: values.y,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: element,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+            onUpdate: (self) => {
+              // Efecto adicional de opacidad basado en progreso
+              const opacity = 1 - Math.abs(self.progress - 0.5) * 0.4;
+              gsap.set(element, { opacity });
+            }
+          }
+        });
+      }
+      
+      // Agregar hover effects para elementos interactivos
+      if (element.tagName === 'A' || element.tagName === 'BUTTON' || element.classList.contains('interactive')) {
+        element.addEventListener('mouseenter', () => {
+          gsap.to(element, {
+            scale: 1.05,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          gsap.to(element, {
+            scale: 1,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        });
+      }
+    });
+  }
+  
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGSAPAnimations);
+  } else {
+    initGSAPAnimations();
+  }
+  
+  // Reinicializar en navegación SPA
+  document.addEventListener('astro:page-load', initGSAPAnimations);
+</script>

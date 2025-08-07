@@ -1,0 +1,160 @@
+{
+  "artists": [
+    {
+      "id": "david",
+      "name": "David",
+      "slug": "david",
+      "specialties": ["Japonés", "Blackwork", "Tradicional"],
+      "bio": "David es un artista especializado en tatuajes japoneses tradicionales y blackwork con más de 8 años de experiencia. Su pasión por la cultura japonesa y el arte tradicional se refleja en cada una de sus obras, creando piezas únicas que combinan técnicas ancestrales con un toque contemporáneo.",
+      "experience": "8+ años",
+      "image": "/images/artists/david.jpg",
+      "featured": true,
+      "portfolio": [
+        {
+          "id": "david-1",
+          "image": "/images/portfolio/david-dragon.jpg",
+          "title": "Dragón Japonés",
+          "style": "Japonés",
+          "description": "Dragón tradicional japonés en brazo completo",
+          "size": "large",
+          "bodyPart": "arm"
+        },
+        {
+          "id": "david-2",
+          "image": "/images/portfolio/david-koi.jpg",
+          "title": "Koi Fish",
+          "style": "Japonés",
+          "description": "Pez koi con flores de cerezo",
+          "size": "medium",
+          "bodyPart": "shoulder"
+        },
+        {
+          "id": "david-3",
+          "image": "/images/portfolio/david-blackwork.jpg",
+          "title": "Mandala Blackwork",
+          "style": "Blackwork",
+          "description": "Diseño geométrico en tinta negra",
+          "size": "medium",
+          "bodyPart": "back"
+        },
+        {
+          "id": "david-4",
+          "image": "/images/portfolio/david-traditional.jpg",
+          "title": "Rosa Tradicional",
+          "style": "Tradicional",
+          "description": "Rosa americana tradicional con banner",
+          "size": "small",
+          "bodyPart": "wrist"
+        }
+      ],
+      "contact": {
+        "instagram": "@david_cuba_tattoo",
+        "email": "david@cubatattoostudio.com"
+      }
+    },
+    {
+      "id": "nina",
+      "name": "Nina",
+      "slug": "nina",
+      "specialties": ["Realismo", "Blackwork", "Geométrico"],
+      "bio": "Nina es reconocida por su increíble habilidad en el realismo y diseños geométricos. Con 6 años de experiencia, ha perfeccionado la técnica del sombreado y los detalles fotorrealistas, creando tatuajes que parecen cobrar vida en la piel.",
+      "experience": "6+ años",
+      "image": "/images/artists/nina.jpg",
+      "featured": true,
+      "portfolio": [
+        {
+          "id": "nina-1",
+          "image": "/images/portfolio/nina-portrait.jpg",
+          "title": "Retrato Realista",
+          "style": "Realismo",
+          "description": "Retrato hiperrealista en blanco y negro",
+          "size": "large",
+          "bodyPart": "chest"
+        },
+        {
+          "id": "nina-2",
+          "image": "/images/portfolio/nina-geometric.jpg",
+          "title": "Diseño Geométrico",
+          "style": "Geométrico",
+          "description": "Patrón geométrico sagrado",
+          "size": "medium",
+          "bodyPart": "arm"
+        },
+        {
+          "id": "nina-3",
+          "image": "/images/portfolio/nina-animal.jpg",
+          "title": "León Realista",
+          "style": "Realismo",
+          "description": "León con detalles fotorrealistas",
+          "size": "large",
+          "bodyPart": "back"
+        },
+        {
+          "id": "nina-4",
+          "image": "/images/portfolio/nina-blackwork-geo.jpg",
+          "title": "Blackwork Geométrico",
+          "style": "Blackwork",
+          "description": "Combinación de blackwork y geometría",
+          "size": "medium",
+          "bodyPart": "leg"
+        }
+      ],
+      "contact": {
+        "instagram": "@nina_cuba_tattoo",
+        "email": "nina@cubatattoostudio.com"
+      }
+    },
+    {
+      "id": "karli",
+      "name": "Karli",
+      "slug": "karli",
+      "specialties": ["Minimalista", "Tradicional Americano", "Fine Line"],
+      "bio": "Karli se especializa en diseños minimalistas y fine line, creando tatuajes elegantes y delicados. Con 5 años de experiencia, ha desarrollado un estilo único que combina la simplicidad del minimalismo con la fuerza del tatuaje tradicional americano.",
+      "experience": "5+ años",
+      "image": "/images/artists/karli.jpg",
+      "featured": true,
+      "portfolio": [
+        {
+          "id": "karli-1",
+          "image": "/images/portfolio/karli-minimalist.jpg",
+          "title": "Líneas Minimalistas",
+          "style": "Minimalista",
+          "description": "Diseño minimalista de montañas",
+          "size": "small",
+          "bodyPart": "wrist"
+        },
+        {
+          "id": "karli-2",
+          "image": "/images/portfolio/karli-fineline.jpg",
+          "title": "Fine Line Floral",
+          "style": "Fine Line",
+          "description": "Flores delicadas en fine line",
+          "size": "medium",
+          "bodyPart": "ankle"
+        },
+        {
+          "id": "karli-3",
+          "image": "/images/portfolio/karli-traditional.jpg",
+          "title": "Corazón Tradicional",
+          "style": "Tradicional Americano",
+          "description": "Corazón tradicional con banner",
+          "size": "small",
+          "bodyPart": "arm"
+        },
+        {
+          "id": "karli-4",
+          "image": "/images/portfolio/karli-script.jpg",
+          "title": "Lettering Minimalista",
+          "style": "Minimalista",
+          "description": "Frase inspiracional en lettering delicado",
+          "size": "small",
+          "bodyPart": "shoulder"
+        }
+      ],
+      "contact": {
+        "instagram": "@karli_cuba_tattoo",
+        "email": "karli@cubatattoostudio.com"
+      }
+    }
+  ]
+}

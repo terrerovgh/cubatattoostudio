@@ -1,0 +1,142 @@
+---
+import Layout from "@/layouts/Layout.astro"
+---
+
+<Layout>
+  <!-- Logo mask overlay -->
+  <div id="logo-mask" class="fixed top-0 w-full h-screen z-10">
+    <section>
+      <picture
+        id="hero-key"
+        class="h-screen scale-125 block overflow-hidden fixed"
+      >
+        <div
+          id="hero-key-logo"
+          class="absolute w-full h-full flex items-center justify-center"
+        >
+          <div class="text-center">
+            <h1 class="text-8xl md:text-9xl font-bold text-white mb-4 tracking-wider">
+              CUBA
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 uppercase tracking-[0.3em]">
+              Tattoo Studio
+            </p>
+          </div>
+        </div>
+        
+        <div
+          id="hero-key-background"
+          class="w-full h-full bg-black"
+        ></div>
+      </picture>
+    </section>
+  </div>
+
+  <!-- Main content overlay -->
+  <div class="fixed flex flex-col items-center justify-between h-screen px-6 sm:px-20 py-16 w-full z-20">
+    <!-- Play button -->
+    <div class="flex-1 flex items-center justify-center">
+      <div id="hero-play-button" class="text-center">
+        <a href="/reservas" class="inline-block bg-white text-black px-8 py-4 text-lg font-semibold uppercase tracking-wider hover:bg-gray-200 transition-colors">
+          Reservar Cita
+        </a>
+        <p class="text-gray-400 text-sm uppercase tracking-wider mt-4">
+          Albuquerque, Nuevo México
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="hero-footer" class="text-center">
+      <div class="text-white mb-2">
+        <h2 class="text-2xl md:text-3xl font-bold uppercase tracking-wider">
+          Arte en tu Piel
+        </h2>
+      </div>
+      <p class="text-gray-400 text-sm uppercase tracking-[0.2em]">
+        Más de 10 años de experiencia
+      </p>
+    </footer>
+  </div>
+
+  <!-- Main content -->
+  <main class="relative z-30 bg-black">
+    <section class="min-h-screen flex items-center justify-center px-4">
+      <div class="text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white uppercase tracking-wider mb-6">
+          Bienvenido a Cuba Tattoo Studio
+        </h2>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
+          Donde el arte cobra vida en tu piel. Nuestros artistas especializados crean diseños únicos con la más alta calidad.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/artistas" class="bg-white text-black px-6 py-3 font-semibold uppercase tracking-wider hover:bg-gray-200 transition-colors">
+            Ver Artistas
+          </a>
+          <a href="/portfolio" class="border border-white text-white px-6 py-3 font-semibold uppercase tracking-wider hover:bg-white hover:text-black transition-colors">
+            Ver Portfolio
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  #logo-mask {
+    background: #000000;
+    mask-image: radial-gradient(circle, transparent 30%, black 70%);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: clamp(200vh, 150%, 100vh);
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap"
+  import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  // Initial animations
+  gsap.set(["#hero-key-logo", "#hero-play-button", "#hero-footer"], { opacity: 0, y: 30 })
+  
+  const loadingTl = gsap.timeline({ delay: 0.5 })
+  loadingTl
+    .to("#hero-key-logo", { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
+    .to("#hero-play-button", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.6")
+    .to("#hero-footer", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.4")
+
+  // Scroll animation
+  const scrollTl = gsap.timeline({
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: "main",
+      start: "top bottom",
+      end: "top top",
+      scrub: 1,
+    },
+  })
+
+  scrollTl
+    .to("#hero-key", { duration: 1, scale: 1, ease: "power2.out" })
+    .to("#hero-key-logo", { opacity: 0, y: -50 }, "<")
+    .to("#hero-footer", { opacity: 0, y: 50 }, "<")
+    .to("#hero-play-button", { opacity: 0 }, "<")
+    .to(
+      "#logo-mask",
+      {
+        maskSize: "clamp(50vh, 60%, 80vh)",
+        duration: 0.8
+      },
+      0.2
+    )
+    .to(
+      "#hero-key",
+      {
+        opacity: 0,
+        duration: 0.3,
+      },
+      0.6
+    )
+</script>
