@@ -1,365 +1,269 @@
 # 📚 Cuba Tattoo Studio - Documentation Site
 
-> Comprehensive documentation for the Cuba Tattoo Studio website project, hosted at [docs.cubatattoostudio.com](https://docs.cubatattoostudio.com)
+> Comprehensive documentation for the Cuba Tattoo Studio website project, deployed at [docs.cubatattoostudio.com](https://docs.cubatattoostudio.com)
 
-## 🎯 About This Documentation
+## 🎯 Overview
 
-This documentation site provides complete technical and user guides for the Cuba Tattoo Studio website project. Built with Jekyll and hosted on GitHub Pages, it serves as the central knowledge base for developers, designers, product managers, and end users.
+This documentation site provides complete technical guides, component documentation, and user guides for the Cuba Tattoo Studio website project. Built with Jekyll and deployed on GitHub Pages with a custom domain.
 
-## 📖 Documentation Structure
-
-### 📋 Product Documentation
-
-| Document | Purpose | Target Audience |
-|----------|---------|----------------|
-| **[Product Requirements](./product-requirements.md)** | Complete product specifications, features, and user flows | Product Managers, Stakeholders |
-| **[Technical Architecture](./technical-architecture.md)** | System architecture, technology stack, and data models | Developers, Tech Leads |
-
-### 🛠️ Technical Guides
-
-| Document | Purpose | Target Audience |
-|----------|---------|----------------|
-| **[Installation Guide](./installation-guide.md)** | Complete setup and configuration instructions | Developers, DevOps |
-| **[Component Guide](./component-guide.md)** | Detailed component documentation and usage | Frontend Developers |
-| **[GSAP Animation Guide](./gsap-animation-guide.md)** | Animation implementation inspired by rockstargames.com/VI | Frontend Developers, Animators |
-
-### 👥 Collaboration Guides
-
-| Document | Purpose | Target Audience |
-|----------|---------|----------------|
-| **[Contribution Guide](./contribution-guide.md)** | Code standards, Git workflow, and collaboration guidelines | All Development Team |
-| **[User Guide](./user-guide.md)** | End-user documentation for the website | Clients, End Users |
-
-## 🚀 Quick Navigation
-
-### For New Team Members
-1. Start with [Product Requirements](./product-requirements.md) to understand the project
-2. Follow the [Installation Guide](./installation-guide.md) to set up your environment
-3. Review [Contribution Guide](./contribution-guide.md) for development standards
-4. Explore [Component Guide](./component-guide.md) for implementation details
-
-### For Developers
-- **Getting Started:** [Installation Guide](./installation-guide.md)
-- **Architecture:** [Technical Architecture](./technical-architecture.md)
-- **Components:** [Component Guide](./component-guide.md)
-- **Animations:** [GSAP Animation Guide](./gsap-animation-guide.md)
-- **Standards:** [Contribution Guide](./contribution-guide.md)
-
-### For Product Managers
-- **Requirements:** [Product Requirements](./product-requirements.md)
-- **Architecture:** [Technical Architecture](./technical-architecture.md)
-- **User Experience:** [User Guide](./user-guide.md)
-
-### For End Users
-- **Website Usage:** [User Guide](./user-guide.md)
-
-## 🏗️ Site Architecture
+## 🏗️ Architecture
 
 ### Technology Stack
-- **Static Site Generator:** Jekyll 4.x
-- **Styling:** GitHub Pages default theme with custom CSS
-- **Hosting:** GitHub Pages
-- **Domain:** docs.cubatattoostudio.com
-- **Deployment:** GitHub Actions
+- **Static Site Generator:** Jekyll 4.3.2
+- **Styling:** Custom SCSS with Cuba Tattoo Studio design system
+- **Animations:** GSAP (GreenSock Animation Platform)
+- **Deployment:** GitHub Pages with GitHub Actions
+- **Domain:** Custom domain `docs.cubatattoostudio.com`
 
-### File Structure
+### Design System
+- **Color Palette:** Monochromatic (Black #000000, White #FFFFFF, Grays)
+- **Typography:** Bebas Neue (headings) + Inter (body text)
+- **Layout:** Dark, minimalist design matching main website
+- **Animations:** Interactive GSAP component gallery
+
+## 📁 Project Structure
+
 ```
 docs/
-├── README.md                    # This file - documentation overview
-├── _config.yml                  # Jekyll configuration
-├── CNAME                        # Custom domain configuration
-├── Gemfile                      # Ruby dependencies
-├── product-requirements.md      # Product specifications
-├── technical-architecture.md    # System architecture
-├── installation-guide.md        # Setup instructions
-├── component-guide.md           # Component documentation
-├── gsap-animation-guide.md      # Animation implementation
-├── contribution-guide.md        # Development standards
-└── user-guide.md               # End-user documentation
+├── _config.yml              # Jekyll configuration
+├── _layouts/                 # Page layouts
+│   └── default.html         # Main layout with GSAP integration
+├── _includes/               # Reusable components
+│   ├── head.html           # HTML head with fonts and meta
+│   ├── header.html         # Site navigation
+│   ├── footer.html         # Site footer
+│   └── advanced-animations.html # Advanced animation examples
+├── _sass/                   # SCSS stylesheets
+│   └── cuba.scss           # Cuba Tattoo Studio design system
+├── assets/                  # Static assets
+│   ├── css/
+│   │   └── style.scss      # Main stylesheet
+│   └── js/
+│       └── animation-gallery.js # Interactive animation controls
+├── *.md                     # Documentation pages
+├── Gemfile                  # Ruby dependencies
+├── CNAME                    # Custom domain configuration
+└── README.md               # This file
 ```
 
-## 📝 Contributing to Documentation
+## 📖 Documentation Pages
 
-### Making Changes
+### Core Guides
+- **[Installation Guide](installation-guide.md)** - Setup and development environment
+- **[Component Guide](component-guide.md)** - Reusable UI components
+- **[GSAP Animation Guide](gsap-animation-guide.md)** - Animation implementation
+- **[Technical Architecture](technical-architecture.md)** - System design and structure
+- **[Contribution Guide](contribution-guide.md)** - Development workflow and standards
+- **[User Guide](user-guide.md)** - End-user documentation
 
-1. **Edit Documentation Files**
-   ```bash
-   # Navigate to docs folder
-   cd docs/
-   
-   # Edit any .md file
-   vim product-requirements.md
-   ```
+### Interactive Features
+- **[Animation Gallery](animation-gallery.md)** - Interactive GSAP component showcase
+  - Fade animations (fade-in, fade-in-up)
+  - Slide animations (slide-left, slide-right)
+  - Stagger effects with customizable timing
+  - Scroll-triggered animations
+  - Parallax effects
+  - Advanced animations (text reveal, morphing, magnetic hover)
+  - Loading animations and spinners
+  - Code examples and implementation guides
 
-2. **Preview Changes Locally**
-   ```bash
-   # Install Jekyll (first time only)
-   gem install bundler jekyll
-   bundle install
-   
-   # Serve locally
-   bundle exec jekyll serve
-   
-   # View at http://localhost:4000
-   ```
-
-3. **Commit and Push**
-   ```bash
-   git add docs/
-   git commit -m "docs: update installation guide"
-   git push origin main
-   ```
-
-### Documentation Standards
-
-#### Markdown Guidelines
-- Use clear, descriptive headings with proper hierarchy
-- Include table of contents for long documents
-- Use code blocks with language specification
-- Add emoji icons for visual hierarchy (📚 🎯 🚀 etc.)
-- Include cross-references between related documents
-
-#### Content Structure
-```markdown
-# Document Title
-
-> Brief description of the document's purpose
-
-## 📋 Table of Contents
-1. [Section One](#section-one)
-2. [Section Two](#section-two)
-
-## 🎯 Section One
-Content here...
-
-### Subsection
-More detailed content...
-```
-
-#### Code Examples
-- Always include language specification in code blocks
-- Provide complete, runnable examples
-- Include comments for complex code
-- Show both correct ✅ and incorrect ❌ examples when helpful
-
-#### Images and Diagrams
-- Use Mermaid diagrams for architecture and flow charts
-- Include alt text for all images
-- Keep file sizes optimized
-- Store images in appropriate folders
-
-### Review Process
-
-1. **Self-Review Checklist**
-   - [ ] Content is accurate and up-to-date
-   - [ ] Links work correctly
-   - [ ] Code examples are tested
-   - [ ] Grammar and spelling checked
-   - [ ] Follows documentation standards
-
-2. **Peer Review**
-   - Create pull request for significant changes
-   - Request review from relevant team members
-   - Address feedback before merging
-
-## 🚀 GitHub Pages Deployment
+## 🚀 Deployment
 
 ### Automatic Deployment
+The site is automatically deployed to GitHub Pages using GitHub Actions:
 
-The documentation site automatically deploys when changes are pushed to the `main` branch:
-
-1. **GitHub Actions Workflow** (`.github/workflows/docs.yml`)
-   - Triggers on push to `main` branch affecting `docs/` folder
-   - Builds Jekyll site
-   - Deploys to GitHub Pages
-
-2. **Deployment Process**
-   ```yaml
-   # Simplified workflow
-   - Checkout code
-   - Setup Ruby and Jekyll
-   - Install dependencies
-   - Build site
-   - Deploy to GitHub Pages
-   ```
-
-3. **Live Site**
-   - URL: https://docs.cubatattoostudio.com
-   - Updates typically live within 2-5 minutes
-   - SSL certificate automatically managed
+1. **Trigger:** Push to `main` branch with changes in `docs/` folder
+2. **Build:** Jekyll builds the site with production settings
+3. **Deploy:** Artifacts uploaded to GitHub Pages
+4. **Domain:** Available at `docs.cubatattoostudio.com`
 
 ### Manual Deployment
+For local testing and manual deployment:
 
-If needed, you can trigger deployment manually:
+```bash
+# Navigate to docs directory
+cd docs
 
-1. **Via GitHub Interface**
-   - Go to Actions tab in repository
-   - Select "Deploy Documentation" workflow
-   - Click "Run workflow"
+# Install dependencies
+bundle install
 
-2. **Via Git**
+# Serve locally (development)
+bundle exec jekyll serve
+
+# Build for production
+JEKYLL_ENV=production bundle exec jekyll build
+```
+
+### GitHub Pages Configuration
+- **Source:** GitHub Actions workflow
+- **Custom Domain:** `docs.cubatattoostudio.com`
+- **HTTPS:** Enforced
+- **Build:** Automatic on push to main
+
+## 🎨 Design Guidelines
+
+### Visual Identity
+The documentation site maintains the same visual identity as the main Cuba Tattoo Studio website:
+
+- **Monochromatic Design:** Strict black and white color scheme
+- **Typography Hierarchy:** Bebas Neue for impact, Inter for readability
+- **Minimalist Layout:** Clean, professional aesthetic
+- **Responsive Design:** Mobile-first approach
+
+### Animation Principles
+- **Performance:** 60fps animations using transform and opacity
+- **Accessibility:** Respects `prefers-reduced-motion`
+- **Timing:** Natural feeling animations (0.3s - 1.2s duration)
+- **Easing:** Power2.out for smooth, professional feel
+
+## 🛠️ Development
+
+### Local Development Setup
+
+1. **Prerequisites:**
    ```bash
-   # Create empty commit to trigger deployment
-   git commit --allow-empty -m "trigger docs deployment"
-   git push origin main
+   # Install Ruby (version 3.1+)
+   # Install Bundler
+   gem install bundler
    ```
 
-### Configuration Files
+2. **Clone and Setup:**
+   ```bash
+   git clone https://github.com/cubatattoostudio/website.git
+   cd website/docs
+   bundle install
+   ```
 
-#### Jekyll Configuration (`_config.yml`)
-```yaml
-# Site settings
-title: "Cuba Tattoo Studio Documentation"
-description: "Comprehensive documentation for Cuba Tattoo Studio website"
-url: "https://docs.cubatattoostudio.com"
-baseurl: ""
+3. **Development Server:**
+   ```bash
+   bundle exec jekyll serve --livereload
+   # Site available at http://localhost:4000
+   ```
 
-# Build settings
-markdown: kramdown
-highlighter: rouge
-theme: minima
+### Adding New Documentation
 
-# Plugins
-plugins:
-  - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-seo-tag
+1. **Create Markdown File:**
+   ```markdown
+   ---
+   layout: default
+   title: "Your Page Title"
+   description: "Page description for SEO"
+   permalink: /your-page-url/
+   ---
+   
+   # Your Content Here
+   ```
 
-# GitHub Pages specific
-github:
-  repository_url: "https://github.com/cubatattoostudio/website"
-```
+2. **Update Navigation:**
+   - Add link to `_includes/header.html`
+   - Update `_config.yml` navigation section
 
-#### Custom Domain (`CNAME`)
-```
-docs.cubatattoostudio.com
-```
+3. **Add to Footer:**
+   - Include in `_includes/footer.html` quick links
 
-#### Dependencies (`Gemfile`)
-```ruby
-source "https://rubygems.org"
+### Animation Gallery Contributions
 
-gem "github-pages", group: :jekyll_plugins
-gem "jekyll-feed"
-gem "jekyll-sitemap"
-gem "jekyll-seo-tag"
-```
+To add new animation examples:
 
-## 🔧 Troubleshooting
+1. **Create Animation Component:**
+   ```html
+   <div class="component-card">
+     <h3 class="component-title">Animation Name</h3>
+     <p class="component-description">Description</p>
+     <div class="component-demo" id="demo-id">
+       <!-- Demo element -->
+     </div>
+     <details>
+       <summary>📋 View Code</summary>
+       <!-- Code examples -->
+     </details>
+     <button class="btn btn-outline" onclick="replayFunction()">🔄 Replay</button>
+   </div>
+   ```
 
-### Common Issues
+2. **Add JavaScript Function:**
+   ```javascript
+   function replayFunction() {
+     const element = document.querySelector('#demo-id .demo-element');
+     gsap.fromTo(element, fromProps, toProps);
+   }
+   ```
 
-#### Build Failures
-```bash
-# Check build status
-gh workflow list
-gh run list --workflow="Deploy Documentation"
+3. **Include in Gallery:**
+   - Add to `animation-gallery.md` or `_includes/advanced-animations.html`
 
-# View build logs
-gh run view [run-id]
-```
+## 🔧 Configuration
 
-#### Local Development Issues
-```bash
-# Update dependencies
-bundle update
+### Jekyll Configuration (`_config.yml`)
+- Site metadata and SEO settings
+- Plugin configuration
+- Custom variables for Cuba Tattoo Studio
+- Navigation structure
+- Build settings for GitHub Pages
 
-# Clear Jekyll cache
-bundle exec jekyll clean
+### Styling Configuration
+- **Main Stylesheet:** `assets/css/style.scss`
+- **Design System:** `_sass/cuba.scss`
+- **Component Styles:** Inline in components or includes
 
-# Rebuild site
-bundle exec jekyll build
-```
+### JavaScript Configuration
+- **GSAP Library:** Loaded from CDN in layout
+- **Animation Gallery:** `assets/js/animation-gallery.js`
+- **Interactive Controls:** Inline scripts in components
 
-#### Domain Issues
-- Verify CNAME file contains correct domain
-- Check DNS settings point to GitHub Pages
-- Ensure custom domain is configured in repository settings
+## 📊 Performance
 
-### Getting Help
+### Optimization Features
+- **Compressed CSS:** Sass compression enabled
+- **Optimized Images:** Responsive images with proper sizing
+- **Minimal JavaScript:** Only load what's needed per page
+- **CDN Resources:** GSAP loaded from reliable CDN
+- **Caching:** GitHub Pages provides automatic caching
 
-1. **Check Build Status**
-   - GitHub Actions tab shows deployment status
-   - Build logs provide detailed error information
+### Performance Monitoring
+- **Lighthouse Scores:** Target 90+ in all categories
+- **Core Web Vitals:** Optimized for Google's metrics
+- **Animation Performance:** 60fps animations with GPU acceleration
 
-2. **Documentation Issues**
-   - Create issue in main repository
-   - Tag with "documentation" label
-   - Provide specific details about the problem
+## 🤝 Contributing
 
-3. **Contact Team**
-   - Technical issues: Development team
-   - Content issues: Product team
-   - Deployment issues: DevOps team
+### Development Workflow
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/new-docs`)
+3. Make changes in `docs/` directory
+4. Test locally with `bundle exec jekyll serve`
+5. Commit changes with descriptive messages
+6. Push to your fork and create Pull Request
+7. Automatic deployment on merge to main
 
-## 📊 Analytics and Monitoring
+### Content Guidelines
+- **Markdown:** Use standard Markdown with Jekyll extensions
+- **Code Examples:** Include syntax highlighting
+- **Images:** Optimize for web, use descriptive alt text
+- **Links:** Use relative URLs for internal links
+- **SEO:** Include meta descriptions and proper headings
 
-### Site Performance
-- **Lighthouse Scores:** Monitored automatically
-- **Load Times:** Optimized for fast loading
-- **Mobile Responsiveness:** Fully responsive design
-
-### Content Analytics
-- **Page Views:** Tracked via GitHub Pages insights
-- **Popular Content:** Most accessed documentation
-- **User Feedback:** Collected via issues and discussions
-
-## 🎯 Best Practices
-
-### Writing Documentation
-1. **Clarity First:** Write for your audience's skill level
-2. **Examples:** Include practical, working examples
-3. **Updates:** Keep content current with code changes
-4. **Cross-References:** Link related documentation
-5. **Feedback:** Encourage and respond to user feedback
-
-### Maintenance
-1. **Regular Reviews:** Monthly documentation audits
-2. **Link Checking:** Verify all links work correctly
-3. **Content Updates:** Sync with code changes
-4. **User Testing:** Validate documentation with new team members
+### Code Standards
+- **SCSS:** Follow BEM methodology where applicable
+- **JavaScript:** ES6+ syntax, proper error handling
+- **HTML:** Semantic markup, accessibility considerations
+- **Jekyll:** Liquid templating best practices
 
 ## 📞 Support
 
-### Documentation Team
-- **Technical Writing:** [Team Lead]
-- **Development:** [Dev Team]
-- **Product:** [Product Manager]
+For questions about the documentation site:
 
-### Getting Help
-- **Issues:** Create GitHub issue with "documentation" label
-- **Questions:** Use GitHub Discussions
-- **Urgent:** Contact team directly
+- **Technical Issues:** Create GitHub issue
+- **Content Updates:** Submit Pull Request
+- **Design Questions:** Contact development team
+- **General Inquiries:** info@cubatattoostudio.com
 
----
+## 📄 License
 
-## 🚀 Quick Start for Contributors
-
-```bash
-# 1. Clone repository
-git clone https://github.com/cubatattoostudio/website.git
-cd website/docs
-
-# 2. Install Jekyll
-bundle install
-
-# 3. Start local server
-bundle exec jekyll serve
-
-# 4. Open browser
-open http://localhost:4000
-
-# 5. Edit documentation files
-# 6. Commit and push changes
-git add .
-git commit -m "docs: update [description]"
-git push origin main
-```
-
-**The documentation will automatically deploy to [docs.cubatattoostudio.com](https://docs.cubatattoostudio.com) within minutes!**
+This documentation is part of the Cuba Tattoo Studio website project. All rights reserved.
 
 ---
 
-*This documentation site is maintained by the Cuba Tattoo Studio development team. For questions or contributions, please see our [Contribution Guide](./contribution-guide.md).*
+**Cuba Tattoo Studio** - *Premium Tattoo Artistry in Albuquerque, NM*
 
-*Last updated: December 2024*
+🌐 [Main Website](https://cubatattoostudio.com) | 📚 [Documentation](https://docs.cubatattoostudio.com) | 📱 [Instagram](https://instagram.com/cubatattoostudio)

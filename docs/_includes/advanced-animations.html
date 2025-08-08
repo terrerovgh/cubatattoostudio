@@ -1,0 +1,446 @@
+<!-- Advanced Animation Examples for Cuba Tattoo Studio -->
+<!-- This file contains additional interactive animation components -->
+
+<div class="advanced-animations-section">
+
+  <!-- Text Reveal Animation -->
+  <div class="component-card">
+    <h3 class="component-title">Text Reveal Animation</h3>
+    <p class="component-description">Character-by-character text reveal with stagger effect, perfect for dramatic headlines.</p>
+    
+    <div class="component-demo" id="text-reveal-demo">
+      <h4 class="text-reveal" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--cuba-white); text-align: center; margin: var(--spacing-lg) 0;">CUBA TATTOO STUDIO</h4>
+    </div>
+    
+    <details>
+      <summary style="cursor: pointer; color: var(--cuba-white); margin-bottom: var(--spacing-md);">📋 View Code</summary>
+      
+```javascript
+// Text Reveal Animation
+function animateTextReveal(element) {
+  const text = element.textContent;
+  element.innerHTML = text.split('').map(char => 
+    `<span style="display: inline-block; opacity: 0; transform: translateY(20px);">${char === ' ' ? '&nbsp;' : char}</span>`
+  ).join('');
+  
+  const chars = element.querySelectorAll('span');
+  
+  gsap.to(chars, {
+    duration: 0.05,
+    opacity: 1,
+    y: 0,
+    stagger: 0.03,
+    ease: 'power2.out'
+  });
+}
+
+// With ScrollTrigger
+gsap.to('.text-reveal span', {
+  scrollTrigger: {
+    trigger: '.text-reveal',
+    start: 'top 85%',
+    toggleActions: 'play none none reverse'
+  },
+  duration: 0.05,
+  opacity: 1,
+  y: 0,
+  stagger: 0.03,
+  ease: 'power2.out'
+});
+```
+
+```css
+.text-reveal span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+}
+```
+    </details>
+    
+    <button class="btn btn-outline" onclick="replayTextReveal()">🔄 Replay</button>
+  </div>
+
+  <!-- Morphing Shape Animation -->
+  <div class="component-card">
+    <h3 class="component-title">Morphing Shapes</h3>
+    <p class="component-description">Smooth shape transformations with rotation and scaling effects.</p>
+    
+    <div class="component-demo" id="morph-demo">
+      <div class="demo-element" style="width: 80px; height: 80px; background-color: var(--cuba-white); border-radius: var(--radius-md); margin: 0 auto;"></div>
+    </div>
+    
+    <details>
+      <summary style="cursor: pointer; color: var(--cuba-white); margin-bottom: var(--spacing-md);">📋 View Code</summary>
+      
+```javascript
+// Morphing Animation
+const morphTimeline = gsap.timeline({ repeat: -1, yoyo: true })
+  .to('.morph-element', {
+    duration: 2,
+    borderRadius: '50%',
+    rotation: 180,
+    scale: 1.2,
+    ease: 'power2.inOut'
+  })
+  .to('.morph-element', {
+    duration: 1.5,
+    borderRadius: '0%',
+    rotation: 360,
+    scale: 1,
+    ease: 'power2.inOut'
+  });
+
+// One-time morph
+gsap.to('.element', {
+  duration: 1.5,
+  borderRadius: '50%',
+  rotation: 180,
+  scale: 1.1,
+  ease: 'back.out(1.7)'
+});
+```
+    </details>
+    
+    <button class="btn btn-outline" onclick="toggleMorph()">🔄 Toggle</button>
+  </div>
+
+  <!-- Magnetic Hover Effect -->
+  <div class="component-card">
+    <h3 class="component-title">Magnetic Hover</h3>
+    <p class="component-description">Interactive magnetic effect that follows mouse movement with elastic return.</p>
+    
+    <div class="component-demo" id="magnetic-demo">
+      <div class="demo-element magnetic" style="width: 100px; height: 100px; background-color: var(--cuba-gray-400); border-radius: 50%; margin: 0 auto; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--cuba-black); font-weight: bold;">HOVER</div>
+    </div>
+    
+    <details>
+      <summary style="cursor: pointer; color: var(--cuba-white); margin-bottom: var(--spacing-md);">📋 View Code</summary>
+      
+```javascript
+// Magnetic Hover Effect
+function createMagneticEffect(element) {
+  element.addEventListener('mousemove', (e) => {
+    const rect = element.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    
+    gsap.to(element, {
+      duration: 0.3,
+      x: x * 0.3,
+      y: y * 0.3,
+      ease: 'power2.out'
+    });
+  });
+  
+  element.addEventListener('mouseleave', () => {
+    gsap.to(element, {
+      duration: 0.5,
+      x: 0,
+      y: 0,
+      ease: 'elastic.out(1, 0.3)'
+    });
+  });
+}
+
+// Apply to elements
+document.querySelectorAll('.magnetic').forEach(createMagneticEffect);
+```
+
+```css
+.magnetic {
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.magnetic:hover {
+  transform: scale(1.05);
+}
+```
+    </details>
+  </div>
+
+  <!-- Loading Spinner Animation -->
+  <div class="component-card">
+    <h3 class="component-title">Loading Spinner</h3>
+    <p class="component-description">Smooth rotating spinner with customizable speed and easing.</p>
+    
+    <div class="component-demo" id="spinner-demo">
+      <div class="spinner-element" style="width: 60px; height: 60px; border: 3px solid var(--cuba-gray-800); border-top: 3px solid var(--cuba-white); border-radius: 50%; margin: 0 auto;"></div>
+    </div>
+    
+    <details>
+      <summary style="cursor: pointer; color: var(--cuba-white); margin-bottom: var(--spacing-md);">📋 View Code</summary>
+      
+```javascript
+// Loading Spinner
+const spinner = gsap.to('.spinner', {
+  duration: 1,
+  rotation: 360,
+  ease: 'none',
+  repeat: -1
+});
+
+// Controlled spinner with start/stop
+let spinnerAnimation;
+
+function startSpinner() {
+  spinnerAnimation = gsap.to('.spinner', {
+    duration: 1,
+    rotation: 360,
+    ease: 'none',
+    repeat: -1
+  });
+}
+
+function stopSpinner() {
+  if (spinnerAnimation) {
+    spinnerAnimation.kill();
+    gsap.set('.spinner', { rotation: 0 });
+  }
+}
+```
+
+```css
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--cuba-gray-800);
+  border-top: 3px solid var(--cuba-white);
+  border-radius: 50%;
+}
+```
+    </details>
+    
+    <button class="btn btn-outline" onclick="toggleSpinner()">⏸️ Toggle</button>
+  </div>
+
+  <!-- Bounce Animation -->
+  <div class="component-card">
+    <h3 class="component-title">Bounce Effect</h3>
+    <p class="component-description">Elastic bounce animation with customizable intensity and timing.</p>
+    
+    <div class="component-demo" id="bounce-demo">
+      <div class="demo-element" style="width: 70px; height: 70px; background-color: var(--cuba-white); border-radius: 50%; margin: 0 auto;"></div>
+    </div>
+    
+    <details>
+      <summary style="cursor: pointer; color: var(--cuba-white); margin-bottom: var(--spacing-md);">📋 View Code</summary>
+      
+```javascript
+// Bounce Animation
+gsap.from('.bounce-element', {
+  duration: 1.2,
+  y: -100,
+  ease: 'bounce.out'
+});
+
+// Continuous bounce
+gsap.to('.bounce-element', {
+  duration: 0.6,
+  y: -20,
+  ease: 'power2.out',
+  yoyo: true,
+  repeat: -1
+});
+
+// Scale bounce
+gsap.to('.bounce-element', {
+  duration: 0.8,
+  scale: 1.2,
+  ease: 'elastic.out(1, 0.3)',
+  yoyo: true,
+  repeat: -1
+});
+```
+    </details>
+    
+    <button class="btn btn-outline" onclick="replayBounce()">🔄 Replay</button>
+  </div>
+
+  <!-- Wave Animation -->
+  <div class="component-card">
+    <h3 class="component-title">Wave Effect</h3>
+    <p class="component-description">Flowing wave animation perfect for loading states and decorative elements.</p>
+    
+    <div class="component-demo" id="wave-demo">
+      <div style="display: flex; gap: 4px; justify-content: center; align-items: end; height: 60px;">
+        <div class="wave-bar" style="width: 8px; height: 20px; background-color: var(--cuba-white); border-radius: var(--radius-sm);"></div>
+        <div class="wave-bar" style="width: 8px; height: 30px; background-color: var(--cuba-white); border-radius: var(--radius-sm);"></div>
+        <div class="wave-bar" style="width: 8px; height: 25px; background-color: var(--cuba-white); border-radius: var(--radius-sm);"></div>
+        <div class="wave-bar" style="width: 8px; height: 35px; background-color: var(--cuba-white); border-radius: var(--radius-sm);"></div>
+        <div class="wave-bar" style="width: 8px; height: 20px; background-color: var(--cuba-white); border-radius: var(--radius-sm);"></div>
+        <div class="wave-bar" style="width: 8px; height: 40px; background-color: var(--cuba-white); border-radius: var(--radius-sm);"></div>
+        <div class="wave-bar" style="width: 8px; height: 25px; background-color: var(--cuba-white); border-radius: var(--radius-sm);"></div>
+      </div>
+    </div>
+    
+    <details>
+      <summary style="cursor: pointer; color: var(--cuba-white); margin-bottom: var(--spacing-md);">📋 View Code</summary>
+      
+```javascript
+// Wave Animation
+gsap.to('.wave-bar', {
+  duration: 1.5,
+  scaleY: 0.3,
+  transformOrigin: 'bottom',
+  ease: 'sine.inOut',
+  stagger: {
+    amount: 0.8,
+    repeat: -1,
+    yoyo: true
+  }
+});
+
+// Alternative wave with height changes
+gsap.to('.wave-bar', {
+  duration: 1,
+  height: '10px',
+  ease: 'sine.inOut',
+  stagger: {
+    amount: 0.6,
+    repeat: -1,
+    yoyo: true,
+    from: 'center'
+  }
+});
+```
+    </details>
+    
+    <button class="btn btn-outline" onclick="toggleWave()">🌊 Toggle</button>
+  </div>
+
+</div>
+
+<style>
+.advanced-animations-section {
+  margin-top: var(--spacing-2xl);
+}
+
+.advanced-animations-section .component-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+  margin: var(--spacing-xl) 0;
+}
+
+.spinner-element {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.magnetic {
+  transition: transform 0.1s ease;
+}
+
+.magnetic:hover {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner-element,
+  .magnetic {
+    animation: none;
+    transition: none;
+  }
+}
+</style>
+
+<script>
+// Advanced animation control functions
+function replayTextReveal() {
+  const element = document.querySelector('.text-reveal');
+  const chars = element.querySelectorAll('span');
+  
+  gsap.fromTo(chars, 
+    { opacity: 0, y: 20 },
+    { duration: 0.05, opacity: 1, y: 0, stagger: 0.03, ease: 'power2.out' }
+  );
+}
+
+let morphAnimation;
+function toggleMorph() {
+  const element = document.querySelector('#morph-demo .demo-element');
+  const button = event.target;
+  
+  if (morphAnimation && morphAnimation.isActive()) {
+    morphAnimation.kill();
+    gsap.set(element, { borderRadius: 'var(--radius-md)', rotation: 0, scale: 1 });
+    button.textContent = '▶️ Start';
+  } else {
+    morphAnimation = gsap.timeline({ repeat: -1, yoyo: true })
+      .to(element, {
+        duration: 2,
+        borderRadius: '50%',
+        rotation: 180,
+        scale: 1.2,
+        ease: 'power2.inOut'
+      })
+      .to(element, {
+        duration: 1.5,
+        borderRadius: '0%',
+        rotation: 360,
+        scale: 1,
+        ease: 'power2.inOut'
+      });
+    button.textContent = '⏸️ Stop';
+  }
+}
+
+let spinnerAnimation;
+function toggleSpinner() {
+  const element = document.querySelector('#spinner-demo .spinner-element');
+  const button = event.target;
+  
+  if (spinnerAnimation && spinnerAnimation.isActive()) {
+    spinnerAnimation.kill();
+    gsap.set(element, { rotation: 0 });
+    button.textContent = '▶️ Start';
+  } else {
+    spinnerAnimation = gsap.to(element, {
+      duration: 1,
+      rotation: 360,
+      ease: 'none',
+      repeat: -1
+    });
+    button.textContent = '⏸️ Stop';
+  }
+}
+
+function replayBounce() {
+  const element = document.querySelector('#bounce-demo .demo-element');
+  gsap.fromTo(element,
+    { y: -80, scale: 0.8 },
+    { duration: 1.2, y: 0, scale: 1, ease: 'bounce.out' }
+  );
+}
+
+let waveAnimation;
+function toggleWave() {
+  const elements = document.querySelectorAll('#wave-demo .wave-bar');
+  const button = event.target;
+  
+  if (waveAnimation && waveAnimation.isActive()) {
+    waveAnimation.kill();
+    gsap.set(elements, { scaleY: 1 });
+    button.textContent = '🌊 Start';
+  } else {
+    waveAnimation = gsap.to(elements, {
+      duration: 1.5,
+      scaleY: 0.3,
+      transformOrigin: 'bottom',
+      ease: 'sine.inOut',
+      stagger: {
+        amount: 0.8,
+        repeat: -1,
+        yoyo: true
+      }
+    });
+    button.textContent = '⏸️ Stop';
+  }
+}
+</script>

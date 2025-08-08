@@ -1,0 +1,77 @@
+<footer class="site-footer h-card">
+  <data class="u-url" href="{{ "/" | relative_url }}"></data>
+
+  <div class="wrapper">
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
+      
+      <!-- Studio Info -->
+      <div>
+        <h3 class="footer-heading">{{ site.cuba.studio_name | default: "Cuba Tattoo Studio" }}</h3>
+        <p style="color: var(--cuba-gray-400); margin-bottom: var(--spacing-md);">Premium tattoo studio documentation site. Built with Jekyll, designed with passion.</p>
+        <p style="color: var(--cuba-gray-600); font-size: 0.875rem;">{{ site.cuba.location | default: "Albuquerque, NM" }}</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="footer-heading">Documentation</h3>
+        <ul class="contact-list">
+          <li><a href="{{ '/installation-guide/' | relative_url }}">Installation Guide</a></li>
+          <li><a href="{{ '/component-guide/' | relative_url }}">Component Guide</a></li>
+          <li><a href="{{ '/animation-gallery/' | relative_url }}">Animation Gallery</a></li>
+          <li><a href="{{ '/gsap-animation-guide/' | relative_url }}">GSAP Guide</a></li>
+          <li><a href="{{ '/technical-architecture/' | relative_url }}">Architecture</a></li>
+          <li><a href="{{ '/contribution-guide/' | relative_url }}">Contributing</a></li>
+        </ul>
+      </div>
+
+      <!-- External Links -->
+      <div>
+        <h3 class="footer-heading">Links</h3>
+        <ul class="social-media-list">
+          <li><a href="{{ site.cuba.main_site | default: 'https://cubatattoostudio.com' }}" target="_blank" rel="noopener">🌐 Main Website</a></li>
+          <li><a href="{{ site.repository | prepend: 'https://github.com/' }}" target="_blank" rel="noopener">📁 GitHub Repository</a></li>
+          <li><a href="https://astro.build" target="_blank" rel="noopener">🚀 Astro Framework</a></li>
+          <li><a href="https://gsap.com" target="_blank" rel="noopener">✨ GSAP Animations</a></li>
+          <li><a href="https://tailwindcss.com" target="_blank" rel="noopener">🎨 Tailwind CSS</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Copyright and Tech Stack -->
+    <div style="border-top: 1px solid var(--cuba-gray-800); padding-top: var(--spacing-lg); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md);">
+      
+      <div style="color: var(--cuba-gray-600); font-size: 0.875rem;">
+        <p style="margin: 0;">&copy; {{ 'now' | date: "%Y" }} {{ site.cuba.studio_name | default: "Cuba Tattoo Studio" }}. All rights reserved.</p>
+        <p style="margin: 0; margin-top: var(--spacing-xs);">Documentation site powered by Jekyll & GitHub Pages</p>
+      </div>
+      
+      <div style="display: flex; gap: var(--spacing-md); align-items: center;">
+        <span style="color: var(--cuba-gray-600); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Built with</span>
+        <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
+          <span style="background-color: var(--cuba-gray-800); color: var(--cuba-white); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 500;">Jekyll</span>
+          <span style="background-color: var(--cuba-gray-800); color: var(--cuba-white); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 500;">GSAP</span>
+          <span style="background-color: var(--cuba-gray-800); color: var(--cuba-white); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 500;">GitHub Pages</span>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+
+</footer>
+
+<style>
+  @media (max-width: 768px) {
+    .site-footer .wrapper > div:last-child {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+    
+    .site-footer .wrapper > div:last-child > div:last-child {
+      margin-top: var(--spacing-md);
+    }
+  }
+</style>

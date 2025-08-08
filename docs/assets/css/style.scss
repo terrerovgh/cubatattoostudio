@@ -1,0 +1,313 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+// Import Cuba Tattoo Studio custom styles
+@import "cuba";
+
+// Jekyll/GitHub Pages specific overrides
+.site-header {
+  background-color: var(--cuba-black);
+  border-bottom: 1px solid var(--cuba-gray-800);
+  padding: var(--spacing-md) 0;
+  
+  .site-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cuba-white);
+    text-decoration: none;
+    
+    &:hover {
+      color: var(--cuba-white);
+      border-bottom: none;
+    }
+  }
+  
+  .site-nav {
+    .page-link {
+      color: var(--cuba-gray-400);
+      font-family: var(--font-body);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.875rem;
+      letter-spacing: 0.025em;
+      margin-left: var(--spacing-lg);
+      
+      &:hover {
+        color: var(--cuba-white);
+        border-bottom: 1px solid var(--cuba-white);
+      }
+    }
+    
+    .trigger {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.site-footer {
+  background-color: var(--cuba-gray-900);
+  border-top: 1px solid var(--cuba-gray-800);
+  padding: var(--spacing-xl) 0;
+  margin-top: var(--spacing-2xl);
+  
+  .footer-heading {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cuba-white);
+  }
+  
+  .contact-list,
+  .social-media-list {
+    list-style: none;
+    padding: 0;
+    
+    li {
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    a {
+      color: var(--cuba-gray-400);
+      
+      &:hover {
+        color: var(--cuba-white);
+      }
+    }
+  }
+}
+
+.page-content {
+  padding: var(--spacing-xl) 0;
+  min-height: calc(100vh - 200px);
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+// Post and page styles
+.post-header {
+  margin-bottom: var(--spacing-xl);
+  
+  .post-title {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .post-meta {
+    color: var(--cuba-gray-600);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+}
+
+.post-content {
+  h2, h3, h4, h5, h6 {
+    margin-top: var(--spacing-xl);
+  }
+  
+  h2:first-child,
+  h3:first-child,
+  h4:first-child {
+    margin-top: 0;
+  }
+}
+
+// Navigation improvements
+.site-nav {
+  @media (max-width: 768px) {
+    .menu-icon {
+      display: block;
+      float: right;
+      width: 36px;
+      height: 26px;
+      line-height: 0;
+      padding-top: 10px;
+      text-align: center;
+      
+      > svg {
+        fill: var(--cuba-white);
+        width: 18px;
+        height: 15px;
+      }
+    }
+    
+    .trigger {
+      clear: both;
+      display: none;
+      background-color: var(--cuba-gray-900);
+      border: 1px solid var(--cuba-gray-800);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      margin-top: var(--spacing-md);
+      flex-direction: column;
+      
+      .page-link {
+        display: block;
+        padding: var(--spacing-sm) 0;
+        margin-left: 0;
+        border-bottom: 1px solid var(--cuba-gray-800);
+        
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+    
+    input:checked ~ .trigger {
+      display: flex;
+    }
+  }
+}
+
+// Syntax highlighting (Rouge)
+.highlight {
+  background-color: var(--cuba-gray-900);
+  border: 1px solid var(--cuba-gray-800);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  overflow-x: auto;
+  
+  .c { color: var(--cuba-gray-600); } // Comment
+  .k { color: var(--cuba-white); font-weight: bold; } // Keyword
+  .s { color: var(--cuba-gray-400); } // String
+  .n { color: var(--cuba-white); } // Name
+  .o { color: var(--cuba-white); } // Operator
+  .p { color: var(--cuba-white); } // Punctuation
+  .m { color: var(--cuba-gray-400); } // Number
+  .nf { color: var(--cuba-white); font-weight: bold; } // Function name
+  .nc { color: var(--cuba-white); font-weight: bold; } // Class name
+  .nd { color: var(--cuba-white); } // Decorator
+  .ni { color: var(--cuba-white); } // Entity
+  .nl { color: var(--cuba-white); } // Label
+  .nn { color: var(--cuba-white); } // Namespace
+  .nt { color: var(--cuba-white); font-weight: bold; } // Tag
+  .nv { color: var(--cuba-white); } // Variable
+}
+
+// Custom components for documentation
+.doc-nav {
+  background-color: var(--cuba-gray-900);
+  border: 1px solid var(--cuba-gray-800);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  
+  h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+    font-size: 1.125rem;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      margin-bottom: var(--spacing-sm);
+      
+      a {
+        color: var(--cuba-gray-400);
+        font-weight: 500;
+        
+        &:hover {
+          color: var(--cuba-white);
+        }
+      }
+    }
+  }
+}
+
+.alert {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  border-left: 4px solid var(--cuba-white);
+  background-color: var(--cuba-gray-900);
+  
+  &.alert-info {
+    border-left-color: var(--cuba-gray-400);
+  }
+  
+  &.alert-warning {
+    border-left-color: var(--cuba-gray-600);
+  }
+  
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Animation gallery specific styles (will be expanded)
+.animation-gallery {
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+  }
+  
+  .component-card {
+    background-color: var(--cuba-gray-900);
+    border: 1px solid var(--cuba-gray-800);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-color: var(--cuba-white);
+      transform: translateY(-2px);
+    }
+    
+    .component-title {
+      font-size: 1.125rem;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .component-description {
+      color: var(--cuba-gray-400);
+      font-size: 0.875rem;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .component-demo {
+      background-color: var(--cuba-black);
+      border: 1px solid var(--cuba-gray-800);
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .site-header {
+    padding: var(--spacing-sm) 0;
+  }
+  
+  .page-content {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .animation-gallery .component-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}

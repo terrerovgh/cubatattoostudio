@@ -111,6 +111,8 @@ navigation:
     url: "/component-guide/"
   - title: "GSAP Animations"
     url: "/gsap-animation-guide/"
+  - title: "Animation Gallery"
+    url: "/animation-gallery/"
   - title: "Technical Architecture"
     url: "/technical-architecture/"
   - title: "Contribution Guide"
