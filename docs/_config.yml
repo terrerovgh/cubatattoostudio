@@ -1,0 +1,130 @@
+# Jekyll Configuration for Cuba Tattoo Studio Documentation
+# GitHub Pages Configuration
+
+# Site settings
+title: "Cuba Tattoo Studio - Documentation"
+description: "Comprehensive documentation for Cuba Tattoo Studio website project - technical guides, component documentation, and user guides for the premium tattoo studio in Albuquerque, NM."
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://docs.cubatattoostudio.com" # the base hostname & protocol for your site
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Kramdown settings
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+
+# Plugin settings
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# SEO and social settings
+author: "Cuba Tattoo Studio"
+twitter:
+  username: cubatattoostudio
+  card: summary_large_image
+
+social:
+  name: Cuba Tattoo Studio
+  links:
+    - https://instagram.com/cubatattoostudio
+    - https://facebook.com/cubatattoostudio
+
+# GitHub Pages specific settings
+safe: true
+incremental: false
+
+# Collections (if needed for organizing docs)
+collections:
+  guides:
+    output: true
+    permalink: /:collection/:name/
+
+# Default layouts
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "guides"
+    values:
+      layout: "guide"
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+
+# Include files
+include:
+  - _pages
+
+# Sass settings
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Timezone
+timezone: America/Denver
+
+# Pagination (if needed)
+paginate: 10
+paginate_path: "/page:num/"
+
+# Custom variables for Cuba Tattoo Studio
+cuba:
+  studio_name: "Cuba Tattoo Studio"
+  location: "Albuquerque, NM"
+  phone: "+1 (505) XXX-XXXX"
+  email: "info@cubatattoostudio.com"
+  main_site: "https://cubatattoostudio.com"
+  
+# Navigation structure
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "Installation Guide"
+    url: "/installation-guide/"
+  - title: "Component Guide"
+    url: "/component-guide/"
+  - title: "GSAP Animations"
+    url: "/gsap-animation-guide/"
+  - title: "Technical Architecture"
+    url: "/technical-architecture/"
+  - title: "Contribution Guide"
+    url: "/contribution-guide/"
+  - title: "User Guide"
+    url: "/user-guide/"
+
+# GitHub repository info
+repository: "cubatattoostudio/website"
+github_username: cubatattoostudio
+
+# Analytics (uncomment when ready)
+# google_analytics: UA-XXXXXXXX-X
+
+# Comments (uncomment if needed)
+# disqus:
+#   shortname: cubatattoostudio-docs
