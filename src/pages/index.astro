@@ -3,140 +3,611 @@ import Layout from "@/layouts/Layout.astro"
 ---
 
 <Layout>
-  <!-- Logo mask overlay -->
-  <div id="logo-mask" class="fixed top-0 w-full h-screen z-10">
-    <section>
-      <picture
-        id="hero-key"
-        class="h-screen scale-125 block overflow-hidden fixed"
-      >
-        <div
-          id="hero-key-logo"
-          class="absolute w-full h-full flex items-center justify-center"
-        >
-          <div class="text-center">
-            <h1 class="text-8xl md:text-9xl font-bold text-white mb-4 tracking-wider">
-              CUBA
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-400 uppercase tracking-[0.3em]">
-              Tattoo Studio
+  <!-- Progress Bar -->
+  <div id="progress-bar" class="fixed top-0 left-0 w-0 h-1 bg-white z-50 transition-all duration-300"></div>
+  
+  <!-- Navigation -->
+  <nav id="main-nav" class="fixed top-0 left-0 w-full z-40 p-6">
+    <div class="flex justify-between items-center">
+      <!-- Logo -->
+      <a href="/" class="text-white text-2xl font-bold tracking-wider opacity-0" id="nav-logo">
+        CUBA
+      </a>
+      
+      <!-- Navigation Links -->
+      <div class="hidden md:flex space-x-8 opacity-0" id="nav-links">
+        <a href="/artistas" class="nav-link text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider" data-section="artistas">
+          Artistas
+        </a>
+        <a href="/portfolio" class="nav-link text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider" data-section="trabajo">
+          Portfolio
+        </a>
+        <a href="/estudio" class="nav-link text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider" data-section="filosofia">
+          Estudio
+        </a>
+        <a href="/reservas" class="nav-link text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider" data-section="reservas">
+          Reservas
+        </a>
+      </div>
+      
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden text-white opacity-0" aria-label="Menú">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-95 backdrop-blur-sm p-6 space-y-4 hidden">
+      <a href="/artistas" class="block text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider">
+        Artistas
+      </a>
+      <a href="/portfolio" class="block text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider">
+        Portfolio
+      </a>
+      <a href="/estudio" class="block text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider">
+        Estudio
+      </a>
+      <a href="/reservas" class="block text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider">
+        Reservas
+      </a>
+    </div>
+  </nav>
+  
+  <!-- Scroll Indicator -->
+  <div id="scroll-indicator" class="fixed right-6 top-1/2 transform -translate-y-1/2 z-40 opacity-0">
+    <div class="flex flex-col items-center space-y-2">
+      <div class="w-px h-16 bg-white opacity-30"></div>
+      <div class="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+      <div class="w-px h-16 bg-white opacity-30"></div>
+    </div>
+  </div>
+  
+  <!-- Main Storytelling Container -->
+  <main class="storytelling-container bg-black text-white overflow-x-hidden">
+    
+    <!-- Hero Section: Logo Loading -->
+    <section id="hero-loading" class="hero-section h-screen flex items-center justify-center relative">
+      <div id="hero-logo" class="text-center">
+        <h1 class="text-8xl md:text-9xl font-bold tracking-wider opacity-0 transform translate-y-12">
+          CUBA
+        </h1>
+        <div class="w-32 h-1 bg-white mx-auto mt-4 opacity-0 transform scale-x-0" id="hero-underline"></div>
+      </div>
+      
+      <!-- Background Image with Parallax -->
+      <div class="parallax-bg absolute inset-0 opacity-0" id="hero-bg">
+        <div class="w-full h-full bg-gradient-to-b from-transparent via-black/50 to-black"></div>
+        <img 
+          src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20tattoo%20studio%20interior%20black%20and%20white%20professional%20clean%20minimalist%20design%20tattoo%20chairs%20equipment&image_size=landscape_16_9" 
+          alt="Interior del estudio Cuba Tattoo" 
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+    </section>
+    
+    <!-- Section 1: El Comienzo -->
+    <section id="section-comienzo" class="story-section min-h-screen flex items-center relative" data-section="comienzo">
+      <div class="parallax-bg absolute inset-0 opacity-20">
+        <img 
+          src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20artist%20working%20detailed%20black%20and%20white%20professional%20artistic%20focused%20concentration&image_size=landscape_16_9" 
+          alt="Artista tatuando" 
+          class="w-full h-full object-cover"
+        />
+      </div>
+      
+      <div class="container mx-auto px-6 md:px-12 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-reveal text-5xl md:text-7xl font-bold mb-8 tracking-wider">
+            CUBA TATTOO STUDIO
+          </h2>
+          <p class="text-reveal text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
+            Donde el arte cobra vida en tu piel
+          </p>
+          <p class="text-reveal text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            En el corazón de Albuquerque, Nuevo México, hemos creado un espacio donde la creatividad y la técnica se fusionan para dar vida a historias únicas en cada tatuaje.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 2: Nuestra Filosofía -->
+    <section id="section-filosofia" class="story-section min-h-screen flex items-center relative" data-section="filosofia">
+      <div class="container mx-auto px-6 md:px-12">
+        <div class="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          <div class="text-content">
+            <h2 class="slide-left text-4xl md:text-6xl font-bold mb-8 tracking-wider">
+              NUESTRA FILOSOFÍA
+            </h2>
+            <p class="slide-left text-lg text-gray-300 mb-6 leading-relaxed">
+              Creemos que cada tatuaje es una obra de arte personal, una expresión única de quien eres y lo que representas.
             </p>
+            <p class="slide-left text-lg text-gray-300 mb-8 leading-relaxed">
+              Nuestro compromiso va más allá de la tinta y la piel: nos dedicamos a crear experiencias memorables, manteniendo los más altos estándares de higiene, seguridad y profesionalismo.
+            </p>
+            <blockquote class="slide-left border-l-4 border-white pl-6 italic text-xl text-gray-200">
+              "El arte no reproduce lo visible, sino que hace visible lo invisible."
+            </blockquote>
+          </div>
+          
+          <div class="image-content">
+            <img 
+              src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20equipment%20professional%20setup%20black%20and%20white%20sterile%20clean%20artistic%20composition&image_size=portrait_4_3" 
+              alt="Equipo profesional de tatuaje" 
+              class="slide-right w-full h-96 object-cover rounded-lg shadow-2xl"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 3: Los Artistas -->
+    <section id="section-artistas" class="story-section min-h-screen flex items-center relative" data-section="artistas">
+      <div class="container mx-auto px-6 md:px-12">
+        <div class="text-center mb-16">
+          <h2 class="text-reveal text-4xl md:text-6xl font-bold mb-8 tracking-wider">
+            CONOCE A NUESTROS ARTISTAS
+          </h2>
+          <p class="text-reveal text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            Cada miembro de nuestro equipo aporta su estilo único y años de experiencia para crear obras maestras personalizadas.
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div class="artist-card text-center">
+            <div class="mb-6">
+              <img 
+                src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20artist%20portrait%20black%20and%20white%20confident%20artistic%20creative&image_size=square" 
+                alt="Artista especializado en Blackwork" 
+                class="w-48 h-48 object-cover rounded-full mx-auto shadow-2xl"
+              />
+            </div>
+            <h3 class="text-2xl font-bold mb-2">ALEX RIVERA</h3>
+            <p class="text-gray-400 mb-4">Especialista en Blackwork & Geométrico</p>
+            <p class="text-sm text-gray-500">8 años de experiencia</p>
+          </div>
+          
+          <div class="artist-card text-center">
+            <div class="mb-6">
+              <img 
+                src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=female%20tattoo%20artist%20portrait%20black%20and%20white%20professional%20artistic%20skilled&image_size=square" 
+                alt="Artista especializada en Realismo" 
+                class="w-48 h-48 object-cover rounded-full mx-auto shadow-2xl"
+              />
+            </div>
+            <h3 class="text-2xl font-bold mb-2">SOFIA MARTINEZ</h3>
+            <p class="text-gray-400 mb-4">Especialista en Realismo & Retratos</p>
+            <p class="text-sm text-gray-500">10 años de experiencia</p>
+          </div>
+          
+          <div class="artist-card text-center">
+            <div class="mb-6">
+              <img 
+                src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20artist%20portrait%20black%20and%20white%20traditional%20style%20experienced%20professional&image_size=square" 
+                alt="Artista especializado en Tradicional" 
+                class="w-48 h-48 object-cover rounded-full mx-auto shadow-2xl"
+              />
+            </div>
+            <h3 class="text-2xl font-bold mb-2">CARLOS VEGA</h3>
+            <p class="text-gray-400 mb-4">Especialista en Tradicional & Japonés</p>
+            <p class="text-sm text-gray-500">12 años de experiencia</p>
           </div>
         </div>
         
-        <div
-          id="hero-key-background"
-          class="w-full h-full bg-black"
-        ></div>
-      </picture>
-    </section>
-  </div>
-
-  <!-- Main content overlay -->
-  <div class="fixed flex flex-col items-center justify-between h-screen px-6 sm:px-20 py-16 w-full z-20">
-    <!-- Play button -->
-    <div class="flex-1 flex items-center justify-center">
-      <div id="hero-play-button" class="text-center">
-        <a href="/reservas" class="inline-block bg-white text-black px-8 py-4 text-lg font-semibold uppercase tracking-wider hover:bg-gray-200 transition-colors">
-          Reservar Cita
-        </a>
-        <p class="text-gray-400 text-sm uppercase tracking-wider mt-4">
-          Albuquerque, Nuevo México
-        </p>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer id="hero-footer" class="text-center">
-      <div class="text-white mb-2">
-        <h2 class="text-2xl md:text-3xl font-bold uppercase tracking-wider">
-          Arte en tu Piel
-        </h2>
-      </div>
-      <p class="text-gray-400 text-sm uppercase tracking-[0.2em]">
-        Más de 10 años de experiencia
-      </p>
-    </footer>
-  </div>
-
-  <!-- Main content -->
-  <main class="relative z-30 bg-black">
-    <section class="min-h-screen flex items-center justify-center px-4">
-      <div class="text-center">
-        <h2 class="text-4xl md:text-5xl font-bold text-white uppercase tracking-wider mb-6">
-          Bienvenido a Cuba Tattoo Studio
-        </h2>
-        <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
-          Donde el arte cobra vida en tu piel. Nuestros artistas especializados crean diseños únicos con la más alta calidad.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/artistas" class="bg-white text-black px-6 py-3 font-semibold uppercase tracking-wider hover:bg-gray-200 transition-colors">
-            Ver Artistas
-          </a>
-          <a href="/portfolio" class="border border-white text-white px-6 py-3 font-semibold uppercase tracking-wider hover:bg-white hover:text-black transition-colors">
-            Ver Portfolio
+        <div class="text-center mt-12">
+          <a href="/artistas" class="inline-block bg-white text-black px-8 py-3 text-sm uppercase tracking-wider font-bold hover:bg-gray-200 transition-colors duration-300">
+            Ver Todos los Artistas
           </a>
         </div>
       </div>
     </section>
+    
+    <!-- Section 4: Nuestro Trabajo -->
+    <section id="section-trabajo" class="story-section min-h-screen flex items-center relative" data-section="trabajo">
+      <div class="container mx-auto px-6 md:px-12">
+        <div class="text-center mb-16">
+          <h2 class="text-reveal text-4xl md:text-6xl font-bold mb-8 tracking-wider">
+            NUESTRO TRABAJO HABLA POR SÍ SOLO
+          </h2>
+          <p class="text-reveal text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            Una selección de nuestras creaciones más destacadas, cada una contando una historia única.
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-4 gap-4 max-w-6xl mx-auto">
+          <div class="gallery-item col-span-2 row-span-2">
+            <img 
+              src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=detailed%20black%20and%20white%20tattoo%20geometric%20mandala%20intricate%20design%20professional%20artwork&image_size=square" 
+              alt="Tatuaje geométrico detallado" 
+              class="w-full h-full object-cover rounded-lg shadow-xl"
+            />
+          </div>
+          
+          <div class="gallery-item">
+            <img 
+              src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=realistic%20portrait%20tattoo%20black%20and%20white%20detailed%20shading%20professional%20work&image_size=square" 
+              alt="Tatuaje realista" 
+              class="w-full h-48 object-cover rounded-lg shadow-xl"
+            />
+          </div>
+          
+          <div class="gallery-item">
+            <img 
+              src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20tattoo%20design%20black%20and%20white%20bold%20lines%20classic%20style&image_size=square" 
+              alt="Tatuaje tradicional" 
+              class="w-full h-48 object-cover rounded-lg shadow-xl"
+            />
+          </div>
+          
+          <div class="gallery-item">
+            <img 
+              src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=japanese%20style%20tattoo%20black%20and%20white%20flowing%20design%20artistic%20composition&image_size=square" 
+              alt="Tatuaje japonés" 
+              class="w-full h-48 object-cover rounded-lg shadow-xl"
+            />
+          </div>
+          
+          <div class="gallery-item">
+            <img 
+              src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=blackwork%20tattoo%20bold%20black%20ink%20minimalist%20design%20professional%20execution&image_size=square" 
+              alt="Tatuaje blackwork" 
+              class="w-full h-48 object-cover rounded-lg shadow-xl"
+            />
+          </div>
+        </div>
+        
+        <div class="text-center mt-12">
+          <a href="/portfolio" class="inline-block bg-white text-black px-8 py-3 text-sm uppercase tracking-wider font-bold hover:bg-gray-200 transition-colors duration-300">
+            Explorar Portfolio Completo
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 5: Reserva tu Cita -->
+    <section id="section-reservas" class="story-section min-h-screen flex items-center relative" data-section="reservas">
+      <div class="container mx-auto px-6 md:px-12">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-reveal text-4xl md:text-6xl font-bold mb-8 tracking-wider">
+            COMIENZA TU HISTORIA
+          </h2>
+          <p class="text-reveal text-xl text-gray-300 mb-12 leading-relaxed">
+            ¿Listo para convertir tu idea en una obra de arte permanente? Nuestro proceso comienza con una consulta personalizada.
+          </p>
+          
+          <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
+            <div class="text-left">
+              <h3 class="slide-left text-2xl font-bold mb-6">Nuestro Proceso:</h3>
+              <ul class="slide-left space-y-4 text-gray-300">
+                <li class="flex items-start">
+                  <span class="text-white font-bold mr-3">1.</span>
+                  <span>Consulta gratuita para discutir tu idea</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-white font-bold mr-3">2.</span>
+                  <span>Diseño personalizado y aprobación</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-white font-bold mr-3">3.</span>
+                  <span>Sesión de tatuaje en ambiente profesional</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-white font-bold mr-3">4.</span>
+                  <span>Cuidados posteriores y seguimiento</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="slide-right">
+              <img 
+                src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20consultation%20process%20black%20and%20white%20professional%20meeting%20design%20discussion&image_size=landscape_4_3" 
+                alt="Proceso de consulta" 
+                class="w-full h-64 object-cover rounded-lg shadow-xl"
+              />
+            </div>
+          </div>
+          
+          <div class="text-center">
+            <a href="/reservas" class="inline-block bg-white text-black px-12 py-4 text-lg uppercase tracking-wider font-bold hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-2xl">
+              Reservar Consulta Gratuita
+            </a>
+            
+            <div class="mt-8 text-gray-400">
+              <p class="mb-2">📍 Albuquerque, Nuevo México</p>
+              <p class="mb-2">📞 (505) 123-4567</p>
+              <p>✉️ info@cubatattoostudio.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
   </main>
 </Layout>
 
 <style>
-  #logo-mask {
-    background: #000000;
-    mask-image: radial-gradient(circle, transparent 30%, black 70%);
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: clamp(200vh, 150%, 100vh);
+  /* Initial states for animations */
+  .text-reveal {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  
+  .slide-left {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  
+  .slide-right {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  
+  .artist-card {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  
+  .gallery-item {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  
+  .parallax-bg {
+    will-change: transform;
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #fff;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+  }
+  
+  /* Accessibility: Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    
+    html {
+      scroll-behavior: auto;
+    }
   }
 </style>
 
 <script>
   import { gsap } from "gsap"
   import { ScrollTrigger } from "gsap/ScrollTrigger"
-
-  gsap.registerPlugin(ScrollTrigger)
-
-  // Initial animations
-  gsap.set(["#hero-key-logo", "#hero-play-button", "#hero-footer"], { opacity: 0, y: 30 })
   
-  const loadingTl = gsap.timeline({ delay: 0.5 })
-  loadingTl
-    .to("#hero-key-logo", { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
-    .to("#hero-play-button", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.6")
-    .to("#hero-footer", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.4")
-
-  // Scroll animation
-  const scrollTl = gsap.timeline({
+  gsap.registerPlugin(ScrollTrigger)
+  
+  // Configuration
+  const scrollConfig = {
     ease: "power2.out",
-    scrollTrigger: {
-      trigger: "main",
-      start: "top bottom",
-      end: "top top",
-      scrub: 1,
-    },
+    duration: 1.2,
+    stagger: 0.15
+  }
+  
+  // Hero loading sequence
+  const heroTimeline = gsap.timeline()
+  
+  heroTimeline
+    .to("#hero-logo h1", {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    })
+    .to("#hero-underline", {
+      opacity: 1,
+      scaleX: 1,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.5")
+    .to("#hero-bg", {
+      opacity: 1,
+      duration: 1.5,
+      ease: "power2.out"
+    }, "-=0.8")
+    .to(["#nav-logo", "#nav-links", "#mobile-menu-btn", "#scroll-indicator"], {
+      opacity: 1,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out"
+    }, "-=1")
+  
+  // Text reveal animations
+  gsap.utils.toArray(".text-reveal").forEach((element) => {
+    gsap.to(element, {
+      opacity: 1,
+      y: 0,
+      duration: scrollConfig.duration,
+      ease: scrollConfig.ease,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 80%",
+        toggleActions: "play none none reverse"
+      }
+    })
   })
-
-  scrollTl
-    .to("#hero-key", { duration: 1, scale: 1, ease: "power2.out" })
-    .to("#hero-key-logo", { opacity: 0, y: -50 }, "<")
-    .to("#hero-footer", { opacity: 0, y: 50 }, "<")
-    .to("#hero-play-button", { opacity: 0 }, "<")
-    .to(
-      "#logo-mask",
-      {
-        maskSize: "clamp(50vh, 60%, 80vh)",
-        duration: 0.8
+  
+  // Slide left animations
+  gsap.utils.toArray(".slide-left").forEach((element) => {
+    gsap.to(element, {
+      opacity: 1,
+      x: 0,
+      duration: scrollConfig.duration,
+      ease: scrollConfig.ease,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 80%",
+        toggleActions: "play none none reverse"
+      }
+    })
+  })
+  
+  // Slide right animations
+  gsap.utils.toArray(".slide-right").forEach((element) => {
+    gsap.to(element, {
+      opacity: 1,
+      x: 0,
+      duration: scrollConfig.duration,
+      ease: scrollConfig.ease,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 80%",
+        toggleActions: "play none none reverse"
+      }
+    })
+  })
+  
+  // Artist cards stagger animation
+  gsap.to(".artist-card", {
+    opacity: 1,
+    y: 0,
+    duration: scrollConfig.duration,
+    stagger: scrollConfig.stagger,
+    ease: scrollConfig.ease,
+    scrollTrigger: {
+      trigger: "#section-artistas",
+      start: "top 70%",
+      toggleActions: "play none none reverse"
+    }
+  })
+  
+  // Gallery items animation
+  gsap.to(".gallery-item", {
+    opacity: 1,
+    scale: 1,
+    duration: scrollConfig.duration,
+    stagger: scrollConfig.stagger,
+    ease: scrollConfig.ease,
+    scrollTrigger: {
+      trigger: "#section-trabajo",
+      start: "top 70%",
+      toggleActions: "play none none reverse"
+    }
+  })
+  
+  // Parallax effects
+  gsap.utils.toArray(".parallax-bg").forEach((bg) => {
+    gsap.to(bg, {
+      yPercent: -30,
+      ease: "none",
+      scrollTrigger: {
+        trigger: bg.parentElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    })
+  })
+  
+  // Progress bar
+  gsap.to("#progress-bar", {
+    width: "100%",
+    ease: "none",
+    scrollTrigger: {
+      trigger: "body",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true
+    }
+  })
+  
+  // Navigation highlighting
+  const sections = gsap.utils.toArray(".story-section")
+  const navLinks = gsap.utils.toArray(".nav-link")
+  
+  sections.forEach((section, i) => {
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 50%",
+      end: "bottom 50%",
+      onEnter: () => {
+        navLinks.forEach(link => link.classList.remove("active"))
+        const targetSection = section.dataset.section
+        const activeLink = document.querySelector(`[data-section="${targetSection}"]`)
+        if (activeLink) activeLink.classList.add("active")
       },
-      0.2
-    )
-    .to(
-      "#hero-key",
-      {
-        opacity: 0,
-        duration: 0.3,
-      },
-      0.6
-    )
+      onEnterBack: () => {
+        navLinks.forEach(link => link.classList.remove("active"))
+        const targetSection = section.dataset.section
+        const activeLink = document.querySelector(`[data-section="${targetSection}"]`)
+        if (activeLink) activeLink.classList.add("active")
+      }
+    })
+  })
+  
+  // Mobile menu functionality
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn')
+  const mobileMenu = document.getElementById('mobile-menu')
+  
+  if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden')
+    })
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node
+      if (!mobileMenuBtn.contains(target) && !mobileMenu.contains(target)) {
+        mobileMenu.classList.add('hidden')
+      }
+    })
+  }
+  
+  // Smooth scroll for navigation links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault()
+      const target = document.querySelector(this.getAttribute('href'))
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      }
+    })
+  })
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault()
+      const currentSection = document.querySelector('.story-section:hover') || sections[0]
+      const currentIndex = sections.indexOf(currentSection)
+      
+      let targetIndex
+      if (e.key === 'ArrowDown') {
+        targetIndex = Math.min(currentIndex + 1, sections.length - 1)
+      } else {
+        targetIndex = Math.max(currentIndex - 1, 0)
+      }
+      
+      sections[targetIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  })
 </script>

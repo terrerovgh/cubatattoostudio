@@ -4,7 +4,10 @@ import Header from "@/components/layout/Header.astro"
 import Footer from "@/components/layout/Footer.astro"
 import Button from "@/components/ui/Button.astro"
 import Card from "@/components/ui/Card.astro"
-import GSAPWrapper from "@/components/animations/GSAPWrapper.astro"
+import FadeInSection from "@/components/animations/FadeInSection.astro"
+import SlideInImage from "@/components/animations/SlideInImage.astro"
+import StaggerText from "@/components/animations/StaggerText.astro"
+import ParallaxContainer from "@/components/animations/ParallaxContainer.astro"
 import artistsData from "@/data/artists.json"
 
 const { artists } = artistsData;
@@ -21,85 +24,99 @@ if (!artist) {
 >
   <Header />
   
-  <main class="pt-20 bg-cuba-black min-h-screen">
-    <!-- Hero Section del Artista -->
-    <section class="py-16 bg-gradient-to-b from-cuba-black to-cuba-gray-600">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+  <main class="pt-20 bg-black min-h-screen">
+    <!-- Hero Section Cinematográfico -->
+    <ParallaxContainer speed={0.2} intensity="high" class="py-24 bg-gradient-to-b from-black via-gray-900 to-black relative overflow-hidden">
+      <section class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <!-- Imagen del Artista -->
-          <GSAPWrapper animation="fade-in" delay={0.2}>
-            <div class="aspect-[4/5] bg-cuba-gray-600 overflow-hidden">
-              <img 
-                src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20artist%20${artist.name.toLowerCase()}%20portrait%20black%20and%20white%20studio%20lighting%20confident%20pose%20detailed&image_size=portrait_4_3`}
-                alt={`${artist.name} - Artista de tatuajes especializado en ${artist.specialties.join(', ')}`}
-                class="w-full h-full object-cover"
-              />
-            </div>
-          </GSAPWrapper>
+          <SlideInImage 
+            direction="left" 
+            delay={0.3} 
+            intensity="high" 
+            parallax={true}
+            class="aspect-[4/5] overflow-hidden relative"
+          >
+            <img 
+              src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20professional%20tattoo%20artist%20${artist.name.toLowerCase()}%20portrait%20black%20and%20white%20dramatic%20studio%20lighting%20confident%20pose%20detailed%20moody&image_size=portrait_4_3`}
+              alt={`${artist.name} - Artista de tatuajes especializado en ${artist.specialties.join(', ')}`}
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+          </SlideInImage>
           
           <!-- Información del Artista -->
-          <GSAPWrapper animation="slide-up" delay={0.4}>
-            <div class="space-y-6">
-              <div>
-                <h1 class="text-5xl md:text-7xl font-heading text-cuba-white uppercase tracking-wider mb-4">
-                  {artist.name}
-                </h1>
-                <div class="w-24 h-1 bg-cuba-white mb-6"></div>
-              </div>
-              
-              <!-- Especialidades -->
-              <div>
-                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
-                  Especialidades
-                </h2>
-                <div class="flex flex-wrap gap-3">
-                  {artist.specialties.map((specialty) => (
-                    <span class="px-4 py-2 bg-cuba-gray-600 text-cuba-white text-sm font-body uppercase tracking-wider">
+          <div class="space-y-8">
+            <FadeInSection delay={0.6} intensity="high">
+              <StaggerText 
+                tag="h1" 
+                text={artist.name.toUpperCase()}
+                splitBy="chars"
+                delay={0.8}
+                stagger={0.05}
+                intensity="high"
+                class="text-6xl md:text-8xl font-heading text-white uppercase tracking-wider mb-6"
+              />
+              <div class="w-32 h-1 bg-white mb-8 transform origin-left"></div>
+            </FadeInSection>
+            
+            <!-- Especialidades -->
+            <FadeInSection delay={1.2} intensity="medium">
+              <h2 class="text-sm font-body text-gray-400 uppercase tracking-wider mb-4">
+                Especialidades
+              </h2>
+              <div class="flex flex-wrap gap-4">
+                {artist.specialties.map((specialty, index) => (
+                  <FadeInSection delay={1.4 + (index * 0.1)} intensity="medium">
+                    <span class="px-6 py-3 bg-gray-800 text-white text-sm font-body uppercase tracking-wider border border-gray-700 hover:bg-gray-700 transition-all duration-300">
                       {specialty}
                     </span>
-                  ))}
-                </div>
+                  </FadeInSection>
+                ))}
               </div>
+            </FadeInSection>
               
-              <!-- Experiencia -->
-              <div>
-                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
-                  Experiencia
-                </h2>
-                <p class="text-cuba-white font-body text-xl">
-                  {artist.experience}
-                </p>
+            <!-- Experiencia -->
+            <FadeInSection delay={1.8} intensity="medium">
+              <h2 class="text-sm font-body text-gray-400 uppercase tracking-wider mb-4">
+                Experiencia
+              </h2>
+              <p class="text-white font-body text-xl leading-relaxed">
+                {artist.experience}
+              </p>
+            </FadeInSection>
+            
+            <!-- Contacto -->
+            <FadeInSection delay={2.0} intensity="medium">
+              <h2 class="text-sm font-body text-gray-400 uppercase tracking-wider mb-4">
+                Contacto
+              </h2>
+              <div class="space-y-3">
+                <a 
+                  href={`https://instagram.com/${artist.contact.instagram.replace('@', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block text-white hover:text-gray-300 transition-all duration-300 font-body transform hover:translate-x-2"
+                >
+                  {artist.contact.instagram}
+                </a>
+                <a 
+                  href={`mailto:${artist.contact.email}`}
+                  class="block text-white hover:text-gray-300 transition-all duration-300 font-body transform hover:translate-x-2"
+                >
+                  {artist.contact.email}
+                </a>
               </div>
-              
-              <!-- Contacto -->
-              <div>
-                <h2 class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider mb-3">
-                  Contacto
-                </h2>
-                <div class="space-y-2">
-                  <a 
-                    href={`https://instagram.com/${artist.contact.instagram.replace('@', '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="block text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300 font-body"
-                  >
-                    {artist.contact.instagram}
-                  </a>
-                  <a 
-                    href={`mailto:${artist.contact.email}`}
-                    class="block text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300 font-body"
-                  >
-                    {artist.contact.email}
-                  </a>
-                </div>
-              </div>
-              
-              <!-- CTA -->
-              <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            </FadeInSection>
+            
+            <!-- CTA -->
+            <FadeInSection delay={2.2} intensity="high">
+              <div class="flex flex-col sm:flex-row gap-6 pt-6">
                 <Button 
                   href={`/reservas?artist=${artist.slug}`} 
                   variant="primary" 
                   size="lg"
+                  class="transform hover:scale-105 transition-all duration-300 shadow-2xl"
                 >
                   Reservar con {artist.name}
                 </Button>
@@ -107,182 +124,267 @@ if (!artist) {
                   href="/portfolio" 
                   variant="outline" 
                   size="lg"
+                  class="transform hover:scale-105 transition-all duration-300"
                 >
                   Ver Portfolio Completo
                 </Button>
               </div>
-            </div>
-          </GSAPWrapper>
+            </FadeInSection>
+          </div>
         </div>
-      </div>
-    </section>
+        
+        <!-- Elementos decorativos cinematográficos -->
+        <div class="absolute top-12 left-12 w-20 h-20 border-l-2 border-t-2 border-white opacity-10"></div>
+        <div class="absolute bottom-12 right-12 w-20 h-20 border-r-2 border-b-2 border-white opacity-10"></div>
+      </section>
+    </ParallaxContainer>
 
-    <!-- Biografía -->
-    <GSAPWrapper animation="fade-in" class="py-20">
-      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-8 text-center">
-            Sobre {artist.name}
-          </h2>
-          <div class="prose prose-invert max-w-none">
-            <p class="text-cuba-gray-400 font-body text-lg leading-relaxed text-center">
-              {artist.bio}
-            </p>
+    <!-- Biografía Cinematográfica -->
+    <FadeInSection delay={0.3} intensity="high" class="py-24 bg-gradient-to-b from-black to-gray-900">
+      <section class="max-w-5xl mx-auto px-6">
+        <div class="text-center">
+          <StaggerText 
+            tag="h2" 
+            text={`SOBRE ${artist.name.toUpperCase()}`}
+            splitBy="words"
+            delay={0.5}
+            stagger={0.1}
+            intensity="high"
+            class="text-5xl md:text-6xl font-heading text-white uppercase tracking-wider mb-12"
+          />
+          
+          <FadeInSection delay={1.0} intensity="medium">
+            <div class="max-w-3xl mx-auto">
+              <p class="text-gray-300 font-body text-xl leading-relaxed">
+                {artist.bio}
+              </p>
+            </div>
+          </FadeInSection>
+          
+          <!-- Elementos decorativos -->
+          <div class="mt-12 flex justify-center">
+            <div class="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-50"></div>
           </div>
         </div>
       </section>
-    </GSAPWrapper>
+    </FadeInSection>
 
-    <!-- Portfolio del Artista -->
-    <section class="py-20 bg-gradient-to-b from-cuba-black to-cuba-gray-600">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <GSAPWrapper animation="fade-in">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-6">
-              Portfolio de {artist.name}
-            </h2>
-            <p class="text-cuba-gray-400 font-body text-lg max-w-2xl mx-auto">
+    <!-- Portfolio Cinematográfico -->
+    <ParallaxContainer speed={0.1} intensity="high" class="py-24 bg-gradient-to-b from-gray-900 via-black to-gray-900 relative">
+      <section class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-20">
+          <StaggerText 
+            tag="h2" 
+            text={`PORTFOLIO DE ${artist.name.toUpperCase()}`}
+            splitBy="words"
+            delay={0.3}
+            stagger={0.1}
+            intensity="high"
+            class="text-5xl md:text-6xl font-heading text-white uppercase tracking-wider mb-8"
+          />
+          
+          <FadeInSection delay={0.8} intensity="medium">
+            <p class="text-gray-300 font-body text-xl max-w-3xl mx-auto leading-relaxed">
               Una selección de los mejores trabajos realizados por {artist.name}, mostrando su maestría en {artist.specialties.join(', ').toLowerCase()}.
             </p>
-          </div>
-        </GSAPWrapper>
+          </FadeInSection>
+        </div>
         
-        <!-- Grid de Portfolio -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Grid de Portfolio Cinematográfico -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {artist.portfolio.map((work, index) => (
-            <GSAPWrapper animation="stagger" delay={index * 0.2}>
-              <Card class="group overflow-hidden">
-                <div class="aspect-square bg-cuba-gray-600 overflow-hidden">
+            <FadeInSection delay={1.2 + (index * 0.2)} intensity="high">
+              <Card class="group overflow-hidden bg-gray-900 border border-gray-800 hover:border-gray-600 transition-all duration-500">
+                <SlideInImage 
+                  direction="up" 
+                  delay={1.4 + (index * 0.2)} 
+                  intensity="medium"
+                  class="aspect-square overflow-hidden relative"
+                >
                   <img 
-                    src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=${work.style.toLowerCase()}%20tattoo%20${work.description.toLowerCase()}%20${work.bodyPart.toLowerCase()}%20black%20and%20white%20detailed%20professional&image_size=square_hd`}
+                    src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20${work.style.toLowerCase()}%20tattoo%20${work.description.toLowerCase()}%20${work.bodyPart.toLowerCase()}%20black%20and%20white%20detailed%20professional%20dramatic%20lighting&image_size=square_hd`}
                     alt={`${work.title} - ${work.style} por ${artist.name}`}
                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     loading="lazy"
                   />
-                </div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </SlideInImage>
                 
-                <div class="p-6">
-                  <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-2">
-                    {work.title}
-                  </h3>
+                <div class="p-8">
+                  <StaggerText 
+                    tag="h3" 
+                    text={work.title.toUpperCase()}
+                    splitBy="chars"
+                    delay={1.6 + (index * 0.2)}
+                    stagger={0.03}
+                    intensity="medium"
+                    class="text-xl font-heading text-white uppercase tracking-wider mb-4"
+                  />
                   
-                  <div class="space-y-2 mb-4">
-                    <div class="flex justify-between items-center">
-                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                  <div class="space-y-3 mb-6">
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                      <span class="text-sm font-body text-gray-400 uppercase tracking-wider">
                         Estilo
                       </span>
-                      <span class="text-sm font-body text-cuba-white">
+                      <span class="text-sm font-body text-white">
                         {work.style}
                       </span>
                     </div>
                     
-                    <div class="flex justify-between items-center">
-                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                      <span class="text-sm font-body text-gray-400 uppercase tracking-wider">
                         Tamaño
                       </span>
-                      <span class="text-sm font-body text-cuba-white">
+                      <span class="text-sm font-body text-white">
                         {work.size}
                       </span>
                     </div>
                     
-                    <div class="flex justify-between items-center">
-                      <span class="text-sm font-body text-cuba-gray-400 uppercase tracking-wider">
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                      <span class="text-sm font-body text-gray-400 uppercase tracking-wider">
                         Ubicación
                       </span>
-                      <span class="text-sm font-body text-cuba-white">
+                      <span class="text-sm font-body text-white">
                         {work.bodyPart}
                       </span>
                     </div>
                   </div>
                   
-                  <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                  <p class="text-gray-300 font-body text-sm leading-relaxed">
                     {work.description}
                   </p>
                 </div>
               </Card>
-            </GSAPWrapper>
+            </FadeInSection>
           ))}
         </div>
-      </div>
-    </section>
+      </section>
+    </ParallaxContainer>
 
-    <!-- Proceso de Trabajo -->
-    <GSAPWrapper animation="fade-in" class="py-20">
-      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-12">
-            Mi Proceso
-          </h2>
+    <!-- Proceso de Trabajo Cinematográfico -->
+    <FadeInSection delay={0.3} intensity="high" class="py-24 bg-gradient-to-b from-black to-gray-900">
+      <section class="max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <StaggerText 
+            tag="h2" 
+            text="MI PROCESO"
+            splitBy="words"
+            delay={0.5}
+            stagger={0.2}
+            intensity="high"
+            class="text-5xl md:text-6xl font-heading text-white uppercase tracking-wider mb-16"
+          />
           
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <GSAPWrapper animation="stagger" delay={0.1}>
-              <div class="text-center">
-                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center text-cuba-white font-heading text-2xl">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <FadeInSection delay={1.0} intensity="high">
+              <div class="text-center group">
+                <div class="w-20 h-20 bg-gray-800 mx-auto mb-6 flex items-center justify-center text-white font-heading text-3xl border border-gray-700 group-hover:bg-gray-700 transition-all duration-300">
                   01
                 </div>
-                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
-                  Consulta
-                </h3>
-                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                <StaggerText 
+                  tag="h3" 
+                  text="CONSULTA"
+                  splitBy="chars"
+                  delay={1.2}
+                  stagger={0.05}
+                  intensity="medium"
+                  class="text-xl font-heading text-white uppercase tracking-wider mb-4"
+                />
+                <p class="text-gray-300 font-body text-sm leading-relaxed">
                   Discutimos tu idea, estilo preferido y ubicación. Analizamos referencias y definimos el concepto final.
                 </p>
               </div>
-            </GSAPWrapper>
+            </FadeInSection>
             
-            <GSAPWrapper animation="stagger" delay={0.2}>
-              <div class="text-center">
-                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center text-cuba-white font-heading text-2xl">
+            <FadeInSection delay={1.3} intensity="high">  
+              <div class="text-center group">
+                <div class="w-20 h-20 bg-gray-800 mx-auto mb-6 flex items-center justify-center text-white font-heading text-3xl border border-gray-700 group-hover:bg-gray-700 transition-all duration-300">
                   02
                 </div>
-                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
-                  Diseño
-                </h3>
-                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                <StaggerText 
+                  tag="h3" 
+                  text="DISEÑO"
+                  splitBy="chars"
+                  delay={1.5}
+                  stagger={0.05}
+                  intensity="medium"
+                  class="text-xl font-heading text-white uppercase tracking-wider mb-4"
+                />
+                <p class="text-gray-300 font-body text-sm leading-relaxed">
                   Creo un diseño personalizado adaptado a tu anatomía y preferencias. Refinamos hasta lograr la perfección.
                 </p>
               </div>
-            </GSAPWrapper>
+            </FadeInSection>
             
-            <GSAPWrapper animation="stagger" delay={0.3}>
-              <div class="text-center">
-                <div class="w-16 h-16 bg-cuba-gray-600 mx-auto mb-4 flex items-center justify-center text-cuba-white font-heading text-2xl">
+            <FadeInSection delay={1.6} intensity="high">  
+              <div class="text-center group">
+                <div class="w-20 h-20 bg-gray-800 mx-auto mb-6 flex items-center justify-center text-white font-heading text-3xl border border-gray-700 group-hover:bg-gray-700 transition-all duration-300">
                   03
                 </div>
-                <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-3">
-                  Ejecución
-                </h3>
-                <p class="text-cuba-gray-400 font-body text-sm leading-relaxed">
+                <StaggerText 
+                  tag="h3" 
+                  text="EJECUCIÓN"
+                  splitBy="chars"
+                  delay={1.8}
+                  stagger={0.05}
+                  intensity="medium"
+                  class="text-xl font-heading text-white uppercase tracking-wider mb-4"
+                />
+                <p class="text-gray-300 font-body text-sm leading-relaxed">
                   Realizo el tatuaje con la máxima precisión y cuidado, asegurando tu comodidad durante todo el proceso.
                 </p>
               </div>
-            </GSAPWrapper>
+            </FadeInSection>
           </div>
         </div>
       </section>
-    </GSAPWrapper>
+    </FadeInSection>
 
-    <!-- CTA Final -->
-    <GSAPWrapper animation="fade-in" class="py-20 bg-gradient-to-t from-cuba-black to-cuba-gray-600">
-      <section class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-heading text-cuba-white uppercase tracking-wider mb-6">
-            ¿Listo para tu próximo tatuaje?
-          </h2>
-          <p class="text-cuba-gray-400 font-body text-lg leading-relaxed mb-8">
+    <!-- CTA Final Cinematográfico -->
+    <ParallaxContainer speed={0.1} intensity="high" class="py-24 bg-gradient-to-t from-black via-gray-900 to-black relative">
+      <section class="max-w-4xl mx-auto px-6 text-center relative z-10">
+        <StaggerText 
+          tag="h2" 
+          text="¿LISTO PARA TU PRÓXIMO TATUAJE?"
+          splitBy="words"
+          delay={0.3}
+          stagger={0.1}
+          intensity="high"
+          class="text-5xl md:text-6xl font-heading text-white uppercase tracking-wider mb-8"
+        />
+        
+        <FadeInSection delay={1.2} intensity="medium">
+          <p class="text-gray-300 font-body text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
             Contacta conmigo para discutir tu proyecto. Juntos crearemos una pieza única que refleje tu personalidad y estilo.
           </p>
-          
-          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button href={`/reservas?artist=${artist.slug}`} variant="primary" size="lg">
+        </FadeInSection>
+        
+        <FadeInSection delay={1.6} intensity="high">
+          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button 
+              href={`/reservas?artist=${artist.slug}`} 
+              variant="primary" 
+              size="lg"
+              class="transform hover:scale-105 transition-all duration-300 shadow-2xl"
+            >
               Reservar con {artist.name}
             </Button>
-            <Button href="/artistas" variant="outline" size="lg">
+            <Button 
+              href="/artistas" 
+              variant="outline" 
+              size="lg"
+              class="transform hover:scale-105 transition-all duration-300"
+            >
               Ver Otros Artistas
             </Button>
           </div>
-        </div>
+        </FadeInSection>
+        
+        <!-- Elementos decorativos cinematográficos -->
+        <div class="absolute top-8 left-8 w-16 h-16 border-l-2 border-t-2 border-white opacity-10"></div>
+        <div class="absolute bottom-8 right-8 w-16 h-16 border-r-2 border-b-2 border-white opacity-10"></div>
       </section>
-    </GSAPWrapper>
+    </ParallaxContainer>
   </main>
   
   <Footer />

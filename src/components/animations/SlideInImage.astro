@@ -1,0 +1,188 @@
+---
+export interface Props {
+  src: string;
+  alt: string;
+  direction?: 'left' | 'right' | 'up' | 'down';
+  delay?: number;
+  duration?: number;
+  intensity?: 'subtle' | 'medium' | 'strong';
+  parallax?: boolean;
+  class?: string;
+  id?: string;
+}
+
+const {
+  src,
+  alt,
+  direction = 'left',
+  delay = 0,
+  duration = 1.4,
+  intensity = 'medium',
+  parallax = false,
+  class: className = '',
+  id,
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'slide-in-image overflow-hidden';
+const classes = `${baseClasses} ${className}`;
+---
+
+<div
+  class={classes}
+  id={id}
+  data-slide-direction={direction}
+  data-slide-delay={delay}
+  data-slide-duration={duration}
+  data-slide-intensity={intensity}
+  data-slide-parallax={parallax}
+  {...rest}
+>
+  <img 
+    src={src} 
+    alt={alt} 
+    class="slide-image w-full h-full object-cover"
+    loading="lazy"
+  />
+  <div class="slide-overlay absolute inset-0 bg-black"></div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initSlideInImages() {
+    const containers = document.querySelectorAll('.slide-in-image');
+    
+    containers.forEach((container) => {
+      const image = container.querySelector('.slide-image');
+      const overlay = container.querySelector('.slide-overlay');
+      const direction = container.getAttribute('data-slide-direction') || 'left';
+      const delay = parseFloat(container.getAttribute('data-slide-delay') || '0');
+      const duration = parseFloat(container.getAttribute('data-slide-duration') || '1.4');
+      const intensity = container.getAttribute('data-slide-intensity') || 'medium';
+      const parallax = container.getAttribute('data-slide-parallax') === 'true';
+      
+      // Configuraciones de intensidad
+      const intensityConfig = {
+        subtle: { distance: 50, scale: 1.05 },
+        medium: { distance: 100, scale: 1.1 },
+        strong: { distance: 150, scale: 1.15 }
+      };
+      
+      const config = intensityConfig[intensity];
+      
+      // Configurar posición inicial según dirección
+      const initialTransform = {
+        left: { x: -config.distance, y: 0 },
+        right: { x: config.distance, y: 0 },
+        up: { x: 0, y: -config.distance },
+        down: { x: 0, y: config.distance }
+      };
+      
+      const initial = initialTransform[direction];
+      
+      // Estado inicial de la imagen
+      gsap.set(image, {
+        x: initial.x,
+        y: initial.y,
+        scale: config.scale,
+        opacity: 0.8
+      });
+      
+      // Estado inicial del overlay
+      gsap.set(overlay, {
+        x: direction === 'left' ? '100%' : direction === 'right' ? '-100%' : '0%',
+        y: direction === 'up' ? '100%' : direction === 'down' ? '-100%' : '0%'
+      });
+      
+      // Timeline de animación cinematográfica
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: 'top 85%',
+          end: 'bottom 15%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+      
+      // Animación del overlay (reveal effect)
+      tl.to(overlay, {
+        x: direction === 'left' ? '-100%' : direction === 'right' ? '100%' : '0%',
+        y: direction === 'up' ? '-100%' : direction === 'down' ? '100%' : '0%',
+        duration: duration * 0.6,
+        delay,
+        ease: 'power3.inOut'
+      })
+      // Animación de la imagen
+      .to(image, {
+        x: 0,
+        y: 0,
+        scale: 1,
+        opacity: 1,
+        duration: duration * 0.8,
+        ease: 'power3.out'
+      }, delay + duration * 0.2);
+      
+      // Efecto parallax si está habilitado
+      if (parallax) {
+        gsap.to(image, {
+          y: direction === 'up' ? 30 : direction === 'down' ? -30 : 0,
+          x: direction === 'left' ? 20 : direction === 'right' ? -20 : 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        });
+      }
+      
+      // Hover effect cinematográfico
+      container.addEventListener('mouseenter', () => {
+        gsap.to(image, {
+          scale: 1.05,
+          duration: 0.6,
+          ease: 'power2.out'
+        });
+      });
+      
+      container.addEventListener('mouseleave', () => {
+        gsap.to(image, {
+          scale: 1,
+          duration: 0.6,
+          ease: 'power2.out'
+        });
+      });
+    });
+  }
+  
+  // Inicializar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSlideInImages);
+  } else {
+    initSlideInImages();
+  }
+  
+  // Reinicializar en navegación SPA
+  document.addEventListener('astro:page-load', initSlideInImages);
+</script>
+
+<style>
+  .slide-in-image {
+    position: relative;
+    will-change: transform;
+  }
+  
+  .slide-image {
+    will-change: transform, opacity;
+  }
+  
+  .slide-overlay {
+    will-change: transform;
+    z-index: 10;
+  }
+</style>

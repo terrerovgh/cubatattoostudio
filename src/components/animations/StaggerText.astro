@@ -1,0 +1,206 @@
+---
+export interface Props {
+  text?: string;
+  tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
+  splitBy?: 'words' | 'lines' | 'chars';
+  delay?: number;
+  duration?: number;
+  stagger?: number;
+  intensity?: 'subtle' | 'medium' | 'strong';
+  class?: string;
+  id?: string;
+}
+
+const {
+  text,
+  tag = 'p',
+  splitBy = 'words',
+  delay = 0,
+  duration = 0.8,
+  stagger = 0.1,
+  intensity = 'medium',
+  class: className = '',
+  id,
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'stagger-text';
+const classes = `${baseClasses} ${className}`;
+const Tag = tag;
+---
+
+<Tag
+  class={classes}
+  id={id}
+  data-stagger-split={splitBy}
+  data-stagger-delay={delay}
+  data-stagger-duration={duration}
+  data-stagger-stagger={stagger}
+  data-stagger-intensity={intensity}
+  {...rest}
+>
+  {text ? text : <slot />}
+</Tag>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { SplitText } from 'gsap/SplitText';
+
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+
+  function initStaggerText() {
+    const elements = document.querySelectorAll('.stagger-text');
+    
+    elements.forEach((element) => {
+      const splitBy = element.getAttribute('data-stagger-split') || 'words';
+      const delay = parseFloat(element.getAttribute('data-stagger-delay') || '0');
+      const duration = parseFloat(element.getAttribute('data-stagger-duration') || '0.8');
+      const staggerAmount = parseFloat(element.getAttribute('data-stagger-stagger') || '0.1');
+      const intensity = element.getAttribute('data-stagger-intensity') || 'medium';
+      
+      // Configuraciones de intensidad cinematográfica
+      const intensityConfig = {
+        subtle: { y: 20, opacity: 0, scale: 0.98, rotation: 1 },
+        medium: { y: 40, opacity: 0, scale: 0.95, rotation: 2 },
+        strong: { y: 60, opacity: 0, scale: 0.9, rotation: 3 }
+      };
+      
+      const config = intensityConfig[intensity];
+      
+      // Dividir el texto
+      const splitText = new SplitText(element, {
+        type: splitBy,
+        linesClass: 'split-line',
+        wordsClass: 'split-word',
+        charsClass: 'split-char'
+      });
+      
+      const targets = splitBy === 'words' ? splitText.words : 
+                     splitBy === 'lines' ? splitText.lines : 
+                     splitText.chars;
+      
+      // Estado inicial para cada elemento
+      gsap.set(targets, {
+        y: config.y,
+        opacity: config.opacity,
+        scale: config.scale,
+        rotation: config.rotation,
+        transformOrigin: 'center bottom'
+      });
+      
+      // Animación escalonada cinematográfica
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: element,
+          start: 'top 85%',
+          end: 'bottom 15%',
+          toggleActions: 'play none none reverse',
+          onEnter: () => {
+            // Efecto de brillo sutil al completarse
+            gsap.to(element, {
+              textShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
+              duration: 0.3,
+              yoyo: true,
+              repeat: 1,
+              delay: (targets.length * staggerAmount) + duration
+            });
+          }
+        }
+      });
+      
+      // Animación principal
+      tl.to(targets, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        rotation: 0,
+        duration,
+        delay,
+        stagger: {
+          amount: staggerAmount * targets.length,
+          from: 'start',
+          ease: 'power2.out'
+        },
+        ease: 'power3.out'
+      });
+      
+      // Efecto hover para elementos interactivos
+      if (element.tagName === 'A' || element.classList.contains('interactive')) {
+        element.addEventListener('mouseenter', () => {
+          gsap.to(targets, {
+            y: -5,
+            duration: 0.3,
+            stagger: 0.02,
+            ease: 'power2.out'
+          });
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          gsap.to(targets, {
+            y: 0,
+            duration: 0.3,
+            stagger: 0.02,
+            ease: 'power2.out'
+          });
+        });
+      }
+      
+      // Cleanup function para evitar memory leaks
+      const cleanup = () => {
+        if (splitText) {
+          splitText.revert();
+        }
+      };
+      
+      // Guardar referencia para cleanup
+      element._staggerTextCleanup = cleanup;
+    });
+  }
+  
+  // Función de cleanup global
+  function cleanupStaggerText() {
+    const elements = document.querySelectorAll('.stagger-text');
+    elements.forEach(element => {
+      if (element._staggerTextCleanup) {
+        element._staggerTextCleanup();
+      }
+    });
+  }
+  
+  // Inicializar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initStaggerText);
+  } else {
+    initStaggerText();
+  }
+  
+  // Cleanup y reinicializar en navegación SPA
+  document.addEventListener('astro:before-preparation', cleanupStaggerText);
+  document.addEventListener('astro:page-load', initStaggerText);
+</script>
+
+<style>
+  .stagger-text {
+    overflow: hidden;
+  }
+  
+  .split-line,
+  .split-word,
+  .split-char {
+    will-change: transform, opacity;
+    display: inline-block;
+  }
+  
+  .split-line {
+    overflow: hidden;
+  }
+  
+  .split-word {
+    margin-right: 0.25em;
+  }
+  
+  .split-char {
+    margin-right: 0.02em;
+  }
+</style>

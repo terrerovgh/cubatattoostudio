@@ -1,0 +1,229 @@
+---
+export interface Props {
+  speed?: number;
+  direction?: 'vertical' | 'horizontal' | 'both';
+  intensity?: 'subtle' | 'medium' | 'strong';
+  pin?: boolean;
+  class?: string;
+  id?: string;
+}
+
+const {
+  speed = 0.5,
+  direction = 'vertical',
+  intensity = 'medium',
+  pin = false,
+  class: className = '',
+  id,
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'parallax-container';
+const classes = `${baseClasses} ${className}`;
+---
+
+<div
+  class={classes}
+  id={id}
+  data-parallax-speed={speed}
+  data-parallax-direction={direction}
+  data-parallax-intensity={intensity}
+  data-parallax-pin={pin}
+  {...rest}
+>
+  <div class="parallax-content">
+    <slot />
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initParallaxContainers() {
+    const containers = document.querySelectorAll('.parallax-container');
+    
+    containers.forEach((container) => {
+      const content = container.querySelector('.parallax-content');
+      const speed = parseFloat(container.getAttribute('data-parallax-speed') || '0.5');
+      const direction = container.getAttribute('data-parallax-direction') || 'vertical';
+      const intensity = container.getAttribute('data-parallax-intensity') || 'medium';
+      const pin = container.getAttribute('data-parallax-pin') === 'true';
+      
+      // Configuraciones de intensidad cinematográfica
+      const intensityConfig = {
+        subtle: { multiplier: 0.3, scale: 1.02, opacity: 0.95 },
+        medium: { multiplier: 0.5, scale: 1.05, opacity: 0.9 },
+        strong: { multiplier: 0.8, scale: 1.1, opacity: 0.85 }
+      };
+      
+      const config = intensityConfig[intensity];
+      const effectiveSpeed = speed * config.multiplier;
+      
+      // Configurar el contenido inicial
+      gsap.set(content, {
+        scale: config.scale,
+        opacity: config.opacity
+      });
+      
+      // Crear el ScrollTrigger para parallax
+      const scrollTrigger = {
+        trigger: container,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.2,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const velocity = self.getVelocity();
+          
+          // Calcular transformaciones basadas en dirección
+          let transforms = {};
+          
+          if (direction === 'vertical' || direction === 'both') {
+            const yMovement = (progress - 0.5) * 100 * effectiveSpeed;
+            transforms.y = yMovement;
+          }
+          
+          if (direction === 'horizontal' || direction === 'both') {
+            const xMovement = (progress - 0.5) * 50 * effectiveSpeed;
+            transforms.x = xMovement;
+          }
+          
+          // Efecto de escala dinámico basado en velocidad
+          const velocityScale = Math.min(Math.abs(velocity) * 0.0001, 0.02);
+          transforms.scale = config.scale + velocityScale;
+          
+          // Efecto de opacidad cinematográfico
+          const opacityEffect = 1 - Math.abs(progress - 0.5) * 0.2;
+          transforms.opacity = Math.max(opacityEffect, 0.7);
+          
+          // Aplicar transformaciones
+          gsap.set(content, transforms);
+        }
+      };
+      
+      // Agregar pin si está habilitado
+      if (pin) {
+        scrollTrigger.pin = true;
+        scrollTrigger.pinSpacing = false;
+      }
+      
+      // Crear la animación parallax
+      gsap.to(content, {
+        ease: 'none',
+        scrollTrigger
+      });
+      
+      // Efecto de entrada cinematográfico
+      gsap.fromTo(content, 
+        {
+          opacity: 0,
+          scale: config.scale * 0.9,
+          filter: 'blur(10px)'
+        },
+        {
+          opacity: config.opacity,
+          scale: config.scale,
+          filter: 'blur(0px)',
+          duration: 1.5,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 90%',
+            end: 'top 60%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+      
+      // Efecto hover cinematográfico
+      container.addEventListener('mouseenter', () => {
+        gsap.to(content, {
+          scale: config.scale * 1.02,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+      });
+      
+      container.addEventListener('mouseleave', () => {
+        gsap.to(content, {
+          scale: config.scale,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+      });
+      
+      // Efecto de profundidad con mouse movement
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const deltaX = (e.clientX - centerX) / rect.width;
+        const deltaY = (e.clientY - centerY) / rect.height;
+        
+        gsap.to(content, {
+          rotationY: deltaX * 5,
+          rotationX: -deltaY * 5,
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+      });
+      
+      container.addEventListener('mouseleave', () => {
+        gsap.to(content, {
+          rotationY: 0,
+          rotationX: 0,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+      });
+    });
+  }
+  
+  // Inicializar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initParallaxContainers);
+  } else {
+    initParallaxContainers();
+  }
+  
+  // Reinicializar en navegación SPA
+  document.addEventListener('astro:page-load', initParallaxContainers);
+</script>
+
+<style>
+  .parallax-container {
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+  }
+  
+  .parallax-content {
+    will-change: transform, opacity, filter;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  /* Optimización para dispositivos móviles */
+  @media (max-width: 768px) {
+    .parallax-container {
+      transform: none !important;
+    }
+    
+    .parallax-content {
+      transform: none !important;
+    }
+  }
+  
+  /* Respeto por reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .parallax-container,
+    .parallax-content {
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>

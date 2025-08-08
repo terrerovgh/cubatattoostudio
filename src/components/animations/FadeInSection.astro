@@ -1,0 +1,121 @@
+---
+export interface Props {
+  delay?: number;
+  duration?: number;
+  intensity?: 'subtle' | 'medium' | 'strong';
+  trigger?: 'viewport' | 'scroll';
+  class?: string;
+  id?: string;
+}
+
+const {
+  delay = 0,
+  duration = 1.2,
+  intensity = 'medium',
+  trigger = 'viewport',
+  class: className = '',
+  id,
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'fade-in-section';
+const classes = `${baseClasses} ${className}`;
+---
+
+<section
+  class={classes}
+  id={id}
+  data-fade-delay={delay}
+  data-fade-duration={duration}
+  data-fade-intensity={intensity}
+  data-fade-trigger={trigger}
+  {...rest}
+>
+  <slot />
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initFadeInSections() {
+    const sections = document.querySelectorAll('.fade-in-section');
+    
+    sections.forEach((section) => {
+      const delay = parseFloat(section.getAttribute('data-fade-delay') || '0');
+      const duration = parseFloat(section.getAttribute('data-fade-duration') || '1.2');
+      const intensity = section.getAttribute('data-fade-intensity') || 'medium';
+      const trigger = section.getAttribute('data-fade-trigger') || 'viewport';
+      
+      // Configuraciones de intensidad cinematográfica
+      const intensityConfig = {
+        subtle: { y: 20, opacity: 0, scale: 0.98 },
+        medium: { y: 40, opacity: 0, scale: 0.95 },
+        strong: { y: 60, opacity: 0, scale: 0.9 }
+      };
+      
+      const config = intensityConfig[intensity];
+      
+      // Estado inicial
+      gsap.set(section, config);
+      
+      // Animación de entrada cinematográfica
+      const animation = gsap.to(section, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration,
+        delay,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: section,
+          start: trigger === 'viewport' ? 'top 80%' : 'top 90%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none reverse',
+          onEnter: () => {
+            // Efecto adicional de brillo sutil
+            gsap.to(section, {
+              filter: 'brightness(1.1)',
+              duration: 0.3,
+              yoyo: true,
+              repeat: 1,
+              delay: duration * 0.7
+            });
+          }
+        }
+      });
+      
+      // Efecto parallax sutil en scroll
+      if (trigger === 'scroll') {
+        gsap.to(section, {
+          y: -20,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        });
+      }
+    });
+  }
+  
+  // Inicializar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFadeInSections);
+  } else {
+    initFadeInSections();
+  }
+  
+  // Reinicializar en navegación SPA
+  document.addEventListener('astro:page-load', initFadeInSections);
+</script>
+
+<style>
+  .fade-in-section {
+    will-change: transform, opacity;
+  }
+</style>

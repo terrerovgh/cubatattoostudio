@@ -3,46 +3,69 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import Button from '../components/ui/Button.astro';
-import GSAPWrapper from '../components/animations/GSAPWrapper.astro';
+import FadeInSection from '../components/animations/FadeInSection.astro';
+import SlideInImage from '../components/animations/SlideInImage.astro';
+import StaggerText from '../components/animations/StaggerText.astro';
+import ParallaxContainer from '../components/animations/ParallaxContainer.astro';
 ---
 
 <Layout title="Sobre el Estudio | Cuba Tattoo Studio" description="Conoce la historia, filosofía y proceso de Cuba Tattoo Studio. Preguntas frecuentes sobre tatuajes, precios y cuidados.">
   <Header />
   
   <main class="bg-black text-white min-h-screen">
-    <!-- Hero Section -->
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black z-10"></div>
-      <img 
-        src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20studio%20interior%2C%20clean%20modern%20design%2C%20black%20and%20white%20aesthetic%2C%20tattoo%20chairs%2C%20equipment%2C%20sterile%20environment%2C%20dramatic%20lighting%2C%20minimalist%20decor&image_size=landscape_16_9" 
-        alt="Interior del estudio Cuba Tattoo Studio" 
-        class="absolute inset-0 w-full h-full object-cover"
-      />
+    <!-- Hero Section Cinematográfico -->
+    <ParallaxContainer speed={0.5} intensity="high" class="relative h-screen flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black z-10"></div>
+      <SlideInImage 
+        direction="zoom-out"
+        delay={0.2}
+        intensity="high"
+        class="absolute inset-0 w-full h-full"
+      >
+        <img 
+          src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20professional%20tattoo%20studio%20interior%2C%20clean%20modern%20design%2C%20black%20and%20white%20aesthetic%2C%20tattoo%20chairs%2C%20equipment%2C%20sterile%20environment%2C%20dramatic%20moody%20lighting%2C%20minimalist%20decor%2C%20film%20noir%20style&image_size=landscape_16_9" 
+          alt="Interior del estudio Cuba Tattoo Studio" 
+          class="w-full h-full object-cover"
+        />
+      </SlideInImage>
       
-      <GSAPWrapper animation="fade-in" delay="0.5">
-        <div class="relative z-20 text-center max-w-4xl mx-auto px-6">
-          <h1 class="font-heading text-6xl md:text-8xl lg:text-9xl uppercase tracking-wider mb-6">
-            Nuestro
-            <span class="block">Estudio</span>
-          </h1>
-          <p class="font-body text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+      <FadeInSection delay={0.6} intensity="high" class="relative z-20 text-center max-w-5xl mx-auto px-6">
+        <div class="space-y-8">
+          <StaggerText 
+            text="NUESTRO ESTUDIO"
+            element="h1" 
+            class="font-bebas text-7xl md:text-9xl lg:text-[12rem] uppercase tracking-wider leading-none"
+            delay={0.8}
+            staggerDelay={0.1}
+          />
+          <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
+          <p class="font-inter text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
             Más que un estudio de tatuajes, somos artistas dedicados a crear arte corporal excepcional
           </p>
         </div>
-      </GSAPWrapper>
-    </section>
+      </FadeInSection>
+      
+      <!-- Elementos decorativos -->
+      <div class="absolute top-20 left-20 w-32 h-32 bg-white/5 rounded-full blur-3xl z-5"></div>
+      <div class="absolute bottom-20 right-20 w-48 h-48 bg-white/3 rounded-full blur-3xl z-5"></div>
+    </ParallaxContainer>
 
-    <!-- About Section -->
-    <section class="py-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <GSAPWrapper animation="slide-up" trigger="scroll">
-          <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide mb-8">
-                Nuestra Historia
-              </h2>
-              <div class="space-y-6 font-body text-lg leading-relaxed text-gray-300">
-                <p>
+    <!-- About Section Cinematográfico -->
+    <section class="py-32 px-6 bg-gradient-to-b from-black to-gray-900 relative">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+          <FadeInSection delay={0.2} intensity="high">
+            <div class="space-y-8">
+              <StaggerText 
+                text="NUESTRA HISTORIA"
+                element="h2" 
+                class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
+                delay={0.3}
+                staggerDelay={0.06}
+              />
+              <div class="w-24 h-px bg-gradient-to-r from-white to-transparent"></div>
+              <div class="space-y-6 font-inter text-lg leading-relaxed text-gray-300">
+                <p class="text-xl">
                   Cuba Tattoo Studio nació en el corazón de Albuquerque con una visión clara: 
                   elevar el arte del tatuaje a su máxima expresión. Fundado por artistas apasionados, 
                   nuestro estudio se ha convertido en un referente de calidad y profesionalismo.
@@ -59,181 +82,271 @@ import GSAPWrapper from '../components/animations/GSAPWrapper.astro';
                 </p>
               </div>
             </div>
+          </FadeInSection>
+          
+          <FadeInSection delay={0.4} intensity="medium">
             <div class="relative">
-              <img 
-                src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20artist%20working%2C%20professional%20setup%2C%20black%20and%20white%20photography%2C%20detailed%20tattoo%20process%2C%20sterile%20gloves%2C%20tattoo%20machine%2C%20focused%20concentration%2C%20artistic%20precision&image_size=portrait_4_3" 
-                alt="Artista trabajando en Cuba Tattoo Studio" 
-                class="w-full h-auto rounded-lg shadow-2xl"
-              />
+              <SlideInImage 
+                direction="right"
+                delay={0.5}
+                intensity="medium"
+                class="relative overflow-hidden"
+              >
+                <img 
+                  src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20tattoo%20artist%20working%2C%20professional%20setup%2C%20black%20and%20white%20photography%2C%20detailed%20tattoo%20process%2C%20sterile%20gloves%2C%20tattoo%20machine%2C%20focused%20concentration%2C%20artistic%20precision%2C%20dramatic%20lighting%2C%20film%20noir&image_size=portrait_4_3" 
+                  alt="Artista trabajando en Cuba Tattoo Studio" 
+                  class="w-full h-auto shadow-2xl"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </SlideInImage>
+              <!-- Elementos decorativos -->
+              <div class="absolute -top-10 -right-10 w-20 h-20 bg-white/10 rounded-full blur-2xl"></div>
+              <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-white/5 rounded-full blur-3xl"></div>
             </div>
-          </div>
-        </GSAPWrapper>
+          </FadeInSection>
+        </div>
       </div>
     </section>
 
-    <!-- Philosophy Section -->
-    <section class="py-20 px-6 bg-gray-900">
-      <div class="max-w-4xl mx-auto text-center">
-        <GSAPWrapper animation="fade-in" trigger="scroll">
-          <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide mb-12">
-            Nuestra Filosofía
-          </h2>
-          <div class="grid md:grid-cols-3 gap-8">
-            <div class="space-y-4">
-              <div class="w-16 h-16 mx-auto border-2 border-white rounded-full flex items-center justify-center">
-                <span class="font-heading text-2xl">01</span>
+    <!-- Philosophy Section Cinematográfico -->
+    <ParallaxContainer speed={0.3} intensity="medium" class="py-32 px-6 bg-gradient-to-b from-gray-900 via-black to-gray-900 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
+      <div class="max-w-6xl mx-auto text-center relative z-10">
+        <FadeInSection delay={0.2} intensity="high" class="mb-20 space-y-6">
+          <StaggerText 
+            text="NUESTRA FILOSOFÍA"
+            element="h2" 
+            class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
+            delay={0.3}
+            staggerDelay={0.06}
+          />
+          <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
+        </FadeInSection>
+        
+        <div class="grid md:grid-cols-3 gap-12">
+          <FadeInSection delay={0.4} intensity="medium">
+            <div class="space-y-6 group">
+              <div class="w-20 h-20 mx-auto border-2 border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
+                <span class="font-bebas text-3xl">01</span>
               </div>
-              <h3 class="font-heading text-xl uppercase tracking-wide">Excelencia</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Excelencia</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 Cada tatuaje es una obra maestra. No aceptamos menos que la perfección en cada trazo.
               </p>
             </div>
-            <div class="space-y-4">
-              <div class="w-16 h-16 mx-auto border-2 border-white rounded-full flex items-center justify-center">
-                <span class="font-heading text-2xl">02</span>
+          </FadeInSection>
+          
+          <FadeInSection delay={0.6} intensity="medium">
+            <div class="space-y-6 group">
+              <div class="w-20 h-20 mx-auto border-2 border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
+                <span class="font-bebas text-3xl">02</span>
               </div>
-              <h3 class="font-heading text-xl uppercase tracking-wide">Seguridad</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Seguridad</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 Protocolos de higiene y esterilización que superan los estándares de la industria.
               </p>
             </div>
-            <div class="space-y-4">
-              <div class="w-16 h-16 mx-auto border-2 border-white rounded-full flex items-center justify-center">
-                <span class="font-heading text-2xl">03</span>
+          </FadeInSection>
+          
+          <FadeInSection delay={0.8} intensity="medium">
+            <div class="space-y-6 group">
+              <div class="w-20 h-20 mx-auto border-2 border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
+                <span class="font-bebas text-3xl">03</span>
               </div>
-              <h3 class="font-heading text-xl uppercase tracking-wide">Personalización</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Personalización</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 Cada diseño es único, adaptado a la visión y personalidad de nuestros clientes.
               </p>
             </div>
-          </div>
-        </GSAPWrapper>
+          </FadeInSection>
+        </div>
+        
+        <!-- Elementos decorativos -->
+        <div class="absolute top-20 left-10 w-24 h-24 bg-white/5 rounded-full blur-2xl"></div>
+        <div class="absolute bottom-20 right-10 w-40 h-40 bg-white/3 rounded-full blur-3xl"></div>
       </div>
-    </section>
+    </ParallaxContainer>
 
-    <!-- Process Section -->
-    <section class="py-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <GSAPWrapper animation="slide-up" trigger="scroll">
-          <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide text-center mb-16">
-            Nuestro Proceso
-          </h2>
-          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="text-center space-y-4">
-              <div class="w-20 h-20 mx-auto bg-white text-black rounded-full flex items-center justify-center">
-                <span class="font-heading text-2xl">01</span>
+    <!-- Process Section Cinematográfico -->
+    <section class="py-32 px-6 bg-gradient-to-b from-black to-gray-900 relative">
+      <div class="max-w-7xl mx-auto">
+        <FadeInSection delay={0.2} intensity="high" class="text-center mb-20 space-y-6">
+          <StaggerText 
+            text="NUESTRO PROCESO"
+            element="h2" 
+            class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
+            delay={0.3}
+            staggerDelay={0.06}
+          />
+          <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
+        </FadeInSection>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <FadeInSection delay={0.4} intensity="medium">
+            <div class="text-center space-y-6 group">
+              <div class="w-24 h-24 mx-auto bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
+                <span class="font-bebas text-3xl">01</span>
               </div>
-              <h3 class="font-heading text-xl uppercase tracking-wide">Consulta</h3>
-              <p class="font-body text-gray-400 text-sm leading-relaxed">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Consulta</h3>
+              <p class="font-inter text-gray-300 leading-relaxed">
                 Discutimos tu idea, estilo preferido y ubicación. Evaluamos la viabilidad y te asesoramos.
               </p>
             </div>
-            <div class="text-center space-y-4">
-              <div class="w-20 h-20 mx-auto bg-white text-black rounded-full flex items-center justify-center">
-                <span class="font-heading text-2xl">02</span>
+          </FadeInSection>
+          
+          <FadeInSection delay={0.6} intensity="medium">
+            <div class="text-center space-y-6 group">
+              <div class="w-24 h-24 mx-auto bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
+                <span class="font-bebas text-3xl">02</span>
               </div>
-              <h3 class="font-heading text-xl uppercase tracking-wide">Diseño</h3>
-              <p class="font-body text-gray-400 text-sm leading-relaxed">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Diseño</h3>
+              <p class="font-inter text-gray-300 leading-relaxed">
                 Creamos un diseño personalizado basado en tus referencias y preferencias estéticas.
               </p>
             </div>
-            <div class="text-center space-y-4">
-              <div class="w-20 h-20 mx-auto bg-white text-black rounded-full flex items-center justify-center">
-                <span class="font-heading text-2xl">03</span>
+          </FadeInSection>
+          
+          <FadeInSection delay={0.8} intensity="medium">
+            <div class="text-center space-y-6 group">
+              <div class="w-24 h-24 mx-auto bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
+                <span class="font-bebas text-3xl">03</span>
               </div>
-              <h3 class="font-heading text-xl uppercase tracking-wide">Sesión</h3>
-              <p class="font-body text-gray-400 text-sm leading-relaxed">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Sesión</h3>
+              <p class="font-inter text-gray-300 leading-relaxed">
                 Ejecutamos el tatuaje con precisión, manteniendo comunicación constante contigo.
               </p>
             </div>
-            <div class="text-center space-y-4">
-              <div class="w-20 h-20 mx-auto bg-white text-black rounded-full flex items-center justify-center">
-                <span class="font-heading text-2xl">04</span>
+          </FadeInSection>
+          
+          <FadeInSection delay={1.0} intensity="medium">
+            <div class="text-center space-y-6 group">
+              <div class="w-24 h-24 mx-auto bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
+                <span class="font-bebas text-3xl">04</span>
               </div>
-              <h3 class="font-heading text-xl uppercase tracking-wide">Cuidados</h3>
-              <p class="font-body text-gray-400 text-sm leading-relaxed">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Cuidados</h3>
+              <p class="font-inter text-gray-300 leading-relaxed">
                 Te proporcionamos instrucciones detalladas para el cuidado y seguimiento post-tatuaje.
               </p>
             </div>
-          </div>
-        </GSAPWrapper>
+          </FadeInSection>
+        </div>
       </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="py-20 px-6 bg-gray-900">
-      <div class="max-w-4xl mx-auto">
-        <GSAPWrapper animation="fade-in" trigger="scroll">
-          <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide text-center mb-16">
-            Preguntas Frecuentes
-          </h2>
-          <div class="space-y-8">
-            <div class="border-b border-gray-700 pb-6">
-              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Cuánto cuesta un tatuaje?</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+    <!-- FAQ Section Cinematográfico -->
+    <ParallaxContainer speed={0.2} intensity="medium" class="py-32 px-6 bg-gradient-to-b from-gray-900 via-black to-gray-900 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
+      <div class="max-w-5xl mx-auto relative z-10">
+        <FadeInSection delay={0.2} intensity="high" class="text-center mb-20 space-y-6">
+          <StaggerText 
+            text="PREGUNTAS FRECUENTES"
+            element="h2" 
+            class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
+            delay={0.3}
+            staggerDelay={0.06}
+          />
+          <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
+        </FadeInSection>
+        
+        <div class="space-y-12">
+          <FadeInSection delay={0.4} intensity="medium">
+            <div class="border-b border-gray-700 pb-8 group">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Cuánto cuesta un tatuaje?</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 Los precios varían según el tamaño, complejidad y ubicación del tatuaje. 
                 Ofrecemos consultas gratuitas donde evaluamos tu proyecto y te proporcionamos 
                 un presupuesto detallado. Nuestras tarifas por hora oscilan entre $150-$200 
                 dependiendo del artista y la complejidad del diseño.
               </p>
             </div>
-            <div class="border-b border-gray-700 pb-6">
-              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Requieren depósito?</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+          </FadeInSection>
+          
+          <FadeInSection delay={0.5} intensity="medium">
+            <div class="border-b border-gray-700 pb-8 group">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Requieren depósito?</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 Sí, solicitamos un depósito de $100 para reservar tu cita. Este depósito 
                 se descuenta del costo total del tatuaje y no es reembolsable en caso de 
                 cancelación con menos de 48 horas de anticipación.
               </p>
             </div>
-            <div class="border-b border-gray-700 pb-6">
-              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Qué debo hacer antes de mi cita?</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+          </FadeInSection>
+          
+          <FadeInSection delay={0.6} intensity="medium">
+            <div class="border-b border-gray-700 pb-8 group">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Qué debo hacer antes de mi cita?</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 Asegúrate de comer bien antes de tu sesión, mantente hidratado y evita el alcohol 
                 24 horas antes. Usa ropa cómoda que permita acceso fácil al área a tatuar. 
                 Si tomas medicamentos anticoagulantes, consulta con tu médico antes de la cita.
               </p>
             </div>
-            <div class="border-b border-gray-700 pb-6">
-              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Cuánto tiempo tarda en sanar un tatuaje?</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+          </FadeInSection>
+          
+          <FadeInSection delay={0.7} intensity="medium">
+            <div class="border-b border-gray-700 pb-8 group">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Cuánto tiempo tarda en sanar un tatuaje?</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 La sanación completa toma entre 2-4 semanas. Los primeros 3-5 días son críticos 
                 para el cuidado inicial. Te proporcionaremos instrucciones detalladas de cuidado 
                 y estaremos disponibles para resolver cualquier duda durante el proceso.
               </p>
             </div>
-            <div class="border-b border-gray-700 pb-6">
-              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Hacen retoques gratuitos?</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+          </FadeInSection>
+          
+          <FadeInSection delay={0.8} intensity="medium">
+            <div class="border-b border-gray-700 pb-8 group">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Hacen retoques gratuitos?</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 Ofrecemos retoques gratuitos dentro de los primeros 6 meses, siempre que 
                 hayas seguido correctamente las instrucciones de cuidado. Los retoques 
                 por mal cuidado o exposición excesiva al sol pueden tener costo adicional.
               </p>
             </div>
-            <div class="pb-6">
-              <h3 class="font-heading text-xl uppercase tracking-wide mb-4">¿Qué medidas de seguridad mantienen?</h3>
-              <p class="font-body text-gray-400 leading-relaxed">
+          </FadeInSection>
+          
+          <FadeInSection delay={0.9} intensity="medium">
+            <div class="pb-8 group">
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Qué medidas de seguridad mantienen?</h3>
+              <p class="font-inter text-gray-300 leading-relaxed text-lg">
                 Utilizamos agujas desechables de un solo uso, equipos esterilizados en autoclave, 
                 y seguimos protocolos estrictos de desinfección. Nuestro estudio cumple con todas 
                 las regulaciones de salud de Nuevo México y mantenemos certificaciones actualizadas 
                 en primeros auxilios y patógenos transmitidos por sangre.
               </p>
             </div>
-          </div>
-        </GSAPWrapper>
+          </FadeInSection>
+        </div>
+        
+        <!-- Elementos decorativos -->
+        <div class="absolute top-20 right-10 w-24 h-24 bg-white/5 rounded-full blur-2xl"></div>
+        <div class="absolute bottom-20 left-10 w-40 h-40 bg-white/3 rounded-full blur-3xl"></div>
       </div>
-    </section>
+    </ParallaxContainer>
 
-    <!-- CTA Section -->
-    <section class="py-20 px-6">
-      <div class="max-w-4xl mx-auto text-center">
-        <GSAPWrapper animation="fade-in" trigger="scroll">
-          <h2 class="font-heading text-4xl md:text-6xl uppercase tracking-wide mb-8">
-            ¿Listo para tu próximo tatuaje?
-          </h2>
-          <p class="font-body text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+    <!-- CTA Section Cinematográfico -->
+    <ParallaxContainer speed={0.4} intensity="high" class="py-32 px-6 bg-gradient-to-b from-black via-gray-900 to-black relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50"></div>
+      <div class="absolute inset-0">
+        <div class="w-full h-full bg-gradient-to-t from-black via-transparent to-black opacity-70"></div>
+      </div>
+      <div class="max-w-5xl mx-auto text-center relative z-10">
+        <FadeInSection delay={0.2} intensity="high" class="space-y-8">
+          <StaggerText 
+            text="¿LISTO PARA TU PRÓXIMO TATUAJE?"
+            element="h2" 
+            class="font-bebas text-5xl md:text-8xl uppercase tracking-wider text-white leading-tight"
+            delay={0.3}
+            staggerDelay={0.08}
+          />
+          <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
+          <p class="font-inter text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
             Agenda tu consulta gratuita y comencemos a crear tu obra de arte personalizada
           </p>
-          <div class="flex flex-col sm:flex-row gap-6 justify-center">
+        </FadeInSection>
+        
+        <FadeInSection delay={0.6} intensity="medium" class="pt-12">
+          <div class="flex flex-col sm:flex-row gap-8 justify-center">
             <Button href="/reservas" variant="primary" size="lg">
               Reservar Consulta
             </Button>
@@ -241,9 +354,13 @@ import GSAPWrapper from '../components/animations/GSAPWrapper.astro';
               Ver Portfolio
             </Button>
           </div>
-        </GSAPWrapper>
+        </FadeInSection>
+        
+        <!-- Elementos decorativos -->
+        <div class="absolute -top-20 -left-20 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 -right-20 w-60 h-60 bg-white/3 rounded-full blur-3xl"></div>
       </div>
-    </section>
+    </ParallaxContainer>
   </main>
 
   <Footer />
