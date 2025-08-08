@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title | default: "Cuba Tattoo Studio Docs" }}</title>
+  <meta name="description" content="{{ page.description | default: site.description | default: 'Professional tattoo studio design system with animated components and modern UI patterns.' }}">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  
+  <!-- GSAP Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}">
+  <meta property="og:description" content="{{ page.description | default: site.description }}">
+  <meta property="og:image" content="{{ '/assets/images/og-image.jpg' | absolute_url }}">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ page.url | absolute_url }}">
+  <meta property="twitter:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}">
+  <meta property="twitter:description" content="{{ page.description | default: site.description }}">
+  <meta property="twitter:image" content="{{ '/assets/images/og-image.jpg' | absolute_url }}">
+</head>
+<body>
+  <!-- Page Loader -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-content">
+      <div class="loader-logo">
+        <svg class="logo-svg" viewBox="0 0 100 100">
+          <path class="logo-path" d="M20,50 Q50,20 80,50 Q50,80 20,50" 
+                fill="none" stroke="#3b82f6" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="loader-text">Loading...</div>
+      <div class="loader-progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  {% include reactbits-header.html %}
+  
+  <!-- Main Container -->
+  <div class="page-container">
+    <!-- Sidebar -->
+    {% unless page.hide_sidebar %}
+      {% include reactbits-sidebar.html %}
+    {% endunless %}
+    
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+      {{ content }}
+    </main>
+  </div>
+  
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="customCursor"></div>
+  
+  <!-- Scripts -->
+  <script src="{{ '/assets/js/reactbits-core.js' | relative_url }}"></script>
+  
+  {% if page.layout == 'animation-gallery' or page.url contains 'animation' %}
+    <script src="{{ '/assets/js/animation-gallery.js' | relative_url }}"></script>
+  {% endif %}
+  
+  <!-- Initialize ReactBits -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize GSAP plugins
+      gsap.registerPlugin(ScrollTrigger, TextPlugin);
+      
+      // Initialize ReactBits core
+      if (typeof ReactBitsCore !== 'undefined') {
+        ReactBitsCore.init();
+      }
+      
+      // Respect user motion preferences
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        gsap.globalTimeline.timeScale(0);
+      }
+    });
+  </script>
+  
+  <!-- Analytics (if configured) -->
+  {% if site.google_analytics %}
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ site.google_analytics }}');
+    </script>
+  {% endif %}
+</body>
+</html>

@@ -2,42 +2,46 @@
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 
-// Import Cuba Tattoo Studio custom styles
-@import "cuba";
+// Import ReactBits.dev Design System
+@import "reactbits-theme";
+
+// ReactBits.dev Component Styles
+@import "reactbits-components";
 
 // Jekyll/GitHub Pages specific overrides
 .site-header {
-  background-color: var(--cuba-black);
-  border-bottom: 1px solid var(--cuba-gray-800);
-  padding: var(--spacing-md) 0;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-primary);
+  padding: var(--space-4) 0;
   
   .site-title {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--cuba-white);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
     text-decoration: none;
     
     &:hover {
-      color: var(--cuba-white);
+      color: var(--accent-primary);
       border-bottom: none;
     }
   }
   
   .site-nav {
     .page-link {
-      color: var(--cuba-gray-400);
+      color: var(--text-secondary);
       font-family: var(--font-body);
-      font-weight: 500;
-      text-transform: uppercase;
-      font-size: 0.875rem;
-      letter-spacing: 0.025em;
-      margin-left: var(--spacing-lg);
+      font-weight: var(--font-medium);
+      font-size: var(--text-sm);
+      margin-left: var(--space-6);
+      transition: color var(--transition-base);
       
       &:hover {
-        color: var(--cuba-white);
-        border-bottom: 1px solid var(--cuba-white);
+        color: var(--text-primary);
+      }
+      
+      &.active {
+        color: var(--accent-primary);
       }
     }
     
@@ -49,16 +53,15 @@
 }
 
 .site-footer {
-  background-color: var(--cuba-gray-900);
-  border-top: 1px solid var(--cuba-gray-800);
-  padding: var(--spacing-xl) 0;
-  margin-top: var(--spacing-2xl);
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-primary);
+  padding: var(--space-12) 0;
+  margin-top: var(--space-20);
   
   .footer-heading {
-    font-family: var(--font-heading);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--cuba-white);
+    font-family: var(--font-display);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
   }
   
   .contact-list,
@@ -67,49 +70,53 @@
     padding: 0;
     
     li {
-      margin-bottom: var(--spacing-xs);
+      margin-bottom: var(--space-2);
     }
     
     a {
-      color: var(--cuba-gray-400);
+      color: var(--text-secondary);
+      transition: color var(--transition-base);
       
       &:hover {
-        color: var(--cuba-white);
+        color: var(--accent-primary);
       }
     }
   }
 }
 
 .page-content {
-  padding: var(--spacing-xl) 0;
+  padding: var(--space-8) 0;
   min-height: calc(100vh - 200px);
 }
 
 .wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  padding: 0 var(--space-4);
+  
+  @media (min-width: 768px) {
+    padding: 0 var(--space-6);
+  }
 }
 
 // Post and page styles
 .post-header {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--space-12);
   
   .post-title {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--space-4);
   }
   
   .post-meta {
-    color: var(--cuba-gray-600);
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
   }
 }
 
 .post-content {
   h2, h3, h4, h5, h6 {
-    margin-top: var(--spacing-xl);
+    margin-top: var(--space-12);
   }
   
   h2:first-child,
@@ -132,7 +139,7 @@
       text-align: center;
       
       > svg {
-        fill: var(--cuba-white);
+        fill: var(--text-primary);
         width: 18px;
         height: 15px;
       }
@@ -141,18 +148,18 @@
     .trigger {
       clear: both;
       display: none;
-      background-color: var(--cuba-gray-900);
-      border: 1px solid var(--cuba-gray-800);
-      border-radius: var(--radius-md);
-      padding: var(--spacing-md);
-      margin-top: var(--spacing-md);
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-top: var(--space-4);
       flex-direction: column;
       
       .page-link {
         display: block;
-        padding: var(--spacing-sm) 0;
+        padding: var(--space-3) 0;
         margin-left: 0;
-        border-bottom: 1px solid var(--cuba-gray-800);
+        border-bottom: 1px solid var(--border-primary);
         
         &:last-child {
           border-bottom: none;
@@ -168,42 +175,44 @@
 
 // Syntax highlighting (Rouge)
 .highlight {
-  background-color: var(--cuba-gray-900);
-  border: 1px solid var(--cuba-gray-800);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
   overflow-x: auto;
+  font-family: var(--font-mono);
   
-  .c { color: var(--cuba-gray-600); } // Comment
-  .k { color: var(--cuba-white); font-weight: bold; } // Keyword
-  .s { color: var(--cuba-gray-400); } // String
-  .n { color: var(--cuba-white); } // Name
-  .o { color: var(--cuba-white); } // Operator
-  .p { color: var(--cuba-white); } // Punctuation
-  .m { color: var(--cuba-gray-400); } // Number
-  .nf { color: var(--cuba-white); font-weight: bold; } // Function name
-  .nc { color: var(--cuba-white); font-weight: bold; } // Class name
-  .nd { color: var(--cuba-white); } // Decorator
-  .ni { color: var(--cuba-white); } // Entity
-  .nl { color: var(--cuba-white); } // Label
-  .nn { color: var(--cuba-white); } // Namespace
-  .nt { color: var(--cuba-white); font-weight: bold; } // Tag
-  .nv { color: var(--cuba-white); } // Variable
+  .c { color: var(--text-muted); } // Comment
+  .k { color: var(--accent-primary); font-weight: var(--font-semibold); } // Keyword
+  .s { color: var(--accent-success); } // String
+  .n { color: var(--text-primary); } // Name
+  .o { color: var(--text-secondary); } // Operator
+  .p { color: var(--text-secondary); } // Punctuation
+  .m { color: var(--accent-warning); } // Number
+  .nf { color: var(--accent-secondary); font-weight: var(--font-semibold); } // Function name
+  .nc { color: var(--accent-primary); font-weight: var(--font-semibold); } // Class name
+  .nd { color: var(--accent-secondary); } // Decorator
+  .ni { color: var(--text-primary); } // Entity
+  .nl { color: var(--text-primary); } // Label
+  .nn { color: var(--accent-primary); } // Namespace
+  .nt { color: var(--accent-primary); font-weight: var(--font-semibold); } // Tag
+  .nv { color: var(--text-primary); } // Variable
 }
 
 // Custom components for documentation
 .doc-nav {
-  background-color: var(--cuba-gray-900);
-  border: 1px solid var(--cuba-gray-800);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-12);
   
   h3 {
     margin-top: 0;
-    margin-bottom: var(--spacing-md);
-    font-size: 1.125rem;
+    margin-bottom: var(--space-4);
+    font-size: var(--text-lg);
+    color: var(--text-primary);
   }
   
   ul {
@@ -212,14 +221,15 @@
     margin: 0;
     
     li {
-      margin-bottom: var(--spacing-sm);
+      margin-bottom: var(--space-2);
       
       a {
-        color: var(--cuba-gray-400);
-        font-weight: 500;
+        color: var(--text-secondary);
+        font-weight: var(--font-medium);
+        transition: color var(--transition-base);
         
         &:hover {
-          color: var(--cuba-white);
+          color: var(--accent-primary);
         }
       }
     }
@@ -227,18 +237,23 @@
 }
 
 .alert {
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-md);
-  border-left: 4px solid var(--cuba-white);
-  background-color: var(--cuba-gray-900);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  border-left: 4px solid var(--accent-primary);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-primary);
   
   &.alert-info {
-    border-left-color: var(--cuba-gray-400);
+    border-left-color: var(--accent-primary);
   }
   
   &.alert-warning {
-    border-left-color: var(--cuba-gray-600);
+    border-left-color: var(--accent-warning);
+  }
+  
+  &.alert-success {
+    border-left-color: var(--accent-success);
   }
   
   p:last-child {
@@ -246,48 +261,56 @@
   }
 }
 
-// Animation gallery specific styles (will be expanded)
+// Animation gallery specific styles
 .animation-gallery {
   .component-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--spacing-lg);
-    margin: var(--spacing-xl) 0;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-8);
+    margin: var(--space-12) 0;
   }
   
   .component-card {
-    background-color: var(--cuba-gray-900);
-    border: 1px solid var(--cuba-gray-800);
-    border-radius: var(--radius-md);
-    padding: var(--spacing-lg);
-    transition: all 0.3s ease;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: all var(--transition-slow);
     
     &:hover {
-      border-color: var(--cuba-white);
-      transform: translateY(-2px);
+      border-color: var(--accent-primary);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: var(--shadow-2xl);
     }
     
     .component-title {
-      font-size: 1.125rem;
-      margin-bottom: var(--spacing-sm);
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
     }
     
     .component-description {
-      color: var(--cuba-gray-400);
-      font-size: 0.875rem;
-      margin-bottom: var(--spacing-md);
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-4);
+      line-height: 1.5;
     }
     
     .component-demo {
-      background-color: var(--cuba-black);
-      border: 1px solid var(--cuba-gray-800);
-      border-radius: var(--radius-sm);
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
-      min-height: 100px;
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-primary);
+      padding: var(--space-6);
+      min-height: 150px;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-content {
+      padding: var(--space-6);
     }
   }
 }
@@ -295,19 +318,36 @@
 // Responsive adjustments
 @media (max-width: 768px) {
   .wrapper {
-    padding: 0 var(--spacing-sm);
+    padding: 0 var(--space-4);
   }
   
   .site-header {
-    padding: var(--spacing-sm) 0;
+    padding: var(--space-3) 0;
   }
   
   .page-content {
-    padding: var(--spacing-lg) 0;
+    padding: var(--space-6) 0;
   }
   
   .animation-gallery .component-grid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+    gap: var(--space-6);
+  }
+  
+  .hero {
+    min-height: 50vh;
+    margin-bottom: var(--space-16);
+  }
+  
+  .hero-title {
+    font-size: var(--text-4xl);
+  }
+  
+  .hero-description {
+    font-size: var(--text-lg);
+  }
+  
+  .section-title {
+    font-size: var(--text-3xl);
   }
 }

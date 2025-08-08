@@ -1,19 +1,27 @@
 ---
-layout: default
+layout: reactbits
 title: Animation Gallery
 description: Interactive showcase of GSAP animation components for Cuba Tattoo Studio - fade effects, scroll triggers, parallax, and more professional animations.
 permalink: /animation-gallery/
 ---
 
-<div class="animation-gallery">
-
-# ✨ Animation Gallery
-
-> Interactive showcase of GSAP animation components inspired by the Cuba Tattoo Studio aesthetic. Each component includes live demos, implementation code, and usage guidelines.
-
-<div class="alert alert-info">
-  <p><strong>🎯 Purpose:</strong> This gallery demonstrates the animation components used throughout the Cuba Tattoo Studio website, providing developers with ready-to-use code snippets and implementation examples.</p>
+<div class="hero hero-small" data-animate="fadeIn">
+  <div class="hero-content">
+    <h1 class="hero-title" data-animate="slideInLeft">
+      Animation <span class="text-gradient">Gallery</span>
+    </h1>
+    <p class="hero-description" data-animate="slideInRight">
+      Interactive showcase of GSAP animation components. Each component includes 
+      live demos, implementation code, and usage guidelines.
+    </p>
+  </div>
 </div>
+
+<section class="content-section">
+  <div class="container">
+    <div class="alert alert-info" data-animate="fadeIn">
+      <p><strong>🎯 Purpose:</strong> This gallery demonstrates the animation components used throughout the Cuba Tattoo Studio website, providing developers with ready-to-use code snippets and implementation examples.</p>
+    </div>
 
 ## 🚀 Quick Start
 
@@ -476,7 +484,8 @@ function cleanup() {
   <a href="{{ site.cuba.main_site | default: 'https://cubatattoostudio.com' }}" class="btn" target="_blank" rel="noopener">🌐 View Live Implementation</a>
 </div>
 
-</div>
+  </div>
+</section>
 
 <!-- Animation Scripts -->
 <script>
