@@ -1,0 +1,82 @@
+# Documentation Navigation Structure
+
+- title: "Getting Started"
+  items:
+    - title: "Introduction"
+      url: "/docs/"
+    - title: "Installation"
+      url: "/docs/installation/"
+    - title: "Quick Start"
+      url: "/docs/quick-start/"
+    - title: "Configuration"
+      url: "/docs/configuration/"
+
+- title: "Tattoo Services"
+  items:
+    - title: "Custom Tattoos"
+      url: "/docs/services/custom-tattoos/"
+    - title: "Traditional Styles"
+      url: "/docs/services/traditional/"
+    - title: "Modern Styles"
+      url: "/docs/services/modern/"
+    - title: "Cover-ups"
+      url: "/docs/services/cover-ups/"
+    - title: "Touch-ups"
+      url: "/docs/services/touch-ups/"
+
+- title: "Booking System"
+  items:
+    - title: "Online Booking"
+      url: "/docs/booking/online/"
+    - title: "Consultation Process"
+      url: "/docs/booking/consultation/"
+    - title: "Pricing Guide"
+      url: "/docs/booking/pricing/"
+    - title: "Cancellation Policy"
+      url: "/docs/booking/cancellation/"
+
+- title: "Aftercare"
+  items:
+    - title: "Healing Process"
+      url: "/docs/aftercare/healing/"
+    - title: "Care Instructions"
+      url: "/docs/aftercare/instructions/"
+    - title: "Common Issues"
+      url: "/docs/aftercare/issues/"
+    - title: "Long-term Care"
+      url: "/docs/aftercare/long-term/"
+
+- title: "Studio Information"
+  items:
+    - title: "About Us"
+      url: "/docs/studio/about/"
+    - title: "Artists"
+      url: "/docs/studio/artists/"
+    - title: "Location & Hours"
+      url: "/docs/studio/location/"
+    - title: "Health & Safety"
+      url: "/docs/studio/safety/"
+    - title: "Equipment"
+      url: "/docs/studio/equipment/"
+
+- title: "Gallery"
+  items:
+    - title: "Recent Work"
+      url: "/docs/gallery/recent/"
+    - title: "Portfolio"
+      url: "/docs/gallery/portfolio/"
+    - title: "Before & After"
+      url: "/docs/gallery/before-after/"
+    - title: "Client Reviews"
+      url: "/docs/gallery/reviews/"
+
+- title: "Resources"
+  items:
+    - title: "FAQ"
+      url: "/docs/resources/faq/"
+    - title: "Tattoo Styles Guide"
+      url: "/docs/resources/styles/"
+    - title: "Preparation Tips"
+      url: "/docs/resources/preparation/"
+    - title: "Contact Us"
+      url: "/docs/resources/contact/"

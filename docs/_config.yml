@@ -10,7 +10,7 @@ url: "https://docs.cubatattoostudio.com" # the base hostname & protocol for your
 # Build settings
 markdown: kramdown
 highlighter: rouge
-theme: minima
+# theme: minima # Disabled to use custom theme
 
 # Kramdown settings
 kramdown:
@@ -57,12 +57,17 @@ defaults:
       path: ""
       type: "pages"
     values:
-      layout: "default"
+      layout: "docs"
+  - scope:
+      path: "docs"
+      type: "pages"
+    values:
+      layout: "docs"
   - scope:
       path: ""
       type: "guides"
     values:
-      layout: "guide"
+      layout: "docs"
 
 # Exclude files from processing
 exclude:
@@ -100,6 +105,9 @@ cuba:
   phone: "+1 (505) XXX-XXXX"
   email: "info@cubatattoostudio.com"
   main_site: "https://cubatattoostudio.com"
+
+# GitHub repository for edit links
+github_url: "https://github.com/cubatattoostudio/website"
   
 # Navigation structure
 navigation:
