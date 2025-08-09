@@ -1,0 +1,189 @@
+{
+  "agent": {
+    "name": "Cuba Tattoo Studio Agent",
+    "version": "1.0.0",
+    "description": "Agente especializado en el desarrollo completo del website de Cuba Tattoo Studio",
+    "specialization": "Full-stack web development with Astro + Tailwind + GSAP",
+    "project_context": "Cuba Tattoo Studio - Albuquerque, NM"
+  },
+  "capabilities": {
+    "design": {
+      "visual_identity": "Strict B&W monochromatic palette",
+      "typography": ["Bebas Neue", "Inter"],
+      "animations": "GSAP with rockstargames.com/VI inspiration",
+      "responsive_design": "Mobile-first approach",
+      "accessibility": "WCAG 2.1 AA compliance"
+    },
+    "development": {
+      "frontend_framework": "Astro",
+      "styling": "Tailwind CSS utility-first",
+      "animations": "GSAP with ScrollTrigger",
+      "build_tool": "Vite",
+      "package_manager": "pnpm"
+    },
+    "architecture": {
+      "pattern": "Component-based architecture",
+      "routing": "File-based routing (Astro)",
+      "state_management": "Minimal client-side state",
+      "performance": "Static Site Generation (SSG)"
+    },
+    "content_management": {
+      "portfolio_filtering": "Artist and style-based filters",
+      "booking_system": "Contact form with validation",
+      "artist_profiles": "Individual artist pages with galleries"
+    }
+  },
+  "technical_stack": {
+    "core_technologies": {
+      "astro": "^4.0.0",
+      "tailwindcss": "^3.4.0",
+      "gsap": "^3.12.0",
+      "typescript": "^5.0.0"
+    },
+    "integrations": {
+      "@astrojs/tailwind": "Latest",
+      "@astrojs/image": "Latest",
+      "@astrojs/sitemap": "Latest"
+    },
+    "dev_tools": {
+      "prettier": "Code formatting",
+      "eslint": "Code linting",
+      "lighthouse": "Performance auditing"
+    }
+  },
+  "project_structure": {
+    "pages": [
+      "/",
+      "/artistas",
+      "/artistas/[slug]",
+      "/portfolio",
+      "/estudio",
+      "/reservas"
+    ],
+    "components": {
+      "ui": "Basic UI components (buttons, inputs, cards)",
+      "layout": "Header, Footer, Navigation components",
+      "animations": "GSAP wrapper components",
+      "forms": "Booking form components",
+      "gallery": "Filterable gallery components"
+    }
+  },
+  "design_system": {
+    "colors": {
+      "primary_bg": "#000000",
+      "primary_text": "#FFFFFF",
+      "secondary_text": "#A0A0A0",
+      "muted_text": "#525252",
+      "accent_error": "Only for critical UX states"
+    },
+    "typography": {
+      "headings": "Bebas Neue (condensed, uppercase)",
+      "body": "Inter (readable, sans-serif)"
+    },
+    "spacing": "Tailwind default scale",
+    "breakpoints": "Tailwind responsive breakpoints"
+  },
+  "animation_specifications": {
+    "reference": "https://www.rockstargames.com/VI",
+    "loading_sequence": {
+      "logo_fade": "Initial logo fade-in/out",
+      "hero_reveal": "Background video/image zoom-out",
+      "ui_stagger": "Staggered UI element appearance"
+    },
+    "scroll_animations": {
+      "section_pinning": "Hero section remains fixed during scroll",
+      "content_reveal": "Staggered content appearance on scroll",
+      "parallax_effects": "Background parallax movement"
+    },
+    "performance": "60fps smooth animations"
+  },
+  "quality_standards": {
+    "performance": {
+      "lighthouse_score": ">90 all metrics",
+      "load_time": "<3 seconds on 3G",
+      "image_optimization": "WebP/AVIF formats with lazy loading"
+    },
+    "accessibility": {
+      "semantic_html": "Proper HTML5 semantic elements",
+      "keyboard_navigation": "Full keyboard accessibility",
+      "screen_reader": "Screen reader compatibility",
+      "contrast_ratio": "Guaranteed by B&W palette"
+    },
+    "seo": {
+      "meta_tags": "Unique meta tags per page",
+      "open_graph": "Social media optimization",
+      "schema_org": "Local business structured data",
+      "sitemap": "Automatic sitemap generation"
+    }
+  },
+  "development_workflow": {
+    "code_standards": {
+      "formatting": "Prettier with strict rules",
+      "linting": "ESLint with TypeScript support",
+      "component_size": "<200 lines per component",
+      "css_approach": "Utility-first Tailwind only"
+    },
+    "testing": {
+      "manual_testing": "Mobile and desktop testing",
+      "performance_testing": "Lighthouse audits",
+      "accessibility_testing": "Keyboard and screen reader testing"
+    },
+    "deployment": {
+      "build_process": "Static site generation",
+      "optimization": "Automatic asset optimization",
+      "hosting": "Static hosting compatible"
+    }
+  },
+  "content_requirements": {
+    "booking_form": {
+      "required_fields": [
+        "full_name",
+        "email",
+        "phone",
+        "tattoo_description",
+        "size_and_location"
+      ],
+      "optional_fields": [
+        "reference_images",
+        "preferred_artist"
+      ],
+      "validation": "Real-time form validation"
+    },
+    "portfolio": {
+      "filtering": {
+        "by_artist": "Dropdown with all artists",
+        "by_style": "Traditional, Japanese, Geometric, Blackwork, Realism",
+        "combined_filters": "Multiple simultaneous filters"
+      },
+      "performance": "Lazy loading for images"
+    },
+    "artist_profiles": {
+      "content": [
+        "Artist photo",
+        "Biography",
+        "Specialties",
+        "Extensive gallery"
+      ],
+      "navigation": "Direct link to booking with preselected artist"
+    }
+  },
+  "critical_rules": {
+    "non_negotiable": [
+      "NEVER use colors outside B&W palette",
+      "ALWAYS replicate rockstargames.com/VI animations",
+      "MANDATORY mobile-first approach",
+      "PROHIBITED custom CSS except for complex GSAP",
+      "REQUIRED semantic HTML and full accessibility",
+      "CRITICAL >90 Lighthouse performance score",
+      "ESSENTIAL fully functional booking form",
+      "MANDATORY filterable portfolio by artist and style"
+    ]
+  },
+  "business_context": {
+    "name": "Cuba Tattoo Studio",
+    "location": "Albuquerque, New Mexico",
+    "specialties": "High-quality tattoos, multiple styles",
+    "target_audience": "People seeking professional body art",
+    "differentiator": "Clean, modern, professional aesthetic"
+  }
+}

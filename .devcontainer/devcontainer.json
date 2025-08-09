@@ -1,0 +1,94 @@
+{
+  "name": "Cuba Tattoo Studio Dev Environment",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  
+  // Configuración VS Code
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Astro y Web Development
+        "astro-build.astro-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-typescript-next",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        
+        // Git y Colaboración
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        
+        // Productividad
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-vscode-remote.remote-containers",
+        
+        // Neovim Integration (opcional)
+        "asvetliakov.vscode-neovim"
+      ],
+      
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh",
+            "args": ["-l"]
+          }
+        },
+        
+        // Formateo automático
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
+        },
+        
+        // Tailwind CSS
+        "tailwindCSS.includeLanguages": {
+          "astro": "html"
+        },
+        "tailwindCSS.experimental.classRegex": [
+          ["class:list=\\{([^}]*)\\}", "[\"'`]([^\"'`]*).*?[\"'`]"]
+        ],
+        
+        // Astro
+        "astro.typescript.allowArbitraryAttributes": true,
+        
+        // Archivos
+        "files.associations": {
+          "*.astro": "astro"
+        }
+      }
+    }
+  },
+  
+  // Comandos post-creación
+  "postCreateCommand": ".devcontainer/scripts/postCreateCommand.sh",
+  "postStartCommand": "npm install",
+  
+  // Configuración de usuario
+  "remoteUser": "node",
+  "containerUser": "node",
+  
+  // Puertos a exponer
+  "forwardPorts": [4321, 3000],
+  "portsAttributes": {
+    "4321": {
+      "label": "Astro Dev Server",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "Preview Server",
+      "onAutoForward": "silent"
+    }
+  },
+  
+  // Features adicionales
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}
