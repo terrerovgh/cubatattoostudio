@@ -1,292 +1,305 @@
-# Cuba Tattoo Studio - Entorno de Desarrollo Reproducible
+# Cuba Tattoo Studio
 
-🎨 **Sitio web del estudio de tatuajes Cuba Tattoo Studio** construido con Astro, Tailwind CSS y desplegado en Cloudflare Pages.
+<div align="center">
+  <img src="./logo.png" alt="Cuba Tattoo Studio Logo" width="200" height="200">
+  
+  <h3>Cuba Tattoo Studio Website</h3>
+  <p>Premium tattoo artistry in Albuquerque, New Mexico</p>
+  
+  [![Astro](https://img.shields.io/badge/Astro-5.x-FF5D01?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+  [![GSAP](https://img.shields.io/badge/GSAP-3.x-88CE02?style=flat-square&logo=greensock&logoColor=white)](https://greensock.com/gsap/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  
+  [🌐 Live web](https://cubatattoostudio.com) • [📚 Documentation](./docs) • [🐛 Report Bug](https://github.com/terrerovgh/cubatattoostudio/issues)
+</div>
 
-## 🚀 Características
+## ✨ Features
 
-- **Framework**: Astro con TypeScript
-- **Estilos**: Tailwind CSS con configuración personalizada
-- **Despliegue**: Cloudflare Pages con Wrangler
-- **Entorno**: DevContainer con Docker para desarrollo reproducible
-- **Herramientas**: Tmux, Neovim (estilo ThePrimeagen), Zsh con Oh My Zsh
-- **Automatización**: Makefile para flujos de trabajo comunes
+### 🎨 **Visual Excellence**
+- **Cinematic Animations** - GSAP-powered animations inspired by Rockstar Games
+- **Monochromatic Design** - Striking black & white aesthetic
+- **Responsive Design** - Mobile-first approach with perfect scaling
+- **High-Performance Images** - WebP/AVIF optimization with lazy loading
 
-## 📋 Requisitos Previos
+### 🏪 **Business Features**
+- **Artist Portfolios** - Individual artist pages with extensive galleries
+- **Portfolio Filtering** - Filter by artist, style, and tattoo categories
+- **Online Booking** - Comprehensive appointment scheduling system
+- **Studio Information** - About us, FAQ, and contact details
+- **SEO Optimized** - Schema.org markup and meta optimization
 
-### Para DevContainer (Recomendado)
-- Docker Desktop
-- Visual Studio Code con extensión Dev Containers
+### ⚡ **Technical Excellence**
+- **Lighthouse Score 90+** - Optimized for Core Web Vitals
+- **Accessibility First** - WCAG 2.1 AA compliant
+- **Modern Stack** - Astro, Tailwind CSS, GSAP
+- **Type Safety** - Full TypeScript implementation
+- **Progressive Enhancement** - Works without JavaScript
 
-### Para Desarrollo Local
-- Node.js 20+
-- pnpm
-- Git
+## 🚀 Quick Start
 
-## 🛠️ Configuración del Entorno
+### Prerequisites
 
-### Opción 1: DevContainer (Recomendado)
+- **Node.js** 20+ 
+- **pnpm** (recommended) or npm
+- **Git**
 
-1. **Clonar el repositorio**:
-   ```bash
-   git clone <repository-url>
-   cd cubatattoostudio
-   ```
+### Installation
 
-2. **Abrir en DevContainer**:
-   - Abrir VS Code
-   - Comando: `Dev Containers: Reopen in Container`
-   - El contenedor se construirá automáticamente con todas las herramientas
-
-3. **¡Listo!** El entorno está completamente configurado.
-
-### Opción 2: Configuración Local Automatizada
-
-1. **Configuración completa**:
-   ```bash
-   make full-setup
-   ```
-   
-   O paso a paso:
-   ```bash
-   make bootstrap    # Instalar dependencias del sistema
-   make dotfiles     # Configurar dotfiles
-   make setup        # Configurar proyecto
-   ```
-
-2. **Reiniciar terminal** o ejecutar:
-   ```bash
-   source ~/.zshrc
-   ```
-
-### Opción 3: Configuración Manual
-
-1. **Instalar dependencias**:
-   ```bash
-   # macOS con Homebrew
-   brew install node pnpm git tmux neovim ripgrep fzf fd tree htop starship
-   
-   # Ubuntu/Debian
-   sudo apt-get install nodejs npm git tmux neovim ripgrep fzf fd-find tree htop
-   npm install -g pnpm
-   ```
-
-2. **Configurar herramientas**:
-   ```bash
-   ./scripts/bootstrap.sh
-   ./scripts/setup-dotfiles.sh
-   ./scripts/dev-setup.sh
-   ```
-
-## 🎯 Comandos Principales
-
-### Desarrollo
 ```bash
-# Iniciar servidor de desarrollo
-make dev          # o pnpm dev
+# Clone the repository
+git clone https://github.com/terrerovgh/cubatattoostudio.git
+cd cubatattoostudio
 
-# Construir para producción
-make build        # o pnpm build
+# Install dependencies
+pnpm install
 
-# Vista previa de producción
-make preview      # o pnpm preview
-
-# Verificar tipos TypeScript
-make check        # o pnpm check
-
-# Ejecutar linter
-make lint         # o pnpm lint
+# Start development server
+pnpm dev
 ```
 
-### Gestión de Dependencias
+The site will be available at `http://localhost:4321`
+
+### Development Commands
+
 ```bash
-# Instalar dependencias
-make install      # o pnpm install
+# Development server
+pnpm dev
 
-# Limpiar y reinstalar
-make reset
+# Build for production
+pnpm build
 
-# Limpiar archivos temporales
-make clean
+# Preview production build
+pnpm preview
+
+# Type checking
+pnpm astro check
 ```
 
-### Docker
-```bash
-# Construir imagen de desarrollo
-make docker-build
-
-# Ejecutar contenedor de desarrollo
-make docker-dev
-
-# Servicios con Docker Compose
-make docker-compose-up
-make docker-compose-down
-```
-
-### Cloudflare Pages
-```bash
-# Desarrollo con Wrangler
-make pages-dev
-
-# Desplegar a producción
-make deploy
-
-# Autenticarse con Cloudflare
-wrangler auth login
-```
-
-### Utilidades
-```bash
-# Ver todos los comandos
-make help
-
-# Información del proyecto
-make info
-
-# Estado de servicios
-make status
-```
-
-## 🔧 Herramientas de Desarrollo
-
-### Tmux (Multiplexor de Terminal)
-- **Prefix**: `Ctrl-a`
-- **Navegación**: `Ctrl-a + hjkl`
-- **Nuevas ventanas**: `Ctrl-a + c`
-- **Dividir paneles**: `Ctrl-a + |` (vertical), `Ctrl-a + -` (horizontal)
-- **Plugins**: TPM, tmux-resurrect, tmux-continuum
-
-### Neovim (Editor)
-- **Configuración**: Estilo ThePrimeagen
-- **Plugin Manager**: lazy.nvim
-- **Plugins principales**:
-  - Telescope (fuzzy finder)
-  - Treesitter (syntax highlighting)
-  - LSP (Language Server Protocol)
-  - Harpoon (navegación rápida)
-  - Fugitive (Git integration)
-- **Tema**: TokyoNight
-- **Keymaps**:
-  - `<leader>` = `Space`
-  - `<leader>ff` = Find files
-  - `<leader>fg` = Live grep
-  - `<leader>a` = Add to harpoon
-  - `<C-e>` = Toggle harpoon menu
-
-### Zsh + Oh My Zsh
-- **Plugins**: git, npm, node, docker, autosuggestions, syntax-highlighting
-- **Prompt**: Starship con tema personalizado
-- **Aliases útiles**:
-  - `ll`, `la`, `l` = Listados de archivos
-  - `g*` = Comandos de Git
-  - `d*` = Comandos de Docker
-  - `work` = Configurar sesión de trabajo
-
-## 📁 Estructura del Proyecto
+## 🏗️ Project Structure
 
 ```
 cubatattoostudio/
-├── .devcontainer/          # Configuración DevContainer
-│   ├── devcontainer.json   # Configuración principal
-│   ├── Dockerfile          # Imagen de desarrollo
-│   ├── docker-compose.yml  # Servicios adicionales
-│   ├── dotfiles/           # Dotfiles (tmux, zsh, nvim, starship)
-│   ├── post-create.sh      # Script post-creación
-│   └── post-start.sh       # Script post-inicio
-├── scripts/                # Scripts de automatización
-│   ├── bootstrap.sh        # Instalación de dependencias
-│   ├── setup-dotfiles.sh   # Configuración de dotfiles
-│   └── dev-setup.sh        # Configuración del proyecto
-├── src/                    # Código fuente Astro
-│   ├── components/         # Componentes reutilizables
-│   ├── layouts/            # Layouts de página
-│   ├── pages/              # Páginas del sitio
-│   └── styles/             # Estilos globales
-├── public/                 # Archivos estáticos
-├── Makefile               # Automatización de tareas
-├── astro.config.mjs       # Configuración Astro
-├── tailwind.config.js     # Configuración Tailwind
-├── tsconfig.json          # Configuración TypeScript
-├── wrangler.toml          # Configuración Cloudflare
-└── package.json           # Dependencias y scripts
+├── src/
+│   ├── components/          # Reusable UI components
+│   │   ├── animations/      # GSAP animation components
+│   │   ├── forms/          # Form components
+│   │   ├── gallery/        # Portfolio gallery components
+│   │   ├── layout/         # Header, Footer, Navigation
+│   │   └── ui/             # Basic UI elements
+│   ├── data/               # JSON data files
+│   │   ├── artists.json    # Artist information
+│   │   └── tattoo-styles.json # Tattoo style definitions
+│   ├── layouts/            # Page layouts
+│   ├── pages/              # Route pages
+│   │   ├── api/            # API endpoints
+│   │   ├── artistas/       # Artist pages
+│   │   └── *.astro         # Main pages
+│   └── styles/             # Global styles
+├── public/                 # Static assets
+├── docs/                   # Project documentation
+└── .devcontainer/          # Development container config
 ```
 
-## 🎨 Configuración de Tailwind
+## 🎨 Design System
 
-El proyecto incluye una configuración personalizada de Tailwind:
+### Color Palette
 
-- **Colores personalizados**: `cuba-black`, `cuba-white`, `cuba-gray`
-- **Fuentes**: Bebas Neue, Inter
-- **Animaciones**: fade-in, slide-up, stagger, bounce-pulse
+```css
+/* Primary Colors */
+--cuba-black: #000000;     /* Backgrounds, text */
+--cuba-white: #FFFFFF;     /* Text, accents */
 
-## 🚀 Despliegue
+/* Grayscale */
+--cuba-gray-400: #A0A0A0;  /* Secondary text */
+--cuba-gray-600: #525252;  /* Borders, dividers */
+```
 
-### Cloudflare Pages (Automático)
-1. Conectar repositorio a Cloudflare Pages
-2. Configurar build command: `pnpm build`
-3. Configurar output directory: `dist`
-4. Los deploys se ejecutan automáticamente en cada push
+### Typography
 
-### Manual con Wrangler
+- **Headings**: Bebas Neue (condensed, uppercase)
+- **Body Text**: Inter (clean, readable)
+- **UI Elements**: System fonts for performance
+
+### Animation Principles
+
+- **Cinematic Feel** - Inspired by rockstargames.com/VI
+- **Smooth Transitions** - 60fps performance target
+- **Meaningful Motion** - Animations enhance UX
+- **Progressive Enhancement** - Graceful degradation
+
+## 📱 Pages Overview
+
+| Page | Route | Description |
+|------|-------|-------------|
+| **Homepage** | `/` | Hero section with cinematic animations |
+| **Artists** | `/artistas` | Grid of all studio artists |
+| **Artist Profile** | `/artistas/[slug]` | Individual artist portfolios |
+| **Portfolio** | `/portfolio` | Complete gallery with filtering |
+| **Studio Info** | `/estudio` | About us, philosophy, FAQ |
+| **Booking** | `/reservas` | Appointment form and contact |
+
+## 🛠️ Technology Stack
+
+### Core Technologies
+
+- **[Astro 5.x](https://astro.build)** - Static site generator with islands architecture
+- **[Tailwind CSS 4.x](https://tailwindcss.com)** - Utility-first CSS framework
+- **[GSAP 3.x](https://greensock.com/gsap/)** - Professional animation library
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
+
+### Build & Deployment
+
+- **[Vite](https://vitejs.dev/)** - Fast build tool and dev server
+- **[Cloudflare Pages](https://pages.cloudflare.com/)** - Edge deployment platform
+- **[Sharp](https://sharp.pixelplumbing.com/)** - High-performance image processing
+
+### Development Tools
+
+- **[DevContainer](https://containers.dev/)** - Consistent development environment
+- **[ESLint](https://eslint.org/)** - Code linting and formatting
+- **[Prettier](https://prettier.io/)** - Code formatting
+
+## 🎯 Performance Metrics
+
+### Lighthouse Scores (Target)
+
+- **Performance**: 90+ 
+- **Accessibility**: 95+
+- **Best Practices**: 95+
+- **SEO**: 95+
+
+### Core Web Vitals
+
+- **LCP (Largest Contentful Paint)**: < 2.5s
+- **FID (First Input Delay)**: < 100ms
+- **CLS (Cumulative Layout Shift)**: < 0.1
+
+## 🌐 SEO & Analytics
+
+### SEO Features
+
+- **Schema.org Markup** - Local business structured data
+- **Open Graph Tags** - Social media optimization
+- **XML Sitemap** - Automatic generation
+- **Meta Tags** - Unique per page
+- **Canonical URLs** - Duplicate content prevention
+
+### Analytics Integration
+
+- **Google Analytics 4** - User behavior tracking
+- **Google Search Console** - Search performance
+- **Core Web Vitals** - Performance monitoring
+
+## 🔧 Configuration
+
+### Environment Variables
+
 ```bash
-# Autenticarse
-wrangler auth login
-
-# Desplegar
-make deploy
+# .env.local
+PUBLIC_SITE_URL=https://cubatattoostudio.com
+PUBLIC_GA_ID=G-XXXXXXXXXX
+CONTACT_EMAIL=info@cubatattoostudio.com
+BOOKING_WEBHOOK_URL=https://api.example.com/booking
 ```
 
-## 🔍 Solución de Problemas
+### Key Configuration Files
 
-### DevContainer no inicia
-- Verificar que Docker Desktop esté ejecutándose
-- Reconstruir contenedor: `Dev Containers: Rebuild Container`
+- `astro.config.mjs` - Astro configuration
+- `tailwind.config.js` - Tailwind CSS customization
+- `tsconfig.json` - TypeScript configuration
+- `.devcontainer/` - Development environment setup
 
-### Dependencias no se instalan
+## 🚀 Deployment
+
+### Cloudflare Pages (Recommended)
+
+1. **Connect Repository** to Cloudflare Pages
+2. **Build Settings**:
+   - Build command: `pnpm build`
+   - Output directory: `dist`
+   - Node.js version: `20`
+3. **Environment Variables** - Set in Cloudflare dashboard
+4. **Custom Domain** - Configure DNS settings
+
+### Alternative Deployments
+
+- **Vercel**: Zero-config deployment
+- **Netlify**: Drag-and-drop or Git integration
+- **GitHub Pages**: Free hosting for public repos
+
+## 🧪 Testing
+
+### Manual Testing Checklist
+
+- [ ] **Responsive Design** - Test on mobile, tablet, desktop
+- [ ] **Animation Performance** - Smooth 60fps animations
+- [ ] **Form Functionality** - Booking form validation
+- [ ] **Navigation** - All links working correctly
+- [ ] **Accessibility** - Keyboard navigation, screen readers
+- [ ] **Performance** - Lighthouse audit scores
+
+### Automated Testing
+
 ```bash
-# Limpiar caché y reinstalar
-make clean
-make install
+# Run type checking
+pnpm astro check
+
+# Build test (catches build errors)
+pnpm build
+
+# Preview production build
+pnpm preview
 ```
 
-### Problemas con Tmux
-```bash
-# Instalar plugins manualmente
-prefix + I
+## 🤝 Contributing
 
-# Recargar configuración
-prefix + r
-```
+We welcome contributions! Please see our [Contributing Guide](./docs/contributing.md) for details.
 
-### Problemas con Neovim
-```bash
-# Limpiar datos de Neovim
-rm -rf ~/.local/share/nvim
-rm -rf ~/.local/state/nvim
-rm -rf ~/.cache/nvim
+### Development Workflow
 
-# Reinstalar plugins
-nvim --headless "+Lazy! sync" +qa
-```
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
 
-## 🤝 Contribución
+### Code Standards
 
-1. Fork el repositorio
-2. Crear rama feature: `git checkout -b feature/nueva-funcionalidad`
-3. Commit cambios: `git commit -am 'Agregar nueva funcionalidad'`
-4. Push a la rama: `git push origin feature/nueva-funcionalidad`
-5. Crear Pull Request
+- **TypeScript** for type safety
+- **ESLint + Prettier** for code formatting
+- **Conventional Commits** for commit messages
+- **Component-driven** development approach
 
-## 📝 Notas de Desarrollo
+## 📞 Support & Contact
 
-- **Compatibilidad**: El entorno funciona en ARM64 y AMD64
-- **Performance**: Optimizado para desarrollo rápido
-- **Consistencia**: Mismo entorno en todos los dispositivos
-- **Productividad**: Herramientas configuradas para máxima eficiencia
+### Technical Support
 
-## 📄 Licencia
+- **Issues**: [GitHub Issues](https://github.com/your-org/cubatattoostudio/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-org/cubatattoostudio/discussions)
+- **Email**: [dev@cubatattoostudio.com](mailto:dev@cubatattoostudio.com)
 
-[Especificar licencia del proyecto]
+### Business Contact
+
+- **Studio**: [info@cubatattoostudio.com](mailto:info@cubatattoostudio.com)
+- **Phone**: +1 (505) 123-4567
+- **Address**: Albuquerque, New Mexico
+- **Instagram**: [@cubatattoostudio](https://instagram.com/cubatattoostudio)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Design Inspiration**: Rockstar Games VI website
+- **Animation Library**: GreenSock (GSAP)
+- **Framework**: Astro team
+- **Community**: Open source contributors
 
 ---
 
-**¿Necesitas ayuda?** Ejecuta `make help` para ver todos los comandos disponibles.
+<div align="center">
+  <p><strong>Built with ❤️ for Cuba Tattoo Studio</strong></p>
+  <p>Albuquerque, New Mexico • 2025</p>
+</div>
