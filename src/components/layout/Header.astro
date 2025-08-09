@@ -5,11 +5,11 @@ import MicroInteractions from '../ui/MicroInteractions.astro';
 const currentPath = Astro.url.pathname;
 
 const navItems = [
-  { href: '/', label: 'Inicio' },
-  { href: '/artistas', label: 'Artistas' },
+  { href: '/', label: 'Home' },
+  { href: '/artists', label: 'Artists' },
   { href: '/portfolio', label: 'Portfolio' },
-  { href: '/estudio', label: 'Estudio' },
-  { href: '/reservas', label: 'Reservas' }
+  { href: '/studio', label: 'Studio' },
+  { href: '/reservas', label: 'Booking' }
 ];
 ---
 
@@ -61,7 +61,7 @@ const navItems = [
       <div class="hidden md:block">
         <MicroInteractions type="glow-border" intensity="medium">
           <Button href="/reservas" variant="primary" size="sm" animated={true}>
-            Reservar Cita
+            Book Appointment
           </Button>
         </MicroInteractions>
       </div>
@@ -108,7 +108,7 @@ const navItems = [
         <div class="pt-4">
           <MicroInteractions type="glow-border" intensity="medium">
             <Button href="/reservas" variant="primary" size="sm" class="w-full" animated={true}>
-              Reservar Cita
+              Book Appointment
             </Button>
           </MicroInteractions>
         </div>

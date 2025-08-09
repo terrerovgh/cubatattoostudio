@@ -7,17 +7,17 @@ const socialLinks = [
 ];
 
 const quickLinks = [
-  { href: '/artistas', label: 'Artistas' },
+  { href: '/artists', label: 'Artists' },
   { href: '/portfolio', label: 'Portfolio' },
-  { href: '/estudio', label: 'Estudio' },
-  { href: '/reservas', label: 'Reservas' }
+  { href: '/studio', label: 'Studio' },
+  { href: '/reservas', label: 'Booking' }
 ];
 ---
 
 <footer class="bg-cuba-black border-t border-cuba-gray-600 mt-20">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <!-- Logo y Descripción -->
+      <!-- Logo and Description -->
       <div class="md:col-span-2">
         <div class="flex items-center space-x-2 mb-4">
           <div class="text-3xl font-heading text-cuba-white">
@@ -28,8 +28,8 @@ const quickLinks = [
           </div>
         </div>
         <p class="text-cuba-gray-400 font-body text-sm leading-relaxed mb-6">
-          Estudio de tatuajes premium en Albuquerque, Nuevo México. 
-          Especialistas en arte corporal de alta calidad con más de 10 años de experiencia.
+          Premium tattoo studio in Albuquerque, New Mexico. 
+          Specialists in high-quality body art with over 10 years of experience.
         </p>
         <div class="flex space-x-4">
           {socialLinks.map(({ href, label, icon }) => (
@@ -74,10 +74,10 @@ const quickLinks = [
         </ul>
       </div>
 
-      <!-- Información de Contacto -->
+      <!-- Contact Information -->
       <div>
         <h3 class="text-cuba-white font-heading uppercase tracking-wider text-lg mb-4">
-          Contacto
+          Contact
         </h3>
         <div class="space-y-2 text-cuba-gray-400 font-body text-sm">
           <p>123 Central Ave NW</p>
@@ -99,7 +99,7 @@ const quickLinks = [
     <!-- Copyright -->
     <div class="border-t border-cuba-gray-600 mt-8 pt-8 text-center">
       <p class="text-cuba-gray-400 font-body text-sm">
-        © {currentYear} Cuba Tattoo Studio. Todos los derechos reservados.
+        © {currentYear} Cuba Tattoo Studio. All rights reserved.
       </p>
     </div>
   </div>

@@ -1,0 +1,145 @@
+---
+// src/components/SEO.astro
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article' | 'profile';
+  structuredData?: object;
+  keywords?: string;
+  author?: string;
+  canonical?: string;
+  noindex?: boolean;
+  locale?: string;
+}
+
+const {
+  title,
+  description,
+  image = '/images/og-default.jpg',
+  type = 'website',
+  structuredData,
+  keywords,
+  author = 'Cuba Tattoo Studio',
+  canonical,
+  noindex = false,
+  locale = 'en-US'
+} = Astro.props;
+
+const canonicalURL = canonical ? new URL(canonical, Astro.site) : new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL(image, Astro.site);
+const siteName = 'Cuba Tattoo Studio';
+const twitterHandle = '@cubatattoostudio';
+
+// Generar título optimizado para SEO
+const seoTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+
+// Meta description optimizada (máximo 160 caracteres)
+const seoDescription = description.length > 160 ? description.substring(0, 157) + '...' : description;
+---
+
+<!-- Basic Meta Tags -->
+<title>{seoTitle}</title>
+<meta name="description" content={seoDescription} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Additional Meta Tags -->
+{keywords && <meta name="keywords" content={keywords} />}
+<meta name="author" content={author} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+<meta name="language" content={locale} />
+<meta name="revisit-after" content="7 days" />
+<meta name="distribution" content="global" />
+<meta name="rating" content="general" />
+
+<!-- Geo Tags for Local SEO -->
+<meta name="geo.region" content="US-NM" />
+<meta name="geo.placename" content="Albuquerque" />
+<meta name="geo.position" content="35.0844;-106.6504" />
+<meta name="ICBM" content="35.0844, -106.6504" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:title" content={seoTitle} />
+<meta property="og:description" content={seoDescription} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:image:alt" content={`${title} - ${siteName}`} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content={locale} />
+<meta property="og:locale:alternate" content="en-US" />
+
+<!-- Additional properties for LocalBusiness -->
+{type === 'website' && (
+  <>
+    <meta property="business:contact_data:street_address" content="[Specific Address]" />
+    <meta property="business:contact_data:locality" content="Albuquerque" />
+    <meta property="business:contact_data:region" content="NM" />
+    <meta property="business:contact_data:postal_code" content="[Postal Code]" />
+    <meta property="business:contact_data:country_name" content="United States" />
+    <meta property="business:contact_data:phone_number" content="+1-505-XXX-XXXX" />
+    <meta property="business:contact_data:website" content="https://cubatattoostudio.com" />
+  </>
+)}
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={seoTitle} />
+<meta name="twitter:description" content={seoDescription} />
+<meta name="twitter:image" content={imageURL} />
+<meta name="twitter:image:alt" content={`${title} - ${siteName}`} />
+<meta name="twitter:site" content={twitterHandle} />
+<meta name="twitter:creator" content={twitterHandle} />
+
+<!-- Schema.org for Google -->
+<meta itemprop="name" content={seoTitle} />
+<meta itemprop="description" content={seoDescription} />
+<meta itemprop="image" content={imageURL} />
+
+<!-- Preload Critical Resources -->
+<link rel="preload" href="/fonts/bebas-neue.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+
+<!-- DNS Prefetch for external resources -->
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+<link rel="dns-prefetch" href="//www.google-analytics.com" />
+<link rel="dns-prefetch" href="//www.instagram.com" />
+<link rel="dns-prefetch" href="//www.facebook.com" />
+
+<!-- Preconnect for critical resources -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Structured Data -->
+{structuredData && (
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+)}
+
+<!-- Search engine verification -->
+<!-- <meta name="google-site-verification" content="[GOOGLE_VERIFICATION_CODE]" /> -->
+<!-- <meta name="msvalidate.01" content="[BING_VERIFICATION_CODE]" /> -->
+
+<!-- PWA configuration (future) -->
+<meta name="theme-color" content="#000000" />
+<meta name="msapplication-TileColor" content="#000000" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<!-- Mobile device optimization -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="format-detection" content="telephone=yes" />
+<meta name="format-detection" content="address=yes" />
+
+<!-- Cache configuration -->
+<meta http-equiv="Cache-Control" content="public, max-age=31536000" />
+
+<!-- Security configuration -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta http-equiv="X-Frame-Options" content="DENY" />
+<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+
+<!-- AI bot configuration -->
+<meta name="ai-content-declaration" content="human-authored" />
+<meta name="content-language" content={locale.split('-')[0]} />
+<meta name="audience" content="all" />
+<meta name="subject" content="Tattoos, Body Art, Albuquerque, New Mexico" />

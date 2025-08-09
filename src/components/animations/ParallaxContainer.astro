@@ -52,7 +52,7 @@ const classes = `${baseClasses} ${className}`;
       const intensity = container.getAttribute('data-parallax-intensity') || 'medium';
       const pin = container.getAttribute('data-parallax-pin') === 'true';
       
-      // Configuraciones de intensidad cinematográfica
+      // Cinematic intensity configurations
       const intensityConfig = {
         subtle: { multiplier: 0.3, scale: 1.02, opacity: 0.95 },
         medium: { multiplier: 0.5, scale: 1.05, opacity: 0.9 },
@@ -62,13 +62,13 @@ const classes = `${baseClasses} ${className}`;
       const config = intensityConfig[intensity];
       const effectiveSpeed = speed * config.multiplier;
       
-      // Configurar el contenido inicial
+      // Configure initial content
       gsap.set(content, {
         scale: config.scale,
         opacity: config.opacity
       });
       
-      // Crear el ScrollTrigger para parallax
+      // Create ScrollTrigger for parallax
       const scrollTrigger = {
         trigger: container,
         start: 'top bottom',
@@ -78,7 +78,7 @@ const classes = `${baseClasses} ${className}`;
           const progress = self.progress;
           const velocity = self.getVelocity();
           
-          // Calcular transformaciones basadas en dirección
+          // Calculate transformations based on direction
           let transforms = {};
           
           if (direction === 'vertical' || direction === 'both') {
@@ -91,32 +91,32 @@ const classes = `${baseClasses} ${className}`;
             transforms.x = xMovement;
           }
           
-          // Efecto de escala dinámico basado en velocidad
+          // Dynamic scale effect based on velocity
           const velocityScale = Math.min(Math.abs(velocity) * 0.0001, 0.02);
           transforms.scale = config.scale + velocityScale;
           
-          // Efecto de opacidad cinematográfico
+          // Cinematic opacity effect
           const opacityEffect = 1 - Math.abs(progress - 0.5) * 0.2;
           transforms.opacity = Math.max(opacityEffect, 0.7);
           
-          // Aplicar transformaciones
+          // Apply transformations
           gsap.set(content, transforms);
         }
       };
       
-      // Agregar pin si está habilitado
+      // Add pin if enabled
       if (pin) {
         scrollTrigger.pin = true;
         scrollTrigger.pinSpacing = false;
       }
       
-      // Crear la animación parallax
+      // Create parallax animation
       gsap.to(content, {
         ease: 'none',
         scrollTrigger
       });
       
-      // Efecto de entrada cinematográfico
+      // Cinematic entrance effect
       gsap.fromTo(content, 
         {
           opacity: 0,
@@ -138,7 +138,7 @@ const classes = `${baseClasses} ${className}`;
         }
       );
       
-      // Efecto hover cinematográfico
+      // Cinematic hover effect
       container.addEventListener('mouseenter', () => {
         gsap.to(content, {
           scale: config.scale * 1.02,
@@ -155,7 +155,7 @@ const classes = `${baseClasses} ${className}`;
         });
       });
       
-      // Efecto de profundidad con mouse movement
+      // Depth effect with mouse movement
       container.addEventListener('mousemove', (e) => {
         const rect = container.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;

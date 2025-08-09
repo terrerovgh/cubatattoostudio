@@ -7,9 +7,24 @@ import FadeInSection from '../components/animations/FadeInSection.astro';
 import SlideInImage from '../components/animations/SlideInImage.astro';
 import StaggerText from '../components/animations/StaggerText.astro';
 import ParallaxContainer from '../components/animations/ParallaxContainer.astro';
+
+// SEO and structured data for studio page
+const seoData = {
+  title: "About Our Studio - History and Philosophy | Cuba Tattoo Studio",
+  description: "Learn about the history, philosophy and process of Cuba Tattoo Studio in Albuquerque, NM. Standards of excellence, safety and personalization in every tattoo since 2015.",
+  keywords: ["cuba tattoo studio history", "albuquerque tattoo philosophy", "professional tattoo process", "new mexico tattoo studio", "tattoo safety hygiene", "custom tattoo designs"],
+  image: "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cuba%20tattoo%20studio%20interior%20professional%20clean%20modern%20albuquerque%20new%20mexico&image_size=landscape_16_9",
+  structuredDataType: "LocalBusiness"
+};
 ---
 
-<Layout title="Sobre el Estudio | Cuba Tattoo Studio" description="Conoce la historia, filosofía y proceso de Cuba Tattoo Studio. Preguntas frecuentes sobre tatuajes, precios y cuidados.">
+<Layout 
+  title={seoData.title}
+  description={seoData.description}
+  keywords={seoData.keywords}
+  image={seoData.image}
+  structuredDataType={seoData.structuredDataType}
+>
   <Header />
   
   <main class="bg-black text-white min-h-screen">
@@ -24,7 +39,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       >
         <img 
           src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20professional%20tattoo%20studio%20interior%2C%20clean%20modern%20design%2C%20black%20and%20white%20aesthetic%2C%20tattoo%20chairs%2C%20equipment%2C%20sterile%20environment%2C%20dramatic%20moody%20lighting%2C%20minimalist%20decor%2C%20film%20noir%20style&image_size=landscape_16_9" 
-          alt="Interior del estudio Cuba Tattoo Studio" 
+          alt="Cuba Tattoo Studio interior" 
           class="w-full h-full object-cover"
         />
       </SlideInImage>
@@ -32,7 +47,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <FadeInSection delay={0.6} intensity="high" class="relative z-20 text-center max-w-5xl mx-auto px-6">
         <div class="space-y-8">
           <StaggerText 
-            text="NUESTRO ESTUDIO"
+            text="OUR STUDIO"
             element="h1" 
             class="font-bebas text-7xl md:text-9xl lg:text-[12rem] uppercase tracking-wider leading-none"
             delay={0.8}
@@ -40,7 +55,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           />
           <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           <p class="font-inter text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Más que un estudio de tatuajes, somos artistas dedicados a crear arte corporal excepcional
+            More than a tattoo studio, we are artists dedicated to creating exceptional body art
           </p>
         </div>
       </FadeInSection>
@@ -57,7 +72,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           <FadeInSection delay={0.2} intensity="high">
             <div class="space-y-8">
               <StaggerText 
-                text="NUESTRA HISTORIA"
+                text="OUR HISTORY"
                 element="h2" 
                 class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
                 delay={0.3}
@@ -66,19 +81,19 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <div class="w-24 h-px bg-gradient-to-r from-white to-transparent"></div>
               <div class="space-y-6 font-inter text-lg leading-relaxed text-gray-300">
                 <p class="text-xl">
-                  Cuba Tattoo Studio nació en el corazón de Albuquerque con una visión clara: 
-                  elevar el arte del tatuaje a su máxima expresión. Fundado por artistas apasionados, 
-                  nuestro estudio se ha convertido en un referente de calidad y profesionalismo.
+                  Cuba Tattoo Studio was born in the heart of Albuquerque with a clear vision: 
+                  to elevate the art of tattooing to its highest expression. Founded by passionate artists, 
+                  our studio has become a benchmark of quality and professionalism.
                 </p>
                 <p>
-                  Cada línea, cada sombra, cada detalle es ejecutado con precisión quirúrgica y 
-                  sensibilidad artística. No solo creamos tatuajes; creamos historias permanentes 
-                  en la piel de nuestros clientes.
+                  Every line, every shadow, every detail is executed with surgical precision and 
+                  artistic sensitivity. We don't just create tattoos; we create permanent stories 
+                  on our clients' skin.
                 </p>
                 <p>
-                  Nuestro compromiso va más allá del arte: mantenemos los más altos estándares 
-                  de higiene y seguridad, utilizando equipos esterilizados y técnicas que garantizan 
-                  una experiencia segura y memorable.
+                  Our commitment goes beyond art: we maintain the highest standards 
+                  of hygiene and safety, using sterilized equipment and techniques that guarantee 
+                  a safe and memorable experience.
                 </p>
               </div>
             </div>
@@ -94,7 +109,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               >
                 <img 
                   src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20tattoo%20artist%20working%2C%20professional%20setup%2C%20black%20and%20white%20photography%2C%20detailed%20tattoo%20process%2C%20sterile%20gloves%2C%20tattoo%20machine%2C%20focused%20concentration%2C%20artistic%20precision%2C%20dramatic%20lighting%2C%20film%20noir&image_size=portrait_4_3" 
-                  alt="Artista trabajando en Cuba Tattoo Studio" 
+                  alt="Artist working at Cuba Tattoo Studio" 
                   class="w-full h-auto shadow-2xl"
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -114,7 +129,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="max-w-6xl mx-auto text-center relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="mb-20 space-y-6">
           <StaggerText 
-            text="NUESTRA FILOSOFÍA"
+            text="OUR PHILOSOPHY"
             element="h2" 
             class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
             delay={0.3}
@@ -129,9 +144,9 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <div class="w-20 h-20 mx-auto border-2 border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
                 <span class="font-bebas text-3xl">01</span>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Excelencia</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Excellence</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                Cada tatuaje es una obra maestra. No aceptamos menos que la perfección en cada trazo.
+                Every tattoo is a masterpiece. We accept nothing less than perfection in every stroke.
               </p>
             </div>
           </FadeInSection>
@@ -141,9 +156,9 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <div class="w-20 h-20 mx-auto border-2 border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
                 <span class="font-bebas text-3xl">02</span>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Seguridad</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Safety</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                Protocolos de higiene y esterilización que superan los estándares de la industria.
+                Hygiene and sterilization protocols that exceed industry standards.
               </p>
             </div>
           </FadeInSection>
@@ -153,9 +168,9 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <div class="w-20 h-20 mx-auto border-2 border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
                 <span class="font-bebas text-3xl">03</span>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Personalización</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Personalization</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                Cada diseño es único, adaptado a la visión y personalidad de nuestros clientes.
+                Every design is unique, adapted to our clients' vision and personality.
               </p>
             </div>
           </FadeInSection>
@@ -172,7 +187,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="max-w-7xl mx-auto">
         <FadeInSection delay={0.2} intensity="high" class="text-center mb-20 space-y-6">
           <StaggerText 
-            text="NUESTRO PROCESO"
+            text="OUR PROCESS"
             element="h2" 
             class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
             delay={0.3}
@@ -187,9 +202,9 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <div class="w-24 h-24 mx-auto bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
                 <span class="font-bebas text-3xl">01</span>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Consulta</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Consultation</h3>
               <p class="font-inter text-gray-300 leading-relaxed">
-                Discutimos tu idea, estilo preferido y ubicación. Evaluamos la viabilidad y te asesoramos.
+                We discuss your idea, preferred style and placement. We evaluate feasibility and advise you.
               </p>
             </div>
           </FadeInSection>
@@ -199,9 +214,9 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <div class="w-24 h-24 mx-auto bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
                 <span class="font-bebas text-3xl">02</span>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Diseño</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Design</h3>
               <p class="font-inter text-gray-300 leading-relaxed">
-                Creamos un diseño personalizado basado en tus referencias y preferencias estéticas.
+                We create a custom design based on your references and aesthetic preferences.
               </p>
             </div>
           </FadeInSection>
@@ -211,9 +226,9 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <div class="w-24 h-24 mx-auto bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
                 <span class="font-bebas text-3xl">03</span>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Sesión</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Session</h3>
               <p class="font-inter text-gray-300 leading-relaxed">
-                Ejecutamos el tatuaje con precisión, manteniendo comunicación constante contigo.
+                We execute the tattoo with precision, maintaining constant communication with you.
               </p>
             </div>
           </FadeInSection>
@@ -223,9 +238,9 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <div class="w-24 h-24 mx-auto bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-2xl">
                 <span class="font-bebas text-3xl">04</span>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Cuidados</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Aftercare</h3>
               <p class="font-inter text-gray-300 leading-relaxed">
-                Te proporcionamos instrucciones detalladas para el cuidado y seguimiento post-tatuaje.
+                We provide you with detailed instructions for post-tattoo care and follow-up.
               </p>
             </div>
           </FadeInSection>
@@ -239,7 +254,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="max-w-5xl mx-auto relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="text-center mb-20 space-y-6">
           <StaggerText 
-            text="PREGUNTAS FRECUENTES"
+            text="FREQUENTLY ASKED QUESTIONS"
             element="h2" 
             class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
             delay={0.3}
@@ -251,68 +266,68 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
         <div class="space-y-12">
           <FadeInSection delay={0.4} intensity="medium">
             <div class="border-b border-gray-700 pb-8 group">
-              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Cuánto cuesta un tatuaje?</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">How much does a tattoo cost?</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                Los precios varían según el tamaño, complejidad y ubicación del tatuaje. 
-                Ofrecemos consultas gratuitas donde evaluamos tu proyecto y te proporcionamos 
-                un presupuesto detallado. Nuestras tarifas por hora oscilan entre $150-$200 
-                dependiendo del artista y la complejidad del diseño.
+                Prices vary depending on the size, complexity and placement of the tattoo. 
+                We offer free consultations where we evaluate your project and provide you with 
+                a detailed quote. Our hourly rates range from $150-$200 
+                depending on the artist and design complexity.
               </p>
             </div>
           </FadeInSection>
           
           <FadeInSection delay={0.5} intensity="medium">
             <div class="border-b border-gray-700 pb-8 group">
-              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Requieren depósito?</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">Do you require a deposit?</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                Sí, solicitamos un depósito de $100 para reservar tu cita. Este depósito 
-                se descuenta del costo total del tatuaje y no es reembolsable en caso de 
-                cancelación con menos de 48 horas de anticipación.
+                Yes, we require a $100 deposit to book your appointment. This deposit 
+                is deducted from the total cost of the tattoo and is non-refundable in case of 
+                cancellation with less than 48 hours notice.
               </p>
             </div>
           </FadeInSection>
           
           <FadeInSection delay={0.6} intensity="medium">
             <div class="border-b border-gray-700 pb-8 group">
-              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Qué debo hacer antes de mi cita?</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">What should I do before my appointment?</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                Asegúrate de comer bien antes de tu sesión, mantente hidratado y evita el alcohol 
-                24 horas antes. Usa ropa cómoda que permita acceso fácil al área a tatuar. 
-                Si tomas medicamentos anticoagulantes, consulta con tu médico antes de la cita.
+                Make sure to eat well before your session, stay hydrated and avoid alcohol 
+                24 hours beforehand. Wear comfortable clothing that allows easy access to the area to be tattooed. 
+                If you take blood-thinning medications, consult with your doctor before the appointment.
               </p>
             </div>
           </FadeInSection>
           
           <FadeInSection delay={0.7} intensity="medium">
             <div class="border-b border-gray-700 pb-8 group">
-              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Cuánto tiempo tarda en sanar un tatuaje?</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">How long does a tattoo take to heal?</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                La sanación completa toma entre 2-4 semanas. Los primeros 3-5 días son críticos 
-                para el cuidado inicial. Te proporcionaremos instrucciones detalladas de cuidado 
-                y estaremos disponibles para resolver cualquier duda durante el proceso.
+                Complete healing takes 2-4 weeks. The first 3-5 days are critical 
+                for initial care. We will provide you with detailed care instructions 
+                and will be available to answer any questions during the process.
               </p>
             </div>
           </FadeInSection>
           
           <FadeInSection delay={0.8} intensity="medium">
             <div class="border-b border-gray-700 pb-8 group">
-              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Hacen retoques gratuitos?</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">Do you offer free touch-ups?</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                Ofrecemos retoques gratuitos dentro de los primeros 6 meses, siempre que 
-                hayas seguido correctamente las instrucciones de cuidado. Los retoques 
-                por mal cuidado o exposición excesiva al sol pueden tener costo adicional.
+                We offer free touch-ups within the first 6 months, provided that 
+                you have correctly followed the care instructions. Touch-ups 
+                due to poor care or excessive sun exposure may have an additional cost.
               </p>
             </div>
           </FadeInSection>
           
           <FadeInSection delay={0.9} intensity="medium">
             <div class="pb-8 group">
-              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">¿Qué medidas de seguridad mantienen?</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider mb-6 text-white group-hover:text-gray-300 transition-colors duration-300">What safety measures do you maintain?</h3>
               <p class="font-inter text-gray-300 leading-relaxed text-lg">
-                Utilizamos agujas desechables de un solo uso, equipos esterilizados en autoclave, 
-                y seguimos protocolos estrictos de desinfección. Nuestro estudio cumple con todas 
-                las regulaciones de salud de Nuevo México y mantenemos certificaciones actualizadas 
-                en primeros auxilios y patógenos transmitidos por sangre.
+                We use single-use disposable needles, autoclave-sterilized equipment, 
+                and follow strict disinfection protocols. Our studio complies with all 
+                New Mexico health regulations and we maintain current certifications 
+                in first aid and bloodborne pathogens.
               </p>
             </div>
           </FadeInSection>
@@ -333,7 +348,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="max-w-5xl mx-auto text-center relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="space-y-8">
           <StaggerText 
-            text="¿LISTO PARA TU PRÓXIMO TATUAJE?"
+            text="READY FOR YOUR NEXT TATTOO?"
             element="h2" 
             class="font-bebas text-5xl md:text-8xl uppercase tracking-wider text-white leading-tight"
             delay={0.3}
@@ -341,17 +356,17 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           />
           <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           <p class="font-inter text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Agenda tu consulta gratuita y comencemos a crear tu obra de arte personalizada
+            Schedule your free consultation and let's start creating your personalized work of art
           </p>
         </FadeInSection>
         
         <FadeInSection delay={0.6} intensity="medium" class="pt-12">
           <div class="flex flex-col sm:flex-row gap-8 justify-center">
             <Button href="/reservas" variant="primary" size="lg">
-              Reservar Consulta
+              Book Consultation
             </Button>
             <Button href="/portfolio" variant="secondary" size="lg">
-              Ver Portfolio
+              View Portfolio
             </Button>
           </div>
         </FadeInSection>

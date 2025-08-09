@@ -9,16 +9,16 @@ const { styles } = stylesData;
 
 <div class="portfolio-filters bg-gray-800 p-6 mb-8">
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Filtro por Artista -->
+    <!-- Filter by Artist -->
     <div>
       <label for="artist-filter" class="block text-sm font-body text-gray-400 uppercase tracking-wider mb-3">
-        Filtrar por Artista
+        Filter by Artist
       </label>
       <select 
         id="artist-filter" 
         class="w-full bg-black text-white border border-gray-400 px-4 py-3 font-body focus:outline-none focus:border-white transition-colors duration-300"
       >
-        <option value="all">Todos los Artistas</option>
+        <option value="all">All Artists</option>
         {artists.map((artist) => (
           <option value={artist.slug}>{artist.name}</option>
         ))}
@@ -28,13 +28,13 @@ const { styles } = stylesData;
     <!-- Filtro por Estilo -->
     <div>
       <label for="style-filter" class="block text-sm font-body text-gray-400 uppercase tracking-wider mb-3">
-        Filtrar por Estilo
+        Filter by Style
       </label>
       <select 
         id="style-filter" 
         class="w-full bg-black text-white border border-gray-400 px-4 py-3 font-body focus:outline-none focus:border-white transition-colors duration-300"
       >
-        <option value="all">Todos los Estilos</option>
+        <option value="all">All Styles</option>
         {styles.map((style) => (
           <option value={style.name.toLowerCase().replace(/\s+/g, '-')}>{style.name}</option>
         ))}
@@ -50,7 +50,7 @@ const { styles } = stylesData;
           size="sm" 
           class="flex-1"
         >
-          Aplicar Filtros
+          Apply Filters
         </Button>
         <Button 
           id="clear-filters" 
@@ -58,23 +58,23 @@ const { styles } = stylesData;
           size="sm" 
           class="flex-1"
         >
-          Limpiar
+          Clear
         </Button>
       </div>
     </div>
   </div>
   
-  <!-- Filtros Rápidos por Estilo -->
+  <!-- Quick Style Filters -->
   <div class="mt-6 pt-6 border-t border-gray-400">
     <h3 class="text-sm font-body text-gray-400 uppercase tracking-wider mb-4">
-      Filtros Rápidos
+      Quick Filters
     </h3>
     <div class="flex flex-wrap gap-2">
       <button 
         class="quick-filter-btn px-3 py-1 bg-black text-white text-xs font-body uppercase tracking-wider border border-gray-400 hover:bg-white hover:text-black transition-all duration-300 active"
         data-filter="all"
       >
-        Todos
+        All
       </button>
       {styles.filter(style => style.featured).map((style) => (
         <button 
@@ -90,13 +90,13 @@ const { styles } = stylesData;
   <!-- Contador de Resultados -->
   <div class="mt-4 text-center">
     <span id="results-count" class="text-gray-400 font-body text-sm">
-      Mostrando todos los trabajos
+      Showing all works
     </span>
   </div>
 </div>
 
 <script>
-  // Funcionalidad de filtros
+  // Filter functionality
   class PortfolioFilters {
     constructor() {
       this.artistFilter = document.getElementById('artist-filter');
@@ -236,9 +236,9 @@ const { styles } = stylesData;
     updateResultsCount(visible, total) {
       if (this.resultsCount) {
         if (visible === total) {
-          this.resultsCount.textContent = `Mostrando todos los ${total} trabajos`;
+          this.resultsCount.textContent = `Showing all ${total} works`;
         } else {
-          this.resultsCount.textContent = `Mostrando ${visible} de ${total} trabajos`;
+          this.resultsCount.textContent = `Showing ${visible} of ${total} works`;
         }
       }
     }

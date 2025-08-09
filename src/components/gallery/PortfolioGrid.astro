@@ -6,7 +6,7 @@ import artistsData from "@/data/artists.json"
 
 const { artists } = artistsData;
 
-// Combinar todos los portfolios de todos los artistas
+// Combine all portfolios from all artists
 const allPortfolioItems = artists.flatMap(artist => 
   artist.portfolio.map(work => ({
     ...work,
@@ -34,7 +34,7 @@ const normalizeStyle = (style: string) => {
           data-body-part={work.bodyPart.toLowerCase().replace(/\s+/g, '-')}
         >
           <Card class="overflow-hidden h-full">
-            <!-- Imagen del Trabajo -->
+            <!-- Work Image -->
             <div class="aspect-square bg-cuba-gray-600 overflow-hidden relative">
               <img 
                 src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=${work.style.toLowerCase()}%20tattoo%20${work.description.toLowerCase()}%20${work.bodyPart.toLowerCase()}%20black%20and%20white%20detailed%20professional%20high%20quality&image_size=square_hd`}
@@ -43,14 +43,14 @@ const normalizeStyle = (style: string) => {
                 loading="lazy"
               />
               
-              <!-- Overlay con información rápida -->
+              <!-- Overlay with quick information -->
               <div class="absolute inset-0 bg-cuba-black bg-opacity-0 group-hover:bg-opacity-80 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                 <div class="text-center p-4">
                   <h3 class="text-cuba-white font-heading text-lg uppercase tracking-wider mb-2">
                     {work.title}
                   </h3>
                   <p class="text-cuba-gray-400 font-body text-sm mb-4">
-                    por {work.artistName}
+                    by {work.artistName}
                   </p>
                   <div class="flex flex-col gap-2">
                     <Button 
@@ -58,36 +58,36 @@ const normalizeStyle = (style: string) => {
                       variant="primary" 
                       size="sm"
                     >
-                      Ver Artista
+                      View Artist
                     </Button>
                     <Button 
                       href={`/reservas?artist=${work.artistSlug}`} 
                       variant="outline" 
                       size="sm"
                     >
-                      Reservar
+                      Book Now
                     </Button>
                   </div>
                 </div>
               </div>
             </div>
             
-            <!-- Información del Trabajo -->
+            <!-- Work Information -->
             <div class="p-6">
               <div class="mb-4">
                 <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider mb-2 group-hover:text-cuba-gray-400 transition-colors duration-300">
                   {work.title}
                 </h3>
                 <p class="text-cuba-gray-400 font-body text-sm">
-                  por <a href={`/artistas/${work.artistSlug}`} class="text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300">{work.artistName}</a>
+                  by <a href={`/artistas/${work.artistSlug}`} class="text-cuba-white hover:text-cuba-gray-400 transition-colors duration-300">{work.artistName}</a>
                 </p>
               </div>
               
-              <!-- Detalles del Trabajo -->
+              <!-- Work Details -->
               <div class="space-y-2 mb-4">
                 <div class="flex justify-between items-center">
                   <span class="text-xs font-body text-cuba-gray-400 uppercase tracking-wider">
-                    Estilo
+                    Style
                   </span>
                   <span class="text-xs font-body text-cuba-white">
                     {work.style}
@@ -96,7 +96,7 @@ const normalizeStyle = (style: string) => {
                 
                 <div class="flex justify-between items-center">
                   <span class="text-xs font-body text-cuba-gray-400 uppercase tracking-wider">
-                    Tamaño
+                    Size
                   </span>
                   <span class="text-xs font-body text-cuba-white">
                     {work.size}
@@ -105,7 +105,7 @@ const normalizeStyle = (style: string) => {
                 
                 <div class="flex justify-between items-center">
                   <span class="text-xs font-body text-cuba-gray-400 uppercase tracking-wider">
-                    Ubicación
+                    Location
                   </span>
                   <span class="text-xs font-body text-cuba-white">
                     {work.bodyPart}
@@ -113,12 +113,12 @@ const normalizeStyle = (style: string) => {
                 </div>
               </div>
               
-              <!-- Descripción -->
+              <!-- Description -->
               <p class="text-cuba-gray-400 font-body text-sm leading-relaxed mb-4 line-clamp-3">
                 {work.description}
               </p>
               
-              <!-- Tags de Especialidades del Artista -->
+              <!-- Artist Specialties Tags -->
               <div class="flex flex-wrap gap-1 mb-4">
                 {work.artistSpecialties.slice(0, 2).map((specialty) => (
                   <span class="px-2 py-1 bg-cuba-gray-600 text-cuba-white text-xs font-body uppercase tracking-wider">
@@ -140,7 +140,7 @@ const normalizeStyle = (style: string) => {
                   size="sm" 
                   class="flex-1 text-xs"
                 >
-                  Ver Más
+                  View More
                 </Button>
                 <Button 
                   href={`/reservas?artist=${work.artistSlug}`} 
@@ -148,7 +148,7 @@ const normalizeStyle = (style: string) => {
                   size="sm" 
                   class="flex-1 text-xs"
                 >
-                  Reservar
+                  Book Now
                 </Button>
               </div>
             </div>
@@ -167,13 +167,13 @@ const normalizeStyle = (style: string) => {
         </svg>
       </div>
       <h3 class="text-2xl font-heading text-cuba-white uppercase tracking-wider mb-4">
-        No se encontraron resultados
+        No Results Found
       </h3>
       <p class="text-cuba-gray-400 font-body mb-6">
-        No hay trabajos que coincidan con los filtros seleccionados. Intenta con diferentes criterios de búsqueda.
+        No works match the selected filters. Try different search criteria.
       </p>
       <Button id="clear-filters-no-results" variant="primary" size="md">
-        Limpiar Filtros
+        Clear Filters
       </Button>
     </div>
   </div>
@@ -191,10 +191,10 @@ const normalizeStyle = (style: string) => {
     }
     
     init() {
-      // Observar cambios en la visibilidad de items
+      // Observe changes in item visibility
       this.observeVisibilityChanges();
       
-      // Event listener para limpiar filtros desde mensaje de no resultados
+      // Event listener to clear filters from no results message
       this.clearFiltersBtn?.addEventListener('click', () => {
         // Trigger clear filters event
         const clearEvent = new CustomEvent('clearFilters');
@@ -208,7 +208,7 @@ const normalizeStyle = (style: string) => {
     }
     
     observeVisibilityChanges() {
-      // Usar MutationObserver para detectar cambios en la visibilidad
+      // Use MutationObserver to detect visibility changes
       const observer = new MutationObserver(() => {
         this.checkVisibleItems();
       });
@@ -254,7 +254,7 @@ const normalizeStyle = (style: string) => {
     }
     
     handleFilterChange(filterData) {
-      // Aquí se puede agregar lógica adicional cuando cambien los filtros
+      // Additional logic can be added here when filters change
       console.log('Filters changed:', filterData);
     }
   }

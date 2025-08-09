@@ -16,12 +16,18 @@ const artist = artists.find(a => a.slug === 'nina');
 if (!artist) {
   return Astro.redirect('/artistas');
 }
+
+// SEO configuration and structured data
+const seoData = {
+  title: `${artist.name} - Tattoo Artist Specialist in ${artist.specialties.join(', ')} | Cuba Tattoo Studio`,
+  description: `Meet ${artist.name}, professional tattoo artist at Cuba Tattoo Studio Albuquerque. Specialist in ${artist.specialties.join(', ')}. ${artist.experience} Book your appointment today.`,
+  keywords: `${artist.name} tattoo artist, ${artist.specialties.join(', ')} tattoos, tattoo artist Albuquerque, Cuba Tattoo Studio ${artist.name}, professional tattoo artist, ${artist.specialties.map(s => s.toLowerCase()).join(' tattoos, ')} tattoos`,
+  image: `https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=${encodeURIComponent(`professional tattoo artist ${artist.name} portrait, ${artist.specialties.join(' ')} specialist, Cuba Tattoo Studio Albuquerque, professional headshot`)}&image_size=portrait_4_3`,
+  structuredDataType: 'Person'
+};
 ---
 
-<Layout 
-  title={`${artist.name} - Artista de Tatuajes | Cuba Tattoo Studio`}
-  description={`Conoce a ${artist.name}, especialista en ${artist.specialties.join(', ')}. ${artist.bio.substring(0, 150)}...`}
->
+<Layout {...seoData}>
   <Header />
   
   <main class="pt-20 bg-black min-h-screen">
@@ -30,11 +36,11 @@ if (!artist) {
       <section class="min-h-screen flex items-center bg-gradient-to-b from-black via-gray-900 to-black">
         <div class="max-w-7xl mx-auto px-6 w-full">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <!-- Imagen Cinematográfica del Artista -->
+            <!-- Cinematic Artist Image -->
             <div class="relative">
               <SlideInImage 
                 src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20professional%20female%20tattoo%20artist%20${artist.name.toLowerCase()}%20portrait%20black%20and%20white%20dramatic%20studio%20lighting%20confident%20artistic%20pose%20film%20noir%20style&image_size=portrait_4_3`}
-                alt={`${artist.name} - Artista de tatuajes especializada en ${artist.specialties.join(', ')}`}
+                alt={`${artist.name} - Tattoo artist specialized in ${artist.specialties.join(', ')}`}
                 direction="left"
                 delay={0.3}
                 intensity="high"
@@ -48,7 +54,7 @@ if (!artist) {
               <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent rounded-lg"></div>
             </div>
           
-            <!-- Información Cinematográfica del Artista -->
+            <!-- Cinematic Artist Information -->
             <div class="space-y-8">
               <div>
                 <StaggerText 
@@ -69,7 +75,7 @@ if (!artist) {
               <FadeInSection delay={1.4} intensity="medium">
                 <div>
                   <h2 class="text-sm font-body text-gray-400 uppercase tracking-wider mb-4">
-                    Especialidades
+                    Specialties
                   </h2>
                   <div class="flex flex-wrap gap-3">
                     {artist.specialties.map((specialty, index) => (
@@ -87,7 +93,7 @@ if (!artist) {
               <FadeInSection delay={2.0} intensity="medium">
                 <div>
                   <h2 class="text-sm font-body text-gray-400 uppercase tracking-wider mb-4">
-                    Experiencia
+                    Experience
                   </h2>
                   <p class="text-white font-body text-xl leading-relaxed">
                     {artist.experience}
@@ -99,7 +105,7 @@ if (!artist) {
               <FadeInSection delay={2.3} intensity="medium">
                 <div>
                   <h2 class="text-sm font-body text-gray-400 uppercase tracking-wider mb-4">
-                    Contacto
+                    Contact
                   </h2>
                   <div class="space-y-3">
                     <a 
@@ -133,7 +139,7 @@ if (!artist) {
                     size="lg"
                     class="transform hover:scale-105 transition-transform duration-300"
                   >
-                    Reservar con {artist.name}
+                    Book with {artist.name}
                   </Button>
                   <Button 
                     href="/portfolio" 
@@ -141,7 +147,7 @@ if (!artist) {
                     size="lg"
                     class="transform hover:scale-105 transition-transform duration-300"
                   >
-                    Ver Portfolio Completo
+                    View Complete Portfolio
                   </Button>
                 </div>
               </FadeInSection>
@@ -156,7 +162,7 @@ if (!artist) {
         <div class="text-center">
           <StaggerText 
             tag="h2" 
-            text={`SOBRE ${artist.name.toUpperCase()}`}
+            text={`ABOUT ${artist.name.toUpperCase()}`}
             splitBy="words"
             delay={0.4}
             stagger={0.15}
@@ -179,13 +185,13 @@ if (!artist) {
       </section>
     </FadeInSection>
 
-    <!-- Portfolio Cinematográfico del Artista -->
+    <!-- Cinematic Artist Portfolio -->
     <ParallaxContainer speed={0.2} intensity="medium" class="py-24 bg-gradient-to-b from-black via-gray-800 to-black">
       <section class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-20">
           <StaggerText 
             tag="h2" 
-            text={`PORTFOLIO DE ${artist.name.toUpperCase()}`}
+            text={`${artist.name.toUpperCase()} PORTFOLIO`}
             splitBy="words"
             delay={0.3}
             stagger={0.12}
@@ -195,7 +201,7 @@ if (!artist) {
           
           <FadeInSection delay={1.0} intensity="medium">
             <p class="text-gray-300 font-body text-xl leading-relaxed max-w-3xl mx-auto">
-              Una selección de los mejores trabajos realizados por {artist.name}, mostrando su maestría en {artist.specialties.join(', ').toLowerCase()}.
+              A selection of the best works created by {artist.name}, showcasing mastery in {artist.specialties.join(', ').toLowerCase()}.
             </p>
           </FadeInSection>
         </div>
@@ -208,7 +214,7 @@ if (!artist) {
                 <div class="aspect-square bg-gray-800 overflow-hidden relative">
                   <SlideInImage 
                     src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20${work.style.toLowerCase()}%20tattoo%20${work.description.toLowerCase()}%20${work.bodyPart.toLowerCase()}%20black%20and%20white%20detailed%20professional%20dramatic%20lighting&image_size=square_hd`}
-                    alt={`${work.title} - ${work.style} por ${artist.name}`}
+                    alt={`${work.title} - ${work.style} by ${artist.name}`}
                     direction="up"
                     delay={0}
                     intensity="subtle"
@@ -227,7 +233,7 @@ if (!artist) {
                   <div class="space-y-3 mb-4">
                     <div class="flex justify-between items-center">
                       <span class="text-sm font-body text-gray-400 uppercase tracking-wider">
-                        Estilo
+                        Style
                       </span>
                       <span class="text-sm font-body text-white">
                         {work.style}
@@ -236,7 +242,7 @@ if (!artist) {
                     
                     <div class="flex justify-between items-center">
                       <span class="text-sm font-body text-gray-400 uppercase tracking-wider">
-                        Tamaño
+                        Size
                       </span>
                       <span class="text-sm font-body text-white">
                         {work.size}
@@ -245,7 +251,7 @@ if (!artist) {
                     
                     <div class="flex justify-between items-center">
                       <span class="text-sm font-body text-gray-400 uppercase tracking-wider">
-                        Ubicación
+                        Location
                       </span>
                       <span class="text-sm font-body text-white">
                         {work.bodyPart}
@@ -264,13 +270,13 @@ if (!artist) {
       </section>
     </ParallaxContainer>
 
-    <!-- Filosofía Artística Cinematográfica -->
+    <!-- Cinematic Artistic Philosophy -->
     <FadeInSection delay={0.2} intensity="high" class="py-24 bg-gradient-to-b from-black via-gray-900 to-black">
       <section class="max-w-6xl mx-auto px-6">
         <div class="text-center">
           <StaggerText 
             tag="h2" 
-            text="MI FILOSOFÍA"
+            text="MY PHILOSOPHY"
             splitBy="chars"
             delay={0.4}
             stagger={0.08}
@@ -287,10 +293,10 @@ if (!artist) {
                   </svg>
                 </div>
                 <h3 class="text-2xl font-heading text-white uppercase tracking-wider mb-4">
-                  Excelencia
+                  Excellence
                 </h3>
                 <p class="text-gray-300 font-body leading-relaxed">
-                  Cada tatuaje es una obra de arte única. Me comprometo a entregar solo trabajos de la más alta calidad.
+                  Every tattoo is a unique work of art. I commit to delivering only the highest quality work.
                 </p>
               </div>
             </FadeInSection>
@@ -303,10 +309,10 @@ if (!artist) {
                   </svg>
                 </div>
                 <h3 class="text-2xl font-heading text-white uppercase tracking-wider mb-4">
-                  Conexión
+                  Connection
                 </h3>
                 <p class="text-gray-300 font-body leading-relaxed">
-                  Creo en la importancia de conectar con cada cliente para entender su visión y crear algo verdaderamente personal.
+                  I believe in the importance of connecting with each client to understand their vision and create something truly personal.
                 </p>
               </div>
             </FadeInSection>
@@ -319,10 +325,10 @@ if (!artist) {
                   </svg>
                 </div>
                 <h3 class="text-2xl font-heading text-white uppercase tracking-wider mb-4">
-                  Precisión
+                  Precision
                 </h3>
                 <p class="text-gray-300 font-body leading-relaxed">
-                  La atención al detalle y la precisión técnica son fundamentales en mi trabajo, especialmente en estilos finos.
+                  Attention to detail and technical precision are fundamental in my work, especially in fine line styles.
                 </p>
               </div>
             </FadeInSection>
@@ -336,7 +342,7 @@ if (!artist) {
       <section class="max-w-4xl mx-auto px-6 text-center relative z-10">
         <StaggerText 
           tag="h2" 
-          text="¿LISTA PARA CREAR ALGO HERMOSO?"
+          text="READY TO CREATE SOMETHING BEAUTIFUL?"
           splitBy="words"
           delay={0.3}
           stagger={0.1}
@@ -346,7 +352,7 @@ if (!artist) {
         
         <FadeInSection delay={1.2} intensity="medium">
           <p class="text-gray-300 font-body text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
-            Me especializo en crear tatuajes delicados y significativos. Hablemos sobre tu próximo proyecto y hagámoslo realidad juntas.
+            I specialize in creating delicate and meaningful tattoos. Let's talk about your next project and make it a reality together.
           </p>
         </FadeInSection>
         
@@ -358,7 +364,7 @@ if (!artist) {
               size="lg"
               class="transform hover:scale-105 transition-all duration-300 shadow-2xl"
             >
-              Reservar con {artist.name}
+              Book with {artist.name}
             </Button>
             <Button 
               href="/artistas" 
@@ -366,7 +372,7 @@ if (!artist) {
               size="lg"
               class="transform hover:scale-105 transition-all duration-300"
             >
-              Ver Otros Artistas
+              View Other Artists
             </Button>
           </div>
         </FadeInSection>

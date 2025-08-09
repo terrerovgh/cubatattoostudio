@@ -1,0 +1,413 @@
+---
+// src/components/FAQs.astro
+export interface FAQ {
+  question: string;
+  answer: string;
+  category?: string;
+  keywords?: string[];
+  voiceOptimized?: boolean;
+}
+
+export interface Props {
+  faqs: FAQ[];
+  title?: string;
+  description?: string;
+  showSearch?: boolean;
+  category?: string;
+  structuredData?: boolean;
+}
+
+const {
+  faqs,
+  title = "Frequently Asked Questions",
+  description = "Find answers to the most common questions about our tattoo services.",
+  showSearch = true,
+  category,
+  structuredData = true
+} = Astro.props;
+
+// Filtrar FAQs por categoría si se especifica
+const filteredFAQs = category 
+  ? faqs.filter(faq => faq.category === category)
+  : faqs;
+
+// Generar datos estructurados para FAQs
+const faqStructuredData = structuredData ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": filteredFAQs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+} : null;
+
+// Categorías disponibles
+const categories = [...new Set(faqs.map(faq => faq.category).filter(Boolean))];
+---
+
+<section class="py-16 bg-gradient-to-br from-cuba-gray-900 to-cuba-gray-800" id="faqs">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-white mb-4">{title}</h2>
+      <p class="text-cuba-gray-300 text-lg max-w-2xl mx-auto">{description}</p>
+    </div>
+
+    <!-- Buscador de FAQs -->
+    {showSearch && (
+      <div class="max-w-2xl mx-auto mb-12">
+        <div class="relative">
+          <input
+            type="text"
+            id="faq-search"
+            placeholder="Search your question here... (e.g., How much does a tattoo cost?)"
+            class="w-full px-6 py-4 bg-cuba-gray-800 border border-cuba-gray-700 rounded-lg text-white placeholder-cuba-gray-400 focus:outline-none focus:ring-2 focus:ring-cuba-red-500 focus:border-transparent"
+            autocomplete="off"
+          />
+          <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+            <svg class="w-5 h-5 text-cuba-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Sugerencias de búsqueda por voz -->
+        <div class="mt-4 text-center">
+          <p class="text-cuba-gray-400 text-sm mb-2">Try questions like:</p>
+          <div class="flex flex-wrap justify-center gap-2">
+            <button class="voice-suggestion px-3 py-1 bg-cuba-gray-700 text-cuba-gray-300 rounded-full text-xs hover:bg-cuba-red-500 hover:text-white transition-colors" data-question="How much does a tattoo cost?">"How much does a tattoo cost?"</button>
+            <button class="voice-suggestion px-3 py-1 bg-cuba-gray-700 text-cuba-gray-300 rounded-full text-xs hover:bg-cuba-red-500 hover:text-white transition-colors" data-question="Does getting a tattoo hurt?">"Does getting a tattoo hurt?"</button>
+            <button class="voice-suggestion px-3 py-1 bg-cuba-gray-700 text-cuba-gray-300 rounded-full text-xs hover:bg-cuba-red-500 hover:text-white transition-colors" data-question="How to care for a new tattoo?">"How to care for a new tattoo?"</button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- Filtros por categoría -->
+    {categories.length > 0 && (
+      <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <button class="category-filter active px-4 py-2 bg-cuba-red-500 text-white rounded-lg text-sm font-medium transition-colors" data-category="all">
+          All
+        </button>
+        {categories.map(cat => (
+          <button class="category-filter px-4 py-2 bg-cuba-gray-700 text-cuba-gray-300 rounded-lg text-sm font-medium hover:bg-cuba-red-500 hover:text-white transition-colors" data-category={cat}>
+            {cat}
+          </button>
+        ))}
+      </div>
+    )}
+
+    <!-- Lista de FAQs -->
+    <div class="max-w-4xl mx-auto">
+      <div class="space-y-4" id="faq-container">
+        {filteredFAQs.map((faq, index) => (
+          <div 
+            class="faq-item bg-cuba-gray-800 border border-cuba-gray-700 rounded-lg overflow-hidden transition-all duration-300 hover:border-cuba-red-500" 
+            data-category={faq.category || 'general'}
+            data-keywords={faq.keywords?.join(' ') || ''}
+          >
+            <button 
+              class="faq-question w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-cuba-red-500 focus:ring-inset"
+              aria-expanded="false"
+              aria-controls={`faq-answer-${index}`}
+            >
+              <span class="text-white font-medium pr-4">{faq.question}</span>
+              <svg class="faq-icon w-5 h-5 text-cuba-red-500 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div 
+              class="faq-answer overflow-hidden transition-all duration-300 max-h-0"
+              id={`faq-answer-${index}`}
+              aria-hidden="true"
+            >
+              <div class="px-6 pb-4 text-cuba-gray-300 leading-relaxed">
+                <div set:html={faq.answer} />
+                {faq.voiceOptimized && (
+                  <div class="mt-3 p-3 bg-cuba-gray-700 rounded-lg">
+                    <p class="text-xs text-cuba-gray-400 mb-1">💡 Voice search optimized answer</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <!-- Mensaje cuando no hay resultados -->
+      <div id="no-results" class="hidden text-center py-12">
+        <div class="text-cuba-gray-400">
+          <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.5-.9-6.134-2.375l-.866 1.15A9.962 9.962 0 0012 17c2.34 0 4.5-.9 6.134-2.375l.866 1.15A7.962 7.962 0 0112 15z"></path>
+          </svg>
+          <h3 class="text-xl font-medium mb-2">No answers found</h3>
+          <p class="mb-4">Try other keywords or contact us directly.</p>
+          <a href="/contacto" class="inline-flex items-center px-4 py-2 bg-cuba-red-500 text-white rounded-lg hover:bg-cuba-red-600 transition-colors">
+            Contact now
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-12">
+      <p class="text-cuba-gray-300 mb-4">Can't find what you're looking for?</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contacto" class="inline-flex items-center px-6 py-3 bg-cuba-red-500 text-white rounded-lg hover:bg-cuba-red-600 transition-colors font-medium">
+          Ask a question
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+        </a>
+        <a href="tel:+15055551234" class="inline-flex items-center px-6 py-3 bg-transparent border-2 border-cuba-red-500 text-cuba-red-500 rounded-lg hover:bg-cuba-red-500 hover:text-white transition-colors font-medium">
+          Call now
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Datos estructurados para FAQs -->
+{faqStructuredData && (
+  <script type="application/ld+json" set:html={JSON.stringify(faqStructuredData)} />
+)}
+
+<script>
+  // Search and filtering functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('faq-search');
+    const faqItems = document.querySelectorAll('.faq-item');
+    const categoryFilters = document.querySelectorAll('.category-filter');
+    const voiceSuggestions = document.querySelectorAll('.voice-suggestion');
+    const noResults = document.getElementById('no-results');
+    const faqContainer = document.getElementById('faq-container');
+
+    // Accordion functionality
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', function() {
+        const answer = this.nextElementSibling;
+        const icon = this.querySelector('.faq-icon');
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+        // Close other open FAQs
+        document.querySelectorAll('.faq-question').forEach(otherButton => {
+          if (otherButton !== this) {
+            const otherAnswer = otherButton.nextElementSibling;
+            const otherIcon = otherButton.querySelector('.faq-icon');
+            otherButton.setAttribute('aria-expanded', 'false');
+            otherAnswer.setAttribute('aria-hidden', 'true');
+            otherAnswer.style.maxHeight = '0';
+            otherIcon.style.transform = 'rotate(0deg)';
+          }
+        });
+
+        // Toggle current FAQ
+        if (!isExpanded) {
+          this.setAttribute('aria-expanded', 'true');
+          answer.setAttribute('aria-hidden', 'false');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          icon.style.transform = 'rotate(180deg)';
+        } else {
+          this.setAttribute('aria-expanded', 'false');
+          answer.setAttribute('aria-hidden', 'true');
+          answer.style.maxHeight = '0';
+          icon.style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+
+    // Search functionality
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+        filterFAQs(searchTerm);
+      });
+    }
+
+    // Voice search suggestions
+    voiceSuggestions.forEach(suggestion => {
+      suggestion.addEventListener('click', function() {
+        const question = this.getAttribute('data-question');
+        if (searchInput) {
+          searchInput.value = question;
+          filterFAQs(question.toLowerCase());
+        }
+      });
+    });
+
+    // Category filters
+    categoryFilters.forEach(filter => {
+      filter.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        
+        // Update active state
+        categoryFilters.forEach(f => f.classList.remove('active', 'bg-cuba-red-500', 'text-white'));
+        categoryFilters.forEach(f => f.classList.add('bg-cuba-gray-700', 'text-cuba-gray-300'));
+        
+        this.classList.add('active', 'bg-cuba-red-500', 'text-white');
+        this.classList.remove('bg-cuba-gray-700', 'text-cuba-gray-300');
+        
+        filterByCategory(category);
+      });
+    });
+
+    // Search filtering function
+    function filterFAQs(searchTerm) {
+      let visibleCount = 0;
+      
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+        const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+        const keywords = item.getAttribute('data-keywords').toLowerCase();
+        
+        const matches = question.includes(searchTerm) || 
+                       answer.includes(searchTerm) || 
+                       keywords.includes(searchTerm);
+        
+        if (matches || searchTerm === '') {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      toggleNoResults(visibleCount === 0 && searchTerm !== '');
+    }
+
+    // Category filtering function
+    function filterByCategory(category) {
+      let visibleCount = 0;
+      
+      faqItems.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        
+        if (category === 'all' || itemCategory === category) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      toggleNoResults(visibleCount === 0);
+    }
+
+    // Show/hide no results message
+    function toggleNoResults(show) {
+      if (noResults && faqContainer) {
+        if (show) {
+          noResults.classList.remove('hidden');
+          faqContainer.classList.add('hidden');
+        } else {
+          noResults.classList.add('hidden');
+          faqContainer.classList.remove('hidden');
+        }
+      }
+    }
+
+    // Voice search support (if available)
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      
+      recognition.lang = 'en-US';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      
+      // Add voice button to search
+      if (searchInput) {
+        const voiceButton = document.createElement('button');
+        voiceButton.innerHTML = '🎤';
+        voiceButton.className = 'absolute right-12 top-1/2 transform -translate-y-1/2 text-cuba-gray-400 hover:text-cuba-red-500 transition-colors';
+        voiceButton.type = 'button';
+        voiceButton.title = 'Voice search';
+        
+        searchInput.parentElement.appendChild(voiceButton);
+        
+        voiceButton.addEventListener('click', function() {
+          recognition.start();
+          this.textContent = '🔴';
+        });
+        
+        recognition.onresult = function(event) {
+          const transcript = event.results[0][0].transcript;
+          searchInput.value = transcript;
+          filterFAQs(transcript.toLowerCase());
+          voiceButton.textContent = '🎤';
+        };
+        
+        recognition.onerror = function() {
+          voiceButton.textContent = '🎤';
+        };
+      }
+    }
+  });
+</script>
+
+<style>
+  /* Animaciones suaves para acordeón */
+  .faq-answer {
+    transition: max-height 0.3s ease-out;
+  }
+  
+  .faq-icon {
+    transition: transform 0.2s ease;
+  }
+  
+  /* Estilos para búsqueda */
+  .faq-item {
+    transition: all 0.3s ease;
+  }
+  
+  .faq-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.1);
+  }
+  
+  /* Optimización para dispositivos móviles */
+  @media (max-width: 768px) {
+    .voice-suggestion {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+    }
+    
+    .faq-question {
+      padding: 1rem;
+    }
+    
+    .faq-answer > div {
+      padding: 0 1rem 1rem;
+    }
+  }
+  
+  /* Accesibilidad */
+  @media (prefers-reduced-motion: reduce) {
+    .faq-answer,
+    .faq-icon,
+    .faq-item {
+      transition: none;
+    }
+  }
+  
+  /* Modo alto contraste */
+  @media (prefers-contrast: high) {
+    .faq-item {
+      border-width: 2px;
+    }
+    
+    .faq-question:focus {
+      outline: 3px solid #dc2626;
+    }
+  }
+</style>

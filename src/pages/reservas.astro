@@ -10,9 +10,18 @@ import FadeInSection from '../components/animations/FadeInSection.astro';
 import SlideInImage from '../components/animations/SlideInImage.astro';
 import StaggerText from '../components/animations/StaggerText.astro';
 import ParallaxContainer from '../components/animations/ParallaxContainer.astro';
+
+// SEO configuration and structured data
+const seoData = {
+  title: "Book Appointment | Cuba Tattoo Studio - Schedule Your Tattoo Session",
+  description: "Schedule your appointment at Cuba Tattoo Studio Albuquerque. Online booking form, free consultation, contact information and location. Flexible hours available.",
+  keywords: "book tattoo appointment, schedule tattoo Albuquerque, Cuba Tattoo Studio booking, free tattoo consultation, tattoo appointment booking, tattoo studio appointment",
+  image: `https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=${encodeURIComponent('professional tattoo studio booking area, modern reception desk, appointment scheduling, clean minimalist design, comfortable waiting area, Albuquerque tattoo studio')}&image_size=landscape_16_9`,
+  structuredDataType: 'LocalBusiness'
+};
 ---
 
-<Layout title="Reservar Cita | Cuba Tattoo Studio" description="Agenda tu cita en Cuba Tattoo Studio. Formulario de reservas, información de contacto y ubicación en Albuquerque, NM.">
+<Layout {...seoData}>
   <Header />
   
   <main class="bg-black text-white min-h-screen">
@@ -21,7 +30,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black z-10"></div>
       <SlideInImage 
         src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20modern%20tattoo%20studio%20reception%20area%2C%20clean%20minimalist%20design%2C%20black%20and%20white%20aesthetic%2C%20comfortable%20seating%2C%20professional%20atmosphere%2C%20appointment%20booking%20area%2C%20dramatic%20lighting%2C%20film%20noir%20style&image_size=landscape_16_9" 
-        alt="Área de recepción Cuba Tattoo Studio" 
+        alt="Cuba Tattoo Studio reception area" 
         class="absolute inset-0 w-full h-full object-cover"
         direction="zoom"
         intensity="medium"
@@ -41,7 +50,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="relative z-20 text-center max-w-5xl mx-auto px-6">
         <FadeInSection delay={0.5} intensity="high" class="space-y-8">
           <StaggerText 
-            text="RESERVA TU CITA"
+            text="BOOK YOUR APPOINTMENT"
             element="h1" 
             class="font-bebas text-7xl md:text-9xl lg:text-[12rem] uppercase tracking-wider text-white leading-none"
             delay={0.6}
@@ -49,7 +58,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           />
           <div class="w-40 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           <p class="font-inter text-2xl md:text-3xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            El primer paso hacia tu nueva obra de arte. Agenda tu consulta gratuita hoy
+            The first step towards your new work of art. Schedule your free consultation today
           </p>
         </FadeInSection>
         
@@ -65,7 +74,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="max-w-6xl mx-auto relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="text-center mb-20 space-y-6">
           <StaggerText 
-            text="INFORMACIÓN DE CONTACTO"
+            text="CONTACT INFORMATION"
             element="h2" 
             class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
             delay={0.3}
@@ -73,8 +82,8 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           />
           <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           <p class="font-inter text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Estamos aquí para ayudarte a crear la obra de arte perfecta. 
-            Contáctanos por cualquier medio o visítanos en nuestro estudio.
+            We're here to help you create the perfect work of art. 
+            Contact us by any means or visit us at our studio.
           </p>
         </FadeInSection>
         
@@ -87,11 +96,11 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Ubicación</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Location</h3>
               <div class="font-inter text-gray-300 space-y-2 text-lg">
                 <p>123 Central Avenue NW</p>
                 <p>Albuquerque, NM 87102</p>
-                <p>Estados Unidos</p>
+                <p>United States</p>
               </div>
             </div>
           </FadeInSection>
@@ -103,11 +112,11 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                 </svg>
               </div>
-              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Teléfono</h3>
+              <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Phone</h3>
               <div class="font-inter text-gray-300 space-y-2 text-lg">
                 <p>(505) 555-CUBA</p>
                 <p>(505) 555-2822</p>
-                <p class="text-base">Lun-Sáb: 10:00 AM - 8:00 PM</p>
+                <p class="text-base">Mon-Sat: 10:00 AM - 8:00 PM</p>
               </div>
             </div>
           </FadeInSection>
@@ -122,8 +131,8 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
               <h3 class="font-bebas text-2xl uppercase tracking-wider text-white">Email</h3>
               <div class="font-inter text-gray-300 space-y-2 text-lg">
                 <p>info@cubatattoostudio.com</p>
-                <p>reservas@cubatattoostudio.com</p>
-                <p class="text-base">Respuesta en 24 horas</p>
+                <p>bookings@cubatattoostudio.com</p>
+                <p class="text-base">Response within 24 hours</p>
               </div>
             </div>
           </FadeInSection>
@@ -141,7 +150,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="max-w-5xl mx-auto relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="text-center mb-16 space-y-6">
           <StaggerText 
-            text="FORMULARIO DE RESERVA"
+            text="BOOKING FORM"
             element="h2" 
             class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
             delay={0.3}
@@ -149,8 +158,8 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           />
           <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           <p class="font-inter text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Completa el formulario y nos pondremos en contacto contigo para confirmar 
-            tu cita y discutir los detalles de tu tatuaje.
+            Complete the form and we'll get in touch with you to confirm 
+            your appointment and discuss the details of your tattoo.
           </p>
         </FadeInSection>
         
@@ -172,7 +181,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="max-w-6xl mx-auto relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="text-center mb-16 space-y-6">
           <StaggerText 
-            text="ENCUÉNTRANOS"
+            text="FIND US"
             element="h2" 
             class="font-bebas text-5xl md:text-7xl uppercase tracking-wider text-white"
             delay={0.3}
@@ -180,7 +189,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           />
           <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           <p class="font-inter text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Ubicados en el corazón de Albuquerque, con fácil acceso y estacionamiento disponible
+            Located in the heart of Albuquerque, with easy access and parking available
           </p>
         </FadeInSection>
         
@@ -210,19 +219,19 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           <div class="space-y-10">
             <FadeInSection delay={0.5} intensity="medium">
               <div>
-                <h3 class="font-bebas text-3xl uppercase tracking-wider mb-6 text-white">Horarios de Atención</h3>
+                <h3 class="font-bebas text-3xl uppercase tracking-wider mb-6 text-white">Business Hours</h3>
                 <div class="font-inter text-gray-300 space-y-3 text-lg">
                   <div class="flex justify-between border-b border-gray-700 pb-2">
-                    <span>Lunes - Viernes:</span>
+                    <span>Monday - Friday:</span>
                     <span>10:00 AM - 8:00 PM</span>
                   </div>
                   <div class="flex justify-between border-b border-gray-700 pb-2">
-                    <span>Sábado:</span>
+                    <span>Saturday:</span>
                     <span>10:00 AM - 6:00 PM</span>
                   </div>
                   <div class="flex justify-between">
-                    <span>Domingo:</span>
-                    <span>Cerrado</span>
+                    <span>Sunday:</span>
+                    <span>Closed</span>
                   </div>
                 </div>
               </div>
@@ -230,27 +239,27 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
             
             <FadeInSection delay={0.6} intensity="medium">
               <div>
-                <h3 class="font-bebas text-3xl uppercase tracking-wider mb-6 text-white">Información Adicional</h3>
+                <h3 class="font-bebas text-3xl uppercase tracking-wider mb-6 text-white">Additional Information</h3>
                 <div class="font-inter text-gray-300 space-y-4 leading-relaxed">
                   <div class="flex items-center gap-3">
                     <Badge variant="glow" size="sm" class="text-sm">✓</Badge>
-                    <span>Estacionamiento gratuito disponible</span>
+                    <span>Free parking available</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <Badge variant="glow" size="sm" class="text-sm">✓</Badge>
-                    <span>Acceso para personas con discapacidad</span>
+                    <span>Wheelchair accessible</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <Badge variant="glow" size="sm" class="text-sm">✓</Badge>
-                    <span>Consultas gratuitas sin compromiso</span>
+                    <span>Free consultations with no commitment</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <Badge variant="glow" size="sm" class="text-sm">✓</Badge>
-                    <span>Ambiente esterilizado y profesional</span>
+                    <span>Sterile and professional environment</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <Badge variant="glow" size="sm" class="text-sm">✓</Badge>
-                    <span>Certificaciones de salud actualizadas</span>
+                    <span>Updated health certifications</span>
                   </div>
                 </div>
               </div>
@@ -258,13 +267,13 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
             
             <FadeInSection delay={0.7} intensity="medium">
               <div>
-                <h3 class="font-bebas text-3xl uppercase tracking-wider mb-6 text-white">Política de Citas</h3>
+                <h3 class="font-bebas text-3xl uppercase tracking-wider mb-6 text-white">Appointment Policy</h3>
                 <div class="font-inter text-gray-300 space-y-3 leading-relaxed">
-                  <p>• Depósito de $100 requerido para reservar</p>
-                  <p>• Cancelaciones con 48h de anticipación</p>
-                  <p>• Traer identificación válida el día de la cita</p>
-                  <p>• Mayores de 18 años (menores con tutor legal)</p>
-                  <p>• No consumir alcohol 24h antes de la sesión</p>
+                  <p>• $100 deposit required to book</p>
+                  <p>• Cancellations with 48h notice</p>
+                  <p>• Bring valid ID on appointment day</p>
+                  <p>• 18+ years old (minors with legal guardian)</p>
+                  <p>• No alcohol consumption 24h before session</p>
                 </div>
               </div>
             </FadeInSection>
@@ -286,7 +295,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
       <div class="max-w-5xl mx-auto text-center relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="space-y-8">
           <StaggerText 
-            text="SÍGUENOS"
+            text="FOLLOW US"
             element="h2" 
             class="font-bebas text-6xl md:text-8xl uppercase tracking-wider text-white leading-tight"
             delay={0.3}
@@ -294,7 +303,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           />
           <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           <p class="font-inter text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Mantente al día con nuestros últimos trabajos y promociones especiales
+            Stay up to date with our latest work and special promotions
           </p>
         </FadeInSection>
         
@@ -325,7 +334,7 @@ import ParallaxContainer from '../components/animations/ParallaxContainer.astro'
           
           <div class="border-t border-gray-700 pt-12">
             <p class="font-inter text-gray-400 text-lg">
-              ¿Tienes preguntas? Llámanos al (505) 555-CUBA o envíanos un email a info@cubatattoostudio.com
+              Have questions? Call us at (505) 555-CUBA or send us an email at info@cubatattoostudio.com
             </p>
           </div>
         </FadeInSection>

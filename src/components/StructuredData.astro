@@ -1,0 +1,187 @@
+---
+// src/components/StructuredData.astro
+export interface Props {
+  type: 'LocalBusiness' | 'Person' | 'VisualArtwork' | 'Service' | 'Organization';
+  data: any;
+}
+
+const { type, data } = Astro.props;
+
+// Studio base data
+const studioBaseData = {
+  "@context": "https://schema.org",
+  "@type": "TattooParlor",
+  "name": "Cuba Tattoo Studio",
+  "description": "Premium tattoo studio in Albuquerque, New Mexico. Specialists in high-quality body art with over 10 years of experience.",
+  "url": "https://cubatattoostudio.com",
+  "telephone": "+1-505-XXX-XXXX",
+  "email": "info@cubatattoostudio.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[Specific Address]",
+    "addressLocality": "Albuquerque",
+    "addressRegion": "NM",
+    "postalCode": "[Postal Code]",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "35.0844",
+    "longitude": "-106.6504"
+  },
+  "openingHours": [
+    "Mo-Fr 10:00-20:00",
+    "Sa 10:00-18:00"
+  ],
+  "priceRange": "$$-$$$",
+  "paymentAccepted": ["Cash", "Credit Card", "Venmo", "PayPal"],
+  "currenciesAccepted": "USD",
+  "sameAs": [
+    "https://www.instagram.com/cubatattoostudio",
+    "https://www.facebook.com/cubatattoostudio",
+    "https://www.google.com/maps/place/cuba-tattoo-studio"
+  ]
+};
+
+// Función para generar datos estructurados según el tipo
+function generateStructuredData(type: string, data: any) {
+  switch (type) {
+    case 'LocalBusiness':
+      return {
+        ...studioBaseData,
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Tattoo Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Traditional American Tattoo",
+                "description": "Estilo clásico con líneas gruesas y colores sólidos"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Japanese Tattoo (Irezumi)",
+                "description": "Arte tradicional japonés con dragones, koi y elementos naturales"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Blackwork",
+                "description": "Pure black ink tattoos with high contrast"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Realismo",
+                "description": "Photorealistic tattoos with extreme precision"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Geométrico",
+                "description": "Diseños basados en formas geométricas y simetría"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Minimalista",
+                "description": "Diseños simples y elegantes con líneas limpias"
+              }
+            }
+          ]
+        },
+        ...data
+      };
+
+    case 'Person':
+      return {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": data.name,
+        "jobTitle": "Tattoo Artist",
+        "description": data.description || `Specialist in ${data.specialties?.join(', ')} with over ${data.experience} years of experience.`,
+        "worksFor": {
+          "@type": "TattooParlor",
+          "name": "Cuba Tattoo Studio"
+        },
+        "knowsAbout": data.specialties || [],
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Tattoo Artist",
+          "occupationLocation": {
+            "@type": "City",
+            "name": "Albuquerque, NM"
+          }
+        },
+        "url": `https://cubatattoostudio.com/artistas/${data.name?.toLowerCase()}`,
+        "image": data.image,
+        "sameAs": data.social || []
+      };
+
+    case 'VisualArtwork':
+      return {
+        "@context": "https://schema.org",
+        "@type": "VisualArtwork",
+        "name": data.title,
+        "description": data.description,
+        "creator": {
+          "@type": "Person",
+          "name": data.artist
+        },
+        "artform": "Tattoo",
+        "artMedium": "Ink on skin",
+        "genre": data.style,
+        "image": data.image,
+        "dateCreated": data.date || "2024",
+        "locationCreated": {
+          "@type": "TattooParlor",
+          "name": "Cuba Tattoo Studio",
+          "address": "Albuquerque, NM"
+        },
+        "keywords": data.keywords || []
+      };
+
+    case 'Service':
+      return {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": data.name,
+        "description": data.description,
+        "provider": {
+          "@type": "TattooParlor",
+          "name": "Cuba Tattoo Studio"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Albuquerque, NM"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": data.price,
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      };
+
+    default:
+      return data;
+  }
+}
+
+const structuredData = generateStructuredData(type, data);
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

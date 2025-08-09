@@ -1,0 +1,212 @@
+---
+// src/components/OptimizedImage.astro
+import { Image } from 'astro:assets';
+
+export interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  loading?: 'lazy' | 'eager';
+  class?: string;
+  quality?: number;
+  format?: 'webp' | 'avif' | 'jpeg' | 'png';
+  sizes?: string;
+  priority?: boolean;
+  caption?: string;
+  artist?: string;
+  style?: string;
+  structuredData?: boolean;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  loading = 'lazy',
+  class: className = '',
+  quality = 85,
+  format = 'webp',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  priority = false,
+  caption,
+  artist,
+  style,
+  structuredData = false
+} = Astro.props;
+
+// Generar datos estructurados para la imagen si es necesario
+const imageStructuredData = structuredData ? {
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "url": src,
+  "width": width,
+  "height": height,
+  "caption": caption || alt,
+  "description": alt,
+  "creator": artist ? {
+    "@type": "Person",
+    "name": artist
+  } : undefined,
+  "about": style ? {
+    "@type": "Thing",
+    "name": style
+  } : undefined,
+  "contentLocation": {
+    "@type": "Place",
+    "name": "Cuba Tattoo Studio, Albuquerque, NM"
+  },
+  "copyrightHolder": {
+    "@type": "Organization",
+    "name": "Cuba Tattoo Studio"
+  }
+} : null;
+
+// Determinar el loading basado en prioridad
+const finalLoading = priority ? 'eager' : loading;
+
+// Clases CSS optimizadas para performance
+const imageClasses = [
+  'transition-opacity duration-300',
+  'hover:opacity-90',
+  className
+].filter(Boolean).join(' ');
+---
+
+<!-- Contenedor de imagen optimizada -->
+<figure class="relative group">
+  <!-- Imagen principal optimizada -->
+  <Image
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={finalLoading}
+    class={imageClasses}
+    format={format}
+    quality={quality}
+    sizes={sizes}
+    decoding="async"
+    fetchpriority={priority ? 'high' : 'auto'}
+  />
+  
+  <!-- Overlay sutil para mejorar legibilidad si hay caption -->
+  {caption && (
+    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  )}
+  
+  <!-- Caption with tattoo information -->
+  {caption && (
+    <figcaption class="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/80 to-transparent">
+      <p class="text-sm font-medium mb-1">{caption}</p>
+      {artist && (
+        <p class="text-xs opacity-80">
+          <span class="font-medium">Artist:</span> {artist}
+        </p>
+      )}
+      {style && (
+        <p class="text-xs opacity-80">
+          <span class="font-medium">Estilo:</span> {style}
+        </p>
+      )}
+    </figcaption>
+  )}
+  
+  <!-- Indicador de carga para imágenes lazy -->
+  {!priority && (
+    <div class="absolute inset-0 bg-cuba-gray-800 animate-pulse rounded" style="display: none;" data-loading-placeholder></div>
+  )}
+</figure>
+
+<!-- Datos estructurados para la imagen -->
+{imageStructuredData && (
+  <script type="application/ld+json" set:html={JSON.stringify(imageStructuredData)} />
+)}
+
+<!-- Estilos específicos para optimización -->
+<style>
+  /* Optimización para Core Web Vitals */
+  figure {
+    contain: layout style paint;
+  }
+  
+  /* Prevenir layout shift */
+  img {
+    aspect-ratio: var(--aspect-ratio, auto);
+    object-fit: cover;
+  }
+  
+  /* Mejorar performance de hover */
+  .group:hover figcaption {
+    will-change: transform;
+  }
+  
+  /* Optimización para dispositivos móviles */
+  @media (max-width: 768px) {
+    figcaption {
+      font-size: 0.75rem;
+      padding: 0.75rem;
+    }
+  }
+  
+  /* Soporte para modo oscuro */
+  @media (prefers-color-scheme: dark) {
+    figure {
+      filter: brightness(0.95);
+    }
+  }
+  
+  /* Reducir movimiento para usuarios sensibles */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<script>
+  // Script para mejorar la experiencia de carga
+  document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    
+    // Intersection Observer para lazy loading mejorado
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const placeholder = img.parentElement?.querySelector('[data-loading-placeholder]');
+            
+            img.addEventListener('load', () => {
+              if (placeholder) {
+                placeholder.style.display = 'none';
+              }
+              img.style.opacity = '1';
+            });
+            
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '50px 0px',
+        threshold: 0.01
+      });
+      
+      images.forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
+    
+    // Preload de imágenes críticas
+    const priorityImages = document.querySelectorAll('img[fetchpriority="high"]');
+    priorityImages.forEach(img => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = img.src;
+      document.head.appendChild(link);
+    });
+  });
+</script>

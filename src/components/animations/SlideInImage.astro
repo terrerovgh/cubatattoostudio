@@ -65,7 +65,7 @@ const classes = `${baseClasses} ${className}`;
       const intensity = container.getAttribute('data-slide-intensity') || 'medium';
       const parallax = container.getAttribute('data-slide-parallax') === 'true';
       
-      // Configuraciones de intensidad
+      // Intensity configurations
       const intensityConfig = {
         subtle: { distance: 50, scale: 1.05 },
         medium: { distance: 100, scale: 1.1 },
@@ -74,7 +74,7 @@ const classes = `${baseClasses} ${className}`;
       
       const config = intensityConfig[intensity];
       
-      // Configurar posición inicial según dirección
+      // Configure initial position based on direction
       const initialTransform = {
         left: { x: -config.distance, y: 0 },
         right: { x: config.distance, y: 0 },
@@ -84,7 +84,7 @@ const classes = `${baseClasses} ${className}`;
       
       const initial = initialTransform[direction];
       
-      // Estado inicial de la imagen
+      // Initial state of the image
       gsap.set(image, {
         x: initial.x,
         y: initial.y,
@@ -92,13 +92,13 @@ const classes = `${baseClasses} ${className}`;
         opacity: 0.8
       });
       
-      // Estado inicial del overlay
+      // Initial state of the overlay
       gsap.set(overlay, {
         x: direction === 'left' ? '100%' : direction === 'right' ? '-100%' : '0%',
         y: direction === 'up' ? '100%' : direction === 'down' ? '-100%' : '0%'
       });
       
-      // Timeline de animación cinematográfica
+      // Cinematic animation timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
@@ -108,7 +108,7 @@ const classes = `${baseClasses} ${className}`;
         }
       });
       
-      // Animación del overlay (reveal effect)
+      // Overlay animation (reveal effect)
       tl.to(overlay, {
         x: direction === 'left' ? '-100%' : direction === 'right' ? '100%' : '0%',
         y: direction === 'up' ? '-100%' : direction === 'down' ? '100%' : '0%',
@@ -116,7 +116,7 @@ const classes = `${baseClasses} ${className}`;
         delay,
         ease: 'power3.inOut'
       })
-      // Animación de la imagen
+      // Image animation
       .to(image, {
         x: 0,
         y: 0,
@@ -126,7 +126,7 @@ const classes = `${baseClasses} ${className}`;
         ease: 'power3.out'
       }, delay + duration * 0.2);
       
-      // Efecto parallax si está habilitado
+      // Parallax effect if enabled
       if (parallax) {
         gsap.to(image, {
           y: direction === 'up' ? 30 : direction === 'down' ? -30 : 0,
@@ -141,7 +141,7 @@ const classes = `${baseClasses} ${className}`;
         });
       }
       
-      // Hover effect cinematográfico
+      // Cinematic hover effect
       container.addEventListener('mouseenter', () => {
         gsap.to(image, {
           scale: 1.05,
@@ -160,14 +160,14 @@ const classes = `${baseClasses} ${className}`;
     });
   }
   
-  // Inicializar
+  // Initialize
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initSlideInImages);
   } else {
     initSlideInImages();
   }
   
-  // Reinicializar en navegación SPA
+  // Reinitialize on SPA navigation
   document.addEventListener('astro:page-load', initSlideInImages);
 </script>
 

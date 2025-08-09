@@ -1,20 +1,20 @@
 {
   "styles": [
     {
-      "id": "tradicional",
-      "name": "Tradicional Americano",
-      "slug": "tradicional",
-      "description": "Estilo clásico americano con líneas gruesas, colores sólidos y diseños icónicos como rosas, corazones y águilas.",
-      "characteristics": ["Líneas gruesas", "Colores sólidos", "Diseños icónicos", "Estilo vintage"],
+      "id": "traditional",
+      "name": "American Traditional",
+      "slug": "traditional",
+      "description": "Classic American style with bold lines, solid colors and iconic designs like roses, hearts and eagles.",
+      "characteristics": ["Bold lines", "Solid colors", "Iconic designs", "Vintage style"],
       "artists": ["david", "karli"],
       "featured": true
     },
     {
-      "id": "japones",
-      "name": "Japonés (Irezumi)",
-      "slug": "japones",
-      "description": "Arte tradicional japonés con dragones, koi, flores de cerezo y elementos de la naturaleza en composiciones fluidas.",
-      "characteristics": ["Composiciones fluidas", "Elementos naturales", "Simbolismo profundo", "Técnica tradicional"],
+      "id": "japanese",
+      "name": "Japanese (Irezumi)",
+      "slug": "japanese",
+      "description": "Traditional Japanese art with dragons, koi, cherry blossoms and nature elements in flowing compositions.",
+      "characteristics": ["Flowing compositions", "Natural elements", "Deep symbolism", "Traditional technique"],
       "artists": ["david"],
       "featured": true
     },
@@ -22,35 +22,35 @@
       "id": "blackwork",
       "name": "Blackwork",
       "slug": "blackwork",
-      "description": "Tatuajes realizados exclusivamente en tinta negra, desde diseños tribales hasta patrones geométricos complejos.",
-      "characteristics": ["Solo tinta negra", "Alto contraste", "Patrones complejos", "Impacto visual fuerte"],
+      "description": "Tattoos done exclusively in black ink, from tribal designs to complex geometric patterns.",
+      "characteristics": ["Black ink only", "High contrast", "Complex patterns", "Strong visual impact"],
       "artists": ["david", "nina"],
       "featured": true
     },
     {
-      "id": "realismo",
-      "name": "Realismo",
-      "slug": "realismo",
-      "description": "Tatuajes que replican la realidad con precisión fotográfica, incluyendo retratos, animales y objetos.",
-      "characteristics": ["Precisión fotográfica", "Sombreado detallado", "Técnica avanzada", "Efecto tridimensional"],
+      "id": "realism",
+      "name": "Realism",
+      "slug": "realism",
+      "description": "Tattoos that replicate reality with photographic precision, including portraits, animals and objects.",
+      "characteristics": ["Photographic precision", "Detailed shading", "Advanced technique", "Three-dimensional effect"],
       "artists": ["nina"],
       "featured": true
     },
     {
-      "id": "geometrico",
-      "name": "Geométrico",
-      "slug": "geometrico",
-      "description": "Diseños basados en formas geométricas, patrones sagrados y simetría matemática.",
-      "characteristics": ["Formas geométricas", "Simetría perfecta", "Patrones repetitivos", "Precisión técnica"],
+      "id": "geometric",
+      "name": "Geometric",
+      "slug": "geometric",
+      "description": "Designs based on geometric shapes, sacred patterns and mathematical symmetry.",
+      "characteristics": ["Geometric shapes", "Perfect symmetry", "Repetitive patterns", "Technical precision"],
       "artists": ["nina"],
       "featured": true
     },
     {
-      "id": "minimalista",
-      "name": "Minimalista",
-      "slug": "minimalista",
-      "description": "Diseños simples y elegantes con líneas limpias y elementos reducidos a su esencia.",
-      "characteristics": ["Líneas limpias", "Diseño simple", "Elegancia", "Menos es más"],
+      "id": "minimalist",
+      "name": "Minimalist",
+      "slug": "minimalist",
+      "description": "Simple and elegant designs with clean lines and elements reduced to their essence.",
+      "characteristics": ["Clean lines", "Simple design", "Elegance", "Less is more"],
       "artists": ["karli"],
       "featured": true
     },
@@ -58,17 +58,17 @@
       "id": "fine-line",
       "name": "Fine Line",
       "slug": "fine-line",
-      "description": "Tatuajes delicados realizados con líneas muy finas, perfectos para diseños sutiles y elegantes.",
-      "characteristics": ["Líneas muy finas", "Diseños delicados", "Sutileza", "Elegancia refinada"],
+      "description": "Delicate tattoos made with very fine lines, perfect for subtle and elegant designs.",
+      "characteristics": ["Very fine lines", "Delicate designs", "Subtlety", "Refined elegance"],
       "artists": ["karli"],
       "featured": false
     },
     {
-      "id": "neo-tradicional",
-      "name": "Neo-tradicional",
-      "slug": "neo-tradicional",
-      "description": "Evolución del estilo tradicional con más colores, sombreado avanzado y diseños más complejos.",
-      "characteristics": ["Colores vibrantes", "Sombreado avanzado", "Diseños complejos", "Estilo moderno"],
+      "id": "neo-traditional",
+      "name": "Neo-traditional",
+      "slug": "neo-traditional",
+      "description": "Evolution of traditional style with more colors, advanced shading and more complex designs.",
+      "characteristics": ["Vibrant colors", "Advanced shading", "Complex designs", "Modern style"],
       "artists": [],
       "featured": false
     },
@@ -76,53 +76,53 @@
       "id": "dotwork",
       "name": "Dotwork",
       "slug": "dotwork",
-      "description": "Técnica que utiliza puntos para crear sombreado, texturas y patrones únicos.",
-      "characteristics": ["Técnica de puntos", "Texturas únicas", "Patrones complejos", "Efecto visual especial"],
+      "description": "Technique that uses dots to create shading, textures and unique patterns.",
+      "characteristics": ["Dot technique", "Unique textures", "Complex patterns", "Special visual effect"],
       "artists": [],
       "featured": false
     },
     {
-      "id": "biomecánico",
-      "name": "Biomecánico",
-      "slug": "biomecanico",
-      "description": "Fusión de elementos orgánicos y mecánicos, creando la ilusión de máquinas bajo la piel.",
-      "characteristics": ["Elementos mecánicos", "Fusión orgánica", "Efecto 3D", "Diseño futurista"],
+      "id": "biomechanical",
+      "name": "Biomechanical",
+      "slug": "biomechanical",
+      "description": "Fusion of organic and mechanical elements, creating the illusion of machines under the skin.",
+      "characteristics": ["Mechanical elements", "Organic fusion", "3D effect", "Futuristic design"],
       "artists": [],
       "featured": false
     }
   ],
   "categories": {
     "by_complexity": {
-      "simple": ["minimalista", "fine-line"],
-      "medium": ["tradicional", "geometrico"],
-      "complex": ["japones", "realismo", "blackwork", "biomecanico"]
+      "simple": ["minimalist", "fine-line"],
+      "medium": ["traditional", "geometric"],
+      "complex": ["japanese", "realism", "blackwork", "biomechanical"]
     },
     "by_color": {
-      "black_only": ["blackwork", "minimalista", "fine-line", "dotwork"],
-      "color": ["tradicional", "japones", "neo-tradicional", "realismo"],
-      "mixed": ["geometrico", "biomecanico"]
+      "black_only": ["blackwork", "minimalist", "fine-line", "dotwork"],
+      "color": ["traditional", "japanese", "neo-traditional", "realism"],
+      "mixed": ["geometric", "biomechanical"]
     },
     "by_size": {
-      "small": ["minimalista", "fine-line"],
-      "medium": ["tradicional", "geometrico", "dotwork"],
-      "large": ["japones", "realismo", "blackwork", "biomecanico"]
+      "small": ["minimalist", "fine-line"],
+      "medium": ["traditional", "geometric", "dotwork"],
+      "large": ["japanese", "realism", "blackwork", "biomechanical"]
     }
   },
   "popular_combinations": [
     {
-      "name": "Blackwork Geométrico",
-      "styles": ["blackwork", "geometrico"],
-      "description": "Combinación de patrones geométricos en tinta negra pura"
+      "name": "Geometric Blackwork",
+      "styles": ["blackwork", "geometric"],
+      "description": "Combination of geometric patterns in pure black ink"
     },
     {
-      "name": "Realismo con Fine Line",
-      "styles": ["realismo", "fine-line"],
-      "description": "Retratos realistas con detalles en línea fina"
+      "name": "Realism with Fine Line",
+      "styles": ["realism", "fine-line"],
+      "description": "Realistic portraits with fine line details"
     },
     {
-      "name": "Tradicional Minimalista",
-      "styles": ["tradicional", "minimalista"],
-      "description": "Elementos tradicionales simplificados"
+      "name": "Minimalist Traditional",
+      "styles": ["traditional", "minimalist"],
+      "description": "Simplified traditional elements"
     }
   ]
 }

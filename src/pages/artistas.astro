@@ -13,11 +13,23 @@ import ParticleSystem from "@/components/effects/ParticleSystem.astro"
 import artistsData from "@/data/artists.json"
 
 const { artists } = artistsData;
+
+// SEO and structured data for artists
+const seoData = {
+  title: "Our Professional Artists - Specialized Tattoo Artists | Cuba Tattoo Studio",
+  description: `Meet our ${artists.length} professional artists specialized in realism, blackwork, traditional and more styles. Combined experience of over 30 years in Albuquerque, NM.`,
+  keywords: ["tattoo artists albuquerque", "professional tattoo artists new mexico", "realism blackwork specialists", "cuba tattoo studio artists", "experienced tattoo artists", "best tattoo artists albuquerque"],
+  image: "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20artists%20team%20cuba%20tattoo%20studio%20albuquerque%20group%20portrait&image_size=landscape_16_9",
+  structuredDataType: "Person"
+};
 ---
 
 <Layout 
-  title="Nuestros Artistas | Cuba Tattoo Studio"
-  description="Conoce a nuestros talentosos artistas especializados en diferentes estilos de tatuaje. David, Nina y Karli te esperan en Cuba Tattoo Studio, Albuquerque."
+  title={seoData.title}
+  description={seoData.description}
+  keywords={seoData.keywords}
+  image={seoData.image}
+  structuredDataType={seoData.structuredDataType}
 >
   <Header />
   
@@ -28,7 +40,7 @@ const { artists } = artistsData;
         <div class="absolute inset-0 bg-gradient-to-b from-cuba-black/70 to-cuba-black z-10"></div>
         <SlideInImage 
           src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20view%20of%20professional%20tattoo%20artists%20working%20in%20modern%20studio%2C%20dramatic%20black%20and%20white%20lighting%2C%20artistic%20atmosphere%2C%20creative%20workspace%2C%20multiple%20artists%20collaborating%2C%20film%20noir%20style&image_size=landscape_16_9"
-          alt="Artistas de Cuba Tattoo Studio trabajando"
+          alt="Cuba Tattoo Studio artists working"
           direction="left"
           intensity="strong"
           parallax={true}
@@ -48,7 +60,7 @@ const { artists } = artistsData;
         <FadeInSection delay={0.8} intensity="strong" class="relative z-30 text-center max-w-4xl mx-auto px-6">
           <StaggerText 
             tag="h1" 
-            text="NUESTROS ARTISTAS"
+            text="OUR ARTISTS"
             splitBy="words"
             delay={1.2}
             stagger={0.15}
@@ -57,7 +69,7 @@ const { artists } = artistsData;
           />
           <StaggerText 
             tag="p" 
-            text="Cada trazo cuenta una historia. Conoce a los maestros detrás del arte"
+            text="Every stroke tells a story. Meet the masters behind the art"
             splitBy="words"
             delay={1.8}
             stagger={0.08}
@@ -68,7 +80,7 @@ const { artists } = artistsData;
       </section>
     </ParallaxContainer>
 
-    <!-- Grid de Artistas Cinematográfico -->
+    <!-- Cinematic Artists Grid -->
     <FadeInSection delay={0.5} intensity="medium" class="py-20 px-6">
       <section class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -87,7 +99,7 @@ const { artists } = artistsData;
                 <div class="relative overflow-hidden rounded-lg mb-6">
                   <SlideInImage 
                     src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20artist%20${artist.name.toLowerCase()}%20portrait%20black%20and%20white%20studio%20lighting%20confident%20pose&image_size=portrait_4_3`}
-                    alt={`${artist.name} - Artista de tatuajes`}
+                    alt={`${artist.name} - Tattoo Artist`}
                     direction={index % 2 === 0 ? 'left' : 'right'}
                     delay={index * 0.2}
                     intensity="medium"
@@ -102,7 +114,7 @@ const { artists } = artistsData;
                       size="sm"
                       class="w-full backdrop-blur-sm"
                     >
-                      Ver Perfil
+                      View Profile
                     </Button>
                   </div>
                 </div>
@@ -142,7 +154,7 @@ const { artists } = artistsData;
                   <FadeInSection delay={index * 0.1 + 1.5} intensity="subtle">
                     <div class="pt-4 border-t border-gray-700">
                       <div class="flex items-center justify-between text-sm text-gray-400">
-                        <span>Experiencia: {artist.experience}</span>
+                        <span>Experience: {artist.experience}</span>
                         <div class="space-y-1">
                           <a 
                             href={`https://instagram.com/${artist.contact.instagram.replace('@', '')}`}
@@ -167,7 +179,7 @@ const { artists } = artistsData;
                         class="flex-1"
                         animated={true}
                       >
-                        Ver Portfolio
+                        View Portfolio
                       </Button>
                       <Button 
                         href={`/reservas?artist=${artist.slug}`} 
@@ -176,7 +188,7 @@ const { artists } = artistsData;
                         class="flex-1"
                         animated={true}
                       >
-                        Reservar
+                        Book Now
                       </Button>
                     </div>
                   </FadeInSection>
@@ -194,7 +206,7 @@ const { artists } = artistsData;
         <section class="max-w-4xl mx-auto px-6">
           <SlideInImage 
             src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20close-up%20of%20tattoo%20needle%20and%20ink%2C%20dramatic%20black%20and%20white%20lighting%2C%20artistic%20composition%2C%20professional%20tattoo%20equipment%2C%20film%20noir%20style&image_size=landscape_4_3"
-            alt="Equipo profesional de tatuaje"
+            alt="Professional tattoo equipment"
             direction="up"
             intensity="subtle"
             parallax={true}
@@ -203,7 +215,7 @@ const { artists } = artistsData;
           
           <StaggerText 
             tag="h2" 
-            text="¿LISTO PARA TU PRÓXIMO TATUAJE?"
+            text="READY FOR YOUR NEXT TATTOO?"
             splitBy="words"
             delay={0.8}
             stagger={0.12}
@@ -213,7 +225,7 @@ const { artists } = artistsData;
           
           <StaggerText 
             tag="p" 
-            text="Nuestros artistas están esperando para convertir tu visión en una obra de arte permanente. Agenda tu consulta gratuita hoy mismo."
+            text="Our artists are waiting to turn your vision into a permanent work of art. Schedule your free consultation today."
             splitBy="words"
             delay={1.5}
             stagger={0.05}
@@ -230,7 +242,7 @@ const { artists } = artistsData;
                 class="px-12 py-4 text-lg font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl"
                 animated={true}
               >
-                Reservar Consulta
+                Book Consultation
               </Button>
               <Button 
                 href="/portfolio" 
@@ -239,7 +251,7 @@ const { artists } = artistsData;
                 class="px-12 py-4 text-lg font-semibold transition-all duration-500 hover:scale-105 hover:bg-white hover:text-black"
                 animated={true}
               >
-                Ver Portfolio
+                View Portfolio
               </Button>
             </div>
           </FadeInSection>
@@ -256,14 +268,14 @@ const { artists } = artistsData;
       </FadeInSection>
     </ParallaxContainer>
 
-    <!-- Información Adicional Cinematográfica -->
+    <!-- Additional Cinematic Information -->
     <FadeInSection delay={0.2} intensity="medium" class="py-20 bg-gray-900">
       <section class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 gap-16 items-center">
           <div>
             <StaggerText 
               tag="h3" 
-              text="PROCESO DE SELECCIÓN"
+              text="SELECTION PROCESS"
               splitBy="words"
               delay={0.5}
               stagger={0.1}
@@ -274,22 +286,22 @@ const { artists } = artistsData;
             <div class="space-y-6">
               <FadeInSection delay={0.8} intensity="subtle">
                 <p class="text-gray-300 font-body leading-relaxed text-lg">
-                  Cada artista en Cuba Tattoo Studio ha sido cuidadosamente seleccionado por su técnica excepcional, 
-                  creatividad y compromiso con la excelencia artística.
+                  Each artist at Cuba Tattoo Studio has been carefully selected for their exceptional technique, 
+                  creativity and commitment to artistic excellence.
                 </p>
               </FadeInSection>
               
               <FadeInSection delay={1.1} intensity="subtle">
                 <p class="text-gray-300 font-body leading-relaxed text-lg">
-                  Todos nuestros profesionales cuentan con certificaciones en seguridad e higiene, 
-                  y participan regularmente en workshops y convenciones para mantenerse al día con las últimas tendencias.
+                  All our professionals have safety and hygiene certifications, 
+                  and regularly participate in workshops and conventions to stay up to date with the latest trends.
                 </p>
               </FadeInSection>
               
               <FadeInSection delay={1.4} intensity="subtle">
                 <p class="text-gray-300 font-body leading-relaxed text-lg">
-                  Antes de cada sesión, realizamos una consulta detallada para asegurar que el artista 
-                  y el cliente estén perfectamente alineados en la visión del proyecto.
+                  Before each session, we conduct a detailed consultation to ensure that the artist 
+                  and client are perfectly aligned on the project vision.
                 </p>
               </FadeInSection>
             </div>
@@ -299,7 +311,7 @@ const { artists } = artistsData;
             <div class="relative">
               <SlideInImage 
                 src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20professional%20tattoo%20studio%20workspace%20black%20and%20white%20clean%20organized%20equipment%20artistic%20atmosphere%20dramatic%20lighting%20film%20noir&image_size=square_hd"
-                alt="Estudio profesional de tatuajes"
+                alt="Professional tattoo studio"
                 direction="right"
                 delay={0.6}
                 intensity="medium"
@@ -325,10 +337,10 @@ const { artists } = artistsData;
                 </svg>
               </div>
               <h4 class="text-xl font-heading text-white uppercase tracking-wider mb-3">
-                Certificados
+                Certified
               </h4>
               <p class="text-gray-400 font-body leading-relaxed">
-                Todos nuestros artistas están certificados y cumplen con los más altos estándares de higiene y seguridad.
+                All our artists are certified and meet the highest standards of hygiene and safety.
               </p>
             </div>
           </FadeInSection>
@@ -341,10 +353,10 @@ const { artists } = artistsData;
                 </svg>
               </div>
               <h4 class="text-xl font-heading text-white uppercase tracking-wider mb-3">
-                Experiencia
+                Experience
               </h4>
               <p class="text-gray-400 font-body leading-relaxed">
-                Más de 10 años de experiencia combinada en diferentes estilos y técnicas de tatuaje.
+                Over 10 years of combined experience in different tattoo styles and techniques.
               </p>
             </div>
           </FadeInSection>
@@ -357,10 +369,10 @@ const { artists } = artistsData;
                 </svg>
               </div>
               <h4 class="text-xl font-heading text-white uppercase tracking-wider mb-3">
-                Pasión
+                Passion
               </h4>
               <p class="text-gray-400 font-body leading-relaxed">
-                Cada artista aporta su pasión única y visión artística para crear tatuajes verdaderamente únicos.
+                Each artist brings their unique passion and artistic vision to create truly unique tattoos.
               </p>
             </div>
           </FadeInSection>

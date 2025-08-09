@@ -18,11 +18,23 @@ const { styles } = stylesData;
 // Calcular estadísticas del portfolio
 const totalWorks = artists.reduce((total, artist) => total + artist.portfolio.length, 0);
 const featuredStyles = styles.filter(style => style.featured);
+
+// SEO y datos estructurados para portfolio
+const seoData = {
+  title: "Complete Portfolio - Tattoo Gallery | Cuba Tattoo Studio",
+  description: `Explore our complete gallery of ${totalWorks} professional tattoos. Realism, blackwork, traditional and more styles by our specialized artists in Albuquerque, NM.`,
+  keywords: ["tattoo portfolio", "albuquerque tattoo gallery", "cuba tattoo completed works", "professional tattoo examples", "realism blackwork traditional", "new mexico tattoo artists"],
+  image: "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20portfolio%20gallery%20professional%20artwork%20collection%20cuba%20tattoo%20studio&image_size=landscape_16_9",
+  structuredDataType: "ImageGallery"
+};
 ---
 
 <Layout 
-  title="Portfolio Completo | Cuba Tattoo Studio"
-  description="Explora nuestra galería completa de tatuajes. Filtra por artista, estilo y más. Trabajos de David, Nina y Karli en Cuba Tattoo Studio, Albuquerque."
+  title={seoData.title}
+  description={seoData.description}
+  keywords={seoData.keywords}
+  image={seoData.image}
+  structuredDataType={seoData.structuredDataType}
 >
   <Header />
   
@@ -33,7 +45,7 @@ const featuredStyles = styles.filter(style => style.featured);
       <section class="max-w-6xl mx-auto px-6 relative z-10">
         <div class="text-center space-y-8">
           <StaggerText 
-            text="PORTFOLIO COMPLETO"
+            text="COMPLETE PORTFOLIO"
             element="h1" 
             class="text-6xl md:text-8xl font-bebas text-white tracking-wider"
             delay={0.2}
@@ -41,7 +53,7 @@ const featuredStyles = styles.filter(style => style.featured);
           />
           <FadeInSection delay={0.6} intensity="high" class="max-w-4xl mx-auto space-y-6">
             <p class="text-xl md:text-2xl text-gray-300 font-inter leading-relaxed">
-              Explora nuestra colección completa de {totalWorks} trabajos realizados por nuestros talentosos artistas. Filtra por estilo, artista o características específicas para encontrar la inspiración perfecta.
+              Explore our complete collection of {totalWorks} works created by our talented artists. Filter by style, artist or specific characteristics to find the perfect inspiration.
             </p>
             <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           </FadeInSection>
@@ -53,7 +65,7 @@ const featuredStyles = styles.filter(style => style.featured);
                 {totalWorks}
               </div>
               <div class="text-sm font-inter text-gray-400 uppercase tracking-widest">
-                TRABAJOS REALIZADOS
+                COMPLETED WORKS
               </div>
               <div class="w-16 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </FadeInSection>
@@ -62,7 +74,7 @@ const featuredStyles = styles.filter(style => style.featured);
                 {artists.length}
               </div>
               <div class="text-sm font-inter text-gray-400 uppercase tracking-widest">
-                ARTISTAS ESPECIALIZADOS
+                SPECIALIZED ARTISTS
               </div>
               <div class="w-16 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </FadeInSection>
@@ -71,7 +83,7 @@ const featuredStyles = styles.filter(style => style.featured);
                 {styles.length}+
               </div>
               <div class="text-sm font-inter text-gray-400 uppercase tracking-widest">
-                ESTILOS DIFERENTES
+                DIFFERENT STYLES
               </div>
               <div class="w-16 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </FadeInSection>
@@ -85,14 +97,14 @@ const featuredStyles = styles.filter(style => style.featured);
       <div class="max-w-7xl mx-auto px-6">
         <FadeInSection delay={0.2} intensity="high" class="text-center mb-16 space-y-6">
           <StaggerText 
-            text="ESTILOS DESTACADOS"
+            text="FEATURED STYLES"
             element="h2" 
             class="text-4xl md:text-5xl font-bebas text-white tracking-wider"
             delay={0.3}
             staggerDelay={0.05}
           />
           <p class="text-lg text-gray-400 font-inter max-w-3xl mx-auto leading-relaxed">
-            Nuestros artistas dominan una amplia variedad de estilos, desde los más tradicionales hasta las tendencias más modernas.
+            Our artists master a wide variety of styles, from the most traditional to the most modern trends.
           </p>
           <div class="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
         </FadeInSection>
@@ -139,20 +151,20 @@ const featuredStyles = styles.filter(style => style.featured);
       </div>
     </section>
 
-    <!-- Sección de Artistas Cinematográfica -->
+    <!-- Cinematic Artists Section -->
     <ParallaxContainer speed={0.2} intensity="medium" class="py-32 bg-gradient-to-b from-gray-900 via-black to-gray-900 relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
       <section class="max-w-7xl mx-auto px-6 relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="text-center mb-20 space-y-6">
           <StaggerText 
-            text="CONOCE A NUESTROS ARTISTAS"
+            text="MEET OUR ARTISTS"
             element="h2" 
             class="text-5xl md:text-6xl font-bebas text-white tracking-wider"
             delay={0.3}
             staggerDelay={0.05}
           />
           <p class="text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed">
-            Cada trabajo en nuestro portfolio es el resultado de la experiencia, técnica y visión artística única de nuestros talentosos profesionales.
+            Each work in our portfolio is the result of the experience, technique and unique artistic vision of our talented professionals.
           </p>
           <div class="w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
         </FadeInSection>
@@ -169,7 +181,7 @@ const featuredStyles = styles.filter(style => style.featured);
                 >
                   <img 
                     src={`https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cinematic%20professional%20tattoo%20artist%20${artist.name.toLowerCase()}%20portrait%20black%20and%20white%20dramatic%20studio%20lighting%20moody&image_size=square_hd`}
-                    alt={`${artist.name} - Artista de tatuajes`}
+                    alt={`${artist.name} - Tattoo Artist`}
                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     loading="lazy"
                   />
@@ -190,7 +202,7 @@ const featuredStyles = styles.filter(style => style.featured);
                   </div>
                   
                   <p class="text-gray-400 font-inter text-lg">
-                    {artist.portfolio.length} trabajos en portfolio
+                    {artist.portfolio.length} works in portfolio
                   </p>
                   
                   <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -199,14 +211,14 @@ const featuredStyles = styles.filter(style => style.featured);
                       variant="secondary" 
                       size="sm"
                     >
-                      Ver Perfil
+                      View Profile
                     </Button>
                     <Button 
                       href={`/reservas?artist=${artist.slug}`} 
                       variant="primary" 
                       size="sm"
                     >
-                      Reservar
+                      Book Now
                     </Button>
                   </div>
                 </div>
@@ -226,7 +238,7 @@ const featuredStyles = styles.filter(style => style.featured);
       <section class="max-w-4xl mx-auto px-6 text-center relative z-10">
         <FadeInSection delay={0.2} intensity="high" class="space-y-8">
           <StaggerText 
-            text="¿LISTO PARA TU PRÓXIMO TATUAJE?"
+            text="READY FOR YOUR NEXT TATTOO?"
             element="h2" 
             class="text-5xl md:text-7xl font-bebas text-white tracking-wider leading-tight"
             delay={0.3}
@@ -234,17 +246,17 @@ const featuredStyles = styles.filter(style => style.featured);
           />
           <div class="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto"></div>
           <p class="text-xl md:text-2xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed">
-            Nuestros artistas están listos para convertir tu visión en una obra de arte permanente. Reserva tu consulta hoy mismo.
+            Our artists are ready to turn your vision into a permanent work of art. Book your consultation today.
           </p>
         </FadeInSection>
         
         <FadeInSection delay={0.6} intensity="medium" class="pt-12">
           <div class="flex flex-col sm:flex-row gap-6 justify-center">
             <Button href="/reservas" variant="primary" size="lg">
-              Reservar Consulta
+              Book Consultation
             </Button>
             <Button href="/artistas" variant="secondary" size="lg">
-              Ver Artistas
+              View Artists
             </Button>
           </div>
         </FadeInSection>

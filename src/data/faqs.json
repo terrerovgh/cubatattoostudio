@@ -1,0 +1,107 @@
+[
+  {
+    "question": "How much does a tattoo cost at Cuba Tattoo Studio?",
+    "answer": "<p>Our tattoo prices vary depending on size, complexity, and time required. <strong>Small tattoos start from $80</strong>, while medium pieces range from $150 to $400. For large tattoos or full sessions, prices range from $500 to $1,500 or more.</p><p>We offer <strong>free consultations</strong> where we evaluate your design and give you an exact quote. We also have flexible payment plans for large projects.</p>",
+    "category": "Pricing",
+    "keywords": ["price", "cost", "how much", "rates", "budget", "free consultation"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "Does getting a tattoo hurt?",
+    "answer": "<p><strong>Yes, tattoos cause some discomfort</strong>, but the pain level varies by person and body location. Areas with more fat or muscle (like arms and legs) hurt less than bony areas (ribs, ankles).</p><p>Our artists use <strong>techniques that minimize pain</strong> and guide you through the entire process. Many clients describe the sensation as continuous scratching or intense vibration.</p><p><strong>Tips to reduce pain:</strong> Get good sleep the night before, eat before your appointment, stay hydrated, and avoid alcohol.</p>",
+    "category": "Process",
+    "keywords": ["pain", "hurt", "discomfort", "sensation", "what does it feel like"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "How to care for a new tattoo?",
+    "answer": "<p><strong>The first 2-3 days are crucial</strong> for healing. Follow these steps:</p><ul><li><strong>Keep the protective film</strong> for 2-4 hours after the tattoo</li><li><strong>Wash gently</strong> with fragrance-free antibacterial soap</li><li><strong>Apply healing ointment</strong> (we recommend Aquaphor or A&D) 2-3 times daily</li><li><strong>Don't submerge in water</strong> (pools, bathtubs) for 2 weeks</li><li><strong>Avoid direct sunlight</strong> and don't scratch</li></ul><p>Complete healing takes 2-4 weeks. We provide detailed instructions and recommended products.</p>",
+    "category": "Aftercare",
+    "keywords": ["care", "healing", "aftercare", "ointment", "instructions", "aftercare"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "How long does it take to get a tattoo?",
+    "answer": "<p>Time depends on the size and complexity of the design:</p><ul><li><strong>Small tattoos:</strong> 30 minutes to 2 hours</li><li><strong>Medium tattoos:</strong> 2 to 5 hours</li><li><strong>Large tattoos:</strong> 5+ hours (may require multiple sessions)</li></ul><p>For large pieces, <strong>we divide the work into 4-6 hour sessions</strong> for your comfort. During consultation, we give you an accurate time estimate.</p>",
+    "category": "Process",
+    "keywords": ["time", "duration", "how long", "sessions", "hours"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "Can I bring my own design?",
+    "answer": "<p><strong>Absolutely!</strong> We love working with your ideas. You can bring:</p><ul><li>Original designs or references</li><li>Photos or inspiration images</li><li>Sketches or drawings</li></ul><p>Our artists will <strong>adapt your design</strong> to work perfectly as a tattoo, considering body flow, size, and technical details.</p><p>We also create <strong>completely custom designs</strong> based on your ideas during the free consultation.</p>",
+    "category": "Design",
+    "keywords": ["own design", "custom", "bring design", "ideas", "sketch"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "What's the minimum age to get a tattoo?",
+    "answer": "<p><strong>You must be at least 18 years old</strong> to get tattooed without parental consent. For minors:</p><ul><li><strong>16-17 years:</strong> Requires written parental/guardian consent and their presence during the appointment</li><li><strong>Under 16:</strong> We do not perform tattoos</li></ul><p><strong>We always verify identification</strong> and strictly follow New Mexico regulations to protect minors.</p>",
+    "category": "Requirements",
+    "keywords": ["age", "minor", "18 years", "identification", "consent"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "Do you do cover-ups of old tattoos?",
+    "answer": "<p><strong>Yes, we're cover-up specialists!</strong> Our artists have extensive experience transforming old tattoos into new works of art.</p><p><strong>Cover-up process:</strong></p><ul><li>Evaluation of existing tattoo</li><li>Strategic design to completely cover</li><li>Selection of appropriate colors and techniques</li><li>Final result that exceeds your expectations</li></ul><p>Some very dark tattoos may require <strong>laser sessions</strong> beforehand for better results. We'll advise you on the best option.</p>",
+    "category": "Services",
+    "keywords": ["cover up", "cover tattoo", "hide", "old tattoo", "correction"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "What tattoo styles do you do?",
+    "answer": "<p>Our artists master <strong>all major styles:</strong></p><ul><li><strong>Realism:</strong> Photorealistic portraits and landscapes</li><li><strong>Traditional/Old School:</strong> Classic American designs</li><li><strong>Neo-Traditional:</strong> Modern evolution of traditional</li><li><strong>Blackwork:</strong> Solid black designs</li><li><strong>Fine Line:</strong> Delicate and minimalist lines</li><li><strong>Watercolor:</strong> Watercolor effects</li><li><strong>Geometric:</strong> Geometric patterns and shapes</li></ul><p>Each artist has their <strong>unique specialties</strong>. During consultation, we connect you with the perfect artist for your style.</p>",
+    "category": "Styles",
+    "keywords": ["styles", "types", "realism", "traditional", "blackwork", "geometric"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "How to schedule an appointment?",
+    "answer": "<p><strong>Scheduling your appointment is easy:</strong></p><ol><li><strong>Free consultation:</strong> Call (505) 555-1234 or visit us</li><li><strong>Discuss your idea:</strong> We talk about design, placement, and budget</li><li><strong>Schedule the session:</strong> We choose a convenient date and time</li><li><strong>Deposit:</strong> $50-100 to reserve your appointment</li></ol><p><strong>Hours:</strong> Monday-Saturday 10am-8pm, Sunday 12pm-6pm</p><p>For large projects, <strong>we recommend scheduling 1-2 weeks in advance</strong>.</p>",
+    "category": "Appointments",
+    "keywords": ["appointment", "schedule", "book", "reserve", "hours", "deposit"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "Are you certified and licensed?",
+    "answer": "<p><strong>Absolutely!</strong> Cuba Tattoo Studio meets all legal requirements:</p><ul><li><strong>New Mexico State License</strong> for commercial operation</li><li><strong>Updated health certifications</strong></li><li><strong>Licensed artists</strong> with professional training</li><li><strong>Regular inspections</strong> by the Health Department</li></ul><p>We follow <strong>strict sterilization protocols</strong> and use disposable equipment. Your safety is our number one priority.</p>",
+    "category": "Safety",
+    "keywords": ["license", "certified", "legal", "safety", "sterilization", "health"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "Can I see the artists' portfolios?",
+    "answer": "<p><strong>Of course!</strong> You can see our work in several ways:</p><ul><li><strong>In the studio:</strong> Physical portfolios of each artist</li><li><strong>Instagram:</strong> @cubatattoostudio - we update daily</li><li><strong>Website:</strong> Complete gallery organized by style</li><li><strong>Personal consultation:</strong> We review specific work related to your interest</li></ul><p>Each artist has <strong>their unique style</strong> and specialties. We help you choose the perfect artist for your vision.</p>",
+    "category": "Information",
+    "keywords": ["portfolio", "work", "examples", "gallery", "instagram", "see work"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "What should I do before my tattoo appointment?",
+    "answer": "<p><strong>Preparation for your appointment:</strong></p><ul><li><strong>Sleep well</strong> the night before (minimum 7 hours)</li><li><strong>Eat a full meal</strong> 1-2 hours before</li><li><strong>Stay hydrated</strong> but avoid alcohol 24 hours before</li><li><strong>Wear comfortable clothes</strong> that allow access to the tattoo area</li><li><strong>Bring valid ID</strong> and payment method</li><li><strong>Arrive 15 minutes early</strong> to complete forms</li></ul><p><strong>Avoid:</strong> Aspirin, alcohol, drugs, recent tanning in the area.</p>",
+    "category": "Preparation",
+    "keywords": ["preparation", "before", "what to do", "tips", "appointment"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "Do you also do piercings?",
+    "answer": "<p><strong>We specialize exclusively in tattoos</strong> to provide you with the best possible service. We do not offer piercing services.</p><p>However, <strong>we can recommend</strong> professional and trusted piercing studios in Albuquerque that maintain the same quality and safety standards as we do.</p><p>Our 100% focus on tattoos allows us to <strong>perfect our art</strong> and offer the best possible experience.</p>",
+    "category": "Services",
+    "keywords": ["piercing", "body piercing", "other services"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "Do you offer a guarantee on your tattoos?",
+    "answer": "<p><strong>Yes! We guarantee our work.</strong> We offer:</p><ul><li><strong>Free touch-ups</strong> within the first 30 days</li><li><strong>Free corrections</strong> if there are normal healing issues</li><li><strong>Post-tattoo advice</strong> throughout the healing process</li></ul><p><strong>Important:</strong> The guarantee applies only if you follow our care instructions. Touch-ups due to care negligence have additional cost.</p><p>Our commitment is that <strong>you leave 100% satisfied</strong> with your new artwork.</p>",
+    "category": "Guarantee",
+    "keywords": ["guarantee", "touch-up", "correction", "satisfaction"],
+    "voiceOptimized": true
+  },
+  {
+    "question": "Where are you located?",
+    "answer": "<p><strong>Cuba Tattoo Studio</strong> is located at:</p><p><strong>📍 123 Central Avenue NW<br>Albuquerque, NM 87102</strong></p><p><strong>🕒 Hours:</strong><br>Monday - Saturday: 10:00 AM - 8:00 PM<br>Sunday: 12:00 PM - 6:00 PM</p><p><strong>📞 Phone:</strong> (505) 555-1234</p><p>We're in the <strong>heart of Albuquerque</strong>, with free parking available. Easy access from anywhere in the city.</p>",
+    "category": "Location",
+    "keywords": ["location", "address", "where are you", "hours", "phone"],
+    "voiceOptimized": true
+  }
+]

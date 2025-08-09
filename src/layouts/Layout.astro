@@ -1,49 +1,102 @@
 ---
 import VisualEffects from "@/components/ui/VisualEffects.astro";
+import SEO from "@/components/SEO.astro";
+import StructuredData from "@/components/StructuredData.astro";
 
 export interface Props {
   title?: string;
   description?: string;
   image?: string;
   backgroundEffects?: boolean;
+  keywords?: string;
+  structuredData?: object;
+  structuredDataType?: 'LocalBusiness' | 'Person' | 'VisualArtwork' | 'Service' | 'Organization';
+  noindex?: boolean;
+  canonical?: string;
 }
 
 const {
   title = "Cuba Tattoo Studio | Albuquerque, NM",
-  description = "Estudio de tatuajes premium en Albuquerque, Nuevo México. Especialistas en arte corporal de alta calidad con más de 10 años de experiencia.",
+  description = "Premium tattoo studio in Albuquerque, New Mexico. Specialists in high-quality body art with over 10 years of experience.",
   image = "/images/og-image.jpg",
-  backgroundEffects = true
+  backgroundEffects = true,
+  keywords = "tattoos albuquerque, tattoo studio new mexico, body art, professional tattoo artist, realism, japanese, blackwork, geometric, minimalist",
+  structuredData,
+  structuredDataType = 'LocalBusiness',
+  noindex = false,
+  canonical
 } = Astro.props;
+
+// Datos estructurados por defecto para LocalBusiness
+const defaultStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "TattooParlor",
+  "name": "Cuba Tattoo Studio",
+  "description": "Premium tattoo studio in Albuquerque, New Mexico. Specialists in high-quality body art with over 10 years of experience.",
+  "url": "https://cubatattoostudio.com",
+  "telephone": "+1-505-XXX-XXXX",
+  "email": "info@cubatattoostudio.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[Specific Address]",
+    "addressLocality": "Albuquerque",
+    "addressRegion": "NM",
+    "postalCode": "[Postal Code]",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "35.0844",
+    "longitude": "-106.6504"
+  },
+  "openingHours": [
+    "Mo-Fr 10:00-20:00",
+    "Sa 10:00-18:00"
+  ],
+  "priceRange": "$$-$$$",
+  "paymentAccepted": ["Cash", "Credit Card", "Venmo", "PayPal"],
+  "currenciesAccepted": "USD",
+  "sameAs": [
+    "https://www.instagram.com/cubatattoostudio",
+    "https://www.facebook.com/cubatattoostudio",
+    "https://www.google.com/maps/place/cuba-tattoo-studio"
+  ]
+};
+
+const finalStructuredData = structuredData || defaultStructuredData;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     
-    <!-- SEO Meta Tags -->
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta name="keywords" content="tatuajes, tattoo, albuquerque, nuevo mexico, arte corporal, tattoo studio" />
+    <!-- SEO Mejorado y Meta Tags -->
+    <SEO 
+      title={title}
+      description={description}
+      image={image}
+      keywords={keywords}
+      canonical={canonical}
+      noindex={noindex}
+      structuredData={finalStructuredData}
+    />
     
-    <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_ES" />
+    <!-- Datos Estructurados Adicionales -->
+    <StructuredData 
+      type={structuredDataType}
+      data={finalStructuredData}
+    />
     
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={image} />
+    <!-- Additional configuration for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
-    <!-- Preload Critical Fonts -->
-    <link rel="preload" href="/fonts/bebas-neue.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Prefetch para recursos críticos -->
+    <link rel="dns-prefetch" href="//www.instagram.com" />
+    <link rel="dns-prefetch" href="//www.facebook.com" />
+    <link rel="dns-prefetch" href="//maps.googleapis.com" />
   </head>
   <body class="relative overflow-x-hidden">
     <!-- Efectos visuales de fondo -->

@@ -1,8 +1,23 @@
 ---
 import Layout from "@/layouts/Layout.astro"
+
+// SEO and structured data for the main page
+const seoData = {
+  title: "Cuba Tattoo Studio - Professional Tattoos in Albuquerque, NM",
+  description: "Professional tattoo studio in Albuquerque, New Mexico. Artists specialized in realism, blackwork, traditional and more. Free consultations and the highest quality standards.",
+  keywords: ["tattoos albuquerque", "tattoo studio new mexico", "professional tattoos", "realism tattoo", "blackwork", "traditional tattoos", "cuba tattoo studio", "tattoo artists albuquerque"],
+  image: "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cuba%20tattoo%20studio%20exterior%20professional%20modern%20albuquerque%20new%20mexico&image_size=landscape_16_9",
+  structuredDataType: "LocalBusiness"
+};
 ---
 
-<Layout>
+<Layout 
+  title={seoData.title}
+  description={seoData.description}
+  keywords={seoData.keywords}
+  image={seoData.image}
+  structuredDataType={seoData.structuredDataType}
+>
   <!-- Progress Bar -->
   <div id="progress-bar" class="fixed top-0 left-0 w-0 h-1 bg-white z-50 transition-all duration-300"></div>
   
@@ -17,21 +32,21 @@ import Layout from "@/layouts/Layout.astro"
       <!-- Navigation Links -->
       <div class="hidden md:flex space-x-8 opacity-0" id="nav-links">
         <a href="/artistas" class="nav-link text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider" data-section="artistas">
-          Artistas
+          Artists
         </a>
         <a href="/portfolio" class="nav-link text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider" data-section="trabajo">
           Portfolio
         </a>
         <a href="/estudio" class="nav-link text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider" data-section="filosofia">
-          Estudio
+          Studio
         </a>
         <a href="/reservas" class="nav-link text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider" data-section="reservas">
-          Reservas
+          Bookings
         </a>
       </div>
       
       <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden text-white opacity-0" aria-label="Menú">
+      <button id="mobile-menu-btn" class="md:hidden text-white opacity-0" aria-label="Menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
@@ -41,16 +56,16 @@ import Layout from "@/layouts/Layout.astro"
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-95 backdrop-blur-sm p-6 space-y-4 hidden">
       <a href="/artistas" class="block text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider">
-        Artistas
+        Artists
       </a>
       <a href="/portfolio" class="block text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider">
         Portfolio
       </a>
       <a href="/estudio" class="block text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider">
-        Estudio
+        Studio
       </a>
       <a href="/reservas" class="block text-white hover:text-gray-300 transition-colors duration-300 text-sm uppercase tracking-wider">
-        Reservas
+        Bookings
       </a>
     </div>
   </nav>
@@ -81,7 +96,7 @@ import Layout from "@/layouts/Layout.astro"
         <div class="w-full h-full bg-gradient-to-b from-transparent via-black/50 to-black"></div>
         <img 
           src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20tattoo%20studio%20interior%20black%20and%20white%20professional%20clean%20minimalist%20design%20tattoo%20chairs%20equipment&image_size=landscape_16_9" 
-          alt="Interior del estudio Cuba Tattoo" 
+          alt="Cuba Tattoo Studio interior" 
           class="absolute inset-0 w-full h-full object-cover"
         />
       </div>
@@ -92,7 +107,7 @@ import Layout from "@/layouts/Layout.astro"
       <div class="parallax-bg absolute inset-0 opacity-20">
         <img 
           src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20artist%20working%20detailed%20black%20and%20white%20professional%20artistic%20focused%20concentration&image_size=landscape_16_9" 
-          alt="Artista tatuando" 
+          alt="Tattoo artist working" 
           class="w-full h-full object-cover"
         />
       </div>
@@ -103,38 +118,38 @@ import Layout from "@/layouts/Layout.astro"
             CUBA TATTOO STUDIO
           </h2>
           <p class="text-reveal text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
-            Donde el arte cobra vida en tu piel
+            Where art comes to life on your skin
           </p>
           <p class="text-reveal text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            En el corazón de Albuquerque, Nuevo México, hemos creado un espacio donde la creatividad y la técnica se fusionan para dar vida a historias únicas en cada tatuaje.
+            In the heart of Albuquerque, New Mexico, we have created a space where creativity and technique merge to bring unique stories to life in every tattoo.
           </p>
         </div>
       </div>
     </section>
     
-    <!-- Section 2: Nuestra Filosofía -->
+    <!-- Section 2: Our Philosophy -->
     <section id="section-filosofia" class="story-section min-h-screen flex items-center relative" data-section="filosofia">
       <div class="container mx-auto px-6 md:px-12">
         <div class="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           <div class="text-content">
             <h2 class="slide-left text-4xl md:text-6xl font-bold mb-8 tracking-wider">
-              NUESTRA FILOSOFÍA
+              OUR PHILOSOPHY
             </h2>
             <p class="slide-left text-lg text-gray-300 mb-6 leading-relaxed">
-              Creemos que cada tatuaje es una obra de arte personal, una expresión única de quien eres y lo que representas.
+              We believe that every tattoo is a personal work of art, a unique expression of who you are and what you represent.
             </p>
             <p class="slide-left text-lg text-gray-300 mb-8 leading-relaxed">
-              Nuestro compromiso va más allá de la tinta y la piel: nos dedicamos a crear experiencias memorables, manteniendo los más altos estándares de higiene, seguridad y profesionalismo.
+              Our commitment goes beyond ink and skin: we are dedicated to creating memorable experiences, maintaining the highest standards of hygiene, safety and professionalism.
             </p>
             <blockquote class="slide-left border-l-4 border-white pl-6 italic text-xl text-gray-200">
-              "El arte no reproduce lo visible, sino que hace visible lo invisible."
+              "Art does not reproduce the visible, but makes the invisible visible."
             </blockquote>
           </div>
           
           <div class="image-content">
             <img 
               src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20equipment%20professional%20setup%20black%20and%20white%20sterile%20clean%20artistic%20composition&image_size=portrait_4_3" 
-              alt="Equipo profesional de tatuaje" 
+              alt="Professional tattoo equipment" 
               class="slide-right w-full h-96 object-cover rounded-lg shadow-2xl"
             />
           </div>
@@ -142,15 +157,15 @@ import Layout from "@/layouts/Layout.astro"
       </div>
     </section>
     
-    <!-- Section 3: Los Artistas -->
+    <!-- Section 3: The Artists -->
     <section id="section-artistas" class="story-section min-h-screen flex items-center relative" data-section="artistas">
       <div class="container mx-auto px-6 md:px-12">
         <div class="text-center mb-16">
           <h2 class="text-reveal text-4xl md:text-6xl font-bold mb-8 tracking-wider">
-            CONOCE A NUESTROS ARTISTAS
+            MEET OUR ARTISTS
           </h2>
           <p class="text-reveal text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Cada miembro de nuestro equipo aporta su estilo único y años de experiencia para crear obras maestras personalizadas.
+            Each member of our team brings their unique style and years of experience to create personalized masterpieces.
           </p>
         </div>
         
@@ -159,59 +174,59 @@ import Layout from "@/layouts/Layout.astro"
             <div class="mb-6">
               <img 
                 src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20tattoo%20artist%20portrait%20black%20and%20white%20confident%20artistic%20creative&image_size=square" 
-                alt="Artista especializado en Blackwork" 
+                alt="Artist specialized in Blackwork" 
                 class="w-48 h-48 object-cover rounded-full mx-auto shadow-2xl"
               />
             </div>
             <h3 class="text-2xl font-bold mb-2">ALEX RIVERA</h3>
-            <p class="text-gray-400 mb-4">Especialista en Blackwork & Geométrico</p>
-            <p class="text-sm text-gray-500">8 años de experiencia</p>
+            <p class="text-gray-400 mb-4">Blackwork & Geometric Specialist</p>
+            <p class="text-sm text-gray-500">8 years of experience</p>
           </div>
           
           <div class="artist-card text-center">
             <div class="mb-6">
               <img 
                 src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=female%20tattoo%20artist%20portrait%20black%20and%20white%20professional%20artistic%20skilled&image_size=square" 
-                alt="Artista especializada en Realismo" 
+                alt="Artist specialized in Realism" 
                 class="w-48 h-48 object-cover rounded-full mx-auto shadow-2xl"
               />
             </div>
             <h3 class="text-2xl font-bold mb-2">SOFIA MARTINEZ</h3>
-            <p class="text-gray-400 mb-4">Especialista en Realismo & Retratos</p>
-            <p class="text-sm text-gray-500">10 años de experiencia</p>
+            <p class="text-gray-400 mb-4">Realism & Portrait Specialist</p>
+            <p class="text-sm text-gray-500">10 years of experience</p>
           </div>
           
           <div class="artist-card text-center">
             <div class="mb-6">
               <img 
                 src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20artist%20portrait%20black%20and%20white%20traditional%20style%20experienced%20professional&image_size=square" 
-                alt="Artista especializado en Tradicional" 
+                alt="Artist specialized in Traditional" 
                 class="w-48 h-48 object-cover rounded-full mx-auto shadow-2xl"
               />
             </div>
             <h3 class="text-2xl font-bold mb-2">CARLOS VEGA</h3>
-            <p class="text-gray-400 mb-4">Especialista en Tradicional & Japonés</p>
-            <p class="text-sm text-gray-500">12 años de experiencia</p>
+            <p class="text-gray-400 mb-4">Traditional & Japanese Specialist</p>
+            <p class="text-sm text-gray-500">12 years of experience</p>
           </div>
         </div>
         
         <div class="text-center mt-12">
           <a href="/artistas" class="inline-block bg-white text-black px-8 py-3 text-sm uppercase tracking-wider font-bold hover:bg-gray-200 transition-colors duration-300">
-            Ver Todos los Artistas
+            View All Artists
           </a>
         </div>
       </div>
     </section>
     
-    <!-- Section 4: Nuestro Trabajo -->
+    <!-- Section 4: Our Work -->
     <section id="section-trabajo" class="story-section min-h-screen flex items-center relative" data-section="trabajo">
       <div class="container mx-auto px-6 md:px-12">
         <div class="text-center mb-16">
           <h2 class="text-reveal text-4xl md:text-6xl font-bold mb-8 tracking-wider">
-            NUESTRO TRABAJO HABLA POR SÍ SOLO
+            OUR WORK SPEAKS FOR ITSELF
           </h2>
           <p class="text-reveal text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Una selección de nuestras creaciones más destacadas, cada una contando una historia única.
+            A selection of our most outstanding creations, each telling a unique story.
           </p>
         </div>
         
@@ -219,7 +234,7 @@ import Layout from "@/layouts/Layout.astro"
           <div class="gallery-item col-span-2 row-span-2">
             <img 
               src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=detailed%20black%20and%20white%20tattoo%20geometric%20mandala%20intricate%20design%20professional%20artwork&image_size=square" 
-              alt="Tatuaje geométrico detallado" 
+              alt="Detailed geometric tattoo" 
               class="w-full h-full object-cover rounded-lg shadow-xl"
             />
           </div>
@@ -227,7 +242,7 @@ import Layout from "@/layouts/Layout.astro"
           <div class="gallery-item">
             <img 
               src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=realistic%20portrait%20tattoo%20black%20and%20white%20detailed%20shading%20professional%20work&image_size=square" 
-              alt="Tatuaje realista" 
+              alt="Realistic tattoo" 
               class="w-full h-48 object-cover rounded-lg shadow-xl"
             />
           </div>
@@ -235,7 +250,7 @@ import Layout from "@/layouts/Layout.astro"
           <div class="gallery-item">
             <img 
               src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20tattoo%20design%20black%20and%20white%20bold%20lines%20classic%20style&image_size=square" 
-              alt="Tatuaje tradicional" 
+              alt="Traditional tattoo" 
               class="w-full h-48 object-cover rounded-lg shadow-xl"
             />
           </div>
@@ -243,7 +258,7 @@ import Layout from "@/layouts/Layout.astro"
           <div class="gallery-item">
             <img 
               src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=japanese%20style%20tattoo%20black%20and%20white%20flowing%20design%20artistic%20composition&image_size=square" 
-              alt="Tatuaje japonés" 
+              alt="Japanese tattoo" 
               class="w-full h-48 object-cover rounded-lg shadow-xl"
             />
           </div>
@@ -251,7 +266,7 @@ import Layout from "@/layouts/Layout.astro"
           <div class="gallery-item">
             <img 
               src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=blackwork%20tattoo%20bold%20black%20ink%20minimalist%20design%20professional%20execution&image_size=square" 
-              alt="Tatuaje blackwork" 
+              alt="Blackwork tattoo" 
               class="w-full h-48 object-cover rounded-lg shadow-xl"
             />
           </div>
@@ -259,42 +274,42 @@ import Layout from "@/layouts/Layout.astro"
         
         <div class="text-center mt-12">
           <a href="/portfolio" class="inline-block bg-white text-black px-8 py-3 text-sm uppercase tracking-wider font-bold hover:bg-gray-200 transition-colors duration-300">
-            Explorar Portfolio Completo
+            Explore Full Portfolio
           </a>
         </div>
       </div>
     </section>
     
-    <!-- Section 5: Reserva tu Cita -->
+    <!-- Section 5: Book Your Appointment -->
     <section id="section-reservas" class="story-section min-h-screen flex items-center relative" data-section="reservas">
       <div class="container mx-auto px-6 md:px-12">
         <div class="max-w-4xl mx-auto text-center">
           <h2 class="text-reveal text-4xl md:text-6xl font-bold mb-8 tracking-wider">
-            COMIENZA TU HISTORIA
+            START YOUR STORY
           </h2>
           <p class="text-reveal text-xl text-gray-300 mb-12 leading-relaxed">
-            ¿Listo para convertir tu idea en una obra de arte permanente? Nuestro proceso comienza con una consulta personalizada.
+            Ready to turn your idea into a permanent work of art? Our process begins with a personalized consultation.
           </p>
           
           <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
             <div class="text-left">
-              <h3 class="slide-left text-2xl font-bold mb-6">Nuestro Proceso:</h3>
+              <h3 class="slide-left text-2xl font-bold mb-6">Our Process:</h3>
               <ul class="slide-left space-y-4 text-gray-300">
                 <li class="flex items-start">
                   <span class="text-white font-bold mr-3">1.</span>
-                  <span>Consulta gratuita para discutir tu idea</span>
+                  <span>Free consultation to discuss your idea</span>
                 </li>
                 <li class="flex items-start">
                   <span class="text-white font-bold mr-3">2.</span>
-                  <span>Diseño personalizado y aprobación</span>
+                  <span>Custom design and approval</span>
                 </li>
                 <li class="flex items-start">
                   <span class="text-white font-bold mr-3">3.</span>
-                  <span>Sesión de tatuaje en ambiente profesional</span>
+                  <span>Tattoo session in professional environment</span>
                 </li>
                 <li class="flex items-start">
                   <span class="text-white font-bold mr-3">4.</span>
-                  <span>Cuidados posteriores y seguimiento</span>
+                  <span>Aftercare and follow-up</span>
                 </li>
               </ul>
             </div>
@@ -302,7 +317,7 @@ import Layout from "@/layouts/Layout.astro"
             <div class="slide-right">
               <img 
                 src="https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=tattoo%20consultation%20process%20black%20and%20white%20professional%20meeting%20design%20discussion&image_size=landscape_4_3" 
-                alt="Proceso de consulta" 
+                alt="Consultation process" 
                 class="w-full h-64 object-cover rounded-lg shadow-xl"
               />
             </div>
@@ -310,11 +325,11 @@ import Layout from "@/layouts/Layout.astro"
           
           <div class="text-center">
             <a href="/reservas" class="inline-block bg-white text-black px-12 py-4 text-lg uppercase tracking-wider font-bold hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-2xl">
-              Reservar Consulta Gratuita
+              Book Free Consultation
             </a>
             
             <div class="mt-8 text-gray-400">
-              <p class="mb-2">📍 Albuquerque, Nuevo México</p>
+              <p class="mb-2">📍 Albuquerque, New Mexico</p>
               <p class="mb-2">📞 (505) 123-4567</p>
               <p>✉️ info@cubatattoostudio.com</p>
             </div>

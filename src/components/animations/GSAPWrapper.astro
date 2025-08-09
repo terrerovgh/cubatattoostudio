@@ -44,7 +44,7 @@ const classes = `${baseClasses} ${className}`;
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Función para inicializar animaciones GSAP optimizadas
+  // Function to initialize optimized GSAP animations
   function initGSAPAnimations() {
     const elements = document.querySelectorAll('[data-gsap-animation]');
     
@@ -216,7 +216,7 @@ const classes = `${baseClasses} ${className}`;
         });
       }
       
-      // Configuración especial para parallax mejorado
+      // Special configuration for enhanced parallax
       if (animation === 'parallax') {
         gsap.to(element, {
           y: values.y,

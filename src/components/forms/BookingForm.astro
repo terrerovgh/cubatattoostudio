@@ -3,44 +3,44 @@ import Input from '../ui/Input.astro';
 import Button from '../ui/Button.astro';
 
 const artists = [
-  { value: '', label: 'Sin preferencia' },
+  { value: '', label: 'No preference' },
   { value: 'david', label: 'David' },
   { value: 'nina', label: 'Nina' },
   { value: 'karli', label: 'Karli' }
 ];
 
 const tattooSizes = [
-  { value: 'small', label: 'Pequeño (menos de 5cm)' },
-  { value: 'medium', label: 'Mediano (5-15cm)' },
-  { value: 'large', label: 'Grande (15-25cm)' },
-  { value: 'extra-large', label: 'Extra Grande (más de 25cm)' }
+  { value: 'small', label: 'Small (less than 5cm)' },
+  { value: 'medium', label: 'Medium (5-15cm)' },
+  { value: 'large', label: 'Large (15-25cm)' },
+  { value: 'extra-large', label: 'Extra Large (more than 25cm)' }
 ];
 
 const bodyParts = [
-  { value: 'arm', label: 'Brazo' },
-  { value: 'leg', label: 'Pierna' },
-  { value: 'back', label: 'Espalda' },
-  { value: 'chest', label: 'Pecho' },
-  { value: 'shoulder', label: 'Hombro' },
-  { value: 'wrist', label: 'Muñeca' },
-  { value: 'ankle', label: 'Tobillo' },
-  { value: 'other', label: 'Otro' }
+  { value: 'arm', label: 'Arm' },
+  { value: 'leg', label: 'Leg' },
+  { value: 'back', label: 'Back' },
+  { value: 'chest', label: 'Chest' },
+  { value: 'shoulder', label: 'Shoulder' },
+  { value: 'wrist', label: 'Wrist' },
+  { value: 'ankle', label: 'Ankle' },
+  { value: 'other', label: 'Other' }
 ];
 ---
 
 <form id="booking-form" class="space-y-6" novalidate>
-  <!-- Información Personal -->
+  <!-- Personal Information -->
   <div class="space-y-4">
     <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider">
-      Información Personal
+      Personal Information
     </h3>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <Input
         type="text"
         name="firstName"
-        label="Nombre"
-        placeholder="Tu nombre"
+        label="First Name"
+        placeholder="Your first name"
         variant="floating"
         required
       />
@@ -48,8 +48,8 @@ const bodyParts = [
       <Input
         type="text"
         name="lastName"
-        label="Apellido"
-        placeholder="Tu apellido"
+        label="Last Name"
+        placeholder="Your last name"
         variant="floating"
         required
       />
@@ -60,7 +60,7 @@ const bodyParts = [
         type="email"
         name="email"
         label="Email"
-        placeholder="tu@email.com"
+        placeholder="your@email.com"
         variant="glow"
         icon="mail"
         required
@@ -69,7 +69,7 @@ const bodyParts = [
       <Input
         type="tel"
         name="phone"
-        label="Teléfono"
+        label="Phone"
         placeholder="(505) 123-4567"
         variant="glow"
         icon="phone"
@@ -78,34 +78,34 @@ const bodyParts = [
     </div>
   </div>
 
-  <!-- Detalles del Tatuaje -->
+  <!-- Tattoo Details -->
   <div class="space-y-4">
     <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider">
-      Detalles del Tatuaje
+      Tattoo Details
     </h3>
     
     <Input
       type="textarea"
       name="description"
-      label="Descripción del Tatuaje"
-      placeholder="Describe tu idea de tatuaje con el mayor detalle posible..."
+      label="Tattoo Description"
+      placeholder="Describe your tattoo idea in as much detail as possible..."
       variant="minimal"
       required
       rows="4"
     />
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Tamaño -->
+      <!-- Size -->
       <div class="space-y-2">
         <label class="block text-sm font-body text-cuba-white uppercase tracking-wider">
-          Tamaño Aproximado *
+          Approximate Size *
         </label>
         <select
           name="size"
           required
           class="w-full px-4 py-3 bg-cuba-black border border-cuba-gray-600 text-cuba-white font-body focus:border-cuba-white focus:outline-none transition-colors duration-300"
         >
-          <option value="">Selecciona un tamaño</option>
+          <option value="">Select a size</option>
           {tattooSizes.map(({ value, label }) => (
             <option value={value}>{label}</option>
           ))}
@@ -113,17 +113,17 @@ const bodyParts = [
         <div class="error-message hidden text-red-400 text-sm mt-1"></div>
       </div>
       
-      <!-- Ubicación -->
+      <!-- Location -->
       <div class="space-y-2">
         <label class="block text-sm font-body text-cuba-white uppercase tracking-wider">
-          Ubicación en el Cuerpo *
+          Body Location *
         </label>
         <select
           name="bodyPart"
           required
           class="w-full px-4 py-3 bg-cuba-black border border-cuba-gray-600 text-cuba-white font-body focus:border-cuba-white focus:outline-none transition-colors duration-300"
         >
-          <option value="">Selecciona una ubicación</option>
+          <option value="">Select a location</option>
           {bodyParts.map(({ value, label }) => (
             <option value={value}>{label}</option>
           ))}
@@ -132,10 +132,10 @@ const bodyParts = [
       </div>
     </div>
     
-    <!-- Artista Preferido -->
+    <!-- Preferred Artist -->
     <div class="space-y-2">
       <label class="block text-sm font-body text-cuba-white uppercase tracking-wider">
-        Artista Preferido
+        Preferred Artist
       </label>
       <select
         name="artist"
@@ -148,15 +148,15 @@ const bodyParts = [
     </div>
   </div>
 
-  <!-- Imágenes de Referencia -->
+  <!-- Reference Images -->
   <div class="space-y-4">
     <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider">
-      Imágenes de Referencia
+      Reference Images
     </h3>
     
     <div class="space-y-2">
       <label class="block text-sm font-body text-cuba-gray-400">
-        Sube imágenes que te inspiren o referencias del diseño que quieres
+        Upload images that inspire you or references of the design you want
       </label>
       <div class="border-2 border-dashed border-cuba-gray-600 hover:border-cuba-gray-400 transition-colors duration-300 p-6 text-center">
         <input
@@ -173,9 +173,9 @@ const bodyParts = [
               <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             <div class="text-cuba-gray-400 font-body">
-              <span class="text-cuba-white">Haz clic para subir</span> o arrastra archivos aquí
+              <span class="text-cuba-white">Click to upload</span> or drag files here
             </div>
-            <p class="text-xs text-cuba-gray-400">PNG, JPG, GIF hasta 10MB cada una</p>
+            <p class="text-xs text-cuba-gray-400">PNG, JPG, GIF up to 10MB each</p>
           </div>
         </label>
       </div>
@@ -183,23 +183,23 @@ const bodyParts = [
     </div>
   </div>
 
-  <!-- Información Adicional -->
+  <!-- Additional Information -->
   <div class="space-y-4">
     <h3 class="text-xl font-heading text-cuba-white uppercase tracking-wider">
-      Información Adicional
+      Additional Information
     </h3>
     
     <Input
       type="textarea"
       name="additionalInfo"
-      label="Comentarios Adicionales"
-      placeholder="¿Tienes alguna alergia? ¿Es tu primer tatuaje? ¿Alguna consideración especial?"
+      label="Additional Comments"
+      placeholder="Do you have any allergies? Is this your first tattoo? Any special considerations?"
       variant="minimal"
       rows="3"
     />
   </div>
 
-  <!-- Términos y Condiciones -->
+  <!-- Terms and Conditions -->
   <div class="space-y-4">
     <div class="flex items-start space-x-3">
       <input
@@ -210,17 +210,17 @@ const bodyParts = [
         class="mt-1 w-4 h-4 text-cuba-white bg-cuba-black border border-cuba-gray-600 focus:ring-cuba-white focus:ring-2"
       />
       <label for="terms" class="text-sm font-body text-cuba-gray-400">
-        Acepto los <a href="/terminos" class="text-cuba-white hover:underline">términos y condiciones</a> 
-        y confirmo que tengo al menos 18 años de edad.
+        I accept the <a href="/terminos" class="text-cuba-white hover:underline">terms and conditions</a> 
+        and confirm that I am at least 18 years old.
       </label>
     </div>
     <div class="error-message hidden text-red-400 text-sm"></div>
   </div>
 
-  <!-- Botón de Envío -->
+  <!-- Submit Button -->
   <div class="pt-6">
     <Button type="submit" variant="primary" size="lg" class="w-full">
-      Enviar Solicitud de Reserva
+      Submit Booking Request
     </Button>
   </div>
 
@@ -250,7 +250,7 @@ const bodyParts = [
     
     Array.from(files).forEach((file, index) => {
       if (file.size > 10 * 1024 * 1024) { // 10MB limit
-        showError(`El archivo ${file.name} es demasiado grande. Máximo 10MB.`);
+        showError(`File ${file.name} is too large. Maximum 10MB.`);
         return;
       }
       
@@ -299,21 +299,21 @@ const bodyParts = [
     let isValid = true;
     let errorMessage = '';
     
-    // Validaciones específicas
+    // Specific validations
     if (field.hasAttribute('required') && !field.value.trim()) {
       isValid = false;
-      errorMessage = 'Este campo es obligatorio';
+      errorMessage = 'This field is required';
     } else if (field.type === 'email' && field.value) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(field.value)) {
         isValid = false;
-        errorMessage = 'Ingresa un email válido';
+        errorMessage = 'Please enter a valid email';
       }
     } else if (field.type === 'tel' && field.value) {
       const phoneRegex = /^[\d\s\(\)\-\+]+$/;
       if (!phoneRegex.test(field.value)) {
         isValid = false;
-        errorMessage = 'Ingresa un teléfono válido';
+        errorMessage = 'Please enter a valid phone number';
       }
     }
     
@@ -345,20 +345,20 @@ const bodyParts = [
       }
     });
     
-    // Validar términos y condiciones
+    // Validate terms and conditions
     const termsCheckbox = form.querySelector('input[name="terms"]') as HTMLInputElement;
     if (!termsCheckbox.checked) {
       isFormValid = false;
-      showError('Debes aceptar los términos y condiciones');
+      showError('You must accept the terms and conditions');
     }
     
     if (!isFormValid) {
-      showError('Por favor, corrige los errores en el formulario');
+      showError('Please correct the errors in the form');
       return;
     }
     
-    // Simular envío del formulario
-    showSuccess('¡Solicitud enviada correctamente! Te contactaremos pronto.');
+    // Simulate form submission
+    showSuccess('Request sent successfully! We will contact you soon.');
     form.reset();
     fileList.innerHTML = '';
   }
