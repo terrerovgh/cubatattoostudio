@@ -1,0 +1,203 @@
+---
+import { ChevronDown, Mail, Phone } from "lucide-react";
+---
+
+<section id="booking" class="py-32 bg-neutral-950 border-t border-neutral-900">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-24">
+            <!-- Booking Form -->
+            <div class="reveal-hidden">
+                <h3
+                    class="text-3xl md:text-4xl font-medium tracking-tighter mb-2 text-white"
+                >
+                    Book your session.
+                </h3>
+                <p class="text-neutral-400 font-light mb-10">
+                    Tell us your idea. We'll do the rest.
+                </p>
+
+                <form class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="group">
+                            <label
+                                for="name"
+                                class="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                >Name</label
+                            >
+                            <input
+                                type="text"
+                                id="name"
+                                class="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700"
+                                placeholder="Jane Doe"
+                            />
+                        </div>
+                        <div class="group">
+                            <label
+                                for="email"
+                                class="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                >Email</label
+                            >
+                            <input
+                                type="email"
+                                id="email"
+                                class="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700"
+                                placeholder="jane@example.com"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <label
+                            for="artist-select"
+                            class="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                            >Preferred Artist</label
+                        >
+                        <div class="relative">
+                            <select
+                                id="artist-select"
+                                class="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 appearance-none cursor-pointer"
+                            >
+                                <option class="bg-neutral-900"
+                                    >No Preference</option
+                                >
+                                <option class="bg-neutral-900"
+                                    >David (Realism)</option
+                                >
+                                <option class="bg-neutral-900"
+                                    >Nina (Fine Line)</option
+                                >
+                                <option class="bg-neutral-900"
+                                    >Karli (Neo Traditional)</option
+                                >
+                            </select>
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500"
+                            >
+                                <ChevronDown className="w-4 h-4" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <label
+                            class="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-4"
+                            >Placement & Size</label
+                        >
+                        <!-- Custom Range Slider -->
+                        <div
+                            class="w-full bg-neutral-800 h-1 rounded-full relative mb-4"
+                        >
+                            <div
+                                class="absolute top-0 left-0 h-full bg-white rounded-full w-1/2"
+                            >
+                            </div>
+                            <div
+                                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white border border-neutral-600 rounded-full shadow-sm cursor-pointer"
+                            >
+                            </div>
+                        </div>
+                        <div
+                            class="flex justify-between text-xs text-neutral-400 font-medium"
+                        >
+                            <span>Small</span>
+                            <span>Medium</span>
+                            <span>Large</span>
+                            <span>Full Back/Sleeve</span>
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <label
+                            for="message"
+                            class="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                            >Concept Description</label
+                        >
+                        <textarea
+                            id="message"
+                            rows="3"
+                            class="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700 resize-none"
+                            placeholder="Describe your idea..."></textarea>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="w-full md:w-auto px-8 py-4 bg-white text-black rounded-full font-medium text-sm tracking-tight hover:bg-neutral-200 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                        Request Appointment
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info & Map -->
+            <div class="reveal-hidden stagger-delay-2" id="contact">
+                <div
+                    class="bg-neutral-900 p-8 rounded-3xl h-full flex flex-col"
+                >
+                    <div class="mb-8">
+                        <h4
+                            class="text-xl font-medium tracking-tight mb-4 text-white"
+                        >
+                            Visit the Studio
+                        </h4>
+                        <address
+                            class="not-italic text-neutral-400 font-light mb-4"
+                        >
+                            123 Central Avenue SW<br />
+                            Albuquerque, NM 87102
+                        </address>
+                        <p class="text-neutral-400 font-light text-sm">
+                            <span class="block mb-1"
+                                ><span
+                                    class="w-20 inline-block font-medium text-neutral-200"
+                                    >Tue - Sat</span
+                                > 11:00am – 7:00pm</span
+                            >
+                            <span class="block"
+                                ><span
+                                    class="w-20 inline-block font-medium text-neutral-200"
+                                    >Sun - Mon</span
+                                > Closed</span
+                            >
+                        </p>
+                    </div>
+
+                    <!-- Stylized Map Placeholder -->
+                    <div
+                        class="flex-grow w-full rounded-2xl overflow-hidden relative bg-neutral-800 group grayscale hover:grayscale-0 transition-all duration-500"
+                    >
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52222.91906288566!2d-106.69600812944298!3d35.08424957868021!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87220addd309835b%3A0xc0d3f8ceb8d9f6fd!2sAlbuquerque%2C%20NM!5e0!3m2!1sen!2sus!4v1715551234567!5m2!1sen!2sus"
+                            width="100%"
+                            height="100%"
+                            style="border:0; opacity: 0.7;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                        <div
+                            class="absolute inset-0 pointer-events-none border border-white/10 rounded-2xl"
+                        >
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-8 pt-8 border-t border-neutral-800 flex justify-between items-center"
+                    >
+                        <a
+                            href="mailto:hello@cubatattoo.com"
+                            class="flex items-center text-sm font-medium text-neutral-400 hover:text-neutral-200 transition-colors"
+                        >
+                            <Mail className="w-4 h-4 mr-2" /> hello@cubatattoo.com
+                        </a>
+                        <a
+                            href="tel:+15055550123"
+                            class="flex items-center text-sm font-medium text-neutral-400 hover:text-neutral-200 transition-colors"
+                        >
+                            <Phone className="w-4 h-4 mr-2" /> (505) 555-0123
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

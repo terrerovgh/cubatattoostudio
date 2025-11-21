@@ -1,0 +1,83 @@
+---
+import "../styles/global.css";
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Cuba Tattoo Studio | Albuquerque" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body
+        class="bg-black text-neutral-100 antialiased selection:bg-white selection:text-black transition-colors duration-500"
+    >
+        <slot />
+        <script>
+            // Intersection Observer for Animations
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.15,
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("reveal-visible");
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements that might be added dynamically or exist on load
+            // We use a function to observe new elements if needed, but for now just on load
+            function initAnimations() {
+                document.querySelectorAll(".reveal-hidden").forEach((el) => {
+                    observer.observe(el);
+                });
+            }
+
+            initAnimations();
+            // Re-run on view transitions if enabled later
+            document.addEventListener("astro:page-load", initAnimations);
+
+            // Simple Parallax for Hero Background
+            window.addEventListener("scroll", () => {
+                const scrolled = window.scrollY;
+                const heroBg = document.getElementById("hero-bg");
+                if (heroBg) {
+                    heroBg.style.transform = `translateY(${scrolled * 0.3}px) scale(${1.1 - scrolled * 0.0002})`;
+                }
+            });
+
+            // Navbar Toggle
+            const toggleBtn = document.querySelector("[data-collapse-toggle]");
+            const navbar = document.getElementById("navbar-sticky");
+
+            if (toggleBtn && navbar) {
+                toggleBtn.addEventListener("click", () => {
+                    navbar.classList.toggle("hidden");
+                    const isExpanded = navbar.classList.contains("hidden")
+                        ? "false"
+                        : "true";
+                    toggleBtn.setAttribute("aria-expanded", isExpanded);
+                });
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,46 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# environment variables
+.env
+.env.production
+.env.local
+.env.*.local
+
+# macOS-specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE folders
+.idea/
+.vscode/
+.fleet/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# OS files
+Thumbs.db
+Desktop.ini

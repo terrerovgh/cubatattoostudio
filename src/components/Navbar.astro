@@ -1,0 +1,77 @@
+---
+import { Menu } from "lucide-react";
+---
+
+<nav
+    class="fixed w-full z-50 top-0 start-0 border-b border-white/10 bg-black/80 backdrop-blur-xl transition-all duration-300"
+>
+    <div
+        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-6 py-4"
+    >
+        <a
+            href="#"
+            class="flex items-center space-x-1 rtl:space-x-reverse z-50"
+        >
+            <img
+                src="/logo-stack.svg"
+                alt="Cuba Tattoo Studio"
+                class="h-12 w-auto"
+            />
+        </a>
+        <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <a
+                href="#booking"
+                class="text-xs font-medium px-5 py-2.5 text-center rounded-full bg-white text-black hover:bg-neutral-200 transition-all duration-300 transform hover:scale-105 active:scale-95"
+            >
+                Book Session
+            </a>
+            <button
+                data-collapse-toggle="navbar-sticky"
+                type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-neutral-400 hover:bg-neutral-800 rounded-lg md:hidden focus:outline-none"
+                aria-controls="navbar-sticky"
+                aria-expanded="false"
+            >
+                <span class="sr-only">Open main menu</span>
+                <Menu className="w-6 h-6" />
+            </button>
+        </div>
+        <div
+            class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+            id="navbar-sticky"
+        >
+            <ul
+                class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-neutral-800 rounded-2xl bg-neutral-900/50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent md:dark:bg-transparent"
+            >
+                <li>
+                    <a
+                        href="#services"
+                        class="block py-2 px-3 text-neutral-400 rounded hover:text-white transition-colors text-sm tracking-tight"
+                        >Services</a
+                    >
+                </li>
+                <li>
+                    <a
+                        href="#artists"
+                        class="block py-2 px-3 text-neutral-400 rounded hover:text-white transition-colors text-sm tracking-tight"
+                        >Artists</a
+                    >
+                </li>
+                <li>
+                    <a
+                        href="#gallery"
+                        class="block py-2 px-3 text-neutral-400 rounded hover:text-white transition-colors text-sm tracking-tight"
+                        >Gallery</a
+                    >
+                </li>
+                <li>
+                    <a
+                        href="#contact"
+                        class="block py-2 px-3 text-neutral-400 rounded hover:text-white transition-colors text-sm tracking-tight"
+                        >Studio</a
+                    >
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

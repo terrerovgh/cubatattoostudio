@@ -1,0 +1,75 @@
+---
+import { ArrowRight } from "lucide-react";
+---
+
+<section id="gallery" class="py-32 bg-black">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-end mb-16 reveal-hidden">
+            <h3
+                class="text-3xl md:text-4xl font-medium tracking-tighter text-white"
+            >
+                Selected Works.
+            </h3>
+            <a
+                href="#"
+                class="hidden md:inline-flex items-center text-sm font-medium text-neutral-500 hover:text-white transition-colors"
+            >
+                View Archive <ArrowRight className="ml-2 w-4 h-4" />
+            </a>
+        </div>
+
+        <!-- Masonry Grid -->
+        <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            <div class="break-inside-avoid reveal-hidden stagger-delay-1">
+                <img
+                    src="/tattoo/tattoo4.png"
+                    class="w-full rounded-xl hover:opacity-90 transition-opacity"
+                    alt="Tattoo Work"
+                />
+            </div>
+            <div class="break-inside-avoid reveal-hidden stagger-delay-2">
+                <img
+                    src="/tattoo/tattoo6.png"
+                    class="w-full rounded-xl hover:opacity-90 transition-opacity"
+                    alt="Tattoo Work"
+                />
+            </div>
+            <div class="break-inside-avoid reveal-hidden stagger-delay-3">
+                <img
+                    src="/tattoo/tattoo18.png"
+                    class="w-full rounded-xl hover:opacity-90 transition-opacity"
+                    alt="Tattoo Work"
+                />
+            </div>
+            <div class="break-inside-avoid reveal-hidden">
+                <img
+                    src="/tattoo/tattoo1.png"
+                    class="w-full rounded-xl hover:opacity-90 transition-opacity"
+                    alt="Tattoo Work"
+                />
+            </div>
+            <div class="break-inside-avoid reveal-hidden stagger-delay-1">
+                <img
+                    src="/tattoo/tattoo2.png"
+                    class="w-full rounded-xl hover:opacity-90 transition-opacity"
+                    alt="Tattoo Work"
+                />
+            </div>
+            <div class="break-inside-avoid reveal-hidden stagger-delay-2">
+                <img
+                    src="/tattoo/tattoo3.png"
+                    class="w-full rounded-xl hover:opacity-90 transition-opacity"
+                    alt="Tattoo Work"
+                />
+            </div>
+        </div>
+        <div class="mt-8 text-center md:hidden">
+            <a
+                href="#"
+                class="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-white transition-colors"
+            >
+                View Archive <ArrowRight className="ml-2 w-4 h-4" />
+            </a>
+        </div>
+    </div>
+</section>

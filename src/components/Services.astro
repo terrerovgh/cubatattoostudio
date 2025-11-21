@@ -1,0 +1,117 @@
+---
+import { PenTool, Pencil, Feather } from "lucide-react";
+---
+
+<section id="services" class="py-32 bg-black">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="mb-24 reveal-hidden">
+            <h3
+                class="text-3xl md:text-5xl font-medium tracking-tighter mb-6 text-white"
+            >
+                Disciplines.
+            </h3>
+            <p class="text-lg text-neutral-400 font-light max-w-2xl">
+                We don't just apply ink. We curate experiences tailored to your
+                narrative. From microscopic detail to full body suits.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Service 1 -->
+            <div
+                class="group relative h-[400px] rounded-2xl overflow-hidden reveal-hidden stagger-delay-1 cursor-default"
+            >
+                <div
+                    class="absolute inset-0 bg-neutral-900 transition-transform duration-700 group-hover:scale-[1.02]"
+                >
+                    <img
+                        src="/tattoo/tattoo2.png"
+                        class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700"
+                        alt="Realism"
+                    />
+                </div>
+                <div
+                    class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent"
+                >
+                    <PenTool
+                        className="text-white w-8 h-8 mb-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500"
+                    />
+                    <h4
+                        class="text-2xl text-white font-medium tracking-tight mb-2"
+                    >
+                        Hyper Realism
+                    </h4>
+                    <p
+                        class="text-neutral-300 text-sm font-light opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100"
+                    >
+                        Portraits and nature with uncompromising detail.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div
+                class="group relative h-[400px] rounded-2xl overflow-hidden reveal-hidden stagger-delay-2 cursor-default"
+            >
+                <div
+                    class="absolute inset-0 bg-neutral-900 transition-transform duration-700 group-hover:scale-[1.02]"
+                >
+                    <img
+                        src="/tattoo/tattoo11.png"
+                        class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700"
+                        alt="Fine Line"
+                    />
+                </div>
+                <div
+                    class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent"
+                >
+                    <Pencil
+                        className="text-white w-8 h-8 mb-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500"
+                    />
+                    <h4
+                        class="text-2xl text-white font-medium tracking-tight mb-2"
+                    >
+                        Fine Line
+                    </h4>
+                    <p
+                        class="text-neutral-300 text-sm font-light opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100"
+                    >
+                        Delicate, intricate, and minimal designs.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div
+                class="group relative h-[400px] rounded-2xl overflow-hidden reveal-hidden stagger-delay-3 cursor-default"
+            >
+                <div
+                    class="absolute inset-0 bg-neutral-900 transition-transform duration-700 group-hover:scale-[1.02]"
+                >
+                    <img
+                        src="/tattoo/tattoo16.png"
+                        class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700"
+                        alt="Traditional"
+                    />
+                </div>
+                <div
+                    class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent"
+                >
+                    <Feather
+                        className="text-white w-8 h-8 mb-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500"
+                    />
+                    <h4
+                        class="text-2xl text-white font-medium tracking-tight mb-2"
+                    >
+                        Neo Traditional
+                    </h4>
+                    <p
+                        class="text-neutral-300 text-sm font-light opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100"
+                    >
+                        Bold lines and vibrant colors with modern flair.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
