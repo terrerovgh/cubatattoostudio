@@ -1,0 +1,304 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+
+export async function getStaticPaths() {
+    const artists = [
+        {
+            id: "david",
+            name: "David.",
+            role: "Resident Artist",
+            specialty: "Hyper Realism & Blackwork",
+            bio: "David treats skin as a canvas for high-contrast monochromatic depth. With over 10 years of experience, his work focuses on the interplay of shadow and light, creating photorealistic portraits that stand the test of time.",
+            portrait: "/artists/david.png",
+            stats: [
+                { label: "Experience", value: "12 Years" },
+                { label: "Focus", value: "Realism" },
+                { label: "Waitlist", value: "3 Months" },
+            ],
+            gallery: [
+                "/tattoo/skoll.png",
+                "/tattoo/skoll1.png",
+                "/tattoo/tattoo.png",
+                "/tattoo/tattoo2.png",
+                "/tattoo/tattoo3.png",
+                "/tattoo/tattoo4.png",
+            ],
+        },
+        {
+            id: "nina",
+            name: "Nina.",
+            role: "Resident Artist",
+            specialty: "Fine Line & Botanical",
+            bio: "Delicacy meets precision. Nina specializes in single-needle technique, creating ethereal botanical illustrations and geometric patterns that flow seamlessly with the body's natural curvature.",
+            portrait: "/artists/nina.png",
+            stats: [
+                { label: "Experience", value: "6 Years" },
+                { label: "Focus", value: "Fine Line" },
+                { label: "Waitlist", value: "5 Weeks" },
+            ],
+            gallery: [
+                "/tattoo/rose.png",
+                "/tattoo/sunflower.png",
+                "/tattoo/tattoo5.png",
+                "/tattoo/tattoo6.png",
+                "/tattoo/tattoo7.png",
+                "/tattoo/tattoo8.png",
+            ],
+        },
+        {
+            id: "karli",
+            name: "Karli.",
+            role: "Guest Artist",
+            specialty: "Neo Traditional & Color",
+            bio: "Bold lines and vibrant saturation define Karli's work. Reimagining traditional motifs with a modern palette, she creates pieces that are designed to hold their vibrancy and impact for decades.",
+            portrait: "/artists/karli.png",
+            stats: [
+                { label: "Experience", value: "9 Years" },
+                { label: "Focus", value: "Color" },
+                { label: "Waitlist", value: "2 Months" },
+            ],
+            gallery: [
+                "/tattoo/tattoo9.png",
+                "/tattoo/tattoo10.png",
+                "/tattoo/tattoo11.png",
+                "/tattoo/tattoo12.png",
+                "/tattoo/tattoo13.png",
+                "/tattoo/tattoo14.png",
+            ],
+        },
+    ];
+
+    return artists.map((artist) => ({
+        params: { id: artist.id },
+        props: { artist },
+    }));
+}
+
+const { artist } = Astro.props;
+---
+
+<Layout title={`${artist.name} | Cuba Tattoo Studio`}>
+    <Navbar />
+
+    <main
+        id="artist-content"
+        class="pt-32 pb-20 min-h-screen fade-enter fade-enter-active"
+    >
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Header Section -->
+            <div class="flex flex-col lg:flex-row gap-12 lg:gap-24 mb-24">
+                <!-- Text Info -->
+                <div class="flex-1 order-2 lg:order-1 pt-8 reveal-hidden">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 text-[10px] uppercase tracking-widest font-semibold mb-6"
+                    >
+                        <span
+                            class="w-2 h-2 rounded-full bg-green-500 animate-pulse"
+                        ></span>
+                        Booking Open
+                    </div>
+
+                    <h1
+                        class="text-6xl md:text-8xl font-medium tracking-tighter text-neutral-900 dark:text-white mb-2"
+                    >
+                        {artist.name}
+                    </h1>
+                    <h2
+                        class="text-xl text-neutral-500 dark:text-neutral-400 font-medium mb-8"
+                    >
+                        {artist.specialty}
+                    </h2>
+
+                    <p
+                        class="text-lg md:text-xl font-light leading-relaxed text-neutral-600 dark:text-neutral-300 mb-10 max-w-xl"
+                    >
+                        {artist.bio}
+                    </p>
+
+                    <!-- Stats Grid -->
+                    <div
+                        class="grid grid-cols-3 gap-8 border-y border-neutral-200 dark:border-neutral-800 py-8 mb-10"
+                    >
+                        {
+                            artist.stats.map((stat) => (
+                                <div>
+                                    <div class="text-[10px] uppercase tracking-widest text-neutral-500 mb-1">
+                                        {stat.label}
+                                    </div>
+                                    <div class="text-lg font-medium text-neutral-900 dark:text-white">
+                                        {stat.value}
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <a
+                            href="#booking"
+                            class="inline-flex items-center justify-center h-12 px-8 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black font-medium text-sm transition-transform hover:scale-105 active:scale-95"
+                        >
+                            Request Consultation
+                        </a>
+                        <a
+                            href="#"
+                            class="inline-flex items-center justify-center h-12 w-12 rounded-full border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-instagram w-5 h-5"
+                                ><rect
+                                    width="20"
+                                    height="20"
+                                    x="2"
+                                    y="2"
+                                    rx="5"
+                                    ry="5"></rect><path
+                                    d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                                ></path><line
+                                    x1="17.5"
+                                    x2="17.51"
+                                    y1="6.5"
+                                    y2="6.5"></line></svg
+                            >
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Portrait -->
+                <div
+                    class="w-full lg:w-[400px] xl:w-[480px] order-1 lg:order-2 shrink-0 reveal-hidden"
+                    style="transition-delay: 0.2s;"
+                >
+                    <div
+                        class="relative aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+                    >
+                        <img
+                            src={artist.portrait}
+                            class="absolute inset-0 w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-1000"
+                            alt={artist.name}
+                        />
+                        <div
+                            class="absolute inset-0 border border-black/5 dark:border-white/10 rounded-2xl z-10 pointer-events-none"
+                        >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="mb-12 flex items-center justify-between reveal-hidden">
+                <h3 class="text-2xl font-medium tracking-tight">
+                    Selected Works
+                </h3>
+                <span class="text-xs text-neutral-500 font-mono"
+                    >01 — {
+                        artist.gallery.length < 10
+                            ? "0" + artist.gallery.length
+                            : artist.gallery.length
+                    }</span
+                >
+            </div>
+
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                {
+                    artist.gallery.map((src, index) => (
+                        <div
+                            class="mb-6 break-inside-avoid group relative overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800 cursor-zoom-in reveal-hidden"
+                            style={`transition-delay: ${0.1 * (index % 3)}s;`}
+                        >
+                            <img
+                                src={src}
+                                class="w-full h-auto object-cover transition-opacity duration-500"
+                                alt="Portfolio Piece"
+                            />
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+</Layout>
+
+<style>
+    :root {
+        --reveal-distance: 30px;
+        --reveal-duration: 0.8s;
+    }
+
+    /* Smooth fade transition for content switching */
+    .fade-enter {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    .fade-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(100, 100, 100, 0.3);
+        border-radius: 20px;
+    }
+
+    /* Image loading skeleton */
+    .bg-skeleton {
+        background: linear-gradient(
+            90deg,
+            #f0f0f0 25%,
+            #e0e0e0 50%,
+            #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+    .dark .bg-skeleton {
+        background: linear-gradient(
+            90deg,
+            #1a1a1a 25%,
+            #2a2a2a 50%,
+            #1a1a1a 75%
+        );
+    }
+</style>
+
+<script>
+    // Add fade-enter-active class on load
+    document.addEventListener("DOMContentLoaded", () => {
+        const content = document.getElementById("artist-content");
+        if (content) {
+            content.classList.add("fade-enter-active");
+        }
+    });
+</script>
