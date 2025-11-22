@@ -36,31 +36,31 @@ type ItemDef = {
 
 const DEFAULT_IMAGES: ImageItem[] = [
     {
-        src: '/dome.png',
+        src: '/tattoo/tattoo3.png',
         alt: 'Uploaded Image'
     },
     {
-        src: '/tattoo/tattoo6.png',
+        src: '/tattoo/tattoo16.png',
         alt: 'Abstract art'
     },
     {
-        src: '/tattoo/tattoo7.png',
+        src: '/tattoo/tattoo15.png',
         alt: 'Modern sculpture'
     },
     {
-        src: '/tattoo/tattoo8.png',
+        src: '/tattoo/tattoo10.png',
         alt: 'Digital artwork'
     },
     {
-        src: '/tattoo/tattoo9.png',
+        src: '/tattoo/tattoo4.png',
         alt: 'Contemporary art'
     },
     {
-        src: '/tattoo/tattoo10.png',
+        src: '/tattoo/tattoo6.png',
         alt: 'Geometric pattern'
     },
     {
-        src: '/tattoo/tattoo11.png',
+        src: '/tattoo/tattoo8.png',
         alt: 'Textured surface'
     },
     {
@@ -163,7 +163,7 @@ export default function DomeGallery({
     openedImageBorderRadius = '30px',
     grayscale = false,
     autoRotate = true,
-    autoRotateSpeed = 0.05
+    autoRotateSpeed = 0.02
 }: DomeGalleryProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     const mainRef = useRef<HTMLDivElement>(null);
