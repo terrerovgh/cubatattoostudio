@@ -1,6 +1,37 @@
 # Guía de Gestión de Contenido
 
-Esta guía documenta cómo actualizar el contenido del sitio Cuba Tattoo Studio sin necesidad de conocimientos técnicos profundos.
+Esta guía documenta cómo actualizar el contenido del sitio Cuba Tattoo Studio.
+
+## 🔄 Transición a Gestión Dinámica
+
+> **Nota Importante**: El proyecto está en transición de gestión de contenido estática a dinámica mediante un Dashboard Administrativo.
+
+### Estado Actual: Gestión Estática
+
+Actualmente, el contenido se maneja mediante:
+- **Archivos markdown** en `src/content/`
+- **Componentes Astro** con datos hardcodeados
+- **Imágenes** en carpetas `public/`
+- **Edición directa** de código fuente
+
+### Futuro: Dashboard Administrativo
+
+Se está planificando un sistema de gestión completo que permitirá:
+- ✅ **Interfaz web intuitiva** para gestionar contenido
+- ✅ **Sin necesidad de código** - Todo desde el navegador
+- ✅ **Roles y permisos** - Admins y artistas con accesos diferenciados
+- ✅ **Upload de imágenes** - Drag & drop directo desde el dashboard
+- ✅ **Vista previa** - Ver cambios antes de publicar
+
+Ver detalles en [docs/admin-dashboard.md](./admin-dashboard.md)
+
+---
+
+## 📝 Método Actual: Gestión Manual de Archivos
+
+Las siguientes instrucciones describen cómo gestionar el contenido **actualmente** mediante edición directa de archivos.
+
+> ⚠️ **Nota**: Este método quedará obsoleto una vez implementado el dashboard administrativo.
 
 ## 📋 Tabla de Contenidos
 
@@ -353,4 +384,4 @@ Si necesitas ayuda:
 
 ---
 
-**Última actualización**: 2025-11-21
+**Última actualización**: 2025-11-23

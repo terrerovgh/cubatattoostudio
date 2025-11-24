@@ -1,0 +1,11 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AdminGuard from "../../components/admin/AdminGuard";
+import DashboardPage from "../../components/admin/DashboardPage";
+---
+
+<Layout title="Dashboard - Cuba Tattoo Studio">
+    <AdminGuard client:only="react">
+        <DashboardPage client:only="react" />
+    </AdminGuard>
+</Layout>

@@ -1,6 +1,23 @@
 ---
 import { ArrowDown } from "lucide-react";
 import DomeGallery from "./DomeGallery";
+import { getWorksByLocation, getSiteContent } from "../lib/content-helpers";
+
+const domeWorks = await getWorksByLocation("dome_gallery");
+
+// Flatten all images from the featured works
+const domeImages = domeWorks.flatMap((work) => work.data.images);
+
+// Fetch hero content from database with fallbacks
+const heroData = await getSiteContent("hero");
+const heroContent = heroData?.content || {};
+
+const location = heroContent.location || "Albuquerque, NM";
+const tagline =
+    heroContent.tagline ||
+    "Ideally located in the heart of the desert. Where precision meets permanence.";
+const ctaText = heroContent.cta_text || "Meet the Artists";
+const ctaLink = heroContent.cta_link || "#artists";
 ---
 
 <section
@@ -9,7 +26,7 @@ import DomeGallery from "./DomeGallery";
     <!-- Parallax Background Image -->
     <!-- Dome Gallery Background -->
     <div class="absolute inset-0 w-full h-full z-0">
-        <DomeGallery client:load />
+        <DomeGallery client:load images={domeImages} />
     </div>
     <div
         class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black z-10"
@@ -20,7 +37,7 @@ import DomeGallery from "./DomeGallery";
         <h2
             class="reveal-hidden text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-neutral-400 mb-6"
         >
-            Albuquerque, NM
+            {location}
         </h2>
         <h1 class="sr-only">Cuba Tattoo Studio</h1>
         <div class="reveal-hidden stagger-delay-1 mb-12">
@@ -33,15 +50,14 @@ import DomeGallery from "./DomeGallery";
         <p
             class="reveal-hidden stagger-delay-2 text-lg md:text-xl text-neutral-300 max-w-lg mx-auto font-light tracking-tight mb-10"
         >
-            Ideally located in the heart of the desert. <br />Where precision
-            meets permanence.
+            {tagline}
         </p>
         <div class="reveal-hidden stagger-delay-3">
             <a
-                href="#artists"
+                href={ctaLink}
                 class="inline-flex items-center justify-center px-8 py-3 text-sm font-medium text-neutral-900 bg-white/30 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300 group"
             >
-                Meet the Artists
+                {ctaText}
                 <ArrowDown
                     className="ml-2 w-4 h-4 group-hover:translate-y-1 transition-transform"
                 />

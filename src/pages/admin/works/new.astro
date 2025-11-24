@@ -1,0 +1,14 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import AdminGuard from "../../../components/admin/AdminGuard";
+import DashboardLayout from "../../../layouts/DashboardLayout";
+import WorkForm from "../../../components/admin/works/WorkForm";
+---
+
+<Layout title="New Work - Cuba Tattoo Studio">
+    <AdminGuard client:only="react">
+        <DashboardLayout client:only="react" title="Add New Work">
+            <WorkForm client:load />
+        </DashboardLayout>
+    </AdminGuard>
+</Layout>

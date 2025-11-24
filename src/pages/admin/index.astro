@@ -1,0 +1,13 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AdminGuard from "../../components/admin/AdminGuard";
+import RedirectToDashboard from "../../components/admin/RedirectToDashboard";
+
+// This page acts as a redirector
+---
+
+<Layout title="Admin - Cuba Tattoo Studio">
+    <AdminGuard client:only="react">
+        <RedirectToDashboard client:only="react" />
+    </AdminGuard>
+</Layout>

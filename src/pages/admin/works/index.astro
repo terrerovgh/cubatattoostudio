@@ -1,0 +1,14 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import AdminGuard from "../../../components/admin/AdminGuard";
+import DashboardLayout from "../../../layouts/DashboardLayout";
+import WorksTable from "../../../components/admin/works/WorksTable";
+---
+
+<Layout title="Works - Cuba Tattoo Studio">
+    <AdminGuard client:only="react">
+        <DashboardLayout client:only="react" title="Works Management">
+            <WorksTable client:load />
+        </DashboardLayout>
+    </AdminGuard>
+</Layout>

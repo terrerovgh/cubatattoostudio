@@ -8,6 +8,8 @@ Este documento describe la arquitectura técnica del sitio web de Cuba Tattoo St
 - [Stack Tecnológico](#stack-tecnológico)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Arquitectura de Componentes](#arquitectura-de-componentes)
+- [Arquitectura de Datos](#arquitectura-de-datos)
+- [Sistema de Autenticación](#sistema-de-autenticación)
 - [Sistema de Estilos](#sistema-de-estilos)
 - [Sistema de Animaciones](#sistema-de-animaciones)
 - [Optimizaciones de Rendimiento](#optimizaciones-de-rendimiento)
@@ -61,6 +63,21 @@ Cuba Tattoo Studio es una **landing page de una sola página (SPA)** construida 
 - Tipado estático para mejor DX
 - Configuración estricta (`astro/tsconfigs/strict`)
 - JSX configurado para React
+
+### Backend as a Service
+
+**Supabase**
+- PostgreSQL Database (versión 15+)
+- Authentication con múltiples providers
+- Storage para gestión de archivos
+- Row Level Security (RLS) para seguridad granular
+- Real-time subscriptions (opcional)
+- Edge Functions para lógica serverless
+
+**Providers de Autenticación:**
+- Email/Password (nativo de Supabase)
+- Google OAuth 2.0
+- Extensible a otros providers (GitHub, Facebook, etc.)
 
 ## Estructura del Proyecto
 
@@ -181,6 +198,280 @@ Cada sección del sitio es un componente independiente:
 - Información del estudio
 - Google Maps embed
 - Horarios y contacto
+
+## Arquitectura de Datos
+
+### Esquema de Base de Datos
+
+Diseño propuesto para Supabase PostgreSQL:
+
+```sql
+-- Tabla de artistas
+CREATE TABLE artists (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES auth.users(id),
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    specialty TEXT NOT NULL,
+    bio TEXT,
+    avatar_url TEXT,
+    portfolio_url TEXT,
+    instagram TEXT,
+    display_order INTEGER DEFAULT 0,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Tabla de servicios
+CREATE TABLE services (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    description TEXT,
+    icon TEXT,
+    cover_image_url TEXT,
+    display_order INTEGER DEFAULT 0,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Tabla de trabajos/tatuajes
+CREATE TABLE works (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    artist_id UUID REFERENCES artists(id) ON DELETE CASCADE,
+    service_id UUID REFERENCES services(id),
+    title TEXT,
+    description TEXT,
+    image_url TEXT NOT NULL,
+    tags TEXT[],
+    featured BOOLEAN DEFAULT false,
+    published BOOLEAN DEFAULT false,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Tabla de contenido del sitio
+CREATE TABLE site_content (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    section TEXT UNIQUE NOT NULL, -- 'hero', 'about', 'contact'
+    content JSONB NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_by UUID REFERENCES auth.users(id)
+);
+
+-- Tabla de configuración
+CREATE TABLE site_config (
+    key TEXT PRIMARY KEY,
+    value JSONB NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+### Row Level Security (RLS)
+
+Políticas de seguridad propuestas:
+
+```sql
+-- Habilitar RLS en todas las tablas
+ALTER TABLE artists ENABLE ROW LEVEL SECURITY;
+ALTER TABLE services ENABLE ROW LEVEL SECURITY;
+ALTER TABLE works ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_content ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_config ENABLE ROW LEVEL SECURITY;
+
+-- Políticas para artistas
+CREATE POLICY "Artistas visibles públicamente" 
+    ON artists FOR SELECT 
+    USING (is_active = true);
+
+CREATE POLICY "Artistas pueden actualizar su perfil" 
+    ON artists FOR UPDATE 
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Solo admins pueden crear artistas" 
+    ON artists FOR INSERT 
+    WITH CHECK (auth.jwt() ->> 'role' = 'admin');
+
+-- Políticas para trabajos
+CREATE POLICY "Trabajos publicados visibles públicamente" 
+    ON works FOR SELECT 
+    USING (published = true);
+
+CREATE POLICY "Artistas pueden gestionar sus trabajos" 
+    ON works FOR ALL 
+    USING (
+        artist_id IN (
+            SELECT id FROM artists WHERE user_id = auth.uid()
+        )
+    );
+
+-- Políticas para contenido del sitio
+CREATE POLICY "Contenido visible públicamente" 
+    ON site_content FOR SELECT 
+    TO public 
+    USING (true);
+
+CREATE POLICY "Solo admins pueden editar contenido" 
+    ON site_content FOR ALL 
+    USING (auth.jwt() ->> 'role' = 'admin');
+```
+
+### Supabase Storage
+
+Organización de buckets:
+
+```
+supabase/storage/
+├── avatars/              # Fotos de artistas (público)
+│   ├── [artist-slug].webp
+│   └── ...
+├── works/                # Imágenes de trabajos (público)
+│   ├── thumb/           # Thumbnails
+│   ├── medium/          # Versión media
+│   └── full/            # Versión completa
+└── site-assets/         # Assets del sitio (público)
+    ├── logos/
+    └── backgrounds/
+```
+
+**Políticas de Storage:**
+- **Lectura pública** en todos los buckets
+- **Escritura** solo para usuarios autenticados con rol apropiado
+- **Transformaciones automáticas** para optimizar imágenes
+
+### Integración con Astro
+
+**Cliente de Supabase:**
+
+```typescript
+// src/lib/supabase.ts
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+```
+
+**Fetch de datos en componentes Astro:**
+
+```astro
+---
+// src/components/Artists.astro
+import { supabase } from '../lib/supabase';
+
+const { data: artists } = await supabase
+    .from('artists')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order');
+---
+```
+
+## Sistema de Autenticación
+
+### Flujos de Autenticación
+
+#### Email y Contraseña
+
+```typescript
+// Registro
+const { data, error } = await supabase.auth.signUp({
+    email: 'user@example.com',
+    password: 'password',
+    options: {
+        data: {
+            full_name: 'User Name',
+            role: 'public'
+        }
+    }
+});
+
+// Login
+const { data, error } = await supabase.auth.signInWithPassword({
+    email: 'user@example.com',
+    password: 'password'
+});
+
+// Logout
+const { error } = await supabase.auth.signOut();
+```
+
+#### Google OAuth
+
+```typescript
+// Iniciar flujo OAuth
+const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+        }
+    }
+});
+```
+
+### Roles y Permisos
+
+**Estructura de roles:**
+
+```typescript
+type UserRole = 'public' | 'artist' | 'admin';
+
+interface UserMetadata {
+    role: UserRole;
+    full_name: string;
+    artist_id?: string; // Solo para artistas
+}
+```
+
+**Matriz de permisos:**
+
+| Recurso | Public | Artist | Admin |
+| :--- | :---: | :---: | :---: |
+| Ver sitio | ✅ | ✅ | ✅ |
+| Ver artistas | ✅ | ✅ | ✅ |
+| Ver trabajos publicados | ✅ | ✅ | ✅ |
+| Editar propio perfil | ❌ | ✅ | ✅ |
+| Crear/editar trabajos propios | ❌ | ✅ | ✅ |
+| Gestionar todos los artistas | ❌ | ❌ | ✅ |
+| Gestionar contenido del sitio | ❌ | ❌ | ✅ |
+| Ver analytics | ❌ | ⚠️ (solo propios) | ✅ |
+
+### Middleware de Autenticación
+
+Protección de rutas administrativas:
+
+```typescript
+// src/middleware/auth.ts
+import type { MiddlewareHandler } from 'astro';
+import { supabase } from '../lib/supabase';
+
+export const onRequest: MiddlewareHandler = async ({ request, locals, redirect }, next) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    locals.session = session;
+    locals.user = session?.user;
+    
+    // Proteger rutas /admin/*
+    if (request.url.includes('/admin')) {
+        if (!session) {
+            return redirect('/login');
+        }
+        
+        const userRole = session.user.user_metadata?.role;
+        if (userRole !== 'admin' && userRole !== 'artist') {
+            return redirect('/');
+        }
+    }
+    
+    return next();
+};
+```
 
 ## Sistema de Estilos
 
@@ -375,19 +666,57 @@ Links usan anchors: `<a href="#artists">...</a>`
 
 ## Flujo de Datos
 
-Como es un sitio estático sin backend:
+### Estado Actual: Sitio Estático
 - **No hay estado global** (no context, no stores)
 - **No hay fetching de datos** (todo está hardcodeado en componentes)
 - **Formulario de contacto** requiere integración externa (e.g., Formspree, Netlify Forms)
 
+### Arquitectura Futura: Híbrida Estática + Dinámica
+
+**Build Time (SSG):**
+- Fetch de datos de Supabase durante build
+- Generación de páginas estáticas con contenido actualizado
+- Optimización de imágenes desde Supabase Storage
+
+**Runtime (Client-side):**
+- Autenticación de usuarios
+- Dashboard interactivo para gestión de contenido
+- Real-time updates (opcional) para preview
+
+**Flujo de datos propuesto:**
+
+```mermaid
+graph TD
+    A[Supabase Database] -->|Build Time Fetch| B[Astro Build]
+    B --> C[Static HTML]
+    C --> D[Cloudflare Pages]
+    E[Usuario] -->|View Site| D
+    F[Admin/Artist] -->|Login| G[Dashboard /admin]
+    G -->|CRUD Operations| A
+    A -->|Trigger Rebuild| H[CI/CD Pipeline]
+    H --> B
+```
+
+### Estrategia de Caché
+
+**ISR (Incremental Static Regeneration):**
+- Revalidación automática cada X minutos
+- Rebuild on-demand mediante webhooks desde Supabase
+
+**CDN Caching:**
+- Imágenes cacheadas en Cloudflare CDN
+- HTML estático con TTL largo
+- Invalidación de caché en deploys
+
 ### Consideraciones Futuras
 
-Si se necesita funcionalidad dinámica:
-1. **CMS Headless**: Sanity, Strapi, ContentfulSpanish
-2. **Backend para Formularios**: API Routes de Astro, Serverless functions
-3. **Analytics**: PostHog, Google Analytics
-4. **Sistema de Reservas**: Calendly integration, custom booking system
+**Gestión de Contenido Dinámico:**
+1. **CMS Headless**: Supabase como CMS
+2. **Backend para Formularios**: Supabase Edge Functions
+3. **Analytics**: PostHog o Supabase Analytics
+4. **Sistema de Reservas**: Custom booking system con Supabase
 
 ---
 
-**Última actualización**: 2025-11-21
+**Última actualización**: 2025-11-23
+

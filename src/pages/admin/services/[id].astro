@@ -1,0 +1,18 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import AdminGuard from "../../../components/admin/AdminGuard";
+import DashboardLayout from "../../../layouts/DashboardLayout";
+import ServiceForm from "../../../components/admin/services/ServiceForm";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+---
+
+<Layout title="Edit Service - Cuba Tattoo Studio">
+    <AdminGuard client:only="react">
+        <DashboardLayout client:only="react" title="Edit Service">
+            <ServiceForm client:load serviceId={id} />
+        </DashboardLayout>
+    </AdminGuard>
+</Layout>

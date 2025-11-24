@@ -1,0 +1,24 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Sidebar from "../../../components/admin/Sidebar";
+import AdminGuard from "../../../components/admin/AdminGuard";
+import ContentEditor from "../../../components/admin/content/ContentEditor";
+
+export const prerender = false;
+
+const { section } = Astro.params;
+if (!section) {
+    return Astro.redirect("/admin/dashboard");
+}
+---
+
+<Layout title={`Edit ${section} | Cuba Tattoo Studio`}>
+    <AdminGuard client:only="react">
+        <div class="flex min-h-screen bg-zinc-950">
+            <Sidebar client:load />
+            <main class="ml-72 flex-1 p-8">
+                <ContentEditor client:only="react" section={section} />
+            </main>
+        </div>
+    </AdminGuard>
+</Layout>

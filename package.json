@@ -6,20 +6,41 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "seed-content": "tsx scripts/seed-content.ts",
+    "seed-db": "tsx scripts/seed-database.ts",
+    "seed-users": "tsx scripts/seed-users.ts",
+    "test": "vitest"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@supabase/supabase-js": "^2.45.0",
     "@tailwindcss/vite": "^4.1.17",
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
     "@use-gesture/react": "^10.3.1",
     "astro": "^5.16.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
+    "gray-matter": "^4.0.3",
+    "immer": "^11.0.0",
     "lucide-react": "^0.554.0",
     "react": "^19.2.0",
+    "react-colorful": "^5.6.1",
     "react-dom": "^19.2.0",
+    "react-dropzone": "^14.3.8",
+    "recharts": "^3.5.0",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.17",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.6",
+    "vitest": "^2.0.5"
   }
 }

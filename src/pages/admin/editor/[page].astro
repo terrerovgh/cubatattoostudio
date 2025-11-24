@@ -1,0 +1,19 @@
+---
+import DashboardLayout from "../../../layouts/DashboardLayout";
+import VisualEditor from "../../../components/admin/editor/VisualEditor";
+
+export const prerender = false;
+
+const { page } = Astro.params;
+
+if (!page) {
+    return Astro.redirect("/admin/dashboard");
+}
+---
+
+<DashboardLayout
+    client:only="react"
+    title={`Edit ${page.charAt(0).toUpperCase() + page.slice(1)}`}
+>
+    <VisualEditor client:only="react" pageId={page} section={page} />
+</DashboardLayout>

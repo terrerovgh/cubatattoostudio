@@ -1,9 +1,10 @@
 # Documentación de Componentes
 
-Esta guía documenta todos los componentes Astro utilizados en el sitio de Cuba Tattoo Studio.
+Esta guía documenta todos los componentes del sitio de Cuba Tattoo Studio, tanto componentes Astro como componentes React/TSX.
 
 ## Tabla de Contenidos
 
+### Componentes Astro (Frontend Público)
 - [Layout](#layout)
 - [Navbar](#navbar)
 - [Hero](#hero)
@@ -13,7 +14,42 @@ Esta guía documenta todos los componentes Astro utilizados en el sitio de Cuba 
 - [Booking](#booking)
 - [Footer](#footer)
 
+### Componentes React/TSX
+- [Dashboard Administrativo](#dashboard-administrativo)
+  - [DashboardPage](#dashboardpage)
+  - [DashboardLayout](#dashboardlayout)
+  - [DashboardStats](#dashboardstats)
+  - [ActivityChart](#activitychart)
+  - [DistributionChart](#distributionchart)
+  - [RecentActivity](#recentactivity)
+  - [Sidebar](#sidebar)
+- [Autenticación](#autenticación)
+  - [AuthProvider](#authprovider)
+  - [Login](#login)
+  - [ProtectedRoute](#protectedroute)
+  - [AdminGuard](#adminguard)
+- [Gestión de Contenido](#gestión-de-contenido)
+  - [CRUD de Artistas](#crud-de-artistas)
+  - [CRUD de Trabajos](#crud-de-trabajos)
+  - [CRUD de Servicios](#crud-de-servicios)
+  - [Editor de Contenido](#editor-de-contenido)
+  - [Media Library](#media-library)
+- [Editor Visual](#editor-visual)
+  - [VisualEditor](#visualeditor)
+  - [ComponentTree](#componenttree)
+  - [PropertiesPanel](#propertiespanel)
+  - [PreviewFrame](#previewframe)
+- [Componentes UI](#componentes-ui)
+  - [Button](#button)
+  - [Card](#card)
+  - [Input](#input)
+  - [Label](#label)
+- [Galería Interactiva](#galería-interactiva)
+  - [DomeGallery](#domegallery)
+
 ---
+
+# Componentes Astro
 
 ## Layout
 
@@ -608,4 +644,726 @@ import { IconName } from "lucide-react";
 
 ---
 
-**Última actualización**: 2025-11-21
+**Última actualización**: 2025-11-23
+
+---
+
+# Componentes React/TSX
+
+El proyecto incluye una extensa coleción de componentes React TypeScript para el dashboard administrativo, autenticación, y funcionalidades interactivas.
+
+## Dashboard Administrativo
+
+### DashboardPage
+
+**Archivo**: [`src/components/admin/DashboardPage.tsx`](./src/components/admin/DashboardPage.tsx)
+
+#### Descripción
+
+Página principal del dashboard administrativo que agrupa estadísticas, gráficos y actividad reciente.
+
+#### Props
+
+Ninguna (componente de página)
+
+#### Características
+
+- **Grid Responsivo**: Adapta el layout según el tamaño de pantalla
+- **Estadísticas**: Muestra 3 cards con métricas clave
+- **Gráficos**: Activity Chart (2 columnas) y Distribution Chart (1 columna)
+- **Actividad**: Feed de actividad reciente del sistema
+
+#### Estructura
+
+```tsx
+<DashboardLayout title="Dashboard">
+  <DashboardStats />
+  <ActivityChart />
+  <DistributionChart />
+  <RecentActivity />
+</DashboardLayout>
+```
+
+---
+
+### DashboardLayout
+
+**Archivo**: [`src/layouts/DashboardLayout.tsx`](./src/layouts/DashboardLayout.tsx)
+
+#### Descripción
+
+Layout base para todas las páginas del dashboard administrativo.
+
+#### Props
+
+```typescript
+interface Props {
+  title: string;       // Título de la página
+  children: ReactNode; // Contenido de la página
+}
+```
+
+#### Características
+
+- **Sidebar**: Navegación lateral con links a todas las secciones admin
+- **Header**: Título de página y breadcrumbs
+- **Content Area**: Área principal con padding y max-width
+- **Responsive**: Sidebar colapsable en móvil
+
+---
+
+### DashboardStats
+
+**Archivo**: [`src/components/admin/DashboardStats.tsx`](./src/components/admin/DashboardStats.tsx)
+
+#### Descripción
+
+Muestra 3 cards con estadísticas clave del sitio.
+
+#### Características
+
+- **Total Artists**: Número de artistas activos
+- **Total Works**: Número de trabajos publicados  
+- **Total Services**: Número de servicios ofrecidos
+- **Iconos**: Iconos de Lucide para cada métrica
+- **Trend Indicators**: Indicadores de cambio (opcional)
+
+---
+
+### ActivityChart
+
+**Archivo**: [`src/components/admin/ActivityChart.tsx`](./src/components/admin/ActivityChart.tsx)
+
+#### Descripción
+
+Gráfico de líneas mostrando actividad a lo largo del tiempo usando Recharts.
+
+#### Características
+
+- **Recharts LineChart**: Gráfico de líneas interactivo
+- **Responsive**: Se adapta al contenedor
+- **Datos**: Actividad por día/semana
+- **Tooltips**: Información detallada al hover
+
+#### Uso
+
+```tsx
+<ActivityChart />
+```
+
+---
+
+### DistributionChart
+
+**Archivo**: [`src/components/admin/DistributionChart.tsx`](./src/components/admin/DistributionChart.tsx)
+
+#### Descripción
+
+Gráfico de torta mostrando distribución de contenido por categoría.
+
+#### Características
+
+- **Recharts PieChart**: Gráfico circular
+- **Categorías**: Distribución por tipo de contenido o artista
+- **Colores**: Paleta consistente con el diseño
+- **Leyenda**: Labels para cada segmento
+
+---
+
+### RecentActivity
+
+**Archivo**: [`src/components/admin/RecentActivity.tsx`](./src/components/admin/RecentActivity.tsx)
+
+#### Descripción
+
+Feed de actividad reciente del sistema (CRUD operations, logins, etc).
+
+#### Características
+
+- **Timeline**: Lista cronológica de eventos
+- **Tipos de Eventos**: Create, Update, Delete, Login
+- **Timestamps**: Tiempo relativo (hace 2 horas, etc.)
+- **User Attribution**: Quién realizó cada acción
+
+---
+
+### Sidebar
+
+**Archivo**: [`src/components/admin/Sidebar.tsx`](./src/components/admin/Sidebar.tsx)
+
+#### Descripción
+
+Barra lateral de navegación para el dashboard administrativo.
+
+#### Características
+
+- **Links de Navegación**:
+  - Dashboard
+  - Artists
+  - Works
+  - Services
+  - Content
+  - Media Library
+  - Visual Editor
+- **Iconos**: Iconos de Lucide para cada sección
+- **Active State**: Highlighting del link activo
+- **User Profile**: Información del usuario loggeado
+- **Logout Button**: Botón para cerrar sesión
+
+---
+
+## Autenticación
+
+### AuthProvider
+
+**Archivo**: [`src/components/auth/AuthProvider.tsx`](./src/components/auth/AuthProvider.tsx)
+
+#### Descripción
+
+Context Provider de React para gestionar el estado de autenticación global.
+
+#### Context API
+
+```typescript
+interface AuthContextType {
+  user: User | null;                    // Usuario actual
+  session: Session | null;              // Sesión de Supabase
+  loading: boolean;                     // Estado de carga
+  signInWithGoogle: () => Promise<any>; // Login con Google
+  signInWithPassword: (email, password) => Promise<any>; // Login con email
+  signOut: () => Promise<any>;          // Cerrar sesión
+}
+```
+
+#### Uso
+
+```tsx
+import { AuthProvider, useAuth } from './components/auth/AuthProvider';
+
+// En el root
+<AuthProvider>
+  <App />
+</AuthProvider>
+
+// En cualquier componente hijo
+const { user, signOut } = useAuth();
+```
+
+#### Características
+
+- **Auto-inicialización**: Verifica sesión activa al montar
+- **Auth State Listener**: Escucha cambios en auth state
+- **Helper Methods**: Métodos para sign in/out
+- **TypeScript**: Tipado completo
+
+---
+
+### Login
+
+**Archivo**: [`src/components/auth/Login.tsx`](./src/components/auth/Login.tsx)
+
+#### Descripción
+
+Componente de formulario de login con múltiples métodos de autenticación.
+
+#### Características
+
+- **Email/Password Form**: Campos de email y contraseña
+- **Google OAuth Button**: Botón para login con Google
+- **Error Handling**: Mensajes de error user-friendly
+- **Loading States**: Indicadores de carga durante auth
+- **Validation**: Validación de campos
+
+#### Métodos Soportados
+
+1. **Email y Contraseña**:
+   ```tsx
+   signInWithPassword(email, password)
+   ```
+
+2. **Google OAuth**:
+   ```tsx
+   signInWithGoogle()
+   ```
+
+---
+
+### ProtectedRoute
+
+**Archivo**: [`src/components/auth/ProtectedRoute.tsx`](./src/components/auth/ProtectedRoute.tsx)
+
+#### Descripción
+
+Higher-Order Component para proteger rutas que requieren autenticación.
+
+#### Props
+
+```typescript
+interface Props {
+  children: ReactNode;  // Contenido a proteger
+  requiredRole?: 'admin' | 'artist'; // Rol requerido (opcional)
+}
+```
+
+#### Uso
+
+```tsx
+<ProtectedRoute requiredRole="admin">
+  <AdminDashboard />
+</ProtectedRoute>
+```
+
+#### Características
+
+- **Auth Check**: Verifica si hay usuario autenticado
+- **Role Check**: Verifica rol del usuario si se especifica
+- **Redirect**: Redirige a `/login` si no autenticado
+- **Loading State**: Muestra loader mientras verifica
+
+---
+
+### AdminGuard
+
+**Archivo**: [`src/components/admin/AdminGuard.tsx`](./src/components/admin/AdminGuard.tsx)
+
+#### Descripción
+
+Componente simple para verificar permisos de administrador.
+
+#### Uso
+
+```tsx
+<AdminGuard>
+  <SensitiveAdminContent />
+</AdminGuard>
+```
+
+---
+
+## Gestión de Contenido
+
+### CRUD de Artistas
+
+#### ArtistsTable
+
+**Archivo**: [`src/components/admin/artists/ArtistsTable.tsx`](./src/components/admin/artists/ArtistsTable.tsx)
+
+**Características**:
+- Tabla con todos los artistas
+- Columnas: Avatar, Nombre, Especialidad, Acciones
+- Acciones: Editar, Eliminar
+- Ordenamiento por columna
+- Paginación
+
+#### ArtistForm
+
+**Archivo**: [`src/components/admin/artists/ArtistForm.tsx`](./src/components/admin/artists/ArtistForm.tsx)
+
+**Props**:
+```typescript
+interface Props {
+  artistId?: string;  // ID para edición, undefined para crear
+  onSave?: () => void; // Callback al guardar
+}
+```
+
+**Campos**:
+- Nombre
+- Slug (auto-generado)
+- Especialidad
+- Biografía (textarea)
+- Avatar (upload de imagen)
+- Portfolio URL
+- Instagram handle
+- Display Order
+- Is Active (checkbox)
+
+---
+
+### CRUD de Trabajos
+
+#### WorksTable
+
+**Archivo**: [`src/components/admin/works/WorksTable.tsx`](./src/components/admin/works/WorksTable.tsx)
+
+**Características**:
+- Grid de trabajos con imágenes
+- Filtros: Por artista, servicio, publicado
+- Vista de tarjetas con imagen y metadatos
+- Acciones rápidas: Publish/Unpublish, Feature, Edit, Delete
+
+#### WorkForm
+
+**Archivo**: [`src/components/admin/works/WorkForm.tsx`](./src/components/admin/works/WorkForm.tsx)
+
+**Campos**:
+- Título
+- Descripción
+- Imagen (drag & drop upload)
+- Artista (select dropdown)
+- Servicio (select dropdown)
+- Tags (multi-input)
+- Featured (toggle)
+- Published (toggle)
+
+---
+
+### CRUD de Servicios
+
+#### ServicesTable
+
+**Archivo**: [`src/components/admin/services/ServicesTable.tsx`](./src/components/admin/services/ServicesTable.tsx)
+
+#### ServiceForm
+
+**Archivo**: [`src/components/admin/services/ServiceForm.tsx`](./src/components/admin/services/ServiceForm.tsx)
+
+**Campos**:
+- Título
+- Slug
+- Descripción
+- Icono (selector de iconos de Lucide)
+- Cover Image
+- Display Order
+
+---
+
+### Editor de Contenido
+
+#### ContentList
+
+**Archivo**: [`src/components/admin/content/ContentList.tsx`](./src/components/admin/content/ContentList.tsx)
+
+Lista de todas las secciones de contenido editables del sitio.
+
+#### ContentEditor
+
+**Archivo**: [`src/components/admin/content/ContentEditor.tsx`](./src/components/admin/content/ContentEditor.tsx)
+
+Editor WYSIWYG para secciones de contenido del sitio.
+
+**Características**:
+- Rich text editing
+- Preview en tiempo real
+- Guardar/Publicar
+- Media library integration
+
+---
+
+### Media Library
+
+**Archivo**: [`src/components/admin/media/MediaLibrary.tsx`](./src/components/admin/media/MediaLibrary.tsx)
+
+#### Descripción
+
+Librería de medios para gestionar todas las imágenes y archivos del sitio.
+
+#### Características
+
+- **Drag & Drop Upload**: Subir archivos arrastrando
+- **react-dropzone**: Librería para upload
+- **Grid View**: Vista de galería de todos los archivos
+- **Filters**: Filtrar por tipo de archivo
+- **Search**: Buscar archivos por nombre
+- **Preview**: Vista previa de imágenes
+- **Actions**: Copiar URL, Eliminar, Descargar
+- **Supabase Storage**: Integración con almacenamiento
+
+#### Uso
+
+```tsx
+<MediaLibrary onSelect={(url) => setImageUrl(url)} />
+```
+
+---
+
+## Editor Visual
+
+El editor visual permite construir componentes y layouts mediante drag-and-drop.
+
+### VisualEditor
+
+**Archivo**: [`src/components/admin/editor/VisualEditor.tsx`](./src/components/admin/editor/VisualEditor.tsx)
+
+#### Descripción
+
+Componente principal del editor visual que integra tree, properties y preview.
+
+#### Características
+
+- **@dnd-kit/core**: Drag and drop core
+- **@dnd-kit/sortable**: Sorting de elementos
+- **Zustand Store**: Estado global compartido
+- **3 Panel Layout**:
+  - Component Tree (izquierda)
+  - Preview Frame (centro)
+  - Properties Panel (derecha)
+
+#### Estado (Zustand)
+
+```typescript
+// src/lib/editor-store.ts
+interface EditorState {
+  components: Component[];      // Árbol de componentes
+  selectedId: string | null;    // ID del componente seleccionado
+  addComponent: (component) => void;
+  updateComponent: (id, props) => void;
+  deleteComponent: (id) => void;
+  selectComponent: (id) => void;
+}
+```
+
+---
+
+### ComponentTree
+
+**Archivo**: [`src/components/admin/editor/ComponentTree.tsx`](./src/components/admin/editor/ComponentTree.tsx)
+
+#### Descripción
+
+Árbol navegable de componentes en el editor visual.
+
+#### Características
+
+- **Hierarchical Tree**: Estructura anidada de componentes
+- **Drag Handles**: Arrastrar para reordenar
+- **Add/Delete**: Botones para añadir/eliminar
+- **Selection**: Click para seleccionar
+- **Icons**: Iconos por tipo de componente
+
+---
+
+### PropertiesPanel
+
+**Archivo**: [`src/components/admin/editor/PropertiesPanel.tsx`](./src/components/admin/editor/PropertiesPanel.tsx)
+
+#### Descripción
+
+Panel lateral para editar propiedades del componente seleccionado.
+
+#### Características
+
+- **Dynamic Fields**: Campos según tipo de componente
+- **Color Picker**: react-colorful para colores
+- **Text Inputs**: Para textos y URLs
+- **Number Inputs**: Para valores numéricos
+- **Toggles**: Para booleanos
+- **Live Update**: Cambios se reflejan en preview instantáneamente
+
+---
+
+### PreviewFrame
+
+**Archivo**: [`src/components/admin/editor/PreviewFrame.tsx`](./src/components/admin/editor/PreviewFrame.tsx)
+
+#### Descripción
+
+Frame de preview que renderiza el resultado del editor en tiempo real.
+
+#### Características
+
+- **Live Rendering**: Renderizado en tiempo real
+- **Responsive Toggle**: Vista desktop/tablet/mobile
+- **Interactive**: Permite interactuar con componentes
+- **Iframe (opcional)**: Isolación de estilos
+
+---
+
+## Componentes UI
+
+Componentes UI basados en **Shadcn UI** y **Radix UI** primitives.
+
+### Button
+
+**Archivo**: [`src/components/ui/button.tsx`](./src/components/ui/button.tsx)
+
+#### Props
+
+```typescript
+interface ButtonProps {
+  variant?: 'default' | 'destructive' | 'outline' | 'ghost' | 'link';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
+  asChild?: boolean;
+  children: ReactNode;
+}
+```
+
+#### Variantes
+
+- `default`: Botón sólido negro/blanco
+- `destructive`: Rojo para acciones destructivas
+- `outline`: Borde con fondo transparente
+- `ghost`: Sin borde ni fondo
+- `link`: Estilo de link
+
+#### Uso
+
+```tsx
+<Button variant="outline" size="lg">
+  Click me
+</Button>
+```
+
+---
+
+### Card
+
+**Archivo**: [`src/components/ui/card.tsx`](./src/components/ui/card.tsx)
+
+#### Componentes
+
+- `Card`: Contenedor principal
+- `CardHeader`: Header del card
+- `CardTitle`: Título
+- `CardDescription`: Descripción/subtítulo
+- `CardContent`: Contenido principal
+- `CardFooter`: Footer con acciones
+
+#### Uso
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    Content here
+  </CardContent>
+  <CardFooter>
+    <Button>Action</Button>
+  </CardFooter>
+</Card>
+```
+
+---
+
+### Input
+
+**Archivo**: [`src/components/ui/input.tsx`](./src/components/ui/input.tsx)
+
+Input de texto estilizado con TailwindCSS.
+
+#### Props
+
+Todos los props nativos de `<input>` más estilos customizados.
+
+#### Uso
+
+```tsx
+<Input type="email" placeholder="Email" />
+```
+
+---
+
+### Label
+
+**Archivo**: [`src/components/ui/label.tsx`](./src/components/ui/label.tsx)
+
+Label para formularios basado en Radix UI.
+
+#### Uso
+
+```tsx
+<Label htmlFor="email">Email Address</Label>
+<Input id="email" type="email" />
+```
+
+---
+
+## Galería Interactiva
+
+### DomeGallery
+
+**Archivo**: [`src/components/DomeGallery.tsx`](./src/components/DomeGallery.tsx)
+
+#### Descripción
+
+Galería 3D interactiva con efecto de domo/carrusel usando `@use-gesture/react`.
+
+#### Características
+
+- **Gestos**: Arrastrar para rotar
+- **Auto-rotation**: Rotación automática (pausable)
+- **3D Transform**: Efectos CSS 3D
+- **Performance**: Optimizado con `transform` y `will-change`
+- **Responsive**: Se adapta a diferentes tamaños
+
+#### Props
+
+```typescript
+interface Props {
+  images: string[];     // Array de URLs de imágenes
+  autoRotate?: boolean; // Auto-rotación (default: true)
+  rotationSpeed?: number; // Velocidad (default: 0.5)
+}
+```
+
+#### Uso
+
+```tsx
+<DomeGallery 
+  images={['/tattoo/1.png', '/tattoo/2.png']}
+  autoRotate={true}
+/>
+```
+
+---
+
+## Patrones de Uso
+
+### Integración de Componentes Astro + React
+
+Astro permite usar componentes React con directivas de hidratación:
+
+```astro
+---
+import { DomeGallery } from '../components/DomeGallery';
+---
+
+<!-- Hydrate inmediatamente -->
+<DomeGallery client:load images={images} />
+
+<!-- Hydrate cuando visible -->
+<DomeGallery client:visible images={images} />
+
+<!-- Hydrate cuando idle -->
+<DomeGallery client:idle images={images} />
+```
+
+### Fetch de Datos en Componentes Admin
+
+```tsx
+// En componentes admin, usar Supabase directamente
+import { supabase } from '../../lib/supabase';
+
+const ArtistsTable = () => {
+  const [artists, setArtists] = useState([]);
+  
+  useEffect(() => {
+    const fetchArtists = async () => {
+      const { data } = await supabase
+        .from('artists')
+        .select('*')
+        .order('display_order');
+      setArtists(data || []);
+    };
+    fetchArtists();
+  }, []);
+  
+  // Render...
+};
+```
+
+### Estilos Consistentes
+
+Todos los componentes React usan TailwindCSS con la paleta del sitio:
+
+- **Backgrounds**: `bg-zinc-900`, `bg-zinc-800`, `bg-black`
+- **Borders**: `border-zinc-800`, `border-zinc-700`
+- **Text**: `text-white`, `text-zinc-400`, `text-zinc-500`
+- **Accent**: `bg-white text-black` para CTAs
+
+---
+
+**Última actualización**: 2025-11-23

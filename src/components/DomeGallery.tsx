@@ -145,7 +145,7 @@ function computeItemBaseRotation(offsetX: number, offsetY: number, sizeX: number
 }
 
 export default function DomeGallery({
-    images = DEFAULT_IMAGES,
+    images: rawImages = DEFAULT_IMAGES,
     fit = 0.5,
     fitBasis = 'auto',
     minRadius = 600,
@@ -165,6 +165,16 @@ export default function DomeGallery({
     autoRotate = true,
     autoRotateSpeed = 0.02
 }: DomeGalleryProps) {
+    // Filter out empty images and use defaults if no valid images provided
+    const images = useMemo(() => {
+        const validImages = (rawImages || []).filter(img => {
+            if (typeof img === 'string') {
+                return img.trim().length > 0;
+            }
+            return img && img.src && img.src.trim().length > 0;
+        });
+        return validImages.length > 0 ? validImages : DEFAULT_IMAGES;
+    }, [rawImages]);
     const rootRef = useRef<HTMLDivElement>(null);
     const mainRef = useRef<HTMLDivElement>(null);
     const sphereRef = useRef<HTMLDivElement>(null);

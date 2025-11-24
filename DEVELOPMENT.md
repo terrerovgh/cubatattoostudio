@@ -53,6 +53,62 @@ Crear archivo `.vscode/extensions.json`:
 }
 ```
 
+### Configuración de Supabase
+
+> [!IMPORTANT]
+> Supabase es **requerido** para el funcionamiento completo del proyecto, especialmente para el dashboard administrativo y autenticación.
+
+#### Variables de entorno necesarias
+
+Crear archivo `.env` en la raíz del proyecto:
+
+```bash
+# Supabase Configuration
+PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+> ⚠️ **Importante**: Agregar `.env` al `.gitignore` y nunca commitear las keys.
+
+#### Obtener las credenciales
+
+1. Ir a [supabase.com](https://supabase.com) y crear un proyecto
+2. En Settings > API, copiar:
+   - Project URL → `PUBLIC_SUPABASE_URL`
+   - anon/public key → `PUBLIC_SUPABASE_ANON_KEY`
+3. Copiar al archivo `.env`
+
+#### Instalar Supabase CLI (Opcional)
+
+Para gestionar migraciones localmente:
+
+```bash
+# Instalar Supabase CLI
+npm install -g supabase
+
+# Login
+supabase login
+
+# Inicializar proyecto local
+supabase init
+
+# Generar tipos TypeScript de la base de datos
+supabase gen types typescript --project-id your-project-id > src/types/supabase.ts
+```
+
+#### Aplicar Schema
+
+La base de datos ya tiene un schema definido en `supabase/schema.sql`. Para aplicarlo:
+
+1. **Opción 1 - Supabase Dashboard**:
+   - Ir a SQL Editor en el dashboard
+   - Copiar y ejecutar el contenido de `supabase/schema.sql`
+
+2. **Opción 2 - CLI**:
+   ```bash
+   supabase db push
+   ```
+
 ## Flujo de Trabajo
 
 ### Desarrollo Local
@@ -74,62 +130,103 @@ Crear archivo `.vscode/extensions.json`:
 
 ### Comandos Disponibles
 
+## Comandos Disponibles
+
 | Comando | Descripción |
 | :--- | :--- |
 | `npm run dev` | Dev server con HMR en `localhost:4321` |
 | `npm run build` | Build de producción en `./dist/` |
 | `npm run preview` | Preview del build localmente |
+| `npm run seed-content` | Popula la base de datos con contenido inicial |
 | `npm run astro add <integration>` | Añadir integración de Astro |
 | `npm run astro check` | Type-checking con TypeScript |
+| `supabase gen types typescript` | Generar tipos de Supabase |
 
 ## Convenciones de Código
 
 ### Estructura de Archivos
 
+### Estructura de Archivos
+
 **Nomenclatura**:
-- Componentes: `PascalCase.astro` (ej: `Hero.astro`, `Navbar.astro`)
+- Componentes Astro: `PascalCase.astro` (ej: `Hero.astro`, `Navbar.astro`)
+- Componentes React: `PascalCase.tsx` (ej: `Login.tsx`, `DashboardPage.tsx`)
+- Layouts: `PascalCase.astro` o `.tsx` según el tipo
+- Librerías/Helpers: `kebab-case.ts` (ej: `supabase-helpers.ts`, `editor-store.ts`)
 - Estilos: `kebab-case.css` (ej: `global.css`)
 - Configuración: `kebab-case.js/mjs` (ej: `astro.config.mjs`)
 
 **Organización**:
 ```
 src/
-├── components/        # Componentes por feature
-├── layouts/           # Layouts de página
-├── pages/             # Rutas (file-based routing)
-└── styles/            # Estilos globales
+├── components/
+│   ├── admin/              # Dashboard (React/TSX)
+│   ├── auth/               # Autenticación (React/TSX)
+│   ├── ui/                 # Componentes UI (React/TSX)
+│   └── *.astro             # Componentes públicos (Astro)
+├── layouts/              # Layouts
+├── lib/                  # Utilidades y helpers
+├── pages/                # Rutas (file-based)
+├── styles/               # Estilos globales
+└── types/                # Definiciones de tipos
 ```
 
 ### Estilo de Código
 
 #### Componentes Astro
 
-```astro
----
-// 1. Imports
-import { Icon } from "lucide-react";
-import Component from "../components/Component.astro";
+#### Componentes React/TSX
 
-// 2. Props interface (si necesario)
+Para el dashboard administrativo y componentes interactivos:
+
+```tsx
+// 1. Imports
+import { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
+import { Button } from '../ui/button';
+
+// 2. Interfaces/Types
 interface Props {
-    title: string;
+    userId?: string;
 }
 
-// 3. Lógica
-const { title } = Astro.props;
----
+interface Artist {
+    id: string;
+    name: string;
+    specialty: string;
+}
 
-<!-- 4. Template HTML -->
-<section class="...">
-    <h1>{title}</h1>
-    <Component />
-</section>
-
-<!-- 5. Styles scoped (opcional) -->
-<style>
-    /* Estilos específicos del componente */
-</style>
+// 3. Componente
+export function ArtistsTable({ userId }: Props) {
+    const [artists, setArtists] = useState<Artist[]>([]);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        fetchArtists();
+    }, []);
+    
+    const fetchArtists = async () => {
+        const { data, error } = await supabase
+            .from('artists')
+            .select('*');
+        if (data) setArtists(data);
+        setLoading(false);
+    };
+    
+    return (
+        <div className="space-y-4">
+            {/* JSX aqui */}
+        </div>
+    );
+}
 ```
+
+**Convenciones React**:
+- Usar hooks de React (useState, useEffect, useContext, etc.)
+- Componentes funcionales, no clases
+- Props tipadas con TypeScript
+- Export nombrado para componentes, default para páginas
+- Usar `className` en vez de `class`
 
 #### Clases CSS con Tailwind
 
@@ -187,38 +284,42 @@ const { title, description = "Default" } = Astro.props;
 
 ### Crear Nuevo Componente
 
+### Crear Componente Admin React
+
 1. **Crear archivo**:
    ```bash
-   touch src/components/NewSection.astro
+   touch src/components/admin/NewFeature.tsx
    ```
 
 2. **Template básico**:
-   ```astro
-   ---
-   // Imports si necesario
-   ---
-
-   <section id="new-section" class="py-20 md:py-32 bg-black">
-       <div class="max-w-7xl mx-auto px-6">
-           <h2 class="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-8">
-               Nueva Sección
-           </h2>
-           <!-- Contenido -->
-       </div>
-   </section>
+   ```tsx
+   import { useState } from 'react';
+   import { Button } from '../ui/button';
+   import { Card } from '../ui/card';
+   
+   export function NewFeature() {
+       const [data, setData] = useState(null);
+       
+       return (
+           <Card>
+               <h2>New Feature</h2>
+               {/* Contenido */}
+           </Card>
+       );
+   }
    ```
 
-3. **Usar en página**:
+3. **Usar en página admin**:
    ```astro
    ---
-   // src/pages/index.astro
-   import NewSection from "../components/NewSection.astro";
+   // src/pages/admin/feature.astro
+   import { NewFeature } from '../../components/admin/NewFeature';
+   import DashboardLayout from '../../layouts/DashboardLayout';
    ---
-
-   <Layout title="...">
-       <!-- ... otros componentes -->
-       <NewSection />
-   </Layout>
+   
+   <DashboardLayout title="Feature">
+       <NewFeature client:load />
+   </DashboardLayout>
    ```
 
 ### Añadir Nueva Página
@@ -241,6 +342,92 @@ import Layout from "../layouts/Layout.astro";
 ```
 
 La página estará disponible en `/about`
+
+### Trabajar con Zustand Store (Editor Visual)
+
+El editor visual usa Zustand para estado global:
+
+```tsx
+// src/lib/editor-store.ts - Store ya definido
+import { create } from 'zustand';
+
+interface EditorState {
+    components: Component[];
+    selectedId: string | null;
+    addComponent: (component: Component) => void;
+    updateComponent: (id: string, props: any) => void;
+    selectComponent: (id: string) => void;
+}
+
+export const useEditorStore = create<EditorState>((set) => ({
+    // Estado y acciones...
+}));
+```
+
+**Uso en componentes**:
+
+```tsx
+import { useEditorStore } from '../../lib/editor-store';
+
+export function ComponentTree() {
+    const { components, selectedId, selectComponent } = useEditorStore();
+    
+    return (
+        <div>
+            {components.map(comp => (
+                <div 
+                    key={comp.id}
+                    onClick={() => selectComponent(comp.id)}
+                    className={selectedId === comp.id ? 'selected' : ''}
+                >
+                    {comp.name}
+                </div>
+            ))}
+        </div>
+    );
+}
+```
+
+### Integrar Supabase en Componentes
+
+```tsx
+import { supabase } from '../../lib/supabase';
+import { useEffect, useState } from 'react';
+
+export function ArtistsList() {
+    const [artists, setArtists] = useState([]);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        fetchArtists();
+    }, []);
+    
+    const fetchArtists = async () => {
+        const { data, error } = await supabase
+            .from('artists')
+            .select('*')
+            .eq('is_active', true)
+            .order('display_order');
+            
+        if (error) {
+            console.error('Error:', error);
+        } else {
+            setArtists(data || []);
+        }
+        setLoading(false);
+    };
+    
+    if (loading) return <div>Loading...</div>;
+    
+    return (
+        <div>
+            {artists.map(artist => (
+                <div key={artist.id}>{artist.name}</div>
+            ))}
+        </div>
+    );
+}
+```
 
 ### Modificar Contenido
 
@@ -569,6 +756,24 @@ npm run dev  # Regenera automáticamente
 3. Reiniciar dev server
 4. Verificar sintaxis de clases (sin typos)
 
+### Errores de Conexión con Supabase (Futuro)
+
+**Problema**: "Missing Supabase environment variables"
+
+**Soluciones**:
+1. Verificar que el archivo `.env` existe en la raíz del proyecto
+2. Confirmar que las variables están correctamente nombradas (`PUBLIC_SUPABASE_URL`, etc.)
+3. Reiniciar el dev server después de añadir variables
+4. Verificar que las keys son válidas en Supabase Dashboard
+
+**Problema**: "Row Level Security policy violation"
+
+**Soluciones**:
+1. Verificar que las políticas RLS están correctamente configuradas
+2. Revisar que el usuario tiene los permisos necesarios
+3. Consultar logs en Supabase Dashboard > Logs
+4. Ver [docs/supabase-integration.md](./docs/supabase-integration.md) para políticas
+
 ## Recursos Adicionales
 
 ### Documentación Oficial
@@ -589,4 +794,30 @@ npm run dev  # Regenera automáticamente
 
 ---
 
-**Última actualización**: 2025-11-21
+### Errores con React Components
+
+**Problema**: "X is not a function" o errores de hidratación
+
+**Soluciones**:
+1. Verificar que el componente use `client:*` directive en Astro:
+   ```astro
+   <MyComponent client:load />
+   ```
+2. Verificar que exports sean correctos (named vs default)
+3. Verificar que tipos TypeScript sean correctos
+4. Revisar console del navegador para detalles
+
+### Errores con Zustand Store
+
+**Problema**: Estado no se actualiza correctamente
+
+**Soluciones**:
+1. Verificar que estás usando el hook correctamente:
+   ```tsx
+   const { value, setValue } = useEditorStore();
+   ```
+2. Las actualizaciones deben ser inmutables o usar Immer
+3. No mutar estado directamente
+4. Revisar DevTools de React
+
+**Última actualización**: 2025-11-23

@@ -1,0 +1,75 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+    const works = await getCollection("works");
+    return works.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Resolve the artist reference
+const artist = await getEntry(entry.data.artist);
+---
+
+<Layout title={`${entry.data.title} - Cuba Tattoo Studio`}>
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-8">
+                <a
+                    href={`/artists/${artist.slug}`}
+                    class="text-primary hover:underline mb-4 inline-block"
+                >
+                    &larr; Back to {artist.data.name}
+                </a>
+                <h1 class="text-4xl font-bold mb-2">{entry.data.title}</h1>
+                <p class="text-xl text-gray-400">{entry.data.description}</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                {
+                    entry.data.images.map((image) => (
+                        <img
+                            src={image}
+                            alt={entry.data.title}
+                            class="w-full h-auto rounded-lg shadow-lg"
+                        />
+                    ))
+                }
+            </div>
+
+            <div class="bg-secondary/10 p-6 rounded-lg mb-8">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <span class="block text-sm text-gray-500">Style</span>
+                        <span class="font-medium">{entry.data.style}</span>
+                    </div>
+                    <div>
+                        <span class="block text-sm text-gray-500">Date</span>
+                        <span class="font-medium"
+                            >{entry.data.date.toLocaleDateString()}</span
+                        >
+                    </div>
+                    <div>
+                        <span class="block text-sm text-gray-500">Artist</span>
+                        <a
+                            href={`/artists/${artist.slug}`}
+                            class="font-medium hover:text-primary transition-colors"
+                        >
+                            {artist.data.name}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prose prose-invert max-w-none">
+                <Content />
+            </div>
+        </div>
+    </main>
+</Layout>

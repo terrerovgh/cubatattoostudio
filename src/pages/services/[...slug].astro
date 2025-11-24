@@ -1,0 +1,116 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+    const services = await getCollection("services");
+    return services.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Fetch all works and filter by the related tag
+const works = await getCollection("works");
+const relatedWorks = works.filter((work) =>
+    work.data.displayLocations.includes(entry.data.relatedTag as any),
+);
+---
+
+<Layout title={`${entry.data.title} - Cuba Tattoo Studio`}>
+    <main class="min-h-screen bg-black text-white pt-24 pb-12">
+        {/* Hero Section */}
+        <div class="relative h-[40vh] w-full mb-12 overflow-hidden">
+            <div
+                class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"
+            >
+            </div>
+            <img
+                src={entry.data.coverImage}
+                alt={entry.data.title}
+                class="w-full h-full object-cover opacity-60"
+            />
+            <div
+                class="absolute bottom-0 left-0 w-full p-8 z-20 container mx-auto"
+            >
+                <h1
+                    class="text-5xl md:text-7xl font-bold mb-4 reveal-hidden transform translate-y-8 transition-all duration-700"
+                >
+                    {entry.data.title}
+                </h1>
+                <p
+                    class="text-xl md:text-2xl text-gray-300 max-w-2xl reveal-hidden transform translate-y-8 transition-all duration-700 delay-100"
+                >
+                    {entry.data.description}
+                </p>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4">
+            {/* Content Section */}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div
+                    class="lg:col-span-2 prose prose-invert prose-lg max-w-none reveal-hidden transform translate-y-8 transition-all duration-700 delay-200"
+                >
+                    <Content />
+                </div>
+
+                {/* Sidebar / Info */}
+                <div
+                    class="lg:col-span-1 space-y-8 reveal-hidden transform translate-y-8 transition-all duration-700 delay-300"
+                >
+                    <div
+                        class="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800"
+                    >
+                        <h3 class="text-xl font-bold mb-4 text-primary">
+                            ¿Por qué elegir este estilo?
+                        </h3>
+                        <p class="text-gray-400">
+                            Nuestros artistas dominan la técnica del {
+                                entry.data.title.toLowerCase()
+                            }, asegurando resultados que superan tus
+                            expectativas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Related Works Gallery */}
+            {
+                relatedWorks.length > 0 && (
+                    <div class="mt-24">
+                        <h2 class="text-3xl font-bold mb-8 flex items-center gap-4 reveal-hidden">
+                            <span class="w-12 h-1 bg-primary" />
+                            Trabajos Recientes
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {relatedWorks.map((work) => (
+                                <a
+                                    href={`/works/${work.slug}`}
+                                    class="group relative aspect-square overflow-hidden rounded-xl bg-zinc-900 reveal-hidden transform translate-y-8 transition-all duration-500"
+                                >
+                                    <img
+                                        src={work.data.images[0]}
+                                        alt={work.data.title}
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                        <h3 class="text-xl font-bold">
+                                            {work.data.title}
+                                        </h3>
+                                        <p class="text-sm text-gray-300">
+                                            Por {work.data.artist.id}
+                                        </p>
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                )
+            }
+        </div>
+    </main>
+</Layout>
