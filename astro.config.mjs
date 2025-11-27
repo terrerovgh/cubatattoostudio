@@ -23,10 +23,28 @@ export default defineConfig({
           // Inject shim into the Astro React renderer
           // This ensures it runs before React is used
           if (id.includes('@astrojs/react') && id.includes('server.js')) {
-            return `import { MessageChannel, MessagePort } from 'node:worker_threads';
-if (!globalThis.MessageChannel) {
-  globalThis.MessageChannel = MessageChannel;
-  globalThis.MessagePort = MessagePort;
+            return `
+if (typeof globalThis.MessageChannel === 'undefined') {
+  class MockMessagePort {
+    constructor() {
+      this.onmessage = null;
+    }
+    postMessage(data) {
+      const other = this.other;
+      if (other && other.onmessage) {
+        setTimeout(() => other.onmessage({ data }), 0);
+      }
+    }
+  }
+  globalThis.MessageChannel = class MessageChannel {
+    constructor() {
+      this.port1 = new MockMessagePort();
+      this.port2 = new MockMessagePort();
+      this.port1.other = this.port2;
+      this.port2.other = this.port1;
+    }
+  };
+  globalThis.MessagePort = MockMessagePort;
 }
 ${code}`;
           }
@@ -34,7 +52,7 @@ ${code}`;
       }
     ],
     ssr: {
-      external: ['node:worker_threads'],
+      // external: ['node:worker_threads'], // Removed as we are using pure JS polyfill
     },
     build: {
       rollupOptions: {
