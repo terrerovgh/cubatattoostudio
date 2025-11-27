@@ -14,7 +14,7 @@ export default function AdminGuard({ children }: AdminGuardProps) {
     const [checking, setChecking] = useState<boolean>(true);
 
     useEffect(() => {
-        if (import.meta.env.DEV && !(supabaseUrl || '').includes('supabase.co')) {
+        if (import.meta.env.MODE !== 'test' && import.meta.env.DEV && !(supabaseUrl || '').includes('supabase.co')) {
             setAuthorized(true)
             setChecking(false)
             return

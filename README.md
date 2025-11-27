@@ -298,16 +298,17 @@ Ver documentación completa en [docs/admin-dashboard.md](./docs/admin-dashboard.
 
 ## 🚀 Roadmap
 
-### 🔄 Fase 1 - En Revisión (Q4 2025)
-- [ ] Integración completa de Supabase
-- [ ] Sistema de autenticación funcional
-- [ ] Migración de contenido a base de datos
+### 🔄 Fase 1 - Completada (Q4 2025)
+- [x] Integración completa de Supabase
+- [x] Sistema de autenticación funcional
+- [x] Migración de contenido a base de datos
 
-### 🚧 Fase 2 - En Desarrollo (Q4 2025)
-- [ ] Dashboard administrativo completo
-- [ ] CRUD de artistas, trabajos y servicios
-- [ ] Sistema de medios con drag & drop
-- [ ] Analytics básicos
+### 🚧 Fase 2 - Completada (Q4 2025)
+- [x] Dashboard administrativo completo
+- [x] CRUD de artistas, trabajos y servicios
+- [x] Sistema de medios con drag & drop
+- [x] Analytics básicos
+- [x] Editor de contenido visual y galerías (incluyendo Dome Gallery)
 
 ### 🔄 Fase 3 - En Progreso (Q1 2026)
 - [ ] Sistema de reservas/booking integrado

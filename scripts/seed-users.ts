@@ -15,17 +15,19 @@ const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@cubatattoostudio.com'
 const adminPassword = process.env.SEED_ADMIN_PASSWORD || 'ChangeMe123!'
 
 async function main() {
-  const adminClient = createClient(url, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } })
+  const supabaseUrl: string = url as string
+  const supabaseServiceKey: string = serviceKey as string
+  const adminClient = createClient(supabaseUrl, supabaseServiceKey, { auth: { autoRefreshToken: false, persistSession: false } })
   const { data: existingUser } = await adminClient.auth.admin.listUsers({ page: 1, perPage: 200 })
   const found = existingUser.users.find(u => u.email === adminEmail)
-  let userId = found?.id
+  let userId: string | null = found?.id ?? null
   if (!found) {
     const { data, error } = await adminClient.auth.admin.createUser({ email: adminEmail, password: adminPassword, email_confirm: true })
     if (error) {
       console.error('Error creating admin user:', error)
       process.exit(1)
     }
-    userId = data.user?.id || null
+    userId = data.user?.id ?? null
     console.log('Created admin user:', adminEmail)
   } else {
     console.log('Admin user already exists:', adminEmail)
@@ -45,4 +47,3 @@ async function main() {
 }
 
 main().catch(err => { console.error(err); process.exit(1) })
-

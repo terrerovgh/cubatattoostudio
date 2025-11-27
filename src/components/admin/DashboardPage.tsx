@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import DashboardStats from './DashboardStats';
-import ActivityChart from './ActivityChart';
-import DistributionChart from './DistributionChart';
+const ActivityChart = React.lazy(() => import('./ActivityChart'))
+const DistributionChart = React.lazy(() => import('./DistributionChart'))
 import RecentActivity from './RecentActivity';
 
 const DashboardPage = () => {
@@ -19,13 +19,17 @@ const DashboardPage = () => {
                     {/* Activity Chart - Takes up 2 columns */}
                     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 p-8 backdrop-blur-sm lg:col-span-2">
                         <h3 className="mb-6 text-lg font-semibold text-white">Activity Overview</h3>
-                        <ActivityChart />
+                        <Suspense fallback={<div className="h-80" />}> 
+                            <ActivityChart />
+                        </Suspense>
                     </div>
 
                     {/* Distribution Chart - Takes up 1 column */}
                     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 p-8 backdrop-blur-sm">
                         <h3 className="mb-6 text-lg font-semibold text-white">Content Distribution</h3>
-                        <DistributionChart />
+                        <Suspense fallback={<div className="h-80" />}> 
+                            <DistributionChart />
+                        </Suspense>
                     </div>
                 </div>
 

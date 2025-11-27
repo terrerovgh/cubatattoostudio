@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro'
 import { createClient } from '@supabase/supabase-js'
-import { Buffer } from 'node:buffer'
 
 export const prerender = false;
 
@@ -11,7 +10,11 @@ function decodeJwt(token: string): any {
   const parts = token.split('.')
   if (parts.length !== 3) return null
   try {
-    const payload = Buffer.from(parts[1], 'base64url').toString('utf8')
+    const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/').padEnd((Math.ceil(parts[1].length / 4) * 4), '=')
+    const binary = atob(base64)
+    const bytes = new Uint8Array(binary.length)
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+    const payload = new TextDecoder('utf-8').decode(bytes)
     return JSON.parse(payload)
   } catch {
     return null

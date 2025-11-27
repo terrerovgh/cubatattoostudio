@@ -119,7 +119,7 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
             setErrors((prev) => ({ ...prev, [name]: '' }));
         }
         
-        let finalValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+        const finalValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
         
         // Auto-generate slug from name if creating new artist
         if (name === 'name' && !artistId && !formData.slug) {
@@ -223,13 +223,14 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
                     <span>{errors.general}</span>
                 </div>
             )}
-
-            <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+            
+            <form data-testid="artist-form" onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
                 <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Name *</label>
+                        <label htmlFor="name" className="text-sm font-medium text-zinc-400">Name *</label>
                         <input
                             type="text"
+                            id="name"
                             name="name"
                             required
                             value={formData.name}
@@ -242,9 +243,10 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Slug *</label>
+                        <label htmlFor="slug" className="text-sm font-medium text-zinc-400">Slug *</label>
                         <input
                             type="text"
+                            id="slug"
                             name="slug"
                             required
                             value={formData.slug}
@@ -257,9 +259,10 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Specialty *</label>
+                        <label htmlFor="specialty" className="text-sm font-medium text-zinc-400">Specialty *</label>
                         <input
                             type="text"
+                            id="specialty"
                             name="specialty"
                             required
                             value={formData.specialty}
@@ -272,9 +275,10 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Display Order</label>
+                        <label htmlFor="display_order" className="text-sm font-medium text-zinc-400">Display Order</label>
                         <input
                             type="number"
+                            id="display_order"
                             name="display_order"
                             value={formData.display_order}
                             onChange={handleChange}
@@ -284,8 +288,9 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Bio</label>
+                    <label htmlFor="bio" className="text-sm font-medium text-zinc-400">Bio</label>
                     <textarea
+                        id="bio"
                         name="bio"
                         rows={4}
                         value={formData.bio || ''}
@@ -296,9 +301,10 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
 
                 <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Avatar URL</label>
+                        <label htmlFor="avatar_url" className="text-sm font-medium text-zinc-400">Avatar URL</label>
                         <input
                             type="text"
+                            id="avatar_url"
                             name="avatar_url"
                             value={formData.avatar_url || ''}
                             onChange={handleChange}
@@ -310,9 +316,10 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Portfolio URL</label>
+                        <label htmlFor="portfolio_url" className="text-sm font-medium text-zinc-400">Portfolio URL</label>
                         <input
                             type="text"
+                            id="portfolio_url"
                             name="portfolio_url"
                             value={formData.portfolio_url || ''}
                             onChange={handleChange}
@@ -324,9 +331,10 @@ const ArtistForm = ({ artistId }: ArtistFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Instagram</label>
+                        <label htmlFor="instagram" className="text-sm font-medium text-zinc-400">Instagram</label>
                         <input
                             type="text"
+                            id="instagram"
                             name="instagram"
                             value={formData.instagram || ''}
                             onChange={handleChange}

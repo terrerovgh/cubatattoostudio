@@ -3,6 +3,7 @@ import { FileText, ChevronRight } from 'lucide-react';
 
 const SECTIONS = [
     { id: 'hero', label: 'Hero Section', description: 'Main banner and introduction' },
+    { id: 'dome-gallery', label: 'Dome Gallery', description: '3D rotating gallery in Hero' },
     { id: 'about', label: 'About Section', description: 'Studio information and history' },
     { id: 'gallery', label: 'Gallery Section', description: 'Featured tattoo works' },
     { id: 'artists', label: 'Artists Section', description: 'Artist profiles overview' },

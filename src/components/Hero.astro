@@ -1,36 +1,32 @@
 ---
-import { ArrowDown } from "lucide-react";
-import DomeGallery from "./DomeGallery";
-import { getWorksByLocation, getSiteContent } from "../lib/content-helpers";
+import { ArrowDown } from 'lucide-react';
+import DomeGallery from './DomeGallery';
+import { getWorks, getSiteContent } from '../lib/supabase-helpers';
 
-const domeWorks = await getWorksByLocation("dome_gallery");
+const domeWorks = await getWorks({ tags: ['dome_gallery'] });
 
-// Flatten all images from the featured works
-const domeImages = domeWorks.flatMap((work) => work.data.images);
+// Flatten all images from the featured works, assuming work.image_url is the main image
+const domeImages = domeWorks ? domeWorks.map((work: any) => work.image_url) : [];
 
 // Fetch hero content from database with fallbacks
-const heroData = await getSiteContent("hero");
+const heroData = await getSiteContent('hero');
 const heroContent = heroData?.content || {};
 
-const location = heroContent.location || "Albuquerque, NM";
+const location = heroContent.location || 'Albuquerque, NM';
 const tagline =
     heroContent.tagline ||
-    "Ideally located in the heart of the desert. Where precision meets permanence.";
-const ctaText = heroContent.cta_text || "Meet the Artists";
-const ctaLink = heroContent.cta_link || "#artists";
+    'Ideally located in the heart of the desert. Where precision meets permanence.';
+const ctaText = heroContent.cta_text || 'Meet the Artists';
+const ctaLink = heroContent.cta_link || '#artists';
 ---
 
-<section
-    class="relative h-screen flex items-center justify-center overflow-hidden"
->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
     <!-- Parallax Background Image -->
     <!-- Dome Gallery Background -->
     <div class="absolute inset-0 w-full h-full z-0">
         <DomeGallery client:load images={domeImages} />
     </div>
-    <div
-        class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black z-10"
-    >
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black z-10">
     </div>
 
     <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">

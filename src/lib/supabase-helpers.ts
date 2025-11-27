@@ -168,7 +168,7 @@ export async function saveWorkWithArtists(work: any, artistIds: { artistId: stri
         .select('artist_id')
         .eq('work_id', workId)
     const incomingIds = artistIds.map(a => a.artistId)
-    const toRemove = (existing || []).filter(e => !incomingIds.includes(e.artist_id))
+    const toRemove = ((existing || []) as { artist_id: string }[]).filter(e => !incomingIds.includes(e.artist_id))
     if (toRemove.length > 0) {
         for (const r of toRemove) {
             await supabase
@@ -261,4 +261,40 @@ export async function updateUserRole(userId: string, role: string) {
         throw e
     }
     return await res.json()
+}
+
+/**
+ * Toggle a tag on a work
+ */
+export async function toggleWorkTag(workId: string, tag: string, active: boolean) {
+    const { data: work, error: fetchError } = await supabase
+        .from('works')
+        .select('tags')
+        .eq('id', workId)
+        .single();
+
+    if (fetchError) throw fetchError;
+
+    const currentTags = work.tags || [];
+    let newTags: string[];
+
+    if (active) {
+        if (!currentTags.includes(tag)) {
+            newTags = [...currentTags, tag];
+        } else {
+            newTags = currentTags;
+        }
+    } else {
+        newTags = currentTags.filter((t: string) => t !== tag);
+    }
+
+    const { data, error } = await supabase
+        .from('works')
+        .update({ tags: newTags })
+        .eq('id', workId)
+        .select()
+        .single();
+
+    if (error) throw error;
+    return data;
 }

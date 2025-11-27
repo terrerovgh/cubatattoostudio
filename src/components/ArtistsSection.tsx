@@ -95,7 +95,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({ initialArtists = [] }) 
                                     href={`/artists/${artist.slug}`}
                                     className="inline-flex items-center text-sm font-medium hover:text-neutral-300 transition-colors border-b border-neutral-700 pb-1"
                                 >
-                                    View {artist.name}'s Portfolio{" "}
+                                    View {artist.name}&apos;s Portfolio{" "}
                                     <ArrowRight className="ml-2 w-4 h-4" />
                                 </a>
                             </div>

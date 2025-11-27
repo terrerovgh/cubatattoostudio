@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, Upload, Loader2, ArrowLeft, Image as ImageIcon, Video, CheckCircle, AlertCircle } from 'lucide-react';
+import { Save, Upload, Loader2, ArrowLeft, Image as ImageIcon, Video, CheckCircle, AlertCircle, X, Plus } from 'lucide-react';
 import { getSiteContent, updateSiteContent, uploadAsset } from '../../../lib/supabase-helpers';
 
 import MediaLibrary from '../media/MediaLibrary';
@@ -14,6 +14,7 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
     const [saving, setSaving] = useState(false);
     const [uploading, setUploading] = useState<string | null>(null);
     const [showMediaLibrary, setShowMediaLibrary] = useState<string | null>(null);
+    const [mediaLibraryMultiple, setMediaLibraryMultiple] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [successMessage, setSuccessMessage] = useState('');
 
@@ -25,7 +26,7 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
         setLoading(true);
         setErrors({});
         setSuccessMessage('');
-        
+
         try {
             const data = await getSiteContent(section);
             if (data && data.content) {
@@ -46,20 +47,20 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
         setSaving(true);
         setErrors({});
         setSuccessMessage('');
-        
+
         try {
             await updateSiteContent(section, content);
             setSuccessMessage('Content saved successfully!');
             setTimeout(() => setSuccessMessage(''), 3000);
         } catch (error: any) {
             console.error('Error saving content:', error);
-            
+
             if (error.message?.includes('permission denied')) {
                 setErrors({ general: 'You do not have permission to save content.' });
             } else {
                 setErrors({ general: error.message || 'Failed to save content. Please try again.' });
             }
-            
+
             setTimeout(() => setErrors({}), 5000);
         } finally {
             setSaving(false);
@@ -73,7 +74,7 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
     const handleFileUpload = async (key: string, file: File) => {
         setUploading(key);
         setErrors({});
-        
+
         try {
             const path = `${section}/${Date.now()}-${file.name}`;
             const publicUrl = await uploadAsset(file, path);
@@ -89,11 +90,33 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
         }
     };
 
-    const handleMediaSelect = (url: string) => {
+    const handleMediaSelect = (result: string | string[]) => {
         if (showMediaLibrary) {
-            handleChange(showMediaLibrary, url);
+            if (Array.isArray(result)) {
+                // For array fields (gallery), append new images
+                const currentImages = Array.isArray(content[showMediaLibrary]) ? content[showMediaLibrary] : [];
+                // Filter out duplicates if needed, or just append
+                const newImages = [...currentImages, ...result];
+                // Remove duplicates
+                const uniqueImages = Array.from(new Set(newImages));
+                handleChange(showMediaLibrary, uniqueImages);
+            } else {
+                // For single fields
+                handleChange(showMediaLibrary, result);
+            }
             setShowMediaLibrary(null);
         }
+    };
+
+    const removeImageFromGallery = (key: string, index: number) => {
+        const currentImages = [...(content[key] || [])];
+        currentImages.splice(index, 1);
+        handleChange(key, currentImages);
+    };
+
+    const openMediaLibrary = (key: string, multiple: boolean = false) => {
+        setMediaLibraryMultiple(multiple);
+        setShowMediaLibrary(key);
     };
 
     if (loading) {
@@ -104,15 +127,40 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
         );
     }
 
-    // Define fields based on section (or dynamic)
-    // For now, let's assume we want to edit specific fields if they exist, or add them if they don't.
-    // To make it user-friendly, we might want a schema.
-    // But for this task, I'll just iterate over keys and provide a way to add standard keys.
-
     const renderField = (key: string, value: any) => {
-        const isImage = key.toLowerCase().includes('image') || key.toLowerCase().includes('photo');
+        const isImage = key.toLowerCase().includes('image') || key.toLowerCase().includes('photo') || key.toLowerCase().includes('cover');
         const isVideo = key.toLowerCase().includes('video');
-        const isLongText = key.toLowerCase().includes('description') || key.toLowerCase().includes('bio');
+        const isLongText = key.toLowerCase().includes('description') || key.toLowerCase().includes('bio') || key.toLowerCase().includes('content');
+        const isGallery = Array.isArray(value) || key.toLowerCase().includes('gallery') || key.toLowerCase().includes('images');
+
+        if (isGallery) {
+            const images = Array.isArray(value) ? value : [];
+            return (
+                <div key={key} className="space-y-2">
+                    <label className="block text-sm font-medium text-zinc-400 capitalize">{key.replace(/_/g, ' ')}</label>
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                        {images.map((img: string, idx: number) => (
+                            <div key={idx} className="group relative aspect-square overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900">
+                                <img src={img} alt={`Gallery ${idx}`} className="h-full w-full object-cover" />
+                                <button
+                                    onClick={() => removeImageFromGallery(key, idx)}
+                                    className="absolute top-2 right-2 rounded-full bg-red-500/80 p-1 text-white opacity-0 transition-opacity hover:bg-red-600 group-hover:opacity-100"
+                                >
+                                    <X className="h-4 w-4" />
+                                </button>
+                            </div>
+                        ))}
+                        <button
+                            onClick={() => openMediaLibrary(key, true)}
+                            className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-zinc-700 bg-zinc-900/50 text-zinc-400 transition-colors hover:border-zinc-500 hover:bg-zinc-900 hover:text-white"
+                        >
+                            <Plus className="h-8 w-8" />
+                            <span className="text-xs font-medium">Add Images</span>
+                        </button>
+                    </div>
+                </div>
+            );
+        }
 
         if (isImage || isVideo) {
             return (
@@ -146,7 +194,7 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
                                     <span className="text-sm text-zinc-400">Upload</span>
                                 </label>
                                 <button
-                                    onClick={() => setShowMediaLibrary(key)}
+                                    onClick={() => openMediaLibrary(key, false)}
                                     className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm text-zinc-400 hover:bg-zinc-800 hover:text-white"
                                 >
                                     <ImageIcon className="h-4 w-4" />
@@ -157,9 +205,8 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
                                 type="text"
                                 value={value || ''}
                                 onChange={(e) => handleChange(key, e.target.value)}
-                                className={`w-full rounded-lg border bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none ${
-                                    errors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-white'
-                                }`}
+                                className={`w-full rounded-lg border bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none ${errors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-white'
+                                    }`}
                                 placeholder="Or enter URL directly"
                             />
                             {errors[key] && <p className="text-sm text-red-500">{errors[key]}</p>}
@@ -177,9 +224,8 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
                         value={value || ''}
                         onChange={(e) => handleChange(key, e.target.value)}
                         rows={4}
-                        className={`w-full rounded-lg border bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none ${
-                            errors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-white'
-                        }`}
+                        className={`w-full rounded-lg border bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none ${errors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-white'
+                            }`}
                     />
                     {errors[key] && <p className="text-sm text-red-500">{errors[key]}</p>}
                 </div>
@@ -193,9 +239,8 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
                     type="text"
                     value={value || ''}
                     onChange={(e) => handleChange(key, e.target.value)}
-                    className={`w-full rounded-lg border bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none ${
-                        errors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-white'
-                    }`}
+                    className={`w-full rounded-lg border bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none ${errors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-white'
+                        }`}
                 />
                 {errors[key] && <p className="text-sm text-red-500">{errors[key]}</p>}
             </div>
@@ -279,6 +324,12 @@ const ContentEditor: React.FC<ContentEditorProps> = ({ section }) => {
                 <MediaLibrary
                     onSelect={handleMediaSelect}
                     onClose={() => setShowMediaLibrary(null)}
+                    multiple={mediaLibraryMultiple}
+                    initialSelected={
+                        mediaLibraryMultiple && Array.isArray(content[showMediaLibrary])
+                            ? content[showMediaLibrary]
+                            : []
+                    }
                 />
             )}
         </div>

@@ -1,17 +1,25 @@
 import type { APIRoute } from 'astro'
 import { createClient } from '@supabase/supabase-js'
-import { Buffer } from 'node:buffer'
+import { z } from 'zod'
 
 export const prerender = false;
 
-const url = import.meta.env.PUBLIC_SUPABASE_URL as string
-const serviceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY as string | undefined
+function getEnv() {
+    const env: any = (import.meta as any).env || {}
+    const url = (env.PUBLIC_SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL) as string
+    const serviceKey = (env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY) as string | undefined
+    return { url, serviceKey }
+}
 
 function decodeJwt(token: string): any {
     const parts = token.split('.')
     if (parts.length !== 3) return null
     try {
-        const payload = Buffer.from(parts[1], 'base64url').toString('utf8')
+        const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/').padEnd((Math.ceil(parts[1].length / 4) * 4), '=')
+        const binary = atob(base64)
+        const bytes = new Uint8Array(binary.length)
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+        const payload = new TextDecoder('utf-8').decode(bytes)
         return JSON.parse(payload)
     } catch {
         return null
@@ -19,6 +27,7 @@ function decodeJwt(token: string): any {
 }
 
 export const GET: APIRoute = async ({ request }) => {
+    const { url, serviceKey } = getEnv()
     if (!url || !serviceKey) return new Response('Server not configured', { status: 500 })
     const auth = request.headers.get('authorization') || ''
     const token = auth.startsWith('Bearer ') ? auth.slice(7) : ''
@@ -83,7 +92,17 @@ export const GET: APIRoute = async ({ request }) => {
     })
 }
 
+const bodySchema = z.object({
+    action: z.union([z.literal('create'), z.literal('update'), z.literal('delete')]).optional(),
+    userId: z.string().min(1).optional(),
+    role: z.union([z.literal('user'), z.literal('admin')]).optional(),
+    email: z.string().email().optional(),
+    password: z.string().min(6).optional(),
+    displayName: z.string().optional(),
+})
+
 export const POST: APIRoute = async ({ request }) => {
+    const { url, serviceKey } = getEnv()
     if (!url || !serviceKey) return new Response('Server not configured', { status: 500 })
     const auth = request.headers.get('authorization') || ''
     const token = auth.startsWith('Bearer ') ? auth.slice(7) : ''
@@ -106,8 +125,14 @@ export const POST: APIRoute = async ({ request }) => {
     const isAdmin = profile?.role === 'admin' || adminEmails.includes(userEmail || '');
     if (!isAdmin) return new Response('Forbidden', { status: 403 })
 
-    const body = await request.json()
-    const { action, userId, role, email, password, displayName } = body
+    let parsed: z.infer<typeof bodySchema>
+    try {
+        const json = await request.json()
+        parsed = bodySchema.parse(json)
+    } catch (e: any) {
+        return new Response(JSON.stringify({ error: { message: 'Invalid body' } }), { status: 400 })
+    }
+    const { action, userId, role, email, password, displayName } = parsed
 
     // Handle different actions
     if (action === 'create') {

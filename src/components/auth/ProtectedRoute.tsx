@@ -6,7 +6,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
     useEffect(() => {
         if (!loading && !user) {
-            window.location.href = '/login';
+            window.location.assign('/login');
         }
     }, [user, loading]);
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import type { PostgrestResponse } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 
 export default function SupabaseProbe() {
@@ -10,7 +11,7 @@ export default function SupabaseProbe() {
     supabase
       .from('artists')
       .select('*', { count: 'exact', head: true })
-      .then((res) => {
+      .then((res: PostgrestResponse<any>) => {
         if (!mounted) return
         if (res.error) {
           setStatus('error')

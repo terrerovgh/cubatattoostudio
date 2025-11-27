@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { updateUserRole } from '../../../lib/supabase-helpers';
 import { Shield, CheckCircle, AlertTriangle, UserPlus, Trash2, Edit, Mail, Key, X } from 'lucide-react';
+import { filterRows, sortRows, paginateRows } from '../table-utils';
 
 type Profile = {
     id: string;
@@ -25,6 +26,12 @@ const UsersTable = () => {
         displayName: '',
         role: 'user'
     });
+
+    const [query, setQuery] = useState('');
+    const [sortKey, setSortKey] = useState<keyof Profile>('display_name');
+    const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
 
     useEffect(() => {
         fetchUsers();
@@ -50,6 +57,7 @@ const UsersTable = () => {
 
             const data = await response.json();
             setUsers(data || []);
+            setPage(1);
         } catch (err: any) {
             console.error('Error fetching users:', err);
             setError(err.message);
@@ -194,6 +202,10 @@ const UsersTable = () => {
         });
     };
 
+    const filtered = filterRows(users, query, ['display_name', 'email'])
+    const sorted = sortRows(filtered, sortKey, sortDir)
+    const { data: visibleUsers, totalPages } = paginateRows(sorted, page, pageSize)
+
     if (loading) return <div className="text-zinc-400">Loading users...</div>;
 
     return (
@@ -211,8 +223,47 @@ const UsersTable = () => {
                 </div>
             )}
 
-            {/* Create User Button */}
-            <div className="flex justify-end">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-2">
+                    <input
+                        aria-label="Filter"
+                        placeholder="Filter"
+                        value={query}
+                        onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+                        className="rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-white focus:border-purple-500 focus:outline-none"
+                    />
+                    <select
+                        aria-label="Sort By"
+                        value={String(sortKey)}
+                        onChange={(e) => setSortKey(e.target.value as keyof Profile)}
+                        className="rounded border border-zinc-800 bg-zinc-900 px-2 py-2 text-sm text-white"
+                    >
+                        <option value="display_name">Name</option>
+                        <option value="email">Email</option>
+                        <option value="role">Role</option>
+                        <option value="created_at">Created</option>
+                    </select>
+                    <select
+                        aria-label="Sort Direction"
+                        value={sortDir}
+                        onChange={(e) => setSortDir(e.target.value as 'asc' | 'desc')}
+                        className="rounded border border-zinc-800 bg-zinc-900 px-2 py-2 text-sm text-white"
+                    >
+                        <option value="asc">Asc</option>
+                        <option value="desc">Desc</option>
+                    </select>
+                    <select
+                        aria-label="Page Size"
+                        value={pageSize}
+                        onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+                        className="rounded border border-zinc-800 bg-zinc-900 px-2 py-2 text-sm text-white"
+                    >
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <div className="flex justify-end">
                 <button
                     onClick={() => setShowCreateModal(true)}
                     className="flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
@@ -220,6 +271,7 @@ const UsersTable = () => {
                     <UserPlus className="h-4 w-4" />
                     Create User
                 </button>
+                </div>
             </div>
 
             {/* Users Table */}
@@ -234,7 +286,7 @@ const UsersTable = () => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-800">
-                        {users.map((user) => (
+                        {visibleUsers.map((user) => (
                             <tr key={user.id} className="hover:bg-zinc-900/50">
                                 <td className="px-6 py-4 font-medium text-white">
                                     {user.display_name || 'Unnamed User'}
@@ -282,6 +334,22 @@ const UsersTable = () => {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="flex items-center justify-end gap-2">
+                <button
+                    onClick={() => setPage(Math.max(1, page - 1))}
+                    className="rounded border border-zinc-800 bg-zinc-900 px-3 py-1 text-sm text-zinc-200"
+                >
+                    Prev
+                </button>
+                <span className="text-sm text-zinc-400">{page} / {totalPages}</span>
+                <button
+                    onClick={() => setPage(Math.min(totalPages, page + 1))}
+                    className="rounded border border-zinc-800 bg-zinc-900 px-3 py-1 text-sm text-zinc-200"
+                >
+                    Next
+                </button>
             </div>
 
             {/* Create User Modal */}

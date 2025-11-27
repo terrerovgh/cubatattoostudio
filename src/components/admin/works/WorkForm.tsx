@@ -221,12 +221,13 @@ const WorkForm = ({ workId }: WorkFormProps) => {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+            <form data-testid="work-form" onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
                 <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Title *</label>
+                        <label htmlFor="title" className="text-sm font-medium text-zinc-400">Title *</label>
                         <input
                             type="text"
+                            id="title"
                             name="title"
                             value={formData.title || ''}
                             onChange={handleChange}
@@ -238,9 +239,10 @@ const WorkForm = ({ workId }: WorkFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Image URL *</label>
+                        <label htmlFor="image_url" className="text-sm font-medium text-zinc-400">Image URL *</label>
                         <input
                             type="text"
+                            id="image_url"
                             name="image_url"
                             required
                             value={formData.image_url}
@@ -253,8 +255,9 @@ const WorkForm = ({ workId }: WorkFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Artist</label>
+                        <label htmlFor="artist_id" className="text-sm font-medium text-zinc-400">Artist</label>
                         <select
+                            id="artist_id"
                             name="artist_id"
                             value={formData.artist_id || ''}
                             onChange={handleChange}
@@ -270,8 +273,9 @@ const WorkForm = ({ workId }: WorkFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Service</label>
+                        <label htmlFor="service_id" className="text-sm font-medium text-zinc-400">Service</label>
                         <select
+                            id="service_id"
                             name="service_id"
                             value={formData.service_id || ''}
                             onChange={handleChange}
@@ -288,8 +292,9 @@ const WorkForm = ({ workId }: WorkFormProps) => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Description</label>
+                    <label htmlFor="description" className="text-sm font-medium text-zinc-400">Description</label>
                     <textarea
+                        id="description"
                         name="description"
                         rows={4}
                         value={formData.description || ''}
@@ -299,9 +304,10 @@ const WorkForm = ({ workId }: WorkFormProps) => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Tags (Press Enter to add)</label>
+                    <label htmlFor="tags" className="text-sm font-medium text-zinc-400">Tags (Press Enter to add)</label>
                     <input
                         type="text"
+                        id="tags"
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
                         onKeyDown={handleAddTag}

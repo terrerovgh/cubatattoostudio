@@ -97,12 +97,13 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
                 </h2>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+            <form data-testid="service-form" onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
                 <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Title</label>
+                        <label htmlFor="title" className="text-sm font-medium text-zinc-400">Title</label>
                         <input
                             type="text"
+                            id="title"
                             name="title"
                             required
                             value={formData.title}
@@ -112,9 +113,10 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Slug</label>
+                        <label htmlFor="slug" className="text-sm font-medium text-zinc-400">Slug</label>
                         <input
                             type="text"
+                            id="slug"
                             name="slug"
                             required
                             value={formData.slug}
@@ -124,9 +126,10 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Icon (Lucide Name)</label>
+                        <label htmlFor="icon" className="text-sm font-medium text-zinc-400">Icon (Lucide Name)</label>
                         <input
                             type="text"
+                            id="icon"
                             name="icon"
                             value={formData.icon || ''}
                             onChange={handleChange}
@@ -135,9 +138,10 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Display Order</label>
+                        <label htmlFor="display_order" className="text-sm font-medium text-zinc-400">Display Order</label>
                         <input
                             type="number"
+                            id="display_order"
                             name="display_order"
                             value={formData.display_order}
                             onChange={handleChange}
@@ -147,8 +151,9 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Description</label>
+                    <label htmlFor="description" className="text-sm font-medium text-zinc-400">Description</label>
                     <textarea
+                        id="description"
                         name="description"
                         rows={4}
                         value={formData.description || ''}
@@ -158,9 +163,10 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Cover Image URL</label>
+                    <label htmlFor="cover_image_url" className="text-sm font-medium text-zinc-400">Cover Image URL</label>
                     <input
                         type="text"
+                        id="cover_image_url"
                         name="cover_image_url"
                         value={formData.cover_image_url || ''}
                         onChange={handleChange}

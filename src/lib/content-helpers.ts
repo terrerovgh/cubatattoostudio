@@ -11,7 +11,9 @@ export async function getWorksByLocation(location: string) {
 
 export async function getWorksByArtist(artistSlug: string) {
     const works = await getCollection('works', ({ data }) => {
-        return data.artist.slug === artistSlug;
+        const artist = (data as any).artist
+        if (typeof artist === 'string') return artist === artistSlug
+        return artist && artist.slug === artistSlug
     });
     return works;
 }

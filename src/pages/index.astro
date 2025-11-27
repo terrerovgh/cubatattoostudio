@@ -1,27 +1,28 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import HeroSection from "../components/HeroSection";
-import ServicesSection from "../components/ServicesSection";
-import ArtistsSection from "../components/ArtistsSection";
-import GallerySection from "../components/GallerySection";
-import BookingSection from "../components/BookingSection";
-import FooterSection from "../components/FooterSection";
-import SupabaseProbe from "../components/SupabaseProbe.tsx";
-import { getWorksByLocation } from "../lib/content-helpers";
-import { getCollection } from "astro:content";
-import { supabase } from "../lib/supabase";
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import HeroSection from '../components/HeroSection';
+import ServicesSection from '../components/ServicesSection';
+import ArtistsSection from '../components/ArtistsSection';
+import GallerySection from '../components/GallerySection';
+import BookingSection from '../components/BookingSection';
+import FooterSection from '../components/FooterSection';
+import SupabaseProbe from '../components/SupabaseProbe.tsx';
+import { getWorksByLocation } from '../lib/content-helpers';
+import { getWorks } from '../lib/supabase-helpers';
+import { getCollection } from 'astro:content';
+import { supabase } from '../lib/supabase';
 
 // Prepare data for Hero (dome images)
-const domeWorks = await getWorksByLocation("dome_gallery");
-const domeImages = domeWorks.flatMap((work) => work.data.images);
+const domeWorks = await getWorks({ tags: ['dome_gallery'] });
+const domeImages = (domeWorks || []).map((work: any) => work.image_url);
 
 // Prepare data for Services
-const services = await getCollection("services");
+const services = await getCollection('services');
 const iconMap: Record<string, any> = {
-  PenTool: "PenTool",
-  Pencil: "Pencil",
-  Feather: "Feather",
+  PenTool: 'PenTool',
+  Pencil: 'Pencil',
+  Feather: 'Feather',
 };
 
 async function getServiceImage(service: any) {
@@ -40,41 +41,39 @@ const servicesWithImages = await Promise.all(
       title: service.data.title,
       description: service.data.description,
       image,
-      icon: service.data.icon || "PenTool",
+      icon: service.data.icon || 'PenTool',
     };
-  }),
+  })
 );
 
 // Prepare data for Artists
 let artists: any[] = [];
 const { data: artistsData, error } = await supabase
-  .from("artists")
-  .select("*")
-  .eq("is_active", true)
-  .order("display_order");
+  .from('artists')
+  .select('*')
+  .eq('is_active', true)
+  .order('display_order');
 
 if (!error && artistsData) {
   artists = artistsData;
 } else {
-  const contentArtists = await getCollection("artists");
+  const contentArtists = await getCollection('artists');
   artists = contentArtists.map((entry) => ({
     slug: entry.slug,
     name: entry.data.name,
-    specialty: (entry.data.specialties || []).join(" & "),
+    specialty: (entry.data.specialties || []).join(' & '),
     bio: entry.data.bio,
     avatar_url: entry.data.profileImage,
   }));
 }
 
 // Prepare data for Gallery
-const galleryWorks = await getWorksByLocation("main_gallery");
-const galleryImages = galleryWorks.flatMap((work) =>
-  work.data.images.map((img) => ({
-    src: img,
-    alt: work.data.title,
-    slug: work.slug,
-  })),
-);
+const galleryWorks = await getWorks({ tags: ['main_gallery'] });
+const galleryImages = (galleryWorks || []).map((work: any) => ({
+  src: work.image_url,
+  alt: work.title || 'Gallery Image',
+  slug: work.id, // Using ID as slug for now since works table doesn't have slug, or we can use title if unique
+}));
 ---
 
 <Layout title="Cuba Tattoo Studio | Albuquerque">
