@@ -18,12 +18,12 @@ export default defineConfig({
       compression(),
       {
         name: 'inject-shim',
-        enforce: 'pre',
-        transform(code, id) {
-          // Inject shim into the Astro React renderer
-          // This ensures it runs before React is used
-          if (id.includes('@astrojs/react') && id.includes('server.js')) {
-            return `
+        enforce: 'post',
+        renderChunk(code, chunk) {
+          // Inject shim into the Astro React renderer chunk
+          // This runs after bundling and ensures the polyfill is at the top of the chunk
+          if (chunk.fileName.includes('_@astro-renderers')) {
+            const polyfill = `
 if (typeof globalThis.MessageChannel === 'undefined') {
   class MockMessagePort {
     constructor() {
@@ -46,7 +46,8 @@ if (typeof globalThis.MessageChannel === 'undefined') {
   };
   globalThis.MessagePort = MockMessagePort;
 }
-${code}`;
+`;
+            return polyfill + code;
           }
         }
       }
