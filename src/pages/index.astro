@@ -15,7 +15,12 @@ import { supabase } from '../lib/supabase';
 
 // Prepare data for Hero (dome images)
 const domeWorks = await getWorks({ tags: ['dome_gallery'] });
-const domeImages = (domeWorks || []).map((work: any) => work.image_url);
+const domeImages = (domeWorks || []).map((work: any) => {
+  const url = work.image_url;
+  // Append query params for Supabase Image Transformation if it's a Supabase URL
+  // Even if it's not, appending params usually doesn't break standard URLs
+  return `${url}?width=300&resize=contain`;
+});
 
 // Prepare data for Services
 const services = await getCollection('services');
