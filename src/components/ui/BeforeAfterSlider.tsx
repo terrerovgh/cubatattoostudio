@@ -12,11 +12,16 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImage, afte
     const [isDragging, setIsDragging] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const handleMove = (event: React.MouseEvent | React.TouchEvent | MouseEvent | TouchEvent) => {
+    const handleMove = (event: MouseEvent | TouchEvent) => {
         if (!isDragging || !containerRef.current) return;
 
+        // Prevent default behavior on touch to avoid scrolling interference
+        if ('touches' in event && event.cancelable) {
+            event.preventDefault();
+        }
+
         const containerRect = containerRef.current.getBoundingClientRect();
-        const clientX = 'touches' in event ? event.touches[0].clientX : (event as any).clientX;
+        const clientX = 'touches' in event ? event.touches[0].clientX : (event as MouseEvent).clientX;
 
         const position = ((clientX - containerRect.left) / containerRect.width) * 100;
         setSliderPosition(Math.min(Math.max(position, 0), 100));
@@ -29,14 +34,14 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImage, afte
         if (isDragging) {
             window.addEventListener('mousemove', handleMove);
             window.addEventListener('mouseup', handleMouseUp);
-            window.addEventListener('touchmove', handleMove);
+            window.addEventListener('touchmove', handleMove, { passive: false });
             window.addEventListener('touchend', handleMouseUp);
         }
 
         return () => {
             window.removeEventListener('mousemove', handleMove);
             window.removeEventListener('mouseup', handleMouseUp);
-            window.removeEventListener('touchmove', handleMove);
+            window.removeEventListener('touchmove', handleMove); // removeEventListener doesn't need options usually
             window.removeEventListener('touchend', handleMouseUp);
         };
     }, [isDragging]);
