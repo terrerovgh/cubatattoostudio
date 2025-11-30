@@ -109,6 +109,43 @@ export async function getArtistsWithWorks() {
 }
 
 /**
+ * Get artist by slug for portfolio page
+ */
+export async function getArtistBySlug(slug: string) {
+    const { data, error } = await supabase
+        .from('artists')
+        .select('*')
+        .eq('slug', slug)
+        .eq('is_active', true)
+        .maybeSingle();
+
+    if (error) {
+        console.error(`Error fetching artist ${slug}:`, error);
+        return null;
+    }
+    return data;
+}
+
+/**
+ * Get works by artist ID for portfolio page
+ */
+export async function getWorksByArtistId(artistId: string) {
+    const { data, error } = await supabase
+        .from('works')
+        .select('*')
+        .eq('artist_id', artistId)
+        .eq('published', true)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error(`Error fetching works for artist ${artistId}:`, error);
+        return [];
+    }
+    return data || [];
+}
+
+
+/**
  * Get artist by ID with extended data
  */
 export async function getArtistExtended(artistId: string) {
@@ -150,6 +187,25 @@ export async function getWorkExtended(workId: string) {
     if (error) throw error;
     return data;
 }
+
+/**
+ * Get work by slug for detail page
+ */
+export async function getWorkBySlug(slug: string) {
+    const { data, error } = await supabase
+        .from('works')
+        .select('*, artist:artist_id(*)')
+        .eq('slug', slug)
+        .eq('published', true)
+        .maybeSingle();
+
+    if (error) {
+        console.error(`Error fetching work ${slug}:`, error);
+        return null;
+    }
+    return data;
+}
+
 
 /**
  * Create or update work with artist relationships

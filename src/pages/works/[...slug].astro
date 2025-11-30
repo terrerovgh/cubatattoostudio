@@ -1,75 +1,126 @@
 ---
-import { getCollection, getEntry } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
+import Layout from '../../layouts/Layout.astro';
+import { getWorkBySlug } from '../../lib/supabase-helpers';
 
 export async function getStaticPaths() {
-    const works = await getCollection("works");
-    return works.map((entry) => ({
-        params: { slug: entry.slug },
-        props: { entry },
-    }));
+    return [];
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { slug } = Astro.params;
+const props = Astro.props;
 
-// Resolve the artist reference
-const artist = await getEntry(entry.data.artist);
+let workData: any = null;
+let artistData: any = null;
+let ContentComponent: any = null;
+
+// SSR mode - fetch from Supabase
+if (!slug) {
+    return Astro.redirect('/404');
+}
+
+const dbWork = await getWorkBySlug(slug);
+
+if (dbWork) {
+    workData = {
+        title: dbWork.title,
+        description: dbWork.description,
+        images: dbWork.images || (dbWork.image_url ? [dbWork.image_url] : []),
+        style: dbWork.style, // Assuming style is a field or we might need to map it
+        date: new Date(dbWork.created_at), // Or a specific date field if it exists
+        tags: dbWork.tags,
+    };
+
+    if (dbWork.artist) {
+        artistData = {
+            name: dbWork.artist.name,
+            slug: dbWork.artist.slug,
+        };
+    }
+} else {
+    return Astro.redirect('/404');
+}
 ---
 
-<Layout title={`${entry.data.title} - Cuba Tattoo Studio`}>
-    <main class="container mx-auto px-4 py-12">
+<Layout title={`${workData.title} - Cuba Tattoo Studio`}>
+    <main class="container mx-auto px-4 py-32 min-h-screen">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
-                <a
-                    href={`/artists/${artist.slug}`}
-                    class="text-primary hover:underline mb-4 inline-block"
-                >
-                    &larr; Back to {artist.data.name}
-                </a>
-                <h1 class="text-4xl font-bold mb-2">{entry.data.title}</h1>
-                <p class="text-xl text-gray-400">{entry.data.description}</p>
+                {
+                    artistData && (
+                        <a
+                            href={`/artists/${artistData.slug}`}
+                            class="text-neutral-500 hover:text-white transition-colors mb-4 inline-flex items-center gap-2"
+                        >
+                            &larr; Back to {artistData.name}
+                        </a>
+                    )
+                }
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white">{workData.title}</h1>
+                <p class="text-xl text-neutral-400">{workData.description}</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
                 {
-                    entry.data.images.map((image) => (
-                        <img
-                            src={image}
-                            alt={entry.data.title}
-                            class="w-full h-auto rounded-lg shadow-lg"
-                        />
-                    ))
+                    workData.images &&
+                        workData.images.map((image: string) => (
+                            <img
+                                src={image}
+                                alt={workData.title}
+                                class="w-full h-auto rounded-lg shadow-lg bg-neutral-900"
+                            />
+                        ))
                 }
             </div>
 
-            <div class="bg-secondary/10 p-6 rounded-lg mb-8">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <span class="block text-sm text-gray-500">Style</span>
-                        <span class="font-medium">{entry.data.style}</span>
-                    </div>
-                    <div>
-                        <span class="block text-sm text-gray-500">Date</span>
-                        <span class="font-medium"
-                            >{entry.data.date.toLocaleDateString()}</span
-                        >
-                    </div>
-                    <div>
-                        <span class="block text-sm text-gray-500">Artist</span>
-                        <a
-                            href={`/artists/${artist.slug}`}
-                            class="font-medium hover:text-primary transition-colors"
-                        >
-                            {artist.data.name}
-                        </a>
-                    </div>
+            <div class="bg-neutral-900/50 border border-neutral-800 p-6 rounded-xl mb-8">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {
+                        workData.style && (
+                            <div>
+                                <span class="block text-xs uppercase tracking-widest text-neutral-500 mb-1">
+                                    Style
+                                </span>
+                                <span class="font-medium text-white">{workData.style}</span>
+                            </div>
+                        )
+                    }
+                    {
+                        workData.date && (
+                            <div>
+                                <span class="block text-xs uppercase tracking-widest text-neutral-500 mb-1">
+                                    Date
+                                </span>
+                                <span class="font-medium text-white">
+                                    {workData.date.toLocaleDateString()}
+                                </span>
+                            </div>
+                        )
+                    }
+                    {
+                        artistData && (
+                            <div>
+                                <span class="block text-xs uppercase tracking-widest text-neutral-500 mb-1">
+                                    Artist
+                                </span>
+                                <a
+                                    href={`/artists/${artistData.slug}`}
+                                    class="font-medium text-white hover:text-neutral-300 transition-colors"
+                                >
+                                    {artistData.name}
+                                </a>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
 
-            <div class="prose prose-invert max-w-none">
-                <Content />
-            </div>
+            {
+                ContentComponent && (
+                    <div class="prose prose-invert max-w-none">
+                        <ContentComponent />
+                    </div>
+                )
+            }
         </div>
     </main>
 </Layout>

@@ -11,14 +11,20 @@ interface MediaLibraryProps {
 }
 
 const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, multiple = false, initialSelected = [] }) => {
+    const [activeTab, setActiveTab] = useState<'uploads' | 'works'>('uploads');
     const [assets, setAssets] = useState<any[]>([]);
+    const [works, setWorks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [selected, setSelected] = useState<string[]>(initialSelected);
 
     useEffect(() => {
-        loadAssets();
-    }, []);
+        if (activeTab === 'uploads') {
+            loadAssets();
+        } else {
+            loadWorks();
+        }
+    }, [activeTab]);
 
     const loadAssets = async () => {
         setLoading(true);
@@ -32,6 +38,51 @@ const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, multiple
             setAssets(filesWithUrl);
         } catch (error) {
             console.error('Error loading assets:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loadWorks = async () => {
+        setLoading(true);
+        try {
+            // We need to fetch works and extract their images
+            // We'll use a direct query here to get all works with images
+            const { data, error } = await supabase
+                .from('works')
+                .select('id, title, image_url, images')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            // Flatten works into a list of images
+            const workImages: any[] = [];
+            data?.forEach((work: any) => {
+                // Main image
+                if (work.image_url) {
+                    workImages.push({
+                        id: `${work.id}-main`,
+                        url: work.image_url,
+                        name: work.title,
+                        source: 'work'
+                    });
+                }
+                // Gallery images
+                if (work.images && Array.isArray(work.images)) {
+                    work.images.forEach((img: string, idx: number) => {
+                        workImages.push({
+                            id: `${work.id}-${idx}`,
+                            url: img,
+                            name: `${work.title} (${idx + 1})`,
+                            source: 'work'
+                        });
+                    });
+                }
+            });
+
+            setWorks(workImages);
+        } catch (error) {
+            console.error('Error loading works:', error);
         } finally {
             setLoading(false);
         }
@@ -104,6 +155,28 @@ const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, multiple
                     </div>
                 </div>
 
+                {/* Tabs */}
+                <div className="flex border-b border-zinc-800 px-6">
+                    <button
+                        onClick={() => setActiveTab('uploads')}
+                        className={`border-b-2 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'uploads'
+                            ? 'border-white text-white'
+                            : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                            }`}
+                    >
+                        Uploaded Assets
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('works')}
+                        className={`border-b-2 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'works'
+                            ? 'border-white text-white'
+                            : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                            }`}
+                    >
+                        From Works
+                    </button>
+                </div>
+
                 <div className="flex-1 overflow-y-auto p-6">
                     {loading ? (
                         <div className="flex h-full items-center justify-center">
@@ -111,36 +184,38 @@ const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, multiple
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                            {/* Upload Button */}
-                            <label className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-zinc-700 bg-zinc-900/50 transition-colors hover:border-zinc-500 hover:bg-zinc-900">
-                                <input
-                                    type="file"
-                                    className="hidden"
-                                    accept="image/*,video/*"
-                                    onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
-                                    disabled={uploading}
-                                />
-                                {uploading ? (
-                                    <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
-                                ) : (
-                                    <>
-                                        <ImageIcon className="h-8 w-8 text-zinc-500" />
-                                        <span className="mt-2 text-xs font-medium text-zinc-400">Upload New</span>
-                                    </>
-                                )}
-                            </label>
+                            {/* Upload Button (Only for Uploads tab) */}
+                            {activeTab === 'uploads' && (
+                                <label className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-zinc-700 bg-zinc-900/50 transition-colors hover:border-zinc-500 hover:bg-zinc-900">
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        accept="image/*,video/*"
+                                        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
+                                        disabled={uploading}
+                                    />
+                                    {uploading ? (
+                                        <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+                                    ) : (
+                                        <>
+                                            <ImageIcon className="h-8 w-8 text-zinc-500" />
+                                            <span className="mt-2 text-xs font-medium text-zinc-400">Upload New</span>
+                                        </>
+                                    )}
+                                </label>
+                            )}
 
-                            {assets.map((asset) => {
-                                const isSelected = selected.includes(asset.url);
+                            {(activeTab === 'uploads' ? assets : works).map((item) => {
+                                const isSelected = selected.includes(item.url);
                                 return (
                                     <div
-                                        key={asset.name}
-                                        onClick={() => toggleSelection(asset.url)}
+                                        key={item.id || item.name}
+                                        onClick={() => toggleSelection(item.url)}
                                         className={`group relative aspect-square cursor-pointer overflow-hidden rounded-lg border bg-zinc-900 ${isSelected ? 'border-white ring-2 ring-white' : 'border-zinc-800'}`}
                                     >
                                         <img
-                                            src={asset.url}
-                                            alt={asset.name}
+                                            src={item.url}
+                                            alt={item.name}
                                             className="h-full w-full object-cover transition-transform group-hover:scale-105"
                                         />
                                         {isSelected && (
@@ -150,15 +225,17 @@ const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, multiple
                                         )}
                                         <div className="absolute inset-0 flex flex-col justify-between bg-black/60 opacity-0 transition-opacity group-hover:opacity-100 p-2">
                                             <div className="flex justify-end">
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleDelete(asset.name);
-                                                    }}
-                                                    className="rounded-full bg-red-500/20 p-1.5 text-red-400 hover:bg-red-500 hover:text-white"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </button>
+                                                {activeTab === 'uploads' && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDelete(item.name);
+                                                        }}
+                                                        className="rounded-full bg-red-500/20 p-1.5 text-red-400 hover:bg-red-500 hover:text-white"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </button>
+                                                )}
                                             </div>
                                             {!multiple && (
                                                 <button
@@ -166,6 +243,12 @@ const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, multiple
                                                 >
                                                     Select
                                                 </button>
+                                            )}
+                                            {/* Show name for works */}
+                                            {activeTab === 'works' && (
+                                                <div className="absolute bottom-0 left-0 right-0 p-2 text-xs text-white truncate bg-black/50">
+                                                    {item.name}
+                                                </div>
                                             )}
                                         </div>
                                     </div>

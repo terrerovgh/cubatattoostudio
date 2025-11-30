@@ -31,6 +31,19 @@ const ServicesSection: React.FC = () => {
         fetchServices();
     }, []);
 
+    // Trigger reveal animations after services are loaded and rendered
+    useEffect(() => {
+        if (!loading && services.length > 0) {
+            // Give DOM a moment to render
+            setTimeout(() => {
+                const revealElements = document.querySelectorAll('#services .reveal-hidden');
+                revealElements.forEach((el) => {
+                    el.classList.add('reveal-visible');
+                });
+            }, 100);
+        }
+    }, [loading, services]);
+
     if (loading) {
         return (
             <section id="services" className="py-32 bg-black relative overflow-hidden min-h-[50vh] flex items-center justify-center">

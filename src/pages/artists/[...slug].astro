@@ -1,35 +1,106 @@
----
-import { getCollection } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import Navbar from "../../components/Navbar.astro";
-import Footer from "../../components/Footer.astro";
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { supabase } from '../../lib/supabase';
+import { getArtistBySlug, getWorksByArtistId } from '../../lib/supabase-helpers';
+
+type DbArtist = {
+    id: string;
+    slug: string;
+    name: string;
+    specialty: string;
+    bio: string;
+    avatar_url: string;
+    social?: { instagram?: string };
+    stats?: Array<{ label: string; value: string }>;
+};
 
 export async function getStaticPaths() {
-    const artists = await getCollection("artists");
-    return artists.map((entry) => ({
-        params: { slug: entry.slug },
-        props: { entry },
-    }));
+    // First, try to get artists from Supabase
+    const { data: dbArtists, error } = await supabase
+        .from('artists')
+        .select('*')
+        .eq('is_active', true);
+
+    if (!error && dbArtists && dbArtists.length > 0) {
+        // Use database artists
+        return dbArtists.map((artist: any) => ({
+            params: { slug: artist.slug },
+            props: { artist, isDbArtist: true },
+        }));
+    }
+
+    return [];
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+type Props = {
+    artist?: DbArtist;
+    isDbArtist: boolean;
+};
 
-// Fetch works for this artist
-import { getWorksByArtist } from "../../lib/content-helpers";
-const works = await getWorksByArtist(entry.slug);
+// In SSR mode, getStaticPaths is ignored, so we need to fetch data from params
+const { slug } = Astro.params;
+const propsFromStaticPaths = Astro.props as Props;
 
-// Get images from works for the gallery
-const galleryImages = works.flatMap((work) => work.data.images);
+// Prepare artist data based on source
+let artistData: any;
+let works: any[] = [];
+let galleryImages: string[] = [];
+let ContentComponent: any = null;
+let isDbArtist = propsFromStaticPaths.isDbArtist;
+
+// Check if we have props from getStaticPaths (SSG mode) or need to fetch (SSR mode)
+if (propsFromStaticPaths.artist) {
+    // SSG mode - use props from getStaticPaths
+    const { artist } = propsFromStaticPaths;
+
+    if (isDbArtist && artist) {
+        // Database artist
+        artistData = artist;
+        const dbWorks = await getWorksByArtistId(artist.id);
+        works = dbWorks;
+        // Map works to include necessary data for display and linking
+        galleryImages = dbWorks
+            .map((work: any) => ({
+                src: work.image_url || (work.images && work.images[0]),
+                title: work.title,
+                slug: work.slug,
+                id: work.id,
+            }))
+            .filter((img: any) => img.src);
+    }
+} else {
+    // SSR mode - fetch data based on slug
+    if (!slug) {
+        return Astro.redirect('/404');
+    }
+
+    // Try to fetch from database first
+    const dbArtist = await getArtistBySlug(slug);
+
+    if (dbArtist) {
+        isDbArtist = true;
+        artistData = dbArtist;
+        const dbWorks = await getWorksByArtistId(dbArtist.id);
+        works = dbWorks;
+        galleryImages = dbWorks
+            .map((work: any) => ({
+                src: work.image_url || (work.images && work.images[0]),
+                title: work.title,
+                slug: work.slug,
+                id: work.id,
+            }))
+            .filter((img: any) => img.src);
+    } else {
+        return Astro.redirect('/404');
+    }
+}
 ---
 
-<Layout title={`${entry.data.name} | Cuba Tattoo Studio`}>
+<Layout title={`${artistData.name} | Cuba Tattoo Studio`}>
     <Navbar />
 
-    <main
-        id="artist-content"
-        class="pt-32 pb-20 min-h-screen fade-enter fade-enter-active"
-    >
+    <main id="artist-content" class="pt-32 pb-20 min-h-screen fade-enter fade-enter-active">
         <div class="max-w-7xl mx-auto px-6">
             <!-- Header Section -->
             <div class="flex flex-col lg:flex-row gap-12 lg:gap-24 mb-24">
@@ -38,34 +109,36 @@ const galleryImages = works.flatMap((work) => work.data.images);
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 text-[10px] uppercase tracking-widest font-semibold mb-6"
                     >
-                        <span
-                            class="w-2 h-2 rounded-full bg-green-500 animate-pulse"
-                        ></span>
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                         Booking Open
                     </div>
 
                     <h1
                         class="text-6xl md:text-8xl font-medium tracking-tighter text-neutral-900 dark:text-white mb-2"
                     >
-                        {entry.data.name}.
+                        {artistData.name}.
                     </h1>
-                    <h2
-                        class="text-xl text-neutral-500 dark:text-neutral-400 font-medium mb-8"
-                    >
-                        {entry.data.specialties.join(" & ")}
+                    <h2 class="text-xl text-neutral-500 dark:text-neutral-400 font-medium mb-8">
+                        {
+                            artistData.specialties
+                                ? Array.isArray(artistData.specialties)
+                                    ? artistData.specialties.join(' & ')
+                                    : artistData.specialty || artistData.specialties
+                                : artistData.specialty || ''
+                        }
                     </h2>
 
                     <p
                         class="text-lg md:text-xl font-light leading-relaxed text-neutral-600 dark:text-neutral-300 mb-10 max-w-xl"
                     >
-                        {entry.data.bio}
+                        {artistData.bio}
                     </p>
 
                     <!-- Stats Grid -->
                     {
-                        entry.data.stats && (
+                        artistData.stats && (
                             <div class="grid grid-cols-3 gap-8 border-y border-neutral-200 dark:border-neutral-800 py-8 mb-10">
-                                {entry.data.stats.map((stat) => (
+                                {artistData.stats.map((stat: any) => (
                                     <div>
                                         <div class="text-[10px] uppercase tracking-widest text-neutral-500 mb-1">
                                             {stat.label}
@@ -87,9 +160,9 @@ const galleryImages = works.flatMap((work) => work.data.images);
                             Request Consultation
                         </a>
                         {
-                            entry.data.social?.instagram && (
+                            artistData.social?.instagram && (
                                 <a
-                                    href={entry.data.social.instagram}
+                                    href={artistData.social.instagram}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="inline-flex items-center justify-center h-12 w-12 rounded-full border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
@@ -116,12 +189,7 @@ const galleryImages = works.flatMap((work) => work.data.images);
                                                 ry="5"
                                             />
                                             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                                            <line
-                                                x1="17.5"
-                                                x2="17.51"
-                                                y1="6.5"
-                                                y2="6.5"
-                                            />
+                                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
                                         </>
                                     </svg>
                                 </a>
@@ -139,9 +207,9 @@ const galleryImages = works.flatMap((work) => work.data.images);
                         class="relative aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800"
                     >
                         <img
-                            src={entry.data.profileImage}
+                            src={artistData.avatar_url}
                             class="absolute inset-0 w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-1000"
-                            alt={entry.data.name}
+                            alt={artistData.name}
                         />
                         <div
                             class="absolute inset-0 border border-black/5 dark:border-white/10 rounded-2xl z-10 pointer-events-none"
@@ -153,39 +221,53 @@ const galleryImages = works.flatMap((work) => work.data.images);
 
             <!-- Portfolio Grid -->
             <div class="mb-12 flex items-center justify-between reveal-hidden">
-                <h3 class="text-2xl font-medium tracking-tight">
-                    Selected Works
-                </h3>
+                <h3 class="text-2xl font-medium tracking-tight">Selected Works</h3>
                 <span class="text-xs text-neutral-500 font-mono"
                     >01 — {
                         galleryImages.length < 10
-                            ? "0" + galleryImages.length
+                            ? '0' + galleryImages.length
                             : galleryImages.length
                     }</span
                 >
             </div>
 
-            <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                {
-                    galleryImages.map((src, index) => (
-                        <div
-                            class="mb-6 break-inside-avoid group relative overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800 cursor-zoom-in reveal-hidden"
-                            style={`transition-delay: ${0.1 * (index % 3)}s;`}
-                        >
-                            <img
-                                src={src}
-                                class="w-full h-auto object-cover transition-opacity duration-500"
-                                alt="Portfolio Piece"
-                            />
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                        </div>
-                    ))
-                }
-            </div>
+            {
+                galleryImages.length > 0 ? (
+                    <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                        {galleryImages.map((item: any, index: number) => (
+                            <div
+                                class="mb-6 break-inside-avoid group relative overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800 cursor-pointer reveal-hidden"
+                                style={`transition-delay: ${0.1 * (index % 3)}s;`}
+                            >
+                                <a href={`/works/${item.slug}`} class="block relative">
+                                    <img
+                                        src={item.src}
+                                        class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                                        alt={item.title || 'Portfolio Piece'}
+                                    />
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                        <span class="text-white font-medium px-4 py-2 bg-black/50 rounded-full backdrop-blur-sm">
+                                            View Details
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div class="text-center py-12 text-neutral-500">
+                        <p>No works available yet.</p>
+                    </div>
+                )
+            }
 
-            <div class="prose prose-invert max-w-none mt-20">
-                <Content />
-            </div>
+            {
+                !isDbArtist && ContentComponent && (
+                    <div class="prose prose-invert max-w-none mt-20">
+                        <ContentComponent />
+                    </div>
+                )
+            }
         </div>
     </main>
 
@@ -226,10 +308,10 @@ const galleryImages = works.flatMap((work) => work.data.images);
 
 <script>
     // Add fade-enter-active class on load
-    document.addEventListener("DOMContentLoaded", () => {
-        const content = document.getElementById("artist-content");
+    document.addEventListener('DOMContentLoaded', () => {
+        const content = document.getElementById('artist-content');
         if (content) {
-            content.classList.add("fade-enter-active");
+            content.classList.add('fade-enter-active');
         }
     });
 </script>

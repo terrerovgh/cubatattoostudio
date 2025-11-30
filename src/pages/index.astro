@@ -8,9 +8,7 @@ import GallerySection from '../components/GallerySection';
 import BookingSection from '../components/BookingSection';
 import FooterSection from '../components/FooterSection';
 import SupabaseProbe from '../components/SupabaseProbe.tsx';
-import { getWorksByLocation } from '../lib/content-helpers';
 import { getWorks } from '../lib/supabase-helpers';
-import { getCollection } from 'astro:content';
 import { supabase } from '../lib/supabase';
 
 // Prepare data for Hero (dome images)
@@ -22,35 +20,6 @@ const domeImages = (domeWorks || []).map((work: any) => {
   return `${url}?width=300&resize=contain`;
 });
 
-// Prepare data for Services
-const services = await getCollection('services');
-const iconMap: Record<string, any> = {
-  PenTool: 'PenTool',
-  Pencil: 'Pencil',
-  Feather: 'Feather',
-};
-
-async function getServiceImage(service: any) {
-  const works = await getWorksByLocation(service.data.relatedTag);
-  if (works.length > 0) {
-    return works[0].data.images[0];
-  }
-  return service.data.coverImage;
-}
-
-const servicesWithImages = await Promise.all(
-  services.map(async (service) => {
-    const image = await getServiceImage(service);
-    return {
-      id: service.id,
-      title: service.data.title,
-      description: service.data.description,
-      image,
-      icon: service.data.icon || 'PenTool',
-    };
-  })
-);
-
 // Prepare data for Artists
 let artists: any[] = [];
 const { data: artistsData, error } = await supabase
@@ -61,15 +30,6 @@ const { data: artistsData, error } = await supabase
 
 if (!error && artistsData) {
   artists = artistsData;
-} else {
-  const contentArtists = await getCollection('artists');
-  artists = contentArtists.map((entry) => ({
-    slug: entry.slug,
-    name: entry.data.name,
-    specialty: (entry.data.specialties || []).join(' & '),
-    bio: entry.data.bio,
-    avatar_url: entry.data.profileImage,
-  }));
 }
 
 // Prepare data for Gallery
