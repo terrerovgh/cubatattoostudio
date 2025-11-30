@@ -1,6 +1,8 @@
 ---
 import DashboardLayout from "../../../layouts/DashboardLayout";
 import VisualEditor from "../../../components/admin/editor/VisualEditor";
+import Layout from "../../../layouts/Layout.astro";
+import AdminGuard from "../../../components/admin/AdminGuard";
 
 export const prerender = false;
 
@@ -11,9 +13,13 @@ if (!page) {
 }
 ---
 
-<DashboardLayout
-    client:only="react"
-    title={`Edit ${page.charAt(0).toUpperCase() + page.slice(1)}`}
->
-    <VisualEditor client:only="react" pageId={page} section={page} />
-</DashboardLayout>
+<Layout title={`Edit ${page.charAt(0).toUpperCase() + page.slice(1)} | Cuba Tattoo Studio`}>
+    <AdminGuard client:only="react">
+        <DashboardLayout
+            client:only="react"
+            title={`Edit ${page.charAt(0).toUpperCase() + page.slice(1)}`}
+        >
+            <VisualEditor client:only="react" pageId={page} section={page} />
+        </DashboardLayout>
+    </AdminGuard>
+</Layout>
