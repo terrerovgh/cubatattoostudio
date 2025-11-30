@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { PenTool, Pencil, Feather, Anchor, Zap, Flower2, Layers } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { Database } from '../types/supabase';
 import BeforeAfterSlider from './ui/BeforeAfterSlider';
 
 type Service = Database['public']['Tables']['services']['Row'];
-
-const iconMap: Record<string, any> = {
-    PenTool,
-    Pencil,
-    Feather,
-    Anchor,
-    Zap,
-    Flower2,
-    Layers
-};
 
 const ServicesSection: React.FC = () => {
     const [services, setServices] = useState<Service[]>([]);
@@ -41,6 +31,18 @@ const ServicesSection: React.FC = () => {
         fetchServices();
     }, []);
 
+    if (loading) {
+        return (
+            <section id="services" className="py-32 bg-black relative overflow-hidden min-h-[50vh] flex items-center justify-center">
+                <div className="text-neutral-500">Loading services...</div>
+            </section>
+        );
+    }
+
+    if (services.length === 0) {
+        return null; // Or render a placeholder if preferred
+    }
+
     return (
         <section id="services" className="py-32 bg-black relative overflow-hidden">
             {/* Background Elements */}
@@ -62,7 +64,8 @@ const ServicesSection: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {services.map((service, index) => {
-                        const Icon = service.icon && iconMap[service.icon] ? iconMap[service.icon] : PenTool;
+                        // @ts-ignore - Dynamic access to Lucide icons
+                        const Icon = (service.icon && LucideIcons[service.icon]) ? LucideIcons[service.icon] : LucideIcons.PenTool;
                         const isCoverUp = service.slug === 'cover-up' || (service.before_image_url && service.after_image_url);
 
                         return (

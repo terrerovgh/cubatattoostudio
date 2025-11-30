@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 import type { Database } from '../../../types/supabase';
 import { ArrowLeft, Save, Image as ImageIcon, X } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import MediaLibrary from '../media/MediaLibrary';
 
 type ServiceInsert = Database['public']['Tables']['services']['Insert'] & {
@@ -102,6 +103,10 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
         }
     };
 
+    // Dynamic Icon Preview
+    // @ts-ignore
+    const IconPreview = formData.icon && LucideIcons[formData.icon] ? LucideIcons[formData.icon] : null;
+
     if (serviceId && loading) return <div className="text-zinc-400">Loading service...</div>;
 
     return (
@@ -148,14 +153,22 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
 
                     <div className="space-y-2">
                         <label htmlFor="icon" className="text-sm font-medium text-zinc-400">Icon (Lucide Name)</label>
-                        <input
-                            type="text"
-                            id="icon"
-                            name="icon"
-                            value={formData.icon || ''}
-                            onChange={handleChange}
-                            className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-white focus:border-zinc-700 focus:outline-none"
-                        />
+                        <div className="flex gap-2">
+                            <input
+                                type="text"
+                                id="icon"
+                                name="icon"
+                                value={formData.icon || ''}
+                                onChange={handleChange}
+                                className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-white focus:border-zinc-700 focus:outline-none"
+                            />
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950">
+                                {IconPreview ? <IconPreview className="h-5 w-5 text-white" /> : <span className="text-xs text-zinc-600">?</span>}
+                            </div>
+                        </div>
+                        <p className="text-xs text-zinc-500">
+                            Use any icon name from <a href="https://lucide.dev/icons" target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">Lucide Icons</a>
+                        </p>
                     </div>
 
                     <div className="space-y-2">

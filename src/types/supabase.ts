@@ -64,6 +64,8 @@ export interface Database {
                     description: string | null
                     icon: string | null
                     cover_image_url: string | null
+                    before_image_url: string | null
+                    after_image_url: string | null
                     display_order: number
                     is_active: boolean
                     created_at: string
@@ -76,6 +78,8 @@ export interface Database {
                     description?: string | null
                     icon?: string | null
                     cover_image_url?: string | null
+                    before_image_url?: string | null
+                    after_image_url?: string | null
                     display_order?: number
                     is_active?: boolean
                     created_at?: string
@@ -88,6 +92,8 @@ export interface Database {
                     description?: string | null
                     icon?: string | null
                     cover_image_url?: string | null
+                    before_image_url?: string | null
+                    after_image_url?: string | null
                     display_order?: number
                     is_active?: boolean
                     created_at?: string
