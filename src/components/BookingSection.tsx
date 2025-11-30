@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronDown, Mail, Phone } from 'lucide-react';
+import { ChevronDown, Mail, Phone, Calendar, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { getSiteContent } from '../lib/supabase-helpers';
+import { supabase } from '../lib/supabase';
+import type { Database } from '../types/supabase';
+
+type Artist = Database['public']['Tables']['artists']['Row'];
+type Service = Database['public']['Tables']['services']['Row'];
 
 interface BookingContent {
     title?: string;
@@ -33,20 +38,104 @@ const BookingSection: React.FC = () => {
         button_text: "Request Appointment"
     });
 
+    const [artists, setArtists] = useState<Artist[]>([]);
+    const [services, setServices] = useState<Service[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
+
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        artist_id: '',
+        service_id: '',
+        date: '',
+        time: '',
+        description: ''
+    });
+
     useEffect(() => {
-        const loadContent = async () => {
+        const loadData = async () => {
             try {
-                const data = await getSiteContent('booking');
-                if (data && data.content) {
-                    setContent(prev => ({ ...prev, ...data.content }));
+                // Load content
+                const contentData = await getSiteContent('booking');
+                if (contentData && contentData.content) {
+                    setContent(prev => ({ ...prev, ...contentData.content }));
                 }
+
+                // Load artists
+                const { data: artistsData } = await supabase
+                    .from('artists')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('name');
+                if (artistsData) setArtists(artistsData);
+
+                // Load services
+                const { data: servicesData } = await supabase
+                    .from('services')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order');
+                if (servicesData) setServices(servicesData);
+
             } catch (error) {
-                console.error('Error loading booking content:', error);
+                console.error('Error loading booking data:', error);
             }
         };
 
-        loadContent();
+        loadData();
     }, []);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({ ...prev, [id]: value }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+        setSuccess(false);
+
+        try {
+            // Combine date and time
+            const startDateTime = new Date(`${formData.date}T${formData.time}`);
+            // Default duration 1 hour for now, or could be based on service
+            const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
+
+            const { error: submitError } = await supabase
+                .from('appointments')
+                .insert([{
+                    client_name: formData.name,
+                    client_email: formData.email,
+                    artist_id: formData.artist_id || null,
+                    service_id: formData.service_id || null,
+                    start_time: startDateTime.toISOString(),
+                    end_time: endDateTime.toISOString(),
+                    notes: formData.description,
+                    status: 'pending'
+                }]);
+
+            if (submitError) throw submitError;
+
+            setSuccess(true);
+            setFormData({
+                name: '',
+                email: '',
+                artist_id: '',
+                service_id: '',
+                date: '',
+                time: '',
+                description: ''
+            });
+        } catch (err: any) {
+            console.error('Error submitting booking:', err);
+            setError(err.message || 'Failed to submit booking request. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <section id="booking" className="py-32 bg-neutral-950 border-t border-neutral-900">
@@ -61,100 +150,198 @@ const BookingSection: React.FC = () => {
                             {content.subtitle}
                         </p>
 
-                        <form className="space-y-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="group">
-                                    <label
-                                        htmlFor="name"
-                                        className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
-                                    >
-                                        Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700"
-                                        placeholder="Jane Doe"
-                                    />
+                        {success ? (
+                            <div className="bg-emerald-900/20 border border-emerald-900/50 rounded-2xl p-8 text-center">
+                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-900/30 text-emerald-400 mb-4">
+                                    <CheckCircle className="w-8 h-8" />
                                 </div>
-                                <div className="group">
-                                    <label
-                                        htmlFor="email"
-                                        className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
-                                    >
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700"
-                                        placeholder="jane@example.com"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="group">
-                                <label
-                                    htmlFor="artist-select"
-                                    className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                <h4 className="text-xl font-medium text-white mb-2">Request Received!</h4>
+                                <p className="text-neutral-400">
+                                    We've received your appointment request. We'll be in touch shortly to confirm the details.
+                                </p>
+                                <button
+                                    onClick={() => setSuccess(false)}
+                                    className="mt-6 text-sm font-medium text-emerald-400 hover:text-emerald-300"
                                 >
-                                    Preferred Artist
-                                </label>
-                                <div className="relative">
-                                    <select
-                                        id="artist-select"
-                                        className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 appearance-none cursor-pointer"
-                                    >
-                                        <option className="bg-neutral-900">No Preference</option>
-                                        <option className="bg-neutral-900">David (Realism)</option>
-                                        <option className="bg-neutral-900">Nina (Fine Line)</option>
-                                        <option className="bg-neutral-900">Karli (Neo Traditional)</option>
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
-                                        <ChevronDown className="w-4 h-4" />
+                                    Book another session
+                                </button>
+                            </div>
+                        ) : (
+                            <form className="space-y-8" onSubmit={handleSubmit}>
+                                {error && (
+                                    <div className="flex items-center gap-2 p-4 rounded-lg bg-red-900/20 border border-red-900/50 text-red-400">
+                                        <AlertCircle className="w-5 h-5" />
+                                        <p className="text-sm">{error}</p>
+                                    </div>
+                                )}
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="group">
+                                        <label
+                                            htmlFor="name"
+                                            className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                        >
+                                            Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            required
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700 focus:outline-none border-b border-neutral-800 focus:border-white transition-colors"
+                                            placeholder="Jane Doe"
+                                        />
+                                    </div>
+                                    <div className="group">
+                                        <label
+                                            htmlFor="email"
+                                            className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                        >
+                                            Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            required
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700 focus:outline-none border-b border-neutral-800 focus:border-white transition-colors"
+                                            placeholder="jane@example.com"
+                                        />
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="group">
-                                <label className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-4">
-                                    Placement & Size
-                                </label>
-                                {/* Custom Range Slider */}
-                                <div className="w-full bg-neutral-800 h-1 rounded-full relative mb-4">
-                                    <div className="absolute top-0 left-0 h-full bg-white rounded-full w-1/2" />
-                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white border border-neutral-600 rounded-full shadow-sm cursor-pointer" />
-                                </div>
-                                <div className="flex justify-between text-xs text-neutral-400 font-medium">
-                                    <span>Small</span>
-                                    <span>Medium</span>
-                                    <span>Large</span>
-                                    <span>Full Back/Sleeve</span>
-                                </div>
-                            </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="group">
+                                        <label
+                                            htmlFor="artist_id"
+                                            className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                        >
+                                            Preferred Artist
+                                        </label>
+                                        <div className="relative">
+                                            <select
+                                                id="artist_id"
+                                                value={formData.artist_id}
+                                                onChange={handleChange}
+                                                className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 appearance-none cursor-pointer focus:outline-none border-b border-neutral-800 focus:border-white transition-colors"
+                                            >
+                                                <option value="" className="bg-neutral-900">No Preference</option>
+                                                {artists.map(artist => (
+                                                    <option key={artist.id} value={artist.id} className="bg-neutral-900">
+                                                        {artist.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
+                                                <ChevronDown className="w-4 h-4" />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <div className="group">
-                                <label
-                                    htmlFor="message"
-                                    className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                    <div className="group">
+                                        <label
+                                            htmlFor="service_id"
+                                            className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                        >
+                                            Service
+                                        </label>
+                                        <div className="relative">
+                                            <select
+                                                id="service_id"
+                                                value={formData.service_id}
+                                                onChange={handleChange}
+                                                className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 appearance-none cursor-pointer focus:outline-none border-b border-neutral-800 focus:border-white transition-colors"
+                                            >
+                                                <option value="" className="bg-neutral-900">Select Service</option>
+                                                {services.map(service => (
+                                                    <option key={service.id} value={service.id} className="bg-neutral-900">
+                                                        {service.title}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
+                                                <ChevronDown className="w-4 h-4" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="group">
+                                        <label
+                                            htmlFor="date"
+                                            className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                        >
+                                            Preferred Date
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                type="date"
+                                                id="date"
+                                                required
+                                                min={new Date().toISOString().split('T')[0]}
+                                                value={formData.date}
+                                                onChange={handleChange}
+                                                className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700 focus:outline-none border-b border-neutral-800 focus:border-white transition-colors [color-scheme:dark]"
+                                            />
+                                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
+                                                <Calendar className="w-4 h-4" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="group">
+                                        <label
+                                            htmlFor="time"
+                                            className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                        >
+                                            Preferred Time
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                type="time"
+                                                id="time"
+                                                required
+                                                value={formData.time}
+                                                onChange={handleChange}
+                                                className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700 focus:outline-none border-b border-neutral-800 focus:border-white transition-colors [color-scheme:dark]"
+                                            />
+                                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
+                                                <Clock className="w-4 h-4" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="group">
+                                    <label
+                                        htmlFor="description"
+                                        className="block text-xs font-medium uppercase tracking-wider text-neutral-500 mb-2 group-focus-within:text-white transition-colors"
+                                    >
+                                        Concept Description
+                                    </label>
+                                    <textarea
+                                        id="description"
+                                        rows={3}
+                                        required
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700 resize-none focus:outline-none border-b border-neutral-800 focus:border-white transition-colors"
+                                        placeholder="Describe your idea, placement, size..."
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full md:w-auto px-8 py-4 bg-white text-black rounded-full font-medium text-sm tracking-tight hover:bg-neutral-200 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
                                 >
-                                    Concept Description
-                                </label>
-                                <textarea
-                                    id="message"
-                                    rows={3}
-                                    className="custom-input w-full py-2 bg-transparent text-lg text-neutral-100 placeholder-neutral-700 resize-none"
-                                    placeholder="Describe your idea..."
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="w-full md:w-auto px-8 py-4 bg-white text-black rounded-full font-medium text-sm tracking-tight hover:bg-neutral-200 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
-                            >
-                                {content.button_text}
-                            </button>
-                        </form>
+                                    {loading ? 'Sending Request...' : content.button_text}
+                                </button>
+                            </form>
+                        )}
                     </div>
 
                     {/* Contact Info & Map */}

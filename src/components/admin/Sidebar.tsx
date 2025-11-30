@@ -6,7 +6,8 @@ import {
     FileText,
     LogOut,
     Settings,
-    ChevronRight
+    ChevronRight,
+    Calendar as CalendarIcon
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
@@ -24,6 +25,7 @@ const Sidebar = () => {
 
     const menuItems = [
         { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
+        { icon: CalendarIcon, label: 'Calendar', href: '/admin/calendar' },
         { icon: Users, label: 'Users', href: '/admin/users' },
         { icon: Users, label: 'Artists', href: '/admin/artists' },
         { icon: Image, label: 'Works', href: '/admin/works' },

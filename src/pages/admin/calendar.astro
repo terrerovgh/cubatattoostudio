@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdminGuard from '../../components/admin/AdminGuard';
+import CalendarPage from '../../components/admin/calendar/CalendarPage';
+---
+
+<Layout title="Calendar - Cuba Tattoo Studio">
+    <AdminGuard client:only="react">
+        <CalendarPage client:only="react" />
+    </AdminGuard>
+</Layout>
