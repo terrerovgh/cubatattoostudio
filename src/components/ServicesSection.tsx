@@ -84,15 +84,17 @@ const ServicesSection: React.FC = () => {
                         return (
                             <div
                                 key={service.id}
-                                className={`group relative rounded-3xl overflow-hidden bg-neutral-900/50 border border-white/5 hover:border-white/10 transition-all duration-500 reveal-hidden stagger-delay-${index + 1} ${isCoverUp ? 'md:col-span-2 lg:col-span-2 aspect-[16/9] md:aspect-auto' : 'aspect-[4/5]'}`}
+                                className={`group relative rounded-3xl overflow-hidden bg-neutral-900/50 border border-white/5 hover:border-white/10 transition-all duration-500 reveal-hidden stagger-delay-${index + 1} ${isCoverUp ? 'md:col-span-2 lg:col-span-2 h-auto md:h-full min-h-[400px] md:min-h-0' : 'aspect-[4/5]'}`}
                             >
                                 {isCoverUp && service.before_image_url && service.after_image_url ? (
-                                    <div className="absolute inset-0 w-full h-full">
-                                        <BeforeAfterSlider
-                                            beforeImage={service.before_image_url}
-                                            afterImage={service.after_image_url}
-                                        />
-                                        <div className="absolute top-0 left-0 w-full p-8 bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
+                                    <div className="flex flex-col h-full md:block relative">
+                                        <div className="relative w-full aspect-[4/3] md:absolute md:inset-0 md:h-full md:aspect-auto">
+                                            <BeforeAfterSlider
+                                                beforeImage={service.before_image_url}
+                                                afterImage={service.after_image_url}
+                                            />
+                                        </div>
+                                        <div className="relative md:absolute md:top-0 md:left-0 w-full p-6 md:p-8 bg-neutral-900 md:bg-gradient-to-b md:from-black/80 md:to-transparent pointer-events-auto md:pointer-events-none border-t border-white/5 md:border-0 flex-1 md:flex-none">
                                             <div className="flex items-center gap-3 mb-2">
                                                 <Icon className="text-white w-6 h-6" />
                                                 <h4 className="text-2xl text-white font-medium tracking-tight">

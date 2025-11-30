@@ -77,8 +77,8 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({ initialArtists = [] }) 
                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
                             />
                         </div>
-                        <div className={`w-full md:w-1/2 ${index % 2 === 1 ? "md:pr-12 text-right md:text-left" : "md:pl-12"}`}>
-                            <div className={`flex items-center ${index % 2 === 1 ? "justify-end md:justify-start" : ""} gap-4 mb-2`}>
+                        <div className={`w-full md:w-1/2 ${index % 2 === 1 ? "md:pr-12 md:text-left" : "md:pl-12"}`}>
+                            <div className={`flex items-center ${index % 2 === 1 ? "md:justify-start" : ""} gap-4 mb-2`}>
                                 <span className={`h-px w-8 bg-neutral-700 ${index % 2 === 1 ? "order-last md:order-first" : ""}`} />
                                 <span className="text-xs font-medium tracking-widest uppercase text-neutral-500">
                                     {artist.specialty}
@@ -87,10 +87,10 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({ initialArtists = [] }) 
                             <h4 className="text-5xl md:text-7xl font-medium tracking-tighter text-white mb-6">
                                 {artist.name}.
                             </h4>
-                            <p className={`text-neutral-400 text-lg font-light leading-relaxed mb-8 max-w-md ${index % 2 === 1 ? "ml-auto md:ml-0" : ""}`}>
+                            <p className={`text-neutral-400 text-lg font-light leading-relaxed mb-8 max-w-md ${index % 2 === 1 ? "md:ml-0" : ""}`}>
                                 {artist.bio}
                             </p>
-                            <div className={`flex ${index % 2 === 1 ? "justify-end md:justify-start" : ""}`}>
+                            <div className={`flex ${index % 2 === 1 ? "md:justify-start" : ""}`}>
                                 <a
                                     href={`/artists/${artist.slug}`}
                                     className="inline-flex items-center text-sm font-medium hover:text-neutral-300 transition-colors border-b border-neutral-700 pb-1"

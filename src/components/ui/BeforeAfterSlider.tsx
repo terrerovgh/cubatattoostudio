@@ -44,7 +44,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImage, afte
     return (
         <div
             ref={containerRef}
-            className={`relative w-full h-full overflow-hidden select-none cursor-ew-resize ${className}`}
+            className={`relative w-full h-full overflow-hidden select-none cursor-ew-resize touch-none ${className}`}
             onMouseDown={handleMouseDown}
             onTouchStart={handleMouseDown}
         >
@@ -71,19 +71,19 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImage, afte
 
             {/* Slider Handle */}
             <div
-                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-10"
+                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-10 shadow-[0_0_10px_rgba(0,0,0,0.5)]"
                 style={{ left: `${sliderPosition}%` }}
             >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <MoveHorizontal className="w-4 h-4 text-black" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-neutral-200">
+                    <MoveHorizontal className="w-5 h-5 text-black" />
                 </div>
             </div>
 
             {/* Labels */}
-            <div className="absolute top-4 left-4 bg-black/50 px-2 py-1 rounded text-xs text-white font-medium pointer-events-none">
+            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs text-white font-medium pointer-events-none border border-white/10">
                 BEFORE
             </div>
-            <div className="absolute top-4 right-4 bg-black/50 px-2 py-1 rounded text-xs text-white font-medium pointer-events-none">
+            <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs text-white font-medium pointer-events-none border border-white/10">
                 AFTER
             </div>
         </div>
