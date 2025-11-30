@@ -9,11 +9,11 @@ export async function getSiteContent(section: string) {
         .from('site_content')
         .select('*')
         .eq('section', section)
-        .single();
+        .maybeSingle();
 
-    if (error && error.code !== 'PGRST116') {
-        // PGRST116 is "not found", which is ok for new sections
-        throw error;
+    if (error) {
+        console.error(`Error fetching site content for ${section}:`, error);
+        return null;
     }
 
     return data;

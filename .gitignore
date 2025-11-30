@@ -44,3 +44,11 @@ coverage/
 # OS files
 Thumbs.db
 Desktop.ini
+
+#databases
+*.db
+*.sqlite
+*.sqlite3
+*.db3
+*.db2
+*.sql

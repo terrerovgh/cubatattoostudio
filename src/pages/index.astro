@@ -84,7 +84,7 @@ const galleryImages = (galleryWorks || []).map((work: any) => ({
 <Layout title="Cuba Tattoo Studio | Albuquerque">
   <Navbar />
   <HeroSection client:load domeImages={domeImages} />
-  <ServicesSection client:load initialServices={servicesWithImages} />
+  <ServicesSection client:load />
   <ArtistsSection client:load initialArtists={artists} />
   <GallerySection client:load initialImages={galleryImages} />
   <BookingSection client:load />

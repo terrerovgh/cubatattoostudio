@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 import type { Database } from '../../../types/supabase';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Image as ImageIcon, X } from 'lucide-react';
+import MediaLibrary from '../media/MediaLibrary';
 
-type ServiceInsert = Database['public']['Tables']['services']['Insert'];
+type ServiceInsert = Database['public']['Tables']['services']['Insert'] & {
+    before_image_url?: string | null;
+    after_image_url?: string | null;
+};
 
 interface ServiceFormProps {
     serviceId?: string;
@@ -17,9 +21,13 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
         description: '',
         icon: '',
         cover_image_url: '',
+        before_image_url: '',
+        after_image_url: '',
         display_order: 0,
         is_active: true,
     });
+    const [showMediaLibrary, setShowMediaLibrary] = useState(false);
+    const [activeMediaField, setActiveMediaField] = useState<'cover_image_url' | 'before_image_url' | 'after_image_url' | null>(null);
 
     useEffect(() => {
         if (serviceId) {
@@ -53,6 +61,19 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
             ...prev,
             [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
         }));
+    };
+
+    const handleMediaSelect = (url: string | string[]) => {
+        if (activeMediaField && typeof url === 'string') {
+            setFormData(prev => ({ ...prev, [activeMediaField]: url }));
+            setShowMediaLibrary(false);
+            setActiveMediaField(null);
+        }
+    };
+
+    const openMediaLibrary = (field: 'cover_image_url' | 'before_image_url' | 'after_image_url') => {
+        setActiveMediaField(field);
+        setShowMediaLibrary(true);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -162,16 +183,90 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
                     />
                 </div>
 
-                <div className="space-y-2">
-                    <label htmlFor="cover_image_url" className="text-sm font-medium text-zinc-400">Cover Image URL</label>
-                    <input
-                        type="text"
-                        id="cover_image_url"
-                        name="cover_image_url"
-                        value={formData.cover_image_url || ''}
-                        onChange={handleChange}
-                        className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-white focus:border-zinc-700 focus:outline-none"
-                    />
+                {/* Image Fields */}
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-zinc-400">Cover Image</label>
+                        <div className="flex items-center gap-4">
+                            {formData.cover_image_url ? (
+                                <div className="relative h-32 w-32 overflow-hidden rounded-lg border border-zinc-800">
+                                    <img src={formData.cover_image_url} alt="Cover" className="h-full w-full object-cover" />
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({ ...prev, cover_image_url: '' }))}
+                                        className="absolute top-1 right-1 rounded-full bg-black/50 p-1 text-white hover:bg-red-500"
+                                    >
+                                        <X className="h-3 w-3" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={() => openMediaLibrary('cover_image_url')}
+                                    className="flex h-32 w-32 flex-col items-center justify-center rounded-lg border border-dashed border-zinc-700 bg-zinc-900/50 hover:border-zinc-500 hover:bg-zinc-900"
+                                >
+                                    <ImageIcon className="h-8 w-8 text-zinc-500" />
+                                    <span className="mt-2 text-xs text-zinc-400">Select Image</span>
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-zinc-400">Before Image (For Cover Ups)</label>
+                            <div className="flex items-center gap-4">
+                                {formData.before_image_url ? (
+                                    <div className="relative h-32 w-32 overflow-hidden rounded-lg border border-zinc-800">
+                                        <img src={formData.before_image_url} alt="Before" className="h-full w-full object-cover" />
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({ ...prev, before_image_url: '' }))}
+                                            className="absolute top-1 right-1 rounded-full bg-black/50 p-1 text-white hover:bg-red-500"
+                                        >
+                                            <X className="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        onClick={() => openMediaLibrary('before_image_url')}
+                                        className="flex h-32 w-32 flex-col items-center justify-center rounded-lg border border-dashed border-zinc-700 bg-zinc-900/50 hover:border-zinc-500 hover:bg-zinc-900"
+                                    >
+                                        <ImageIcon className="h-8 w-8 text-zinc-500" />
+                                        <span className="mt-2 text-xs text-zinc-400">Select Image</span>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-zinc-400">After Image (For Cover Ups)</label>
+                            <div className="flex items-center gap-4">
+                                {formData.after_image_url ? (
+                                    <div className="relative h-32 w-32 overflow-hidden rounded-lg border border-zinc-800">
+                                        <img src={formData.after_image_url} alt="After" className="h-full w-full object-cover" />
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({ ...prev, after_image_url: '' }))}
+                                            className="absolute top-1 right-1 rounded-full bg-black/50 p-1 text-white hover:bg-red-500"
+                                        >
+                                            <X className="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        onClick={() => openMediaLibrary('after_image_url')}
+                                        className="flex h-32 w-32 flex-col items-center justify-center rounded-lg border border-dashed border-zinc-700 bg-zinc-900/50 hover:border-zinc-500 hover:bg-zinc-900"
+                                    >
+                                        <ImageIcon className="h-8 w-8 text-zinc-500" />
+                                        <span className="mt-2 text-xs text-zinc-400">Select Image</span>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -199,6 +294,13 @@ const ServiceForm = ({ serviceId }: ServiceFormProps) => {
                     </button>
                 </div>
             </form>
+
+            {showMediaLibrary && (
+                <MediaLibrary
+                    onSelect={handleMediaSelect}
+                    onClose={() => setShowMediaLibrary(false)}
+                />
+            )}
         </div>
     );
 };
