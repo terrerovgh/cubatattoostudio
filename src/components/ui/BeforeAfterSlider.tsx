@@ -49,9 +49,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImage, afte
     return (
         <div
             ref={containerRef}
-            className={`relative w-full h-full overflow-hidden select-none cursor-ew-resize touch-none ${className}`}
-            onMouseDown={handleMouseDown}
-            onTouchStart={handleMouseDown}
+            className={`relative w-full h-full overflow-hidden select-none ${className}`}
         >
             {/* After Image (Background) */}
             <img
@@ -76,11 +74,22 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImage, afte
 
             {/* Slider Handle */}
             <div
-                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-10 shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+                className="absolute top-0 bottom-0 z-10"
                 style={{ left: `${sliderPosition}%` }}
             >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-neutral-200">
-                    <MoveHorizontal className="w-5 h-5 text-black" />
+                {/* Visual Vertical Line */}
+                <div className="absolute inset-y-0 -left-0.5 w-1 bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)] pointer-events-none" />
+
+                {/* Interactive Touch Area - Wide column for easier grabbing */}
+                <div
+                    className="absolute inset-y-0 -left-8 w-16 cursor-ew-resize touch-none flex items-center justify-center group"
+                    onMouseDown={handleMouseDown}
+                    onTouchStart={handleMouseDown}
+                >
+                    {/* Visual Handle Button */}
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-neutral-200 transition-transform group-active:scale-110">
+                        <MoveHorizontal className="w-5 h-5 text-black" />
+                    </div>
                 </div>
             </div>
 

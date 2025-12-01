@@ -20,7 +20,15 @@ const ServicesSection: React.FC = () => {
                     .order('display_order', { ascending: true });
 
                 if (error) throw error;
-                setServices(data || []);
+                
+                // Sort services: 'cover-up' first, then by display_order
+                const sortedData = (data || []).sort((a: Service, b: Service) => {
+                    if (a.slug === 'cover-up') return -1;
+                    if (b.slug === 'cover-up') return 1;
+                    return (a.display_order || 0) - (b.display_order || 0);
+                });
+
+                setServices(sortedData);
             } catch (error) {
                 console.error('Error fetching services:', error);
             } finally {
