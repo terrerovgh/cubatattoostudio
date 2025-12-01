@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
-import { CreditCard, Lock, CheckCircle, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { CheckCircle, ChevronRight, Loader2, AlertCircle, Lock } from 'lucide-react';
 import type { BookingData } from '../BookingWizard';
+
+// Initialize Stripe outside component to avoid recreating it
+const stripePromise = loadStripe(import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 interface Props {
     data: BookingData;
@@ -8,24 +13,93 @@ interface Props {
     onNext: () => void;
 }
 
+const CheckoutForm = ({ onSuccess }: { onSuccess: () => void }) => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [message, setMessage] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!stripe || !elements) {
+            return;
+        }
+
+        setIsLoading(true);
+        setMessage(null);
+
+        const { error } = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                return_url: window.location.href,
+            },
+            redirect: 'if_required',
+        });
+
+        if (error) {
+            setMessage(error.message ?? 'An unexpected error occurred.');
+        } else {
+            onSuccess();
+        }
+
+        setIsLoading(false);
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-6">
+            <PaymentElement />
+            
+            {message && (
+                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3 text-red-400 text-sm">
+                    <AlertCircle className="w-5 h-5 shrink-0" />
+                    <p>{message}</p>
+                </div>
+            )}
+
+            <button
+                disabled={isLoading || !stripe || !elements}
+                className="w-full py-4 bg-white text-black rounded-full font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+                {isLoading ? (
+                    <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Processing...
+                    </>
+                ) : (
+                    <>Pay $50.00 Deposit <Lock className="w-4 h-4" /></>
+                )}
+            </button>
+            
+            <p className="text-xs text-center text-neutral-500 flex items-center justify-center gap-1">
+                <Lock className="w-3 h-3" /> Payments are secure and encrypted.
+            </p>
+        </form>
+    );
+};
+
 const PaymentStep: React.FC<Props> = ({ data, updateData, onNext }) => {
-    const [processing, setProcessing] = useState(false);
+    const [clientSecret, setClientSecret] = useState('');
     const [error, setError] = useState('');
 
-    const handlePayment = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setProcessing(true);
-        setError('');
-
-        // Simulate payment processing
-        setTimeout(() => {
-            setProcessing(false);
-            updateData({ depositPaid: true });
-            // Automatically move to next step after success
-            // But maybe let user see success state first?
-            // Let's just show success state and a "Continue" button.
-        }, 1500);
-    };
+    useEffect(() => {
+        if (!data.depositPaid) {
+            fetch('/api/create-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: [{ id: 'deposit' }] }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.error) {
+                        setError(data.error);
+                    } else {
+                        setClientSecret(data.clientSecret);
+                    }
+                })
+                .catch((err) => setError('Failed to load payment system'));
+        }
+    }, [data.depositPaid]);
 
     if (data.depositPaid) {
         return (
@@ -56,72 +130,37 @@ const PaymentStep: React.FC<Props> = ({ data, updateData, onNext }) => {
                 </p>
             </div>
 
-            <form onSubmit={handlePayment} className="space-y-6">
-                <div className="space-y-4">
-                    <div className="space-y-2">
-                        <label className="text-xs font-medium uppercase tracking-wider text-neutral-500">Card Number</label>
-                        <div className="relative">
-                            <input
-                                type="text"
-                                className="w-full bg-neutral-800/50 border border-neutral-700 rounded-xl px-4 py-3 pl-10 text-white focus:outline-none focus:border-white transition-colors placeholder-neutral-600"
-                                placeholder="0000 0000 0000 0000"
-                                required
-                            />
-                            <CreditCard className="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium uppercase tracking-wider text-neutral-500">Expiry Date</label>
-                            <input
-                                type="text"
-                                className="w-full bg-neutral-800/50 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder-neutral-600"
-                                placeholder="MM/YY"
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium uppercase tracking-wider text-neutral-500">CVC</label>
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    className="w-full bg-neutral-800/50 border border-neutral-700 rounded-xl px-4 py-3 pl-10 text-white focus:outline-none focus:border-white transition-colors placeholder-neutral-600"
-                                    placeholder="123"
-                                    required
-                                />
-                                <Lock className="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className="text-xs font-medium uppercase tracking-wider text-neutral-500">Cardholder Name</label>
-                        <input
-                            type="text"
-                            className="w-full bg-neutral-800/50 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder-neutral-600"
-                            placeholder="Name on card"
-                            required
-                        />
-                    </div>
+            {error ? (
+                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3 text-red-400 text-sm justify-center">
+                    <AlertCircle className="w-5 h-5 shrink-0" />
+                    <p>{error}</p>
                 </div>
-
-                <button
-                    type="submit"
-                    disabled={processing}
-                    className="w-full py-4 bg-white text-black rounded-full font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            ) : clientSecret ? (
+                <Elements 
+                    options={{ 
+                        clientSecret, 
+                        appearance: { 
+                            theme: 'night',
+                            variables: {
+                                colorPrimary: '#ffffff',
+                                colorBackground: '#262626', // neutral-800
+                                colorText: '#ffffff',
+                                colorDanger: '#ef4444',
+                                fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+                                spacingUnit: '4px',
+                                borderRadius: '12px',
+                            },
+                        } 
+                    }} 
+                    stripe={stripePromise}
                 >
-                    {processing ? (
-                        <>Processing...</>
-                    ) : (
-                        <>Pay $50.00 Deposit <Lock className="w-4 h-4" /></>
-                    )}
-                </button>
-
-                <p className="text-xs text-center text-neutral-500 flex items-center justify-center gap-1">
-                    <Lock className="w-3 h-3" /> Payments are secure and encrypted.
-                </p>
-            </form>
+                    <CheckoutForm onSuccess={() => updateData({ depositPaid: true })} />
+                </Elements>
+            ) : (
+                <div className="flex justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-neutral-500" />
+                </div>
+            )}
         </div>
     );
 };
