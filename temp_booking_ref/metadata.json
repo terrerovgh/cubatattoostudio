@@ -1,0 +1,8 @@
+{
+  "name": "InkFlow AI Studio",
+  "description": "Premium Tattoo Booking System with Gemini Nano AI Design Simulation",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
