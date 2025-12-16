@@ -1,0 +1,254 @@
+---
+
+---
+
+<!-- IMAGE DETAIL MODAL -->
+<div
+    id="image-modal"
+    class="fixed inset-0 z-[200] hidden items-center justify-center p-4 md:p-8"
+>
+    <!-- Backdrop -->
+    <div
+        class="absolute inset-0 bg-black/90 backdrop-blur-md"
+        id="image-modal-backdrop"
+    >
+    </div>
+
+    <!-- Content Container -->
+    <div
+        class="relative w-full max-w-7xl h-full md:h-auto max-h-[95vh] flex flex-col md:grid md:grid-cols-[1fr_300px] bg-[#0a0a0a] border border-white/10 rounded-sm overflow-hidden shadow-2xl transition-transform duration-300 scale-95 opacity-0 image-modal-content"
+    >
+        <!-- Image Area -->
+        <div
+            class="relative h-full min-h-[50vh] bg-black flex items-center justify-center p-2 overflow-hidden"
+        >
+            <img
+                id="modal-full-image"
+                src=""
+                alt="Detail View"
+                class="max-w-full max-h-[85vh] object-contain"
+            />
+        </div>
+
+        <!-- Metadata Sidebar -->
+        <div
+            class="flex flex-col p-6 md:p-8 border-t md:border-t-0 md:border-l border-white/5 bg-neutral-900/50"
+        >
+            <div class="flex-grow">
+                <span
+                    class="text-red-500 text-[10px] uppercase font-bold tracking-widest block mb-2"
+                    >SELECTED WORK</span
+                >
+                <h3
+                    id="modal-image-title"
+                    class="text-2xl font-bold text-white mb-4 leading-tight uppercase"
+                >
+                    <!-- Title injected here -->
+                </h3>
+                <div class="flex flex-wrap gap-2 mb-6" id="modal-tags">
+                    <!-- Tags injected here -->
+                </div>
+                <div class="space-y-4 text-neutral-400 text-sm">
+                    <p>
+                        <span
+                            class="text-neutral-500 block text-xs uppercase tracking-wider mb-1"
+                            >Artist</span
+                        >
+                        <span
+                            id="modal-artist-name"
+                            class="text-white block font-medium cursor-pointer hover:text-red-500 transition-colors"
+                            onclick="window.handleArtistClick()"
+                            title="View Artist Portfolio">Coming Soon</span
+                        >
+                    </p>
+                    <p>
+                        <span
+                            class="text-neutral-500 block text-xs uppercase tracking-wider mb-1"
+                            >Date</span
+                        >
+                        <span
+                            id="modal-date"
+                            class="text-white block font-medium">-</span
+                        >
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-8 md:mt-auto pt-6 border-t border-white/5">
+                <button
+                    id="image-modal-close-btn"
+                    class="w-full py-3 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-neutral-200 transition-colors"
+                >
+                    Close View
+                </button>
+            </div>
+        </div>
+
+        <!-- Close Icon Absolute (Mobile friendly) -->
+        <button
+            class="absolute top-4 right-4 z-50 text-white/50 hover:text-white bg-black/50 p-2 rounded-full md:hidden"
+            id="image-modal-mobile-close"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><line x1="18" y1="6" x2="6" y2="18"></line><line
+                    x1="6"
+                    y1="6"
+                    x2="18"
+                    y2="18"></line></svg
+            >
+        </button>
+    </div>
+</div>
+
+<script>
+    import { gsap } from "gsap";
+
+    const modal = document.getElementById("image-modal");
+    const modalContent = modal?.querySelector(".image-modal-content");
+    const fullImage = document.getElementById(
+        "modal-full-image",
+    ) as HTMLImageElement;
+    const titleEl = document.getElementById("modal-image-title");
+    const tagsEl = document.getElementById("modal-tags");
+    const dateEl = document.getElementById("modal-date");
+
+    // Globals to be triggered from other components
+    // @ts-ignore
+    window.openImageModal = (data: {
+        image: string;
+        title?: string;
+        tags?: string[];
+        date?: string;
+        artistName?: string;
+        artistRole?: string;
+        artistSlug?: string;
+    }) => {
+        if (!modal || !modalContent || !fullImage) return;
+
+        // Set Data
+        currentArtistSlug = data.artistSlug || "";
+        fullImage.src = data.image;
+        if (titleEl) titleEl.textContent = data.title || "Untitled";
+        if (dateEl)
+            dateEl.textContent =
+                data.date || new Date().getFullYear().toString();
+
+        const artistNameEl = document.getElementById("modal-artist-name");
+        if (artistNameEl) {
+            const name = data.artistName || "Coming Soon"; // Should we default to coming soon or show unknown?
+            // If we have a name, show it. If not, maybe show "Guest Artist"?
+            // But if the bug was it showing "Coming Soon", it means data.artistName was empty.
+            // Let's ensure if it is empty we show something indicative or hide it.
+
+            if (data.artistName) {
+                artistNameEl.innerHTML = `
+                    ${data.artistName}
+                    <span class="block text-[10px] text-red-600 uppercase tracking-widest mt-1 font-bold">${data.artistRole || "Artist"}</span>
+                `;
+                artistNameEl.classList.add(
+                    "cursor-pointer",
+                    "hover:text-red-500",
+                );
+                artistNameEl.classList.remove("pointer-events-none");
+            } else {
+                artistNameEl.innerHTML = "Studio Work";
+                artistNameEl.classList.remove(
+                    "cursor-pointer",
+                    "hover:text-red-500",
+                );
+                artistNameEl.classList.add("pointer-events-none");
+            }
+        }
+
+        if (tagsEl) {
+            tagsEl.innerHTML = (data.tags || [])
+                .map(
+                    (tag) =>
+                        `<span class="text-[10px] uppercase font-bold px-2 py-1 bg-white/5 text-neutral-300 rounded-sm border border-white/5">${tag}</span>`,
+                )
+                .join("");
+        }
+
+        // Show
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.style.overflow = "hidden";
+
+        // Animate In
+        gsap.to(modalContent, {
+            scale: 1,
+            opacity: 1,
+            duration: 0.4,
+            ease: "power3.out",
+        });
+    };
+
+    let currentArtistSlug = "";
+
+    // @ts-ignore
+    window.handleArtistClick = () => {
+        if (!currentArtistSlug) return;
+
+        // Lookup data
+        // @ts-ignore
+        const data = window.artistData
+            ? window.artistData[currentArtistSlug]
+            : null;
+
+        if (data && window.openArtistModal) {
+            closeImageModal();
+            // Small delay to allow close animation to start/finish slightly
+            setTimeout(() => {
+                // @ts-ignore
+                window.openArtistModal(data.name, data.style, data.images);
+            }, 300);
+        }
+    };
+
+    function closeImageModal() {
+        if (!modal || !modalContent) return;
+
+        gsap.to(modalContent, {
+            scale: 0.95,
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.in",
+            onComplete: () => {
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+                document.body.style.overflow = "";
+                if (fullImage) fullImage.src = "";
+            },
+        });
+    }
+
+    // Listeners
+    document
+        .getElementById("image-modal-backdrop")
+        ?.addEventListener("click", closeImageModal);
+    document
+        .getElementById("image-modal-close-btn")
+        ?.addEventListener("click", closeImageModal);
+    document
+        .getElementById("image-modal-mobile-close")
+        ?.addEventListener("click", closeImageModal);
+
+    document.addEventListener("keydown", (e) => {
+        if (
+            e.key === "Escape" &&
+            modal &&
+            !modal.classList.contains("hidden")
+        ) {
+            closeImageModal();
+        }
+    });
+</script>

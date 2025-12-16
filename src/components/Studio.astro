@@ -1,0 +1,219 @@
+---
+import { getEntry } from "astro:content";
+
+const studioEntry = await getEntry("studio", "main");
+const studio = studioEntry?.data;
+
+if (!studio) {
+    throw new Error("Studio content not found");
+}
+
+const videos = studio.videos;
+// We'll handle random video selection in the client-side script to avoid hydration mismatches if possible,
+// OR we can do it here if we don't mind it being determined at build time for SSG.
+// However, the request implies "every time the user reloads the page", which suggests client-side or SSR.
+// Since Astro is static by default, purely random on every reload needs client-side JS logic for the source,
+// or we accept it's random at build time.
+// BUT, to satisfy "every time the user reloads", we should pick one here but if it's SSG it will be static.
+// Better approach: Pass the list to client JS and let it pick, OR simply pick one here if output is server.
+// Assuming SSG: effective randomization on client requires JS.
+// Let's modify the markup to support client-side updates OR just render one if we want simple SSG.
+// Re-reading: "reproduzcan ... cada vez que el usuario recargue la pagina" -> implies dynamic.
+// If site is SSG, this only happens at build.
+// I will implement a client-side randomizer in the <script> tag to swap the source,
+// or simpler: render one random one here (which fixes it for build) and hope they use SSR adapter,
+// OR more robust for SSG: render the first one, then client-side swap?
+// Let's stick to simple first: standard Astro build. Random here = random at build time.
+// To support "on reload", we need client JS to pick from the array.
+
+// Actually, let's keep it simple and just pick one here for now. If they want true dynamic on static hosting, client JS is needed.
+// I will pass the video list to a data attribute and let client JS pick one, OR just pick one here.
+// User said "recargue la pagina".
+// Let's try picking one here. If it's static mode, it won't change on reload.
+// I'll implement client-side selection to ensure it meets the requirement.
+---
+
+<section
+    id="studio"
+    class="lens-section cursor-none relative h-screen bg-black overflow-hidden border-t border-[#222]"
+    data-videos={JSON.stringify(videos)}
+>
+    <div class="absolute top-12 left-12 z-20 mix-blend-difference text-white">
+        <span class="text-xs font-mono border border-white px-2 py-1"
+            >{studio.sectionTag}</span
+        >
+    </div>
+    <div class="lens-blur-layer">
+        <video
+            autoplay
+            loop
+            muted
+            playsinline
+            class="w-full h-full object-cover studio-video"
+            src={videos[0]}
+        >
+        </video>
+    </div>
+    <div
+        class="absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-10 mix-blend-overlay"
+    >
+        <h2
+            class="text-[10vw] font-black tracking-tighter text-neutral-800 opacity-50 studio-text-reveal"
+        >
+            {studio.mainTitle}
+        </h2>
+        <p class="text-sm font-mono text-neutral-400 studio-text-reveal">
+            {studio.subtitle}
+        </p>
+    </div>
+    <div class="lens-focus-layer">
+        <video
+            autoplay
+            loop
+            muted
+            playsinline
+            class="w-full h-full object-cover studio-video"
+            src={videos[0]}
+        >
+        </video>
+    </div>
+    <div
+        class="absolute inset-0 z-40 pointer-events-none flex flex-col justify-between p-12"
+    >
+        <div class="flex justify-end">
+            <div class="text-right">
+                <div class="text-xs font-bold text-white mb-1">
+                    {studio.feature1Title}
+                </div>
+                <div class="text-[10px] text-red-500 font-mono">
+                    {studio.feature1Subtitle}
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-start">
+            <div class="text-left">
+                <div class="text-xs font-bold text-white mb-1">
+                    {studio.feature2Title}
+                </div>
+                <div class="text-[10px] text-red-500 font-mono">
+                    {studio.feature2Subtitle}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lens-hud" id="lens-hud"></div>
+</section>
+
+<style>
+    /* --- LENS SECTION --- */
+    .lens-section {
+        --lens-x: 50%;
+        --lens-y: 50%;
+    }
+    .lens-blur-layer {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        filter: grayscale(100%) blur(10px) brightness(0.3);
+        transform: scale(1.1);
+    }
+    .lens-focus-layer {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        mask-image: radial-gradient(
+            200px circle at var(--lens-x) var(--lens-y),
+            black 0%,
+            transparent 100%
+        );
+        -webkit-mask-image: radial-gradient(
+            200px circle at var(--lens-x) var(--lens-y),
+            black 0%,
+            transparent 100%
+        );
+        filter: grayscale(20%) contrast(1.2);
+        transform: scale(1.1);
+    }
+    .lens-hud {
+        position: absolute;
+        top: calc(var(--lens-y) - 100px);
+        left: calc(var(--lens-x) - 100px);
+        width: 200px;
+        height: 200px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        z-index: 50;
+        pointer-events: none;
+        animation: spin 20s linear infinite;
+        box-shadow: 0 0 20px rgba(185, 28, 28, 0.2);
+    }
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Random Video Logic
+    const studioSection = document.getElementById("studio");
+    if (studioSection) {
+        const videosData = studioSection.dataset.videos;
+        if (videosData) {
+            try {
+                const videos = JSON.parse(videosData);
+                if (Array.isArray(videos) && videos.length > 0) {
+                    const randomVideo =
+                        videos[Math.floor(Math.random() * videos.length)];
+                    const videoElements =
+                        studioSection.querySelectorAll("video.studio-video");
+                    videoElements.forEach((vid) => {
+                        if (vid instanceof HTMLVideoElement) {
+                            vid.src = randomVideo;
+                            // Ensure it plays after swapping src
+                            vid.load();
+                            vid.play().catch((e) =>
+                                console.log("Autoplay prevented:", e),
+                            );
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("Failed to parse studio videos:", e);
+            }
+        }
+    }
+
+    // Studio Lens
+    const lensSection = document.getElementById("studio");
+    const lensHud = document.getElementById("lens-hud");
+    if (lensSection) {
+        lensSection.addEventListener("mousemove", (e) => {
+            const rect = lensSection.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            lensSection.style.setProperty("--lens-x", x + "px");
+            lensSection.style.setProperty("--lens-y", y + "px");
+            if (lensHud) {
+                lensHud.style.left = x - 100 + "px";
+                lensHud.style.top = y - 100 + "px";
+            }
+        });
+    }
+    gsap.from(".studio-text-reveal", {
+        scrollTrigger: { trigger: "#studio", start: "center 80%" },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out",
+    });
+</script>

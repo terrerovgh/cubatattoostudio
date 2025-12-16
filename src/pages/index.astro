@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import Artists from "../components/Artists.astro";
+import Portfolio from "../components/Portfolio.astro";
+import Services from "../components/Services.astro";
+import Studio from "../components/Studio.astro";
+import Footer from "../components/Footer.astro";
+import ArtistModal from "../components/ArtistModal.astro";
+import ImageModal from "../components/ImageModal.astro";
+import GalleryModal from "../components/GalleryModal.astro";
+---
+
+<Layout title="CUBA TATTOO STUDIO | Albuquerque, NM">
+	<Navbar />
+
+	<main
+		class="flex flex-col w-full relative z-10 bg-[#050505] shadow-2xl shadow-black"
+	>
+		<Hero />
+		<Artists />
+		<Portfolio />
+		<Services />
+		<Studio />
+	</main>
+
+	<Footer />
+
+	<!-- Modals -->
+	<!-- Modals -->
+	<ArtistModal />
+	<ImageModal />
+	<GalleryModal />
+</Layout>

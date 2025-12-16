@@ -1,0 +1,205 @@
+---
+import { getCollection } from "astro:content";
+
+const artists = await getCollection("artists");
+const galleryItems = await getCollection("gallery");
+const sortedArtists = artists.sort((a, b) => a.data.order - b.data.order);
+import ImageModal from "../components/ImageModal.astro";
+---
+
+<section id="artists" class="py-32 relative border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6">
+        <div
+            class="flex flex-col md:flex-row justify-between items-end mb-20 gap-6 section-header"
+        >
+            <div>
+                <span
+                    class="text-xs font-mono text-red-600 uppercase tracking-widest block mb-3 reveal-up"
+                    >[ THE COLLECTIVE ]</span
+                >
+                <h2
+                    class="text-5xl md:text-7xl font-bold tracking-tighter text-white reveal-up"
+                >
+                    RESIDENT<br /><span class="text-neutral-700">ARTISTS</span>
+                </h2>
+            </div>
+            <div
+                class="max-w-sm text-neutral-400 text-sm leading-relaxed reveal-up"
+            >
+                <p>
+                    Our team consists of award-winning specialists. Click below
+                    to view detailed portfolios without leaving the page.
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {
+                sortedArtists.map((artist) => (
+                    <div class="spotlight-card h-[500px] rounded-sm group flex flex-col opacity-0 translate-y-12">
+                        <div class="h-3/5 overflow-hidden relative img-zoom-container">
+                            <img
+                                src={artist.data.coverImage}
+                                class="img-zoom grayscale group-hover:grayscale-0"
+                                alt={artist.data.name}
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
+                        </div>
+                        <div class="p-8 flex flex-col justify-between flex-grow relative z-10 bg-black/20 backdrop-blur-sm">
+                            <div>
+                                <h3 class="text-3xl font-bold mb-1 tracking-tight uppercase">
+                                    {artist.data.name}
+                                </h3>
+                                <p class="text-red-600 text-xs font-bold uppercase tracking-widest">
+                                    {artist.data.style}
+                                </p>
+                            </div>
+                            <div class="space-y-4">
+                                <p class="text-neutral-500 text-sm line-clamp-2">
+                                    {artist.data.bio}
+                                </p>
+                                <button
+                                    data-artist={artist.slug}
+                                    data-name={artist.data.name}
+                                    data-style={artist.data.style}
+                                    data-images={JSON.stringify(
+                                        galleryItems
+                                            .filter(
+                                                (item) =>
+                                                    item.data.artist ===
+                                                    artist.slug,
+                                            )
+                                            .map((item) => item.data.image),
+                                    )}
+                                    class="open-modal-btn w-full py-3 border border-white/10 hover:border-white/40 hover:bg-white/5 text-xs font-bold uppercase tracking-widest transition-all"
+                                >
+                                    View Portfolio
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    /* --- SPOTLIGHT CARDS --- */
+    .spotlight-card {
+        background-color: rgba(20, 20, 20, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+        overflow: hidden;
+        --mouse-x: -100px;
+        --mouse-y: -100px;
+        transition:
+            border-color 0.3s,
+            transform 0.3s ease-out;
+    }
+    .spotlight-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            800px circle at var(--mouse-x) var(--mouse-y),
+            rgba(255, 255, 255, 0.04),
+            transparent 40%
+        );
+        opacity: 0;
+        transition: opacity 0.5s;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .spotlight-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            600px circle at var(--mouse-x) var(--mouse-y),
+            var(--accent),
+            transparent 40%
+        );
+        opacity: 0;
+        transition: opacity 0.5s;
+        z-index: 2;
+        pointer-events: none;
+        mask-image: linear-gradient(#fff 0 0);
+        -webkit-mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        padding: 1px;
+    }
+    .spotlight-card:hover::before,
+    .spotlight-card:hover::after {
+        opacity: 1;
+    }
+    .spotlight-card:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-5px);
+    }
+</style>
+
+<script define:vars={{ sortedArtists, galleryItems }}>
+    // Create global content map for other components
+    window.artistData = {};
+    sortedArtists.forEach((artist) => {
+        window.artistData[artist.slug] = {
+            name: artist.data.name,
+            style: artist.data.style,
+            images: galleryItems
+                .filter((item) => item.data.artist === artist.slug)
+                .map((item) => item.data.image),
+        };
+    });
+</script>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Reveals
+    gsap.utils.toArray(".reveal-up").forEach((elem: any) => {
+        gsap.from(elem, {
+            scrollTrigger: {
+                trigger: elem,
+                start: "top 90%",
+                toggleActions: "play none none reverse",
+            },
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3.out",
+        });
+    });
+
+    gsap.to(".spotlight-card", {
+        scrollTrigger: { trigger: "#artists", start: "top 75%" },
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out",
+    });
+
+    // Spotlight Mouse Effect
+    document
+        .querySelectorAll<HTMLElement>(".spotlight-card")
+        .forEach((card) => {
+            card.addEventListener("mousemove", (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty(
+                    "--mouse-x",
+                    `${e.clientX - rect.left}px`,
+                );
+                card.style.setProperty(
+                    "--mouse-y",
+                    `${e.clientY - rect.top}px`,
+                );
+            });
+        });
+</script>

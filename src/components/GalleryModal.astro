@@ -1,0 +1,232 @@
+---
+import { getCollection } from "astro:content";
+
+// Fetch ALL gallery items
+const galleryItems = await getCollection("gallery");
+// Sort by date if needed, or keeping default order.
+// Let's sort by date descending to show newest first
+galleryItems.sort((a, b) => {
+    return new Date(b.data.date || 0).getTime() - new Date(a.data.date || 0).getTime();
+});
+
+const artists = await getCollection("artists");
+const artistMap = new Map(artists.map(a => [a.slug, a.data]));
+---
+
+<!-- GALLERY MODAL STRUCTURE -->
+<div
+    id="gallery-modal"
+    class="fixed inset-0 z-[100] hidden items-center justify-center p-4 md:p-8"
+>
+    <!-- Backdrop -->
+    <div class="absolute inset-0 modal-backdrop" id="gallery-modal-backdrop"></div>
+
+    <!-- Content Container -->
+    <div
+        class="relative w-full max-w-7xl h-full md:h-[90vh] bg-[#0a0a0a] border border-white/10 flex flex-col rounded-sm modal-content overflow-hidden transform scale-95 opacity-0"
+    >
+        <!-- Modal Header -->
+        <div
+            class="flex justify-between items-start p-6 md:p-8 border-b border-white/5 bg-[#0a0a0a] z-10 shrink-0"
+        >
+            <div>
+                <span
+                    class="text-red-600 text-[10px] md:text-xs font-bold uppercase tracking-widest block mb-1"
+                    >[ BROWSE ]</span
+                >
+                <h2
+                    class="text-4xl md:text-5xl font-bold tracking-tighter text-white uppercase"
+                >
+                    FULL GALLERY
+                </h2>
+                <p class="text-neutral-500 text-sm md:text-base mt-1">
+                    Explore our complete collection of works
+                </p>
+            </div>
+            <button
+                id="close-gallery-modal-btn"
+                class="text-white/50 hover:text-white hover:bg-white/10 rounded-full p-2 transition-all"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="M6 6 18 18"/></svg>
+            </button>
+        </div>
+
+        <!-- Modal Body (Scrollable) -->
+        <div class="flex-grow overflow-y-auto p-6 md:p-8 custom-scrollbar">
+            <div class="modal-gallery-grid">
+                 {
+                    galleryItems.map((item, i) => (
+                        <div 
+                            class="relative group overflow-hidden rounded-sm h-64 bg-neutral-900 border border-white/5 cursor-pointer gallery-modal-item opacity-0 translate-y-4"
+                            data-image={item.data.image}
+                            data-title={item.data.title || "Tattoo Work"}
+                            data-tags={JSON.stringify(item.data.tags || [])}
+                            data-date={item.data.date ? new Date(item.data.date).toLocaleDateString() : ""}
+                            data-artist-name={artistMap.get(item.data.artist || "")?.name || ""}
+                            data-artist-role={artistMap.get(item.data.artist || "")?.role || "Resident Artist"}
+                            data-artist-slug={item.data.artist || ""}
+                        >
+                            <div class="img-zoom-container h-full w-full">
+                                <img 
+                                    src={item.data.image} 
+                                    alt={item.data.title || "Gallery Image"} 
+                                    loading="lazy"
+                                    class="img-zoom w-full h-full object-cover grayscale group-hover:grayscale-0"
+                                />
+                                
+                                <!-- Overlay Icon -->
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                    <span class="bg-white/10 backdrop-blur-sm p-2 rounded-full border border-white/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                                    </span>
+                                </div>
+                                
+                                <div class="absolute bottom-0 left-0 w-full p-3 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                     <p class="text-white text-xs font-bold uppercase">{item.data.title}</p>
+                                     <p class="text-neutral-400 text-[10px] uppercase">{artistMap.get(item.data.artist || "")?.name}</p>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div
+                class="mt-12 p-8 bg-neutral-900/30 border border-white/5 rounded-sm flex flex-col md:flex-row items-center justify-between gap-6"
+            >
+                <div class="text-center md:text-left">
+                    <h4 class="text-xl font-bold text-white mb-2">
+                        Ready to get yours?
+                    </h4>
+                    <p class="text-neutral-400 text-sm max-w-md">
+                        Our artists are ready to bring your vision to life.
+                    </p>
+                </div>
+                <a
+                    href="#book"
+                    id="gallery-modal-book-btn"
+                    class="btn-outline px-8 py-3 text-xs font-bold bg-white text-black hover:bg-neutral-200 border-none shrink-0"
+                >
+                    <span>Book Appointment</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    import { gsap } from "gsap";
+
+    const modal = document.getElementById("gallery-modal");
+    const modalContent = modal?.querySelector(".modal-content");
+    let modalTimeline: gsap.core.Timeline | null = null;
+
+    // Global function to open this modal
+    // @ts-ignore
+    window.openFullGallery = () => {
+        if (!modal || !modalContent) return;
+
+        // Show Modal Container
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+
+        // Lock Body Scroll
+        document.body.style.overflow = "hidden";
+
+        // Animation
+        if (modalTimeline) modalTimeline.kill();
+        modalTimeline = gsap.timeline();
+
+         modalTimeline
+            .to(modal, { opacity: 1, duration: 0.3 })
+            .to(
+                modalContent,
+                { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.2)" },
+                "-=0.2",
+            )
+             // @ts-ignore
+            .to(".gallery-modal-item", {
+                 opacity: 1,
+                 y: 0,
+                 duration: 0.4,
+                 stagger: 0.02, // faster stagger for many items
+                 ease: "power2.out"
+            }, "-=0.2");
+    };
+
+    function closeGalleryModal() {
+        if (!modal || !modalContent) return;
+        
+        if (modalTimeline) modalTimeline.kill();
+        modalTimeline = gsap.timeline({
+            onComplete: () => {
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+                document.body.style.overflow = "";
+            },
+        });
+
+        modalTimeline
+            .to(modalContent, {
+                scale: 0.95,
+                opacity: 0,
+                duration: 0.3,
+                ease: "power2.in",
+            })
+            .to(modal, { opacity: 0, duration: 0.2 }, "-=0.1");
+    }
+
+    // Event Listeners
+    document
+        .getElementById("close-gallery-modal-btn")
+        ?.addEventListener("click", closeGalleryModal);
+    document
+        .getElementById("gallery-modal-backdrop")
+        ?.addEventListener("click", closeGalleryModal);
+    document
+        .getElementById("gallery-modal-book-btn")
+        ?.addEventListener("click", closeGalleryModal);
+
+    // Escape key
+    document.addEventListener("keydown", (e) => {
+        if (
+            e.key === "Escape" &&
+            modal &&
+            !modal.classList.contains("hidden")
+        ) {
+            closeGalleryModal();
+        }
+    });
+
+    // Delegate clicks for gallery items (since they are static in this component, direct selection works)
+    // Actually they are rendered on server, so they exist.
+    // Delegate clicks for gallery items (since they are static in this component, direct selection works)
+    // Actually they are rendered on server, so they exist.
+    const galleryItems = document.querySelectorAll(".gallery-modal-item");
+    console.log("Gallery Modal Items Found:", galleryItems.length);
+
+    galleryItems.forEach(item => {
+        item.addEventListener("click", () => {
+             console.log("Gallery Item Clicked");
+             // @ts-ignore
+             const data = item.dataset;
+             console.log("Data:", data);
+             // @ts-ignore
+             if (window.openImageModal) {
+                 console.log("Opening Image Modal");
+                 // @ts-ignore
+                 window.openImageModal({
+                     image: data.image,
+                     title: data.title,
+                     tags: JSON.parse(data.tags || "[]"),
+                     date: data.date,
+                     artistName: data.artistName,
+                     artistRole: data.artistRole,
+                     artistSlug: data.artistSlug
+                 });
+             } else {
+                 console.error("window.openImageModal is not defined");
+             }
+        });
+    });
+</script>

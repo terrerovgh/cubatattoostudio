@@ -1,0 +1,106 @@
+---
+import { getCollection } from "astro:content";
+
+const galleryItems = await getCollection("gallery", ({ data }) => {
+    return data.featured === true;
+});
+
+const artists = await getCollection("artists");
+const artistMap = new Map(artists.map(a => [a.slug, a.data]));
+
+// Reuse the same grid layout as reference
+console.log("Artist Map Keys:", [...artistMap.keys()]);
+galleryItems.forEach(item => {
+    console.log(`Item: ${item.id}, Artist Slug: '${item.data.artist}', Found: ${artistMap.has(item.data.artist || "")}`);
+});
+---
+
+<section id="portfolio" class="py-20 bg-neutral-950 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-24 section-header">
+            <h2
+                class="text-xs font-bold text-neutral-500 tracking-[0.5em] mb-4 reveal-up"
+            >
+                SELECTED WORKS
+            </h2>
+            <h3
+                class="text-4xl md:text-6xl font-bold text-white tracking-tighter reveal-up"
+            >
+                INKED IN<br /><span class="text-neutral-700">PERMANENCE</span>
+            </h3>
+        </div>
+
+        <div class="masonry-grid">
+            {
+                galleryItems.map((item, i) => (
+                    <div 
+                        class="masonry-item group relative overflow-hidden rounded-sm cursor-pointer"
+                        data-image={item.data.image}
+                        data-title={item.data.title || "Tattoo Work"}
+                        data-tags={JSON.stringify(item.data.tags || [])}
+                        data-date={item.data.date ? new Date(item.data.date).toLocaleDateString() : ""}
+                        data-artist-name={artistMap.get(item.data.artist || "")?.name || ""}
+                        data-artist-role={artistMap.get(item.data.artist || "")?.role || "Resident Artist"}
+                        data-artist-slug={item.data.artist || ""}
+                    >
+                        <div class="img-zoom-container">
+                            <img
+                                src={item.data.image}
+                                alt={item.data.title || "Tattoo Work"}
+                                class="w-full h-auto grayscale group-hover:grayscale-0 img-zoom"
+                            />
+                            
+                            <!-- Overlay Icon -->
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                <span class="bg-white/10 backdrop-blur-sm p-3 rounded-full border border-white/20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+
+        <div class="text-center mt-16 reveal-up">
+            <button class="btn-outline px-8 py-4 text-sm font-bold" onclick="window.openFullGallery()"
+                ><span>View Full Gallery</span></button
+            >
+        </div>
+    </div>
+</section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Masonry Reveal
+    gsap.utils.toArray(".masonry-item").forEach((item: any, i) => {
+        gsap.to(item, {
+            scrollTrigger: { trigger: item, start: "top 85%" },
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            delay: i * 0.05,
+            ease: "power3.out",
+        });
+        
+        // Add click listener
+        item.addEventListener("click", () => {
+             const data = item.dataset;
+             if (window.openImageModal) {
+                 window.openImageModal({
+                     image: data.image,
+                     title: data.title,
+                     tags: JSON.parse(data.tags || "[]"),
+                     date: data.date,
+                     artistName: data.artistName,
+                     artistRole: data.artistRole,
+                     artistSlug: data.artistSlug
+                 });
+             }
+        });
+    });
+</script>
