@@ -171,8 +171,15 @@ const videos = studio.videos;
             try {
                 const videos = JSON.parse(videosData);
                 if (Array.isArray(videos) && videos.length > 0) {
-                    const randomVideo =
-                        videos[Math.floor(Math.random() * videos.length)];
+                    // Check if a video is already selected globally to sync with Hero
+                    let randomVideo = (window as any).sharedStudioVideo;
+
+                    if (!randomVideo) {
+                        randomVideo =
+                            videos[Math.floor(Math.random() * videos.length)];
+                        (window as any).sharedStudioVideo = randomVideo;
+                    }
+
                     const videoElements =
                         studioSection.querySelectorAll("video.studio-video");
                     videoElements.forEach((vid) => {
