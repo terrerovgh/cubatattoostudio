@@ -1,43 +1,64 @@
-# Astro Starter Kit: Minimal
+# Cuba Tattoo Studio
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A modern, high-performance web application for Cuba Tattoo Studio, featuring a client-side AI assistant and a guided booking system.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🌟 Features
 
-## 🚀 Project Structure
+*   **Astro Framework**: Blazing fast static site generation with selective hydration.
+*   **AI Concierge**: An intelligent chat assistant powered by `@xenova/transformers` that runs entirely in your browser (no data leaves your device).
+*   **Guided Booking**: A conversational wizard to gather tattoo ideas, reference images, and scheduling preferences.
+*   **Content Collections**: Easy-to-manage data for Artists, Tattoos, Flash Designs, and Studio Info.
+*   **Responsive Design**: Built with TailwindCSS for a seamless experience on mobile and desktop.
 
-Inside of your Astro project, you'll see the following folders and files:
+## 📚 Documentation
+
+Detailed documentation is available in the [`docs/`](./docs/) directory:
+
+*   [**Architecture**](./docs/ARCHITECTURE.md): Tech stack and structure.
+*   [**AI System**](./docs/AI.md): How the in-browser LLM works.
+*   [**Data Models**](./docs/API.md): Content schemas.
+*   [**Deployment**](./docs/DEPLOYMENT.md): Build and deploy instructions.
+*   [**Future Roadmap**](./docs/FUTURE.md): Recommendations for improvements.
+
+## 🚀 Getting Started
+
+1.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+2.  **Download the AI Model**:
+    This is required for the chat assistant to function locally.
+    ```bash
+    npm run download-model
+    ```
+
+3.  **Start Development Server**:
+    ```bash
+    npm run dev
+    ```
+
+4.  **Build for Production**:
+    ```bash
+    npm run build
+    ```
+
+## 🛠️ Project Structure
 
 ```text
 /
-├── public/
+├── public/                 # Static assets & AI models
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/         # React & Astro components
+│   │   ├── AI/             # Chat Assistant logic
+│   │   └── ...
+│   ├── content/            # Data (Artists, Portfolio, etc.)
+│   ├── layouts/            # Page layouts
+│   ├── lib/                # Utilities & Web Workers
+│   └── pages/              # Routes
+└── astro.config.mjs        # Configuration
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 📝 License
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Proprietary. All rights reserved.
