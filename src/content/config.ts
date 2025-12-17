@@ -57,9 +57,28 @@ const studio = defineCollection({
   }),
 });
 
+const chat = defineCollection({
+  type: 'content',
+  schema: z.object({
+    assistantName: z.string().default('Assistant'),
+    modalTitle: z.string().default('Chat'),
+    welcomeMessage: z.string().default('How can I help you?'),
+    inputPlaceholder: z.string().default('Type a message...'),
+    quickActions: z.array(z.object({
+      label: z.string(),
+      prompt: z.string(),
+    })).optional(),
+    staticResponses: z.array(z.object({
+      trigger: z.string(), // Keyword or phrase to match
+      response: z.string(), // The static answer
+    })).optional(),
+  }),
+});
+
 export const collections = {
   artists,
   gallery,
   services,
   studio,
+  chat,
 };

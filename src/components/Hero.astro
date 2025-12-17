@@ -5,11 +5,13 @@ const studioEntry = await getEntry("studio", "main");
 const videos = studioEntry?.data?.videos || [];
 ---
 
-<section class="h-screen min-h-[600px] relative overflow-hidden">
-    <div
-        class="absolute inset-0 z-0 hero-bg-wrapper"
-        data-videos={JSON.stringify(videos)}
-    >
+<section
+    id="hero"
+    class="lens-section cursor-none relative h-screen min-h-[600px] overflow-hidden bg-black"
+    data-videos={JSON.stringify(videos)}
+>
+    {/* Blur Layer */}
+    <div class="lens-blur-layer">
         <video
             autoplay
             loop
@@ -25,8 +27,29 @@ const videos = studioEntry?.data?.videos || [];
         </div>
     </div>
 
+    {/* Focus Layer */}
+    <div class="lens-focus-layer">
+        <video
+            autoplay
+            loop
+            muted
+            playsinline
+            class="w-full h-full object-cover hero-bg-img"
+            src={videos[0]}
+        >
+        </video>
+        <div
+            class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/10"
+        >
+        </div>
+    </div>
+
+    {/* HUD Elements */}
+    <div class="lens-hud" id="hero-lens-hud"></div>
+
+    {/* Content Layer */}
     <div
-        class="absolute inset-0 z-10 flex flex-col justify-center items-center text-center space-y-6 px-4 isolate"
+        class="absolute inset-0 z-40 flex flex-col justify-center items-center text-center space-y-6 px-4 isolate pointer-events-none"
     >
         <div class="hero-item opacity-0 translate-y-10">
             <p
@@ -36,14 +59,7 @@ const videos = studioEntry?.data?.videos || [];
             </p>
         </div>
 
-        {/* Grayscale Overlay Layer - punched out by logo */}
-        <div
-            class="absolute inset-0 bg-black/60 backdrop-grayscale pointer-events-none -z-10"
-            aria-hidden="true"
-        >
-        </div>
-
-        <div class="py-2 mix-blend-destination-out">
+        <div class="py-2">
             <img
                 src="/logo.svg"
                 alt="Logo"
@@ -61,7 +77,7 @@ const videos = studioEntry?.data?.videos || [];
         <div class="mt-12 hero-item opacity-0 translate-y-10">
             <a
                 href="#book"
-                class="inline-flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest hover:text-red-500 transition-colors group"
+                class="pointer-events-auto inline-flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest hover:text-red-500 transition-colors group"
             >
                 <span>Start Your Project</span>
                 <i
@@ -73,6 +89,61 @@ const videos = studioEntry?.data?.videos || [];
     </div>
 </section>
 
+<style>
+    /* --- LENS SECTION --- */
+    .lens-section {
+        --lens-x: 50%;
+        --lens-y: 50%;
+    }
+    .lens-blur-layer {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        filter: grayscale(100%) blur(10px) brightness(0.3);
+        transform: scale(1.1);
+        z-index: 10;
+    }
+    .lens-focus-layer {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        mask-image: radial-gradient(
+            200px circle at var(--lens-x) var(--lens-y),
+            black 0%,
+            transparent 100%
+        );
+        -webkit-mask-image: radial-gradient(
+            200px circle at var(--lens-x) var(--lens-y),
+            black 0%,
+            transparent 100%
+        );
+        filter: grayscale(0%) contrast(1.1);
+        transform: scale(1.1);
+        z-index: 20;
+    }
+    .lens-hud {
+        position: absolute;
+        top: calc(var(--lens-y) - 100px);
+        left: calc(var(--lens-x) - 100px);
+        width: 200px;
+        height: 200px;
+        border: 1px solid transparent; /* Made transparent as requested */
+        border-radius: 50%;
+        z-index: 30;
+        pointer-events: none;
+        animation: spin 20s linear infinite;
+        box-shadow: 1px solid transparent;
+    }
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
 <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -80,9 +151,9 @@ const videos = studioEntry?.data?.videos || [];
     gsap.registerPlugin(ScrollTrigger);
 
     // Random Video Logic (Synced)
-    const heroWrapper = document.querySelector(".hero-bg-wrapper");
-    if (heroWrapper instanceof HTMLElement) {
-        const videosData = heroWrapper.dataset.videos;
+    const heroSection = document.getElementById("hero");
+    if (heroSection) {
+        const videosData = heroSection.dataset.videos;
         if (videosData) {
             try {
                 const videos = JSON.parse(videosData);
@@ -96,23 +167,39 @@ const videos = studioEntry?.data?.videos || [];
                         (window as any).sharedStudioVideo = randomVideo;
                     }
 
-                    const videoElement =
-                        heroWrapper.querySelector("video.hero-bg-img");
-                    if (videoElement instanceof HTMLVideoElement) {
-                        videoElement.src = randomVideo;
-                        // Ensure it plays after swapping src
-                        videoElement.load();
-                        videoElement
-                            .play()
-                            .catch((e) =>
+                    const videoElements =
+                        heroSection.querySelectorAll("video.hero-bg-img");
+                    videoElements.forEach((vid) => {
+                        if (vid instanceof HTMLVideoElement) {
+                            vid.src = randomVideo;
+                            // Ensure it plays after swapping src
+                            vid.load();
+                            vid.play().catch((e) =>
                                 console.log("Autoplay prevented:", e),
                             );
-                    }
+                        }
+                    });
                 }
             } catch (e) {
                 console.error("Failed to parse hero videos:", e);
             }
         }
+    }
+
+    // Hero Lens Logic
+    const lensHud = document.getElementById("hero-lens-hud");
+    if (heroSection) {
+        heroSection.addEventListener("mousemove", (e) => {
+            const rect = heroSection.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            heroSection.style.setProperty("--lens-x", x + "px");
+            heroSection.style.setProperty("--lens-y", y + "px");
+            if (lensHud) {
+                lensHud.style.left = x - 100 + "px";
+                lensHud.style.top = y - 100 + "px";
+            }
+        });
     }
 
     // Hero Parallax & Reveal
@@ -137,11 +224,12 @@ const videos = studioEntry?.data?.videos || [];
             "-=0.5",
         );
 
+    // Parallax Effect for Background Videos
     gsap.to(".hero-bg-img", {
         y: "15%",
         ease: "none",
         scrollTrigger: {
-            trigger: ".hero-bg-wrapper",
+            trigger: "#hero",
             start: "top top",
             end: "bottom top",
             scrub: true,

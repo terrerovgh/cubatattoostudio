@@ -76,6 +76,13 @@ galleryItems.forEach(item => {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    declare global {
+        interface Window {
+            openImageModal: (data: any) => void;
+            openFullGallery: () => void;
+        }
+    }
+
     // Masonry Reveal
     gsap.utils.toArray(".masonry-item").forEach((item: any, i) => {
         gsap.to(item, {
@@ -102,5 +109,23 @@ galleryItems.forEach(item => {
                  });
              }
         });
+    });
+
+    // Mobile-specific: Reveal color on scroll since there's no hover
+    ScrollTrigger.matchMedia({
+        "(max-width: 768px)": function() {
+            gsap.utils.toArray(".masonry-item img").forEach((img: any) => {
+                gsap.to(img, {
+                    scrollTrigger: {
+                        trigger: img,
+                        start: "top 75%", // Start coloring a bit earlier
+                        toggleActions: "play none none reverse"
+                    },
+                    filter: "grayscale(0%)",
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            });
+        }
     });
 </script>

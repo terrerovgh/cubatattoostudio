@@ -1,6 +1,10 @@
 ---
+import { getEntry } from "astro:content";
 import "../styles/global.css";
 import ChatAssistant from "../components/AI/ChatAssistant";
+
+const chatConfig = await getEntry("chat", "config");
+const knowledgeBase = await getEntry("chat", "knowledge");
 
 interface Props {
 	title: string;
@@ -56,7 +60,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		class="antialiased selection:bg-red-900 selection:text-white relative"
 	>
 		<slot />
-		<ChatAssistant client:idle />
+		<ChatAssistant
+			client:idle
+			config={chatConfig?.data}
+			systemPrompt={chatConfig?.body}
+			knowledgeBase={knowledgeBase?.body}
+		/>
 		<script>
 			// Initialize Lucide icons
 			// @ts-ignore

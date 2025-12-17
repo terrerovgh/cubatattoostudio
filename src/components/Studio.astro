@@ -9,28 +9,8 @@ if (!studio) {
 }
 
 const videos = studio.videos;
-// We'll handle random video selection in the client-side script to avoid hydration mismatches if possible,
-// OR we can do it here if we don't mind it being determined at build time for SSG.
-// However, the request implies "every time the user reloads the page", which suggests client-side or SSR.
-// Since Astro is static by default, purely random on every reload needs client-side JS logic for the source,
-// or we accept it's random at build time.
-// BUT, to satisfy "every time the user reloads", we should pick one here but if it's SSG it will be static.
-// Better approach: Pass the list to client JS and let it pick, OR simply pick one here if output is server.
-// Assuming SSG: effective randomization on client requires JS.
-// Let's modify the markup to support client-side updates OR just render one if we want simple SSG.
-// Re-reading: "reproduzcan ... cada vez que el usuario recargue la pagina" -> implies dynamic.
-// If site is SSG, this only happens at build.
-// I will implement a client-side randomizer in the <script> tag to swap the source,
-// or simpler: render one random one here (which fixes it for build) and hope they use SSR adapter,
-// OR more robust for SSG: render the first one, then client-side swap?
-// Let's stick to simple first: standard Astro build. Random here = random at build time.
-// To support "on reload", we need client JS to pick from the array.
-
-// Actually, let's keep it simple and just pick one here for now. If they want true dynamic on static hosting, client JS is needed.
-// I will pass the video list to a data attribute and let client JS pick one, OR just pick one here.
-// User said "recargue la pagina".
-// Let's try picking one here. If it's static mode, it won't change on reload.
-// I'll implement client-side selection to ensure it meets the requirement.
+// Video selection logic: We'll select the first video for SSG default.
+// Use client-side logic if dynamic rotation is needed.
 ---
 
 <section

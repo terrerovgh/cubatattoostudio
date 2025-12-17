@@ -202,4 +202,22 @@ import ImageModal from "../components/ImageModal.astro";
                 );
             });
         });
+
+    // Mobile-specific: Reveal color on scroll
+    ScrollTrigger.matchMedia({
+        "(max-width: 768px)": function () {
+            gsap.utils.toArray(".spotlight-card img").forEach((img: any) => {
+                gsap.to(img, {
+                    scrollTrigger: {
+                        trigger: img,
+                        start: "top 70%",
+                        toggleActions: "play none none reverse",
+                    },
+                    filter: "grayscale(0%)",
+                    duration: 0.5,
+                    ease: "power2.out",
+                });
+            });
+        },
+    });
 </script>
