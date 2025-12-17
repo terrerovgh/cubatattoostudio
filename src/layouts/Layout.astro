@@ -48,6 +48,51 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<meta property="twitter:description" content={description} />
 		<meta property="twitter:image" content={new URL(image, Astro.url)} />
 
+		<script type="application/ld+json" is:inline>
+			{
+				"@context": "https://schema.org",
+				"@type": "TattooParlor",
+				"name": "Cuba Tattoo Studio",
+				"image": "https://cubatattoo.com/tattoo/tattoo.webp",
+				"url": "https://cubatattoo.com",
+				"telephone": "(555) 123-4567",
+				"address": {
+					"@type": "PostalAddress",
+					"streetAddress": "124 Gold Ave SW",
+					"addressLocality": "Albuquerque",
+					"addressRegion": "NM",
+					"postalCode": "87102",
+					"addressCountry": "US"
+				},
+				"geo": {
+					"@type": "GeoCoordinates",
+					"latitude": 35.0844,
+					"longitude": -106.6504
+				},
+				"openingHoursSpecification": [
+					{
+						"@type": "OpeningHoursSpecification",
+						"dayOfWeek": [
+							"Monday",
+							"Tuesday",
+							"Wednesday",
+							"Thursday",
+							"Friday"
+						],
+						"opens": "11:00",
+						"closes": "20:00"
+					},
+					{
+						"@type": "OpeningHoursSpecification",
+						"dayOfWeek": ["Saturday", "Sunday"],
+						"opens": "12:00",
+						"closes": "18:00"
+					}
+				],
+				"priceRange": "$$"
+			}
+		</script>
+
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link

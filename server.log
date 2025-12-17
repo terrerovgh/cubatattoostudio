@@ -1,0 +1,36 @@
+
+> satellite-singularity@0.0.1 dev
+> astro dev
+
+18:04:21 [types] Generated 1ms
+18:04:22 [content] Syncing content
+[Shiki] 10 instances have been created. Shiki is supposed to be used as a singleton, consider refactoring your code to cache your highlighter instance; Or call `highlighter.dispose()` to release unused instances.
+18:04:22 [content] Synced content
+18:04:22 [vite] Re-optimizing dependencies because vite config has changed
+
+ astro  v5.16.5 ready in 1239 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+18:04:22 watching for file changes...
+Artist Map Keys: [ 'karli', 'david', 'nina' ]
+Item: tattoo-1.md, Artist Slug: 'david', Found: true
+Item: tattoo-14.md, Artist Slug: 'nina', Found: true
+Item: tattoo-3.md, Artist Slug: 'david', Found: true
+Item: tattoo-8.md, Artist Slug: 'karli', Found: true
+18:05:03 [200] / 184ms
+18:05:06 [vite] ✨ new dependencies optimized: @xenova/transformers
+18:05:06 [vite] ✨ optimized dependencies changed. reloading
+Artist Map Keys: [ 'karli', 'david', 'nina' ]
+Item: tattoo-1.md, Artist Slug: 'david', Found: true
+Item: tattoo-14.md, Artist Slug: 'nina', Found: true
+Item: tattoo-3.md, Artist Slug: 'david', Found: true
+Item: tattoo-8.md, Artist Slug: 'karli', Found: true
+18:05:07 [200] / 22ms
+Artist Map Keys: [ 'karli', 'david', 'nina' ]
+Item: tattoo-1.md, Artist Slug: 'david', Found: true
+Item: tattoo-14.md, Artist Slug: 'nina', Found: true
+Item: tattoo-3.md, Artist Slug: 'david', Found: true
+Item: tattoo-8.md, Artist Slug: 'karli', Found: true
+18:05:53 [200] / 30ms
