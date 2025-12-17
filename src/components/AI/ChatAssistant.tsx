@@ -238,7 +238,7 @@ export default function ChatAssistant({ config, systemPrompt, knowledgeBase }: C
                             {messages.map((msg, index) => (
                                 <div
                                     key={index}
-                                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                                    className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
                                 >
                                     <div
                                         className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm leading-relaxed whitespace-pre-wrap ${msg.role === 'user'
@@ -249,6 +249,35 @@ export default function ChatAssistant({ config, systemPrompt, knowledgeBase }: C
                                             __html: msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                                         }}
                                     />
+
+                                    {/* Suggestions - Only show after the LAST assistant message if not in booking mode */}
+                                    {index === messages.length - 1 && msg.role === 'assistant' && !bookingMode && !showDossier && !isGenerating && (
+                                        <div className="flex flex-wrap gap-2 mt-3 animate-fade-in max-w-[90%]">
+                                            {/* Quick Actions */}
+                                            {config?.quickActions?.map((action, idx) => (
+                                                <button
+                                                    key={`qa-${idx}`}
+                                                    onClick={() => sendMessage(action.prompt)}
+                                                    className="px-3 py-1.5 rounded-full bg-zinc-800 border border-zinc-600 hover:bg-blue-600 hover:border-blue-500 hover:text-white transition-all text-xs text-zinc-300 shadow-sm"
+                                                >
+                                                    {action.label}
+                                                </button>
+                                            ))}
+
+                                            {/* Static Responses (filtered to avoid duplicates with quick actions if prompts match) */}
+                                            {config?.staticResponses?.filter(r =>
+                                                !config.quickActions?.some(qa => qa.prompt === r.trigger)
+                                            ).map((response, idx) => (
+                                                <button
+                                                    key={`sr-${idx}`}
+                                                    onClick={() => sendMessage(response.trigger)}
+                                                    className="px-3 py-1.5 rounded-full bg-zinc-800 border border-zinc-600 hover:bg-blue-600 hover:border-blue-500 hover:text-white transition-all text-xs text-zinc-300 shadow-sm"
+                                                >
+                                                    {response.trigger}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
 
@@ -288,21 +317,6 @@ export default function ChatAssistant({ config, systemPrompt, knowledgeBase }: C
                                             Edit
                                         </button>
                                     </div>
-                                </div>
-                            )}
-
-                            {/* Quick Actions (only show if no messages or just welcome message AND not in booking mode) */}
-                            {messages.length === 1 && config?.quickActions && !bookingMode && (
-                                <div className="grid grid-cols-2 gap-2 mt-4">
-                                    {config.quickActions.map((action, idx) => (
-                                        <button
-                                            key={idx}
-                                            onClick={() => sendMessage(action.prompt)}
-                                            className="text-left p-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-colors text-xs text-zinc-300 hover:text-white"
-                                        >
-                                            {action.label}
-                                        </button>
-                                    ))}
                                 </div>
                             )}
 
