@@ -48,7 +48,7 @@ if (!flashPromotions || flashPromotions.length === 0) return null;
                             {/* Scroll Indicators if multiple images */}
                             {item.images.length > 1 && (
                                 <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1 z-10">
-                                    {item.images.map((_, i) => (
+                                    {item.images.map((_) => (
                                         <div class="w-1.5 h-1.5 rounded-full bg-white/50" />
                                     ))}
                                 </div>

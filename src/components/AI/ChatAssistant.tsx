@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import z from 'zod'; // For schema validation if needed locally
+// z import removed
 import Calendar from '../Booking/Calendar';
 
 // Types for messages and config
@@ -277,61 +277,8 @@ export default function ChatAssistant({ config, systemPrompt, knowledgeBase }: C
         }
     };
 
-    const handleConfirmBooking = async () => {
-        setIsProcessing(true);
-        setShowDossier(false); // Hide dossier while processing
-        // Call API to save dossier
-        try {
-            const response = await fetch('/api/booking/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    clientName: bookingData.name || 'Guest',
-                    clientEmail: bookingData.email,
-                    clientPhone: bookingData.phone,
-                    artist: bookingData.artist,
-                    style: bookingData.style,
-                    placement: bookingData.placement,
-                    description: bookingData.idea, // Assuming 'idea' is the description field
-                    selectedDate: bookingData.appointment?.split(' at ')[0], // specific to date step
-                    selectedTime: bookingData.appointment?.split(' at ')[1],
-                    // Extract base64 images from bookingData keys starting with IMAGE::
-                    images: Object.keys(bookingData)
-                        .filter(k => bookingData[k]?.startsWith('IMAGE::'))
-                        .map(k => bookingData[k].replace('IMAGE::', ''))
-                })
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                setMessages(prev => [...prev, {
-                    role: 'assistant',
-                    content: `Fantastic! Your booking is confirmed. 
-                    
-                    📂 **Dossier Created**: \`${result.dossierId}\`
-                    
-                    I've notified ${bookingData.artist || 'the team'}. You can view your appointment on the calendar.`
-                }]);
-
-                // Optional: Redirect or show link
-                setTimeout(() => {
-                    if (result.calendarUrl) {
-                        window.location.href = result.calendarUrl;
-                    }
-                }, 4000);
-            } else {
-                setMessages(prev => [...prev, { role: 'assistant', content: "I encountered an error saving your booking. Please communicate with the studio directly." }]);
-            }
-
-        } catch (e) {
-            console.error(e);
-            setMessages(prev => [...prev, { role: 'assistant', content: "System error. Please try again later." }]);
-        } finally {
-            setIsProcessing(false);
-            setBookingMode(false); // Exit booking mode after attempt
-        }
-    };
+    // handleConfirmBooking removed as it was unused and causing build warnings. 
+    // Logic is currently handled by confirmBooking mock.
 
     const handleSkipImage = () => {
         if (bookingMode) {
