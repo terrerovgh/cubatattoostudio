@@ -40,7 +40,7 @@ const getServiceImages = (serviceData: any) => {
         id="services-grid"
         class="grid grid-cols-1 md:grid-cols-3 gap-8"
       >
-        {sortedServices.map((service, index) => {
+        {sortedServices.map((service) => {
           const galleryImages = getServiceImages(service.data);
           const hasGalleryImages = galleryImages.length > 0;
           
@@ -70,7 +70,7 @@ const getServiceImages = (serviceData: any) => {
                 )}
 
                 {/* Slideshow Images Overlay */}
-                {hasGalleryImages && service.data.type !== 'video' && galleryImages.map((img, i) => (
+                {hasGalleryImages && service.data.type !== 'video' && galleryImages.map((img: string, i: number) => (
                     <img 
                       src={img} 
                       alt={`Gallery image for ${service.data.title}`}
@@ -253,22 +253,22 @@ const getServiceImages = (serviceData: any) => {
   initSlideshows();
 
   // Mobile Color Reveal Logic
-  ScrollTrigger.matchMedia({
-      "(max-width: 768px)": function() {
-          gsap.utils.toArray(".service-card").forEach((card: any) => {
-              const images = card.querySelectorAll("img, video");
-              gsap.to(images, {
-                  scrollTrigger: {
-                      trigger: card,
-                      start: "top 75%",
-                      toggleActions: "play none none reverse"
-                  },
-                  filter: "grayscale(0%)",
-                  duration: 0.5,
-                  ease: "power2.out"
-              });
+  let mm = gsap.matchMedia();
+
+  mm.add("(max-width: 768px)", () => {
+      gsap.utils.toArray(".service-card").forEach((card: any) => {
+          const images = card.querySelectorAll("img, video");
+          gsap.to(images, {
+              scrollTrigger: {
+                  trigger: card,
+                  start: "top 75%",
+                  toggleActions: "play none none reverse"
+              },
+              filter: "grayscale(0%)",
+              duration: 0.5,
+              ease: "power2.out"
           });
-      }
+      });
   });
 
   // Modal Logic

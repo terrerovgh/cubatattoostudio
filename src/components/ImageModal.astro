@@ -112,6 +112,20 @@
 <script>
     import { gsap } from "gsap";
 
+    declare global {
+        interface Window {
+            openArtistModal: (
+                name: string,
+                style: string,
+                images: string[],
+            ) => void;
+            artistData: Record<
+                string,
+                { name: string; style: string; images: string[] }
+            >;
+        }
+    }
+
     const modal = document.getElementById("image-modal");
     const modalContent = modal?.querySelector(".image-modal-content");
     const fullImage = document.getElementById(
@@ -144,7 +158,6 @@
 
         const artistNameEl = document.getElementById("modal-artist-name");
         if (artistNameEl) {
-            const name = data.artistName || "Coming Soon"; // Should we default to coming soon or show unknown?
             // If we have a name, show it. If not, maybe show "Guest Artist"?
             // But if the bug was it showing "Coming Soon", it means data.artistName was empty.
             // Let's ensure if it is empty we show something indicative or hide it.

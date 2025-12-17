@@ -32,7 +32,7 @@ galleryItems.forEach(item => {
 
         <div class="masonry-grid">
             {
-                galleryItems.map((item, i) => (
+                galleryItems.map((item) => (
                     <div 
                         class="masonry-item group relative overflow-hidden rounded-sm cursor-pointer"
                         data-image={item.data.image}
@@ -112,20 +112,20 @@ galleryItems.forEach(item => {
     });
 
     // Mobile-specific: Reveal color on scroll since there's no hover
-    ScrollTrigger.matchMedia({
-        "(max-width: 768px)": function() {
-            gsap.utils.toArray(".masonry-item img").forEach((img: any) => {
-                gsap.to(img, {
-                    scrollTrigger: {
-                        trigger: img,
-                        start: "top 75%", // Start coloring a bit earlier
-                        toggleActions: "play none none reverse"
-                    },
-                    filter: "grayscale(0%)",
-                    duration: 0.5,
-                    ease: "power2.out"
-                });
+    let mm = gsap.matchMedia();
+
+    mm.add("(max-width: 768px)", () => {
+        gsap.utils.toArray(".masonry-item img").forEach((img: any) => {
+            gsap.to(img, {
+                scrollTrigger: {
+                    trigger: img,
+                    start: "top 75%", // Start coloring a bit earlier
+                    toggleActions: "play none none reverse"
+                },
+                filter: "grayscale(0%)",
+                duration: 0.5,
+                ease: "power2.out"
             });
-        }
+        });
     });
 </script>

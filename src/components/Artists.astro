@@ -4,7 +4,6 @@ import { getCollection } from "astro:content";
 const artists = await getCollection("artists");
 const galleryItems = await getCollection("gallery");
 const sortedArtists = artists.sort((a, b) => a.data.order - b.data.order);
-import ImageModal from "../components/ImageModal.astro";
 ---
 
 <section id="artists" class="py-32 relative border-t border-white/5">
@@ -142,7 +141,7 @@ import ImageModal from "../components/ImageModal.astro";
     }
 </style>
 
-<script define:vars={{ sortedArtists, galleryItems }}>
+<script is:inline define:vars={{ sortedArtists, galleryItems }}>
     // Create global content map for other components
     window.artistData = {};
     sortedArtists.forEach((artist) => {
@@ -204,20 +203,20 @@ import ImageModal from "../components/ImageModal.astro";
         });
 
     // Mobile-specific: Reveal color on scroll
-    ScrollTrigger.matchMedia({
-        "(max-width: 768px)": function () {
-            gsap.utils.toArray(".spotlight-card img").forEach((img: any) => {
-                gsap.to(img, {
-                    scrollTrigger: {
-                        trigger: img,
-                        start: "top 70%",
-                        toggleActions: "play none none reverse",
-                    },
-                    filter: "grayscale(0%)",
-                    duration: 0.5,
-                    ease: "power2.out",
-                });
+    let mm = gsap.matchMedia();
+
+    mm.add("(max-width: 768px)", () => {
+        gsap.utils.toArray(".spotlight-card img").forEach((img: any) => {
+            gsap.to(img, {
+                scrollTrigger: {
+                    trigger: img,
+                    start: "top 70%",
+                    toggleActions: "play none none reverse",
+                },
+                filter: "grayscale(0%)",
+                duration: 0.5,
+                ease: "power2.out",
             });
-        },
+        });
     });
 </script>
