@@ -1,0 +1,101 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, getEntry } from "astro:content";
+import ArtistHero from "../../components/artist/ArtistHero.astro";
+import ArtistBio from "../../components/artist/ArtistBio.astro";
+import ArtistGallery from "../../components/artist/ArtistGallery.astro";
+import ArtistFlash from "../../components/artist/ArtistFlash.astro";
+import ArtistChat from "../../components/artist/ArtistChat.astro";
+import Footer from "../../components/Footer.astro";
+import ImageModal from "../../components/ImageModal.astro";
+
+export async function getStaticPaths() {
+    const artists = await getCollection("artists");
+    return artists.map((artist) => ({
+        params: { slug: artist.slug },
+        props: { artist },
+    }));
+}
+
+const { artist } = Astro.props;
+
+// Fetch relational data
+const scheduleEntry = artist.data.schedule
+    ? await getEntry(artist.data.schedule)
+    : null;
+const bookingInfoEntry = artist.data.bookingInfo
+    ? await getEntry(artist.data.bookingInfo)
+    : null;
+
+// New relational fetches
+const tattoos = await getCollection("tattoos", ({ data }) => {
+    // Check if data.artist is a reference (which has a slug) or just the string ID if resolved.
+    // In Astro content collections, reference() stores the slug/id.
+    return data.artist.id === artist.slug;
+});
+
+const flashDesigns = await getCollection("flashDesigns", ({ data }) => {
+    return data.artist.id === artist.slug;
+});
+
+const promotions = await getCollection("promotions", ({ data }) => {
+    return data.artist.id === artist.slug;
+});
+
+const bioEntry = artist.data.bio ? await getEntry(artist.data.bio) : null;
+const bioText = bioEntry?.data.fullBio || ""; // Fallback to empty string if bio entry is missing
+
+// Prepare props
+const galleryImages = tattoos.map((t) => t.data.image);
+
+// Combine flash designs and promotions for the flash section
+// ArtistFlash expects { title, price, images[], description }
+const flashPromotionsData = [
+    ...flashDesigns.map((f) => ({
+        title: f.data.title,
+        price: f.data.price || "Inquire",
+        images: [f.data.image],
+        description: f.data.description,
+    })),
+    ...promotions.map((p) => ({
+        title: p.data.title,
+        price: "Promo",
+        images: p.data.images || [],
+        description: p.data.description,
+    })),
+];
+
+const schedule = scheduleEntry?.data;
+const bookingInfo = bookingInfoEntry?.data;
+---
+
+<Layout
+    title={`${artist.data.name} | Cuba Tattoo Studio`}
+    description={bioEntry?.data.shortBio || `Portfolio of ${artist.data.name}`}
+>
+    <main class="bg-neutral-950 min-h-screen">
+        <ArtistHero artist={artist.data} />
+
+        {bioText && <ArtistBio bio={bioText} />}
+
+        {
+            flashPromotionsData.length > 0 && (
+                <ArtistFlash
+                    flashPromotions={flashPromotionsData}
+                    artistName={artist.data.name}
+                />
+            )
+        }
+
+        <ArtistChat
+            artist={artist.data}
+            schedule={schedule}
+            bookingInfo={bookingInfo}
+            bioText={bioText}
+        />
+
+        <ArtistGallery images={galleryImages} artistName={artist.data.name} />
+    </main>
+    <Footer />
+    <ImageModal />
+</Layout>

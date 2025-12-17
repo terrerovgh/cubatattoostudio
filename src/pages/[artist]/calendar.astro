@@ -1,0 +1,60 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import BookingCalendar from "../../components/Booking/Calendar";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    const artists = await getCollection("artists");
+    return artists.map((artist) => ({
+        params: { artist: artist.slug },
+        props: { artist },
+    }));
+}
+
+const { artist } = Astro.props;
+---
+
+<Layout
+    title={`${artist.data.name} - Calendar | Cuba Tattoo`}
+    description={`Check availability and book a session with ${artist.data.name}.`}
+>
+    <main
+        class="min-h-screen bg-black text-white pt-32 pb-20 px-4 relative overflow-hidden"
+    >
+        {/* Background Elements */}
+        <div
+            class="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-b from-zinc-900 to-black z-0 pointer-events-none"
+        >
+        </div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] pointer-events-none"
+        >
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <a
+                    href={`/artists/${artist.slug}`}
+                    class="inline-block mb-4 text-zinc-500 hover:text-white transition-colors"
+                >
+                    ← Back to Profile
+                </a>
+                <h1
+                    class="text-5xl md:text-7xl font-sans font-bold mb-4 tracking-tighter"
+                >
+                    {artist.data.name}
+                </h1>
+                <p class="text-xl text-zinc-400 max-w-2xl mx-auto">
+                    View availability and request your session.
+                </p>
+            </div>
+
+            <BookingCalendar
+                client:load
+                artistName={artist.data.name}
+                artistSlug={artist.slug}
+                bookings={[]}
+            />
+        </div>
+    </main>
+</Layout>

@@ -22,7 +22,7 @@ class PipelineSingleton {
                 progress_callback,
                 device: 'webgpu',
                 dtype: 'fp32',
-                local_files_only: true, // Force local files
+                local_files_only: false, // Allow downloading if not found locally
             });
         }
         return this.instance;
@@ -33,7 +33,17 @@ class PipelineSingleton {
 self.addEventListener('message', async (event) => {
     const { type, text, max_new_tokens = 128, systemPrompt, knowledgeBase } = event.data;
 
-    if (type === 'generate') {
+    if (type === 'init') {
+        try {
+            // Just trigger the instance creation to start download/load
+            await PipelineSingleton.getInstance((data) => {
+                self.postMessage({ type: 'progress', data });
+            });
+            self.postMessage({ type: 'ready' });
+        } catch (error) {
+            self.postMessage({ type: 'error', error: error.message });
+        }
+    } else if (type === 'generate') {
         try {
             let generator = await PipelineSingleton.getInstance((data) => {
                 // Send download progress back to main thread

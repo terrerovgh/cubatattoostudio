@@ -1,0 +1,57 @@
+---
+import ChatAssistant from "../AI/ChatAssistant";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+    artist: CollectionEntry<"artists">["data"];
+    schedule?: any; // strict typing would require importing schedule schema
+    bookingInfo?: any;
+    bioText?: string;
+}
+
+const { artist, schedule, bookingInfo, bioText } = Astro.props;
+
+const chatConfig = {
+    assistantName: artist.name,
+    modalTitle: `Chat with ${artist.name}`,
+    welcomeMessage: `Hi, I'm ${artist.name}. ask me anything about my style, ${artist.style}, or let's book a session!`,
+    inputPlaceholder: `Message ${artist.name}...`,
+    quickActions: [
+        { label: "Book Appointment", prompt: "I want to book an appointment" },
+        {
+            label: "View Flash",
+            prompt: "Do you have any available flash designs?",
+        },
+        { label: "Price Estimate", prompt: "How much does a tattoo cost?" },
+    ],
+    // We can add artist specific static responses here if needed
+    staticResponses: [
+        {
+            trigger: "style",
+            response: `My style is primarily ${artist.style}. ${bioText || ""}`,
+        },
+        {
+            trigger: "flash",
+            response:
+                "You can check out my available flash designs in the Flash section below!",
+        },
+    ],
+};
+
+// Construct richer context for the AI
+let contextInfo = `You are ${artist.name}, a tattoo artist at Cuba Tattoo Studio. Your style is ${artist.style}. Your bio is: "${bioText || artist.style}".`;
+
+if (schedule) {
+    contextInfo += `\n\nYour Work Schedule:\nDays: ${schedule.days.join(", ")}\nHours: ${schedule.hours.start} - ${schedule.hours.end}`;
+}
+
+if (bookingInfo) {
+    contextInfo += `\n\nBooking Policy:\nDeposit: ${bookingInfo.deposit}\nMinimum Price: ${bookingInfo.minPrice || "N/A"}\nPolicy: ${bookingInfo.policy}\nPayment Methods: ${bookingInfo.methods.join(", ")}`;
+}
+
+const systemPrompt = `${contextInfo}
+You are talking to a potential client. Be friendly, professional, but authentic to your style.
+If they want to book, guide them to the booking flow.`;
+---
+
+<ChatAssistant client:load config={chatConfig} systemPrompt={systemPrompt} />

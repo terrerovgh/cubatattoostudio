@@ -3,14 +3,14 @@ name: "Nina"
 style: "Fine Line / Geometric"
 role: "Resident Artist"
 order: 3
+schedule: nina
+bookingInfo: nina
 coverImage: "/artists/nina.webp"
-images:
-  - "/tattoo/tattoo14.webp"
-  - "/tattoo/tattoo15.webp"
-  - "/tattoo/tattoo16.webp"
-  - "/tattoo/tattoo17.webp"
-  - "/tattoo/tattoo18.webp"
-bio: "Delicate composition, dot work, and sacred geometry for the modern collector."
+# Relations are now handled by separate collections (tattoos, flash, etc) linking BACK to this artist.
+# Or we can link forward if we want curated lists, but the schema update supports pure relational.
+# Bio is now a reference.
+bio: nina
+status: "walk-ins"
 socials:
   instagram: "#"
 ---

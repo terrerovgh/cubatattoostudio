@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import BookingCalendar from "../components/Booking/Calendar";
+---
+
+<Layout
+    title="Studio Calendar | Cuba Tattoo"
+    description="View studio availability and book your next tattoo session."
+>
+    <main
+        class="min-h-screen bg-black text-white pt-32 pb-20 px-4 relative overflow-hidden"
+    >
+        {/* Background Elements */}
+        <div
+            class="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-b from-zinc-900 to-black z-0 pointer-events-none"
+        >
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h1
+                    class="text-5xl md:text-7xl font-sans font-bold mb-4 tracking-tighter"
+                >
+                    Studio Availability
+                </h1>
+                <p class="text-xl text-zinc-400 max-w-2xl mx-auto">
+                    Check our general availability or select a specific artist
+                    to view their schedule.
+                </p>
+            </div>
+
+            <BookingCalendar
+                client:load
+                artistName="Cuba Tattoo Studio"
+                bookings={[]}
+            />
+        </div>
+    </main>
+</Layout>

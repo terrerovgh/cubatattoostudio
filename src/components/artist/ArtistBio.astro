@@ -1,0 +1,32 @@
+---
+interface Props {
+    bio: string;
+}
+
+const { bio } = Astro.props;
+---
+
+<section class="py-16 md:py-24 bg-neutral-950 px-4 md:px-6">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2
+            class="text-[10px] md:text-xs font-bold text-neutral-500 tracking-[0.3em] uppercase mb-6 md:mb-8"
+        >
+            About the Artist
+        </h2>
+
+        <div class="relative px-2">
+            <span
+                class="absolute -top-8 md:-top-12 left-1/2 -translate-x-1/2 text-7xl md:text-9xl text-white/5 font-serif select-none"
+                >"</span
+            >
+            <p
+                class="text-xl md:text-4xl text-neutral-200 leading-relaxed md:leading-tight font-light font-serif tracking-wide"
+            >
+                {bio}
+            </p>
+        </div>
+
+        <div class="w-16 md:w-24 h-[1px] bg-white/20 mx-auto mt-10 md:mt-12">
+        </div>
+    </div>
+</section>
