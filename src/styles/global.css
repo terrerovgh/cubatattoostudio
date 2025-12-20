@@ -83,6 +83,7 @@ body {
     background: #555;
 }
 
+/* Fallback for browsers that don't support grid-lanes */
 .masonry-grid {
     column-count: 1;
     column-gap: 1.5rem;
@@ -106,11 +107,28 @@ body {
     }
 }
 
+/* Modern Masonry (Grid Lanes) */
+@supports (display: grid-lanes) {
+    .masonry-grid {
+        display: grid-lanes;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        column-count: auto; /* Reset fallback */
+        column-gap: normal; /* Reset fallback */
+    }
+}
+
 .masonry-item {
     break-inside: avoid;
     margin-bottom: 1.5rem;
     opacity: 0;
     transform: translateY(30px);
+}
+
+@supports (display: grid-lanes) {
+    .masonry-item {
+        margin-bottom: 0; /* grid-lanes handles gap */
+    }
 }
 
 .img-zoom-container {
