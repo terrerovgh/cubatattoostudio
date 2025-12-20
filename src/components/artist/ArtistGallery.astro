@@ -22,39 +22,28 @@ const { images, artistName } = Astro.props;
             </h3>
         </div>
 
-        <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8"
-        >
-            {
-                [0, 1, 2].map((colIndex) => (
-                    <div
-                        class={`flex flex-col gap-8 parallax-column-${colIndex}`}
-                    >
-                        {images
-                            .filter((_, index) => index % 3 === colIndex)
-                            .map((img) => (
-                                <div
-                                    class="relative group overflow-hidden cursor-zoom-in rounded-sm"
-                                    onclick={`window.openImageModal({ image: '${img}', title: 'Tattoo by ${artistName}', artistName: '${artistName}' })`}
-                                >
-                                    <img
-                                        src={img}
-                                        alt={`Tattoo by ${artistName}`}
-                                        class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                                        loading="lazy"
-                                    />
-                                    <div class="absolute inset-0 bg-neutral-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                                        <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                            <span class="text-white text-xs font-bold tracking-[0.2em] border border-white/30 px-6 py-3 uppercase hover:bg-white hover:text-black transition-colors">
-                                                View Detail
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+        <div class="masonry-grid">
+            {images.map((img, index) => (
+                <div
+                    class="masonry-item relative group overflow-hidden cursor-zoom-in rounded-sm"
+                    onclick={`window.openImageModal({ image: '${img}', title: 'Tattoo by ${artistName}', artistName: '${artistName}' })`}
+                    data-index={index}
+                >
+                    <img
+                        src={img}
+                        alt={`Tattoo by ${artistName}`}
+                        class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        loading="lazy"
+                    />
+                    <div class="absolute inset-0 bg-neutral-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                        <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <span class="text-white text-xs font-bold tracking-[0.2em] border border-white/30 px-6 py-3 uppercase hover:bg-white hover:text-black transition-colors">
+                                View Detail
+                            </span>
+                        </div>
                     </div>
-                ))
-            }
+                </div>
+            ))}
         </div>
     </div>
 </section>
@@ -65,44 +54,18 @@ const { images, artistName } = Astro.props;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Only apply parallax on desktop/large screens
-    const mm = gsap.matchMedia();
-
-    mm.add("(min-width: 1024px)", () => {
-        // Column 0: Standard speed (or slightly slower)
-        gsap.to(".parallax-column-0", {
-            y: -50,
-            ease: "none",
+    // Fade up animation for masonry items
+    gsap.utils.toArray(".masonry-item").forEach((item: any, i) => {
+        gsap.to(item, {
             scrollTrigger: {
-                trigger: ".parallax-column-0",
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1,
+                trigger: item,
+                start: "top 85%",
+                toggleActions: "play none none reverse"
             },
-        });
-
-        // Column 1: Faster speed (moves more) - deeper effect
-        gsap.to(".parallax-column-1", {
-            y: -150,
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".parallax-column-1",
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1.5,
-            },
-        });
-
-        // Column 2: Slower speed (or reverse) - varied depth
-        gsap.to(".parallax-column-2", {
-            y: -30,
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".parallax-column-2",
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 0.5,
-            },
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
         });
     });
 </script>
