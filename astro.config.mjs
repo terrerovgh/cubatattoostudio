@@ -5,7 +5,7 @@ import cloudflare from '@astrojs/cloudflare';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  output: 'static',
+  output: 'static', // In Astro v5, this is the default and supports SSR via `prerender = false`
   adapter: cloudflare({
     platformProxy: {
       enabled: true,

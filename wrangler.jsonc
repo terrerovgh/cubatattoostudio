@@ -13,13 +13,13 @@
     "binding": "ASSETS"
   },
   // TODO: uncomment once API token has R2 Storage: Edit permission
-  // "r2_buckets": [
-  //   {
-  //     "binding": "R2_BUCKET",
-  //     "bucket_name": "cubatattoostudio",
-  //     "preview_bucket_name": "cubatattoostudio"
-  //   }
-  // ],
+  "r2_buckets": [
+    {
+      "binding": "R2_BUCKET",
+      "bucket_name": "cubatattoostudio",
+      "preview_bucket_name": "cubatattoostudio"
+    }
+  ],
   "vars": {
     "UPLOAD_SECRET": ""
   }
