@@ -1,0 +1,22 @@
+---
+interface Props {
+  id: string;
+  backgroundImage: string;
+  class?: string;
+}
+
+const { id, backgroundImage, class: className = '' } = Astro.props;
+---
+
+<section
+  data-section={id}
+  data-bg={backgroundImage}
+  id={id}
+  class:list={[
+    'min-h-screen flex items-center justify-center',
+    'py-24 lg:py-36 relative',
+    className,
+  ]}
+>
+  <slot />
+</section>

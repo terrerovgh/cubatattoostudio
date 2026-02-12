@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bookingGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="100%" stop-color="#121212"/>
+    </linearGradient>
+    <radialGradient id="goldGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#C8956C" stop-opacity="0.08"/>
+      <stop offset="40%" stop-color="#C8956C" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bookingGrad)"/>
+  <rect width="1920" height="1080" fill="url(#goldGlow)"/>
+  <!-- Subtle gold accent lines -->
+  <line x1="860" y1="440" x2="1060" y2="440" stroke="#C8956C" stroke-width="0.5" opacity="0.15"/>
+  <line x1="860" y1="640" x2="1060" y2="640" stroke="#C8956C" stroke-width="0.5" opacity="0.15"/>
+</svg>

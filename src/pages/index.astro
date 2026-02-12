@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import ArtistsSection from '../components/sections/ArtistsSection.astro';
+import ServicesSection from '../components/sections/ServicesSection.astro';
+import GallerySectionWrapper from '../components/sections/GallerySectionWrapper.astro';
+import BookingSection from '../components/sections/BookingSection.astro';
+
+const allSections = await getCollection('sections');
+const sections = allSections.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout>
+  {sections.map((section) => {
+    const { data } = section;
+
+    if (data.layout === 'hero-center') {
+      return (
+        <HeroSection
+          id={data.id}
+          backgroundImage={data.backgroundImage}
+          title={data.title}
+          subtitle={data.subtitle}
+        />
+      );
+    }
+
+    if (data.layout === 'profile-card') {
+      return (
+        <ArtistsSection
+          id={data.id}
+          backgroundImage={data.backgroundImage}
+          title={data.title}
+          artists={data.artists}
+        />
+      );
+    }
+
+    if (data.layout === 'list-services') {
+      return (
+        <ServicesSection
+          id={data.id}
+          backgroundImage={data.backgroundImage}
+          title={data.title}
+          services={data.services}
+        />
+      );
+    }
+
+    if (data.layout === 'grid-gallery') {
+      return (
+        <GallerySectionWrapper
+          id={data.id}
+          backgroundImage={data.backgroundImage}
+          title={data.title}
+          subtitle={data.subtitle}
+        />
+      );
+    }
+
+    if (data.layout === 'booking-cta') {
+      return (
+        <BookingSection
+          id={data.id}
+          backgroundImage={data.backgroundImage}
+          title={data.title}
+          subtitle={data.subtitle}
+          bookingUrl={data.bookingUrl}
+          phone={data.phone}
+          email={data.email}
+          address={data.address}
+        />
+      );
+    }
+
+    return null;
+  })}
+</BaseLayout>

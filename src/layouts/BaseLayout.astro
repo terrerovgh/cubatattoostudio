@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import BackgroundManager from '../components/BackgroundManager';
+import ScrollObserver from '../components/ScrollObserver';
+import FloatingDock from '../components/FloatingDock';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Cuba Tattoo Studio | Premium Tattoo Art in Albuquerque, NM',
+  description = 'Cuba Tattoo Studio — premium custom tattoo art in Albuquerque, New Mexico. Book a consultation with our talented artists David, Nina, and Karli.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Preconnect fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Preload hero background -->
+    <link rel="preload" as="image" href="/backgrounds/hero.svg" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/backgrounds/hero.svg" />
+
+    <!-- Theme color -->
+    <meta name="theme-color" content="#0a0a0c" />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body class="bg-[var(--color-surface-primary)] text-white font-sans overflow-x-hidden">
+    <BackgroundManager client:only="react" />
+
+    <main class="relative z-10">
+      <slot />
+    </main>
+
+    <ScrollObserver client:only="react" />
+    <FloatingDock client:only="react" />
+  </body>
+</html>

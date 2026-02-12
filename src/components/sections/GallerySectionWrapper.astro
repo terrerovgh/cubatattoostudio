@@ -1,0 +1,32 @@
+---
+import SectionWrapper from '../SectionWrapper.astro';
+import GlassCard from '../GlassCard.astro';
+import GallerySection from './GallerySection';
+
+interface Props {
+  id: string;
+  backgroundImage: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const { id, backgroundImage, title, subtitle } = Astro.props;
+---
+
+<SectionWrapper id={id} backgroundImage={backgroundImage}>
+  <GlassCard maxWidth="max-w-5xl">
+    <div class="space-y-8" data-animate>
+      {title && (
+        <h2 class="text-gradient-white text-3xl sm:text-4xl lg:text-5xl font-bold text-center tracking-[-0.02em]">
+          {title}
+        </h2>
+      )}
+      {subtitle && (
+        <p class="text-center text-white/35 text-sm font-light">
+          {subtitle}
+        </p>
+      )}
+      <GallerySection client:visible />
+    </div>
+  </GlassCard>
+</SectionWrapper>
