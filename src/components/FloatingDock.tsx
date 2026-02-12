@@ -23,11 +23,15 @@ export default function FloatingDock() {
   return (
     <nav
       className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50
-                 liquid-glass rounded-[22px] px-1.5 py-1.5
+                 rounded-[22px] px-1.5 py-1.5
                  flex items-center gap-0.5"
       style={{
+        background: 'rgba(18, 18, 20, 0.55)',
         backdropFilter: 'blur(50px) saturate(1.8) brightness(1.1)',
         WebkitBackdropFilter: 'blur(50px) saturate(1.8) brightness(1.1)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        boxShadow:
+          'inset 0 1px 0 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 0 rgba(0, 0, 0, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2)',
       }}
       aria-label="Main navigation"
     >
