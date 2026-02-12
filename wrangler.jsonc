@@ -3,13 +3,23 @@
   "name": "cubatattoostudio",
   "compatibility_date": "2026-02-12",
   "compatibility_flags": ["nodejs_compat"],
-  "r2_buckets": [
-    {
-      "binding": "R2_BUCKET",
-      "bucket_name": "cubatattoostudio",
-      "preview_bucket_name": "cubatattoostudio"
-    }
+  "main": "dist/_worker.js/index.js",
+  "routes": [
+    { "pattern": "cubatattoostudio.com", "custom_domain": true },
+    { "pattern": "www.cubatattoostudio.com", "custom_domain": true }
   ],
+  "assets": {
+    "directory": "dist",
+    "binding": "ASSETS"
+  },
+  // TODO: uncomment once API token has R2 Storage: Edit permission
+  // "r2_buckets": [
+  //   {
+  //     "binding": "R2_BUCKET",
+  //     "bucket_name": "cubatattoostudio",
+  //     "preview_bucket_name": "cubatattoostudio"
+  //   }
+  // ],
   "vars": {
     "UPLOAD_SECRET": ""
   }
