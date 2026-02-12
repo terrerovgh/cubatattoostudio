@@ -15,11 +15,16 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
   <GlassCard class="text-center" maxWidth="max-w-3xl" elevated glow>
     <div class="space-y-10">
-      {title && (
-        <h1 class="text-gradient-white text-5xl sm:text-7xl lg:text-[5.5rem] font-extrabold tracking-[-0.03em] leading-[0.95]">
-          {title}
-        </h1>
-      )}
+      <div class="flex flex-col items-center gap-6">
+        <img
+          src="/logo.svg"
+          alt={title || 'Cuba Tattoo Studio'}
+          class="w-full max-w-md sm:max-w-lg lg:max-w-xl h-auto drop-shadow-[0_4px_24px_rgba(200,149,108,0.15)]"
+        />
+        {title && (
+          <h1 class="sr-only">{title}</h1>
+        )}
+      </div>
       {subtitle && (
         <p class="text-lg sm:text-xl text-white/50 font-light max-w-lg mx-auto tracking-wide leading-relaxed">
           {subtitle}
