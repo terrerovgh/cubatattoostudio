@@ -40,7 +40,8 @@
       "Bash(gh secret set:*)",
       "Bash(gh run list:*)",
       "Bash(gh run watch:*)",
-      "WebFetch(domain:cubatattoostudio.com)"
+      "WebFetch(domain:cubatattoostudio.com)",
+      "Bash(test:*)"
     ]
   }
 }
