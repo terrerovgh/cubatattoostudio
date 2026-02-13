@@ -1,4 +1,6 @@
 ---
+import { getImage } from 'astro:assets';
+import instagramData from '../../data/instagram';
 import SectionWrapper from '../SectionWrapper.astro';
 import GlassCard from '../GlassCard.astro';
 import GallerySection from './GallerySection';
@@ -11,6 +13,66 @@ interface Props {
 }
 
 const { id, backgroundImage, title, subtitle } = Astro.props;
+
+// Process posts to generate optimized images
+const optimizedPosts = await Promise.all(
+  instagramData.posts.map(async (post) => {
+    if (post.isLocal && typeof post.imageUrl === 'object') {
+      try {
+        const optimized = await getImage({
+          src: post.imageUrl,
+          format: 'webp',
+          width: 600,
+          quality: 80,
+        });
+
+        return {
+          ...post,
+          imageUrl: optimized.src,
+          srcSet: optimized.srcSet?.attribute || '',
+          attributes: optimized.attributes,
+        };
+      } catch (e) {
+        console.error(`Failed to optimize image for post ${post.id}`, e);
+        return post;
+      }
+    }
+    return post;
+  })
+);
+
+// Process artist profiles (if needed for avatars)
+const optimizedArtists = {};
+if (instagramData.artists) {
+  for (const [key, artist] of Object.entries(instagramData.artists)) {
+    let profilePic = artist.profile?.localProfilePic;
+
+    if (artist.profile?.localProfilePic && typeof artist.profile.localProfilePic === 'object') {
+       try {
+         const optimized = await getImage({
+            src: artist.profile.localProfilePic,
+            format: 'webp',
+            width: 150,
+            height: 150,
+         });
+         profilePic = optimized.src;
+       } catch (e) {
+         // fallback
+       }
+    }
+
+    optimizedArtists[key] = {
+      ...artist,
+      profile: {
+        ...artist.profile,
+        localProfilePic: profilePic,
+      },
+      // We don't strictly need to pass the full posts array here if filtering is done on the main list
+      // But preserving structure is safer
+      posts: artist.posts.map(p => optimizedPosts.find(op => op.id === p.id) || p),
+    };
+  }
+}
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
@@ -26,7 +88,11 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
           {subtitle}
         </p>
       )}
-      <GallerySection client:visible />
+      <GallerySection
+        client:visible
+        initialPosts={optimizedPosts}
+        initialArtists={optimizedArtists}
+      />
     </div>
   </GlassCard>
 </SectionWrapper>

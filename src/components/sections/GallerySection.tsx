@@ -9,6 +9,8 @@ interface Post {
   permalink?: string;
   artist?: string;
   isLocal?: boolean;
+  srcSet?: string;
+  attributes?: any;
 }
 
 interface ArtistData {
@@ -20,18 +22,9 @@ interface ArtistData {
   posts: Post[];
 }
 
-interface InstagramData {
-  posts: Post[];
-  studio?: { profile: ArtistData['profile']; posts: Post[] };
-  artists?: Record<string, ArtistData>;
-  lastFetched?: string;
-}
-
-let instagramData: InstagramData = { posts: [] };
-try {
-  instagramData = await import('@/data/instagram.json');
-} catch {
-  // No data available
+interface GallerySectionProps {
+  initialPosts: Post[];
+  initialArtists: Record<string, ArtistData>;
 }
 
 const ARTIST_LABELS: Record<string, string> = {
@@ -42,18 +35,25 @@ const ARTIST_LABELS: Record<string, string> = {
   karli: 'Karli',
 };
 
-export default function GallerySection() {
-  const { posts, artists } = instagramData;
+export default function GallerySection({ initialPosts, initialArtists }: GallerySectionProps) {
+  const posts = initialPosts || [];
+  const artists = initialArtists || {};
+
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
+    // Clean old cached images occasionally
     cleanExpired().catch(() => {});
   }, []);
 
   // Build available filters from actual data
   const availableFilters = ['all'];
-  if (instagramData.studio?.posts?.length) availableFilters.push('studio');
+
+  // Check if studio posts exist (studio is usually filtered by artistFolder='studio' in posts list)
+  const hasStudioPosts = posts.some(p => p.artist === 'studio');
+  if (hasStudioPosts) availableFilters.push('studio');
+
   if (artists) {
     for (const key of Object.keys(artists)) {
       if (artists[key]?.posts?.length) availableFilters.push(key);
@@ -122,16 +122,29 @@ export default function GallerySection() {
                        group relative"
           >
             {item.imageUrl ? (
-              <CachedImage
-                imageId={item.id}
-                src={item.imageUrl}
-                alt={item.caption || 'Tattoo work'}
-                artist={item.artist}
-                className="w-full h-full object-cover
+              item.isLocal ? (
+                 <img
+                    src={item.imageUrl}
+                    srcSet={item.srcSet}
+                    alt={item.caption || 'Tattoo work'}
+                    className="w-full h-full object-cover
                            transition-transform duration-700 ease-out
                            group-hover:scale-110"
-                loading="lazy"
-              />
+                    loading="lazy"
+                    {...item.attributes}
+                 />
+              ) : (
+                <CachedImage
+                  imageId={item.id}
+                  src={item.imageUrl}
+                  alt={item.caption || 'Tattoo work'}
+                  artist={item.artist}
+                  className="w-full h-full object-cover
+                           transition-transform duration-700 ease-out
+                           group-hover:scale-110"
+                  loading="lazy"
+                />
+              )
             ) : (
               <div className="w-full h-full flex items-center justify-center text-white/15">
                 <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
@@ -201,14 +214,27 @@ export default function GallerySection() {
                        border border-white/[0.06]"
             onClick={(e) => e.stopPropagation()}
           >
-            <CachedImage
-              imageId={selectedPost.id}
-              src={selectedPost.imageUrl}
-              alt={selectedPost.caption || 'Tattoo work'}
-              artist={selectedPost.artist}
-              className="w-full h-full object-contain"
-              loading="eager"
-            />
+            {selectedPost.isLocal ? (
+               <img
+                  src={selectedPost.imageUrl}
+                  srcSet={selectedPost.srcSet}
+                  alt={selectedPost.caption || 'Tattoo work'}
+                  className="w-full h-full object-contain"
+                  {...selectedPost.attributes}
+                  // We override width/height for lightbox to be responsive/contain
+                  width={undefined}
+                  height={undefined}
+               />
+            ) : (
+                <CachedImage
+                  imageId={selectedPost.id}
+                  src={selectedPost.imageUrl}
+                  alt={selectedPost.caption || 'Tattoo work'}
+                  artist={selectedPost.artist}
+                  className="w-full h-full object-contain"
+                  loading="eager"
+                />
+            )}
             <button
               onClick={() => setSelectedPost(null)}
               className="absolute top-4 right-4 w-9 h-9 rounded-full
