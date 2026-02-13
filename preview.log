@@ -1,0 +1,45 @@
+
+> cubatattoostudio@1.0.0 preview
+> wrangler dev
+
+
+ ⛅️ wrangler 4.65.0
+───────────────────
+Your Worker has access to the following bindings:
+Binding                     Resource                  Mode
+env.ASSETS                  Assets                    local
+env.UPLOAD_SECRET ("")      Environment Variable      local
+
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:8787
+[wrangler:info] GET / 200 OK (49ms)
+[wrangler:info] GET /backgrounds/hero.svg 200 OK (31ms)
+[wrangler:info] GET /logo.svg 200 OK (36ms)
+[wrangler:info] GET /_astro/index.1oh1HxS8.css 200 OK (38ms)
+[wrangler:info] GET /_astro/BackgroundManager.BfHz3ZZL.js 200 OK (8ms)
+[wrangler:info] GET /_astro/client.Dc9Vh3na.js 200 OK (18ms)
+[wrangler:info] GET /artists/david.jpg 200 OK (34ms)
+[wrangler:info] GET /artists/karli.jpg 200 OK (27ms)
+[wrangler:info] GET /artists/nina.jpg 200 OK (35ms)
+[wrangler:info] GET /_astro/01.QwiZEY6U_tjYRY.webp 200 OK (38ms)
+[wrangler:info] GET /_astro/FloatingDock.CwbwWXRF.js 200 OK (54ms)
+[wrangler:info] GET /_astro/ScrollObserver.CzEH7kG_.js 200 OK (57ms)
+[wrangler:info] GET /_astro/jsx-runtime.D_zvdyIk.js 200 OK (24ms)
+[wrangler:info] GET /_astro/index.DiEladB3.js 200 OK (44ms)
+[wrangler:info] GET /_astro/store.CrJuNOjd.js 200 OK (46ms)
+[wrangler:info] GET /_astro/index.DIEz7UgV.js 200 OK (46ms)
+[wrangler:info] GET /_astro/02.RDLqmdqe_aitKf.webp 200 OK (24ms)
+[wrangler:info] GET /_astro/02.BKM098q1_Z238T1W.webp 200 OK (26ms)
+[wrangler:info] GET /_astro/01.q8vHl2Lk_Zje3lG.webp 200 OK (27ms)
+[wrangler:info] GET /_astro/03.BreSMMjj_2rMSvl.webp 200 OK (7ms)
+[wrangler:info] GET /_astro/04.BNHhtVmt_ZrEBkv.webp 200 OK (11ms)
+[wrangler:info] GET /backgrounds/services.svg 200 OK (14ms)
+[wrangler:info] GET /_astro/01.5s8Zyo1D_ZgfYhS.webp 200 OK (20ms)
+[wrangler:info] GET /_astro/01.Dyr2WNw4_ZNG8bU.webp 200 OK (21ms)
+[wrangler:info] GET /_astro/02.DBDjziOx_Z1fi4yO.webp 200 OK (32ms)
+[wrangler:info] GET /_astro/03.Dbj-MfPx_Zx3IaH.webp 200 OK (29ms)
+[wrangler:info] GET /_astro/02.BAXlvlFg_1KxxOP.webp 200 OK (44ms)
+[wrangler:info] GET /_astro/04.oSnc3mLU_Z2krcKQ.webp 200 OK (28ms)
+[wrangler:info] GET /backgrounds/gallery.svg 200 OK (11ms)
+[wrangler:info] GET /_astro/GallerySection.Dg54i9Cf.js 200 OK (8ms)
+[wrangler:info] GET /backgrounds/booking.svg 200 OK (8ms)
