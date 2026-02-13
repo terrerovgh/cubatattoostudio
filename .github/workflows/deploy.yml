@@ -19,8 +19,6 @@ jobs:
 
       - run: npx astro build
 
-      - run: echo "_worker.js" > dist/.assetsignore
-
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
