@@ -1,0 +1,271 @@
+---
+import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArtistHero from '../../components/artist/ArtistHero.astro';
+import ArtistBio from '../../components/artist/ArtistBio.astro';
+import ArtistGalleryGrid from '../../components/artist/ArtistGalleryGrid';
+import CalendarNav from '../../components/artist/CalendarNav';
+import portfolioData from '../../data/artists-portfolio.json';
+import instagramData from '../../data/instagram';
+
+export async function getStaticPaths() {
+  const artistEntries = await getCollection('artists');
+  return artistEntries.map((entry) => ({
+    params: { id: entry.data.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const config = entry.data;
+const artistId = config.id;
+
+// Load rich data from JSON
+const artistData = (portfolioData.artists as Record<string, any>)[artistId];
+if (!artistData) {
+  return Astro.redirect('/');
+}
+
+// Filter instagram posts for this artist and optimize images
+const artistPosts = instagramData.posts.filter((p) => p.artist === artistId);
+const optimizedPosts = await Promise.all(
+  artistPosts.map(async (post) => {
+    if (post.isLocal && typeof post.imageUrl === 'object') {
+      try {
+        const optimized = await getImage({
+          src: post.imageUrl,
+          format: 'webp',
+          width: 600,
+          quality: 80,
+        });
+
+        // Match with featured work data if available
+        const imagePath = `/gallery/${artistId}/${post.id.split('-').pop()}.jpg`;
+        const featuredWork = artistData.portfolio?.featuredWorks?.find(
+          (fw: any) => fw.image === imagePath || post.id.includes(fw.image?.split('/').pop()?.replace('.jpg', '') || '__none__')
+        );
+
+        return {
+          ...post,
+          imageUrl: optimized.src,
+          srcSet: optimized.srcSet?.attribute || '',
+          attributes: optimized.attributes,
+          featuredWork: featuredWork || null,
+        };
+      } catch (e) {
+        return { ...post, featuredWork: null };
+      }
+    }
+    return { ...post, featuredWork: null };
+  })
+);
+
+// Match featured works to posts by index as fallback
+const featuredWorks = artistData.portfolio?.featuredWorks || [];
+optimizedPosts.forEach((post, i) => {
+  if (!post.featuredWork && featuredWorks[i]) {
+    post.featuredWork = featuredWorks[i];
+  }
+});
+
+const pageTitle = `${artistData.displayName} — Cuba Tattoo Studio`;
+const pageDescription = artistData.bio?.substring(0, 160) || `Portfolio de ${artistData.fullName}`;
+
+// Determine animation direction based on layout
+const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} mode="artist">
+  {/* Inject artist accent colors */}
+  <style
+    define:vars={{
+      artistAccent: config.accentColor,
+      artistAccentLight: config.accentColorLight,
+      artistAccentDark: config.accentColorDark,
+    }}
+  >
+  </style>
+
+  {/* Back to studio nav */}
+  <nav
+    class="fixed top-0 left-0 right-0 z-50 px-4 py-3"
+    style="background: rgba(10, 10, 12, 0.6); backdrop-filter: blur(30px) saturate(1.5); -webkit-backdrop-filter: blur(30px) saturate(1.5); border-bottom: 1px solid rgba(255, 255, 255, 0.05);"
+  >
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Cuba Tattoo Studio
+      </a>
+      <span class="text-sm font-medium text-white/70">{artistData.displayName}</span>
+      {
+        artistData.instagram && (
+          <a
+            href={`https://instagram.com/${artistData.instagram.username}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/40 hover:text-white transition-colors"
+            aria-label="Instagram"
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            </svg>
+          </a>
+        )
+      }
+    </div>
+  </nav>
+
+  {/* Hero Section */}
+  <ArtistHero
+    name={artistData.fullName}
+    role={artistData.role}
+    profileImage={artistData.profileImage}
+    instagram={artistData.instagram}
+    specialties={artistData.specialties || []}
+    accentColor={config.accentColor}
+  />
+
+  {/* Content Section — layout driven by .md config */}
+  <div class="max-w-7xl mx-auto px-4 sm:px-8 pb-24 space-y-12">
+    {
+      config.layout === 'gallery-top' ? (
+        <>
+          {/* Gallery full width */}
+          <section id="gallery" data-section="gallery" class="space-y-6">
+            <h2
+              class="text-2xl sm:text-3xl font-bold text-white tracking-tight"
+              data-animate-heading
+            >
+              Portfolio
+            </h2>
+            <ArtistGalleryGrid
+              client:visible
+              posts={optimizedPosts}
+              accentColor={config.accentColor}
+            />
+          </section>
+
+          {/* Bio + Calendar side by side */}
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <ArtistBio
+              bio={artistData.bio}
+              styleDescription={artistData.styleDescription}
+              signatureStyle={artistData.signatureStyle}
+              achievements={artistData.achievements}
+              additionalStyles={artistData.portfolio?.additionalStyles}
+              accentColor={config.accentColor}
+              animateDir="left"
+            />
+            {config.availability && (
+              <div class="space-y-6">
+                <div class="liquid-glass rounded-[24px] p-6 sm:p-8" data-animate-right>
+                  <h3
+                    class="text-xl font-bold text-white mb-6"
+                    data-animate-heading
+                  >
+                    Disponibilidad
+                  </h3>
+                  <CalendarNav
+                    client:visible
+                    schedule={config.availability.schedule}
+                    blockedDates={config.availability.blockedDates}
+                    note={config.availability.note}
+                    accentColor={config.accentColor}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      ) : (
+        /* gallery-left or gallery-right: 2-column layout */
+        <div
+          class:list={[
+            'grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8',
+            config.layout === 'gallery-right' && 'lg:grid-cols-[1fr_1.2fr]',
+          ]}
+        >
+          {/* Gallery column */}
+          <section
+            id="gallery"
+            data-section="gallery"
+            class:list={[
+              'space-y-6',
+              config.layout === 'gallery-right' && 'lg:order-2',
+            ]}
+          >
+            <h2
+              class="text-2xl sm:text-3xl font-bold text-white tracking-tight"
+              data-animate-heading
+            >
+              Portfolio
+            </h2>
+            <ArtistGalleryGrid
+              client:visible
+              posts={optimizedPosts}
+              accentColor={config.accentColor}
+            />
+          </section>
+
+          {/* Bio + Calendar column */}
+          <div
+            class:list={[
+              'space-y-8',
+              config.layout === 'gallery-right' && 'lg:order-1',
+            ]}
+          >
+            <ArtistBio
+              bio={artistData.bio}
+              styleDescription={artistData.styleDescription}
+              signatureStyle={artistData.signatureStyle}
+              achievements={artistData.achievements}
+              additionalStyles={artistData.portfolio?.additionalStyles}
+              accentColor={config.accentColor}
+              animateDir={animateDir}
+            />
+            {config.availability && (
+              <div
+                class="liquid-glass rounded-[24px] p-6 sm:p-8"
+                data-animate-left={animateDir === 'left' ? '' : undefined}
+                data-animate-right={animateDir === 'right' ? '' : undefined}
+              >
+                <h3
+                  class="text-xl font-bold text-white mb-6"
+                  data-animate-heading
+                >
+                  Disponibilidad
+                </h3>
+                <CalendarNav
+                  client:visible
+                  schedule={config.availability.schedule}
+                  blockedDates={config.availability.blockedDates}
+                  note={config.availability.note}
+                  accentColor={config.accentColor}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )
+    }
+
+    {/* Back to studio CTA */}
+    <div class="text-center pt-8" data-animate>
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white/50 hover:text-white bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-all duration-300"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Volver al Estudio
+      </a>
+    </div>
+  </div>
+</BaseLayout>

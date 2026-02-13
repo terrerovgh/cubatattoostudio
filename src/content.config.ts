@@ -1,6 +1,36 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const scheduleSlot = z.object({ start: z.string(), end: z.string() }).nullable();
+
+const artists = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/artists' }),
+  schema: z.object({
+    id: z.string(),
+    accentColor: z.string().default('#C8956C'),
+    accentColorLight: z.string().default('#D4A574'),
+    accentColorDark: z.string().default('#A87A55'),
+    backgroundImage: z.string().default('/backgrounds/artists.svg'),
+    layout: z.enum(['gallery-left', 'gallery-right', 'gallery-top']).default('gallery-left'),
+    availability: z
+      .object({
+        timezone: z.string().default('America/Denver'),
+        schedule: z.object({
+          monday: scheduleSlot,
+          tuesday: scheduleSlot,
+          wednesday: scheduleSlot,
+          thursday: scheduleSlot,
+          friday: scheduleSlot,
+          saturday: scheduleSlot,
+          sunday: scheduleSlot,
+        }),
+        blockedDates: z.array(z.string()).optional(),
+        note: z.string().optional(),
+      })
+      .optional(),
+  }),
+});
+
 const sections = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/sections' }),
   schema: z.object({
@@ -43,4 +73,4 @@ const sections = defineCollection({
   }),
 });
 
-export const collections = { sections };
+export const collections = { sections, artists };

@@ -1,17 +1,19 @@
 ---
-import '../styles/global.css';
-import BackgroundManager from '../components/BackgroundManager';
-import ScrollObserver from '../components/ScrollObserver';
-import FloatingDock from '../components/FloatingDock';
+import "../styles/global.css";
+import BackgroundManager from "../components/BackgroundManager";
+import ScrollObserver from "../components/ScrollObserver";
+import FloatingDock from "../components/FloatingDock";
 
 interface Props {
   title?: string;
   description?: string;
+  mode?: "home" | "artist";
 }
 
 const {
-  title = 'Cuba Tattoo Studio | Premium Tattoo Art in Albuquerque, NM',
-  description = 'Cuba Tattoo Studio — premium custom tattoo art in Albuquerque, New Mexico. Book a consultation with our talented artists David, Nina, and Karli.',
+  title = "Cuba Tattoo Studio | Premium Tattoo Art in Albuquerque, NM",
+  description = "Cuba Tattoo Studio — premium custom tattoo art in Albuquerque, New Mexico. Book a consultation with our talented artists David, Nina, and Karli.",
+  mode = "home",
 } = Astro.props;
 ---
 
@@ -19,7 +21,10 @@ const {
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>{title}</title>
     <meta name="description" content={description} />
 
@@ -48,7 +53,9 @@ const {
     <meta name="theme-color" content="#0a0a0c" />
     <meta name="color-scheme" content="dark" />
   </head>
-  <body class="bg-[var(--color-surface-primary)] text-white font-sans overflow-x-hidden">
+  <body
+    class="bg-[var(--color-surface-primary)] text-white font-sans overflow-x-hidden"
+  >
     <BackgroundManager client:only="react" />
 
     <main class="relative z-10">
@@ -56,6 +63,6 @@ const {
     </main>
 
     <ScrollObserver client:only="react" />
-    <FloatingDock client:only="react" />
+    {mode !== "artist" && <FloatingDock client:only="react" />}
   </body>
 </html>
