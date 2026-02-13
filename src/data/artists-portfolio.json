@@ -1,10 +1,10 @@
 {
   "studio": {
     "name": "Cuba Tattoo Studio",
-    "tagline": "El Arte se Lleva en la Piel",
-    "description": "Cuba Tattoo Studio es un estudio de tatuaje premium en Albuquerque, Nuevo México, fundado por artistas cubanos que fusionan la pasión caribeña con técnicas de vanguardia. Con más de 177 publicaciones y una comunidad de más de 4,500 seguidores, el estudio se ha consolidado como referente del arte del tatuaje en el suroeste de Estados Unidos.",
-    "about": "Somos un equipo de artistas cubanos verificados que creemos que cada tatuaje es una historia escrita en la piel. Desde color realism vibrante hasta fine line delicado, nuestro estudio ofrece una experiencia personalizada donde la confianza, la comunicación y la visión artística se unen para crear piezas únicas e irrepetibles.",
-    "philosophy": "Cada diseño nace de la confianza, la comunicación y una visión artística clara desde la primera línea. No hacemos tatuajes — creamos arte permanente que cuenta tu historia.",
+    "tagline": "Art Worn on the Skin",
+    "description": "Cuba Tattoo Studio is a premium tattoo studio in Albuquerque, New Mexico, founded by Cuban artists attempting to fuse Caribbean passion with avant-garde techniques. With over 177 publications and a community of more than 4,500 followers, the studio has established itself as a benchmark for tattoo art in the Southwest United States.",
+    "about": "We are a team of verified Cuban artists who believe that every tattoo is a story written on the skin. From vibrant color realism to delicate fine line, our studio offers a personalized experience where trust, communication, and artistic vision come together to create unique and unrepeatable pieces.",
+    "philosophy": "Every design is born from trust, communication, and a clear artistic vision from the very first line. We don't just do tattoos — we create permanent art that tells your story.",
     "location": {
       "address": "1311 San Mateo Blvd NE",
       "city": "Albuquerque",
@@ -16,7 +16,7 @@
       "phone": "+1 (505) 492-9806",
       "email": "info@cubatattoostudio.com",
       "instagram": "@cubatattoostudio",
-      "booking": "DM en Instagram o llamar directamente"
+      "booking": "DM on Instagram or call directly"
     },
     "stats": {
       "publications": 177,
@@ -29,13 +29,13 @@
       "Fine Line",
       "Dotwork",
       "Ornamental",
-      "Blackwork Geométrico",
+      "Geometric Blackwork",
       "Neo-Traditional",
       "New School",
       "Floral & Botanical",
-      "Mitología Griega",
-      "Religioso",
-      "Retratos",
+      "Greek Mythology",
+      "Religious",
+      "Portraits",
       "Cover-ups",
       "Pet Tattoos",
       "Micro Tattoos"
@@ -43,21 +43,28 @@
     "events": [
       {
         "name": "Valentine's Flash Day",
-        "description": "Evento especial de San Valentín con tatuajes flash, matching tattoos para parejas, walk-ins welcome, precios desde $50"
+        "description": "Special Valentine's event with flash tattoos, matching tattoos for couples, walk-ins welcome, prices starting at $50"
       },
       {
-        "name": "Promociones Mensuales",
-        "description": "Ofertas rotativas como 30% OFF en tatuajes religiosos y otras temáticas"
+        "name": "Monthly Promotions",
+        "description": "Rotating offers such as 30% OFF on religious tattoos and other themes"
       }
     ],
-    "highlights": ["Karli", "Nina", "Booking", "Joe-zzer", "David", "Best color"]
+    "highlights": [
+      "Karli",
+      "Nina",
+      "Booking",
+      "Joe-zzer",
+      "David",
+      "Best color"
+    ]
   },
   "artists": {
     "david": {
       "id": "david",
       "fullName": "David Guzman Claveria",
       "displayName": "David",
-      "role": "Fundador & Artista Principal",
+      "role": "Founder & Lead Artist",
       "instagram": {
         "username": "david_guzman_tattoo",
         "verified": true,
@@ -65,70 +72,96 @@
         "followers": 7206,
         "following": 1093
       },
-      "bio": "Tattoo artist radicado en Albuquerque, NM. CEO y fundador de Cuba Tattoo Studio. Originario de Cuba, David trae consigo la pasión y el color del Caribe a cada pieza que crea. Su filosofía: 'El arte se lleva en la piel aseree'.",
+      "bio": "Tattoo artist based in Albuquerque, NM. CEO and founder of Cuba Tattoo Studio. Originally from Cuba, David brings the passion and color of the Caribbean to every piece he creates. His philosophy: 'Art is worn on the skin, bro'.",
       "phone": "+1 (505) 492-9806",
       "origin": "Cuba",
       "profileImage": "/artists/david.jpg",
       "specialties": [
         "Color Realism",
-        "Retratos Hiperrealistas",
+        "Hyperrealistic Portraits",
         "Black & Grey Realism",
         "Neo-Traditional / New School",
-        "Religioso",
+        "Religious",
         "Cover-ups"
       ],
-      "styleDescription": "David es reconocido por su dominio del color realism con paletas vibrantes y efectos de iluminación cromática que dan vida a cada pieza. Sus retratos hiperrealistas destacan por el uso audaz de colores neón, contrastes cinematográficos y una profundidad que transforma la piel en lienzo. Igualmente hábil en black & grey, sus piezas religiosas y mitológicas transmiten una intensidad emocional impactante.",
-      "signatureStyle": "Retratos con iluminación cromática neón, piezas de gran escala con contrastes vibrantes entre luz y sombra, y realismo que fusiona lo humano con lo surrealista.",
+      "styleDescription": "David is designated for his mastery of color realism with vibrant palettes and chromatic lighting effects that give life to every piece. His hyperrealistic portraits stand out for their bold use of neon colors, cinematic contrasts, and depth that transforms skin into canvas. Equally skilled in black & grey, his religious and mythological pieces convey striking emotional intensity.",
+      "signatureStyle": "Portraits with neon chromatic lighting, large-scale pieces with vibrant contrasts between light and shadow, and realism that fuses the human with the surreal.",
       "achievements": [
         "Best of Show (convención de tatuajes)",
         "ERA Tattoo (reconocimiento)",
         "Healed Cover-ups specialist"
       ],
-      "highlights": ["Yo", "HealedCover-ups", "Destacada", "Cuba", "Best of Show", "ERATattoo", "LA CUEVA"],
+      "highlights": [
+        "Yo",
+        "HealedCover-ups",
+        "Destacada",
+        "Cuba",
+        "Best of Show",
+        "ERATattoo",
+        "LA CUEVA"
+      ],
       "portfolio": {
-        "description": "El portfolio de David abarca desde retratos femeninos con iluminación cromática en tonos neón y fluorescentes, hasta piezas religiosas en black & grey de intensidad cinematográfica. Sus cover-ups transforman tatuajes existentes en obras maestras, y sus piezas neo-tradicionales combinan calaveras, mecanismos y simbolismo oscuro con una paleta vibrante que desafía los límites del color sobre piel.",
+        "description": "David's portfolio ranges from female portraits with chromatic lighting in neon and fluorescent tones, to religious pieces in black & grey of cinematic intensity. His cover-ups transform existing tattoos into masterpieces, and his neo-traditional pieces combine skulls, mechanisms, and dark symbolism with a vibrant palette that defies the limits of color on skin.",
         "featuredWorks": [
           {
             "image": "/gallery/david/01.jpg",
-            "title": "Retrato Cromático — Color Realism",
-            "description": "Retrato femenino con iluminación neón en tonos turquesa, naranja y fucsia. Cada color y sombra tiene intención — una historia construida sobre piel con emoción, fuerza y profundidad.",
+            "title": "Chromatic Portrait — Color Realism",
+            "description": "Female portrait with neon lighting in turquoise, orange, and fuchsia tones. Every color and shadow has intention — a story built on skin with emotion, strength, and depth.",
             "style": "Color Realism",
-            "tags": ["retrato", "color", "neón", "realismo"]
+            "tags": [
+              "portrait",
+              "color",
+              "neon",
+              "realism"
+            ]
           },
           {
             "image": "/gallery/david/02.jpg",
-            "title": "Pintura Transformada en Piel",
-            "description": "Pieza inspirada en una pintura que conectó profundamente con el cliente. Contrastes fuertes, simbolismo oscuro y colores vibrantes que fusionan lo humano y lo demoníaco, luz y sombra.",
+            "title": "Painting Transformed into Skin",
+            "description": "Piece inspired by a painting that connected deeply with the client. Strong contrasts, dark symbolism, and vibrant colors that fuse the human and the demonic, light and shadow.",
             "style": "Neo-Traditional / Color Realism",
-            "tags": ["pintura", "surrealismo", "color", "contrastes"]
+            "tags": [
+              "painting",
+              "surrealism",
+              "color",
+              "contrasts"
+            ]
           },
           {
             "image": "/gallery/david/03.jpg",
-            "title": "Fe en Cada Detalle — Realismo Religioso",
-            "description": "Cristo en black & grey con una profundidad y detalle que captura la espiritualidad y la emoción. Realismo de nivel cinematográfico.",
+            "title": "Faith in Every Detail — Religious Realism",
+            "description": "Christ in black & grey with depth and detail that captures spirituality and emotion. Realism of cinematic level.",
             "style": "Black & Grey Realism",
-            "tags": ["religioso", "cristo", "black&grey", "realismo"]
+            "tags": [
+              "religious",
+              "christ",
+              "black&grey",
+              "realism"
+            ]
           },
           {
             "image": "/gallery/david/04.jpg",
-            "title": "Testimonial — Gratitud del Cliente",
-            "description": "La mejor recompensa: la satisfacción y gratitud de cada cliente. 'Solo puedo decir: GRACIAS'.",
+            "title": "Testimonial — Client Gratitude",
+            "description": "The best reward: the satisfaction and gratitude of every client. 'I can only say: THANK YOU'.",
             "style": "Varios",
-            "tags": ["testimonial", "cliente"]
+            "tags": [
+              "testimonial",
+              "client"
+            ]
           }
         ],
         "additionalStyles": [
           {
-            "style": "Fénix en Color Vibrante",
-            "description": "Fénix de gran escala en espalda completa con estilo watercolor y colores rojos, naranjas y turquesas que capturan movimiento y renacimiento."
+            "style": "Phoenix in Vibrant Color",
+            "description": "Full back phoenix in watercolor style with red, orange, and turquoise colors that capture movement and rebirth."
           },
           {
-            "style": "Neo-Traditional con Calavera",
-            "description": "Piezas que combinan calaveras con mecanismos dorados, demonios y elementos steampunk en una paleta de rojos intensos y amarillos."
+            "style": "Neo-Traditional with Skull",
+            "description": "Pieces that combine skulls with golden mechanisms, demons, and steampunk elements in a palette of intense reds and yellows."
           },
           {
-            "style": "Máscaras Chicanas",
-            "description": "Laugh Now Cry Later y catrinas en black & grey con profundidad y expresividad dramática."
+            "style": "Chicano Masks",
+            "description": "Laugh Now Cry Later and catrinas in black & grey with depth and dramatic expressiveness."
           }
         ]
       }
@@ -137,7 +170,7 @@
       "id": "nina",
       "fullName": "Jaline Romero Heredia",
       "displayName": "Nina",
-      "role": "Especialista en Fine Line, Dotwork & Ornamental",
+      "role": "Specialist in Fine Line, Dotwork & Ornamental",
       "instagram": {
         "username": "goodnina_tattooing",
         "verified": true,
@@ -145,77 +178,108 @@
         "followers": 2598,
         "following": 1545
       },
-      "bio": "Artista del tatuaje cubana radicada en Albuquerque, NM. Nina aporta una sensibilidad artística única al estudio, especializándose en diseños delicados que combinan precisión técnica con alma y emoción. Sus tatuajes nacen de la intuición y la conexión con cada cliente.",
+      "bio": "Cuban tattoo artist based in Albuquerque, NM. Nina brings a unique artistic sensitivity to the studio, specializing in delicate designs that combine technical precision with soul and emotion. Her tattoos are born from intuition and connection with each client.",
       "origin": "Cuba",
       "profileImage": "/artists/nina.jpg",
       "personalAccount": "@good_j_walks",
-      "additionalSkills": ["Acuarela", "Puntillismo"],
+      "additionalSkills": [
+        "Watercolor",
+        "Pointillism"
+      ],
       "specialties": [
         "Fine Line",
         "Dotwork",
         "Ornamental",
-        "Blackwork Geométrico",
+        "Geometric Blackwork",
         "Mandalas",
         "Micro Tattoos",
         "Floral & Botanical",
         "Pet Tattoos",
         "Freehand"
       ],
-      "styleDescription": "Nina se distingue por su dominio de las líneas finas y el dotwork, creando diseños que son a la vez delicados y poderosos. Sus mandalas y piezas geométricas combinan la flower of life con meandros griegos en composiciones tridimensionales. Su trabajo floral va desde girasoles ornamentales hasta ramas minimalistas, siempre con un toque personal que hace cada pieza única.",
-      "signatureStyle": "Mandalas y geometría sagrada en blackwork, diseños zodiacales con elementos celestiales, florales minimalistas con lettering, y tatuajes freehand que nacen de la intuición creativa.",
-      "highlights": ["Lines", "Available", "Concepts", "Tiny", "FAQ"],
+      "styleDescription": "Nina is distinguished by her mastery of fine lines and dotwork, creating designs that are both delicate and powerful. Her mandalas and geometric pieces combine the flower of life with Greek meanders in three-dimensional compositions. Her floral work ranges from ornamental sunflowers to minimalist branches, always with a personal touch that makes each piece unique.",
+      "signatureStyle": "Mandalas and sacred geometry in blackwork, zodiac designs with celestial elements, minimalist florals with lettering, and freehand tattoos born from creative intuition.",
+      "highlights": [
+        "Lines",
+        "Available",
+        "Concepts",
+        "Tiny",
+        "FAQ"
+      ],
       "portfolio": {
-        "description": "El portfolio de Nina revela una artista que domina el arte del detalle delicado. Desde cubos 3D con meandros griegos sobre flower of life hasta signos zodiacales con estrellas y planetas, su trabajo abarca un espectro que va de lo geométrico y estructurado a lo orgánico y fluido. Sus diseños florales, pet tattoos y piezas freehand demuestran una versatilidad que siempre mantiene su sello distintivo de elegancia y precisión.",
+        "description": "Nina's portfolio reveals an artist who masters the art of delicate detail. From 3D cubes with Greek meanders over flower of life to zodiac signs with stars and planets, her work spans a spectrum ranging from geometric and structured to organic and fluid. Her floral designs, pet tattoos, and freehand pieces demonstrate versatility that always maintains her distinctive hallmark of elegance and precision.",
         "featuredWorks": [
           {
             "image": "/gallery/nina/01.jpg",
-            "title": "Mandala Sagrada — Blackwork & Dotwork",
-            "description": "Los tatuajes son más que diseños — son equilibrio, energía y conexión. Los mandalas recuerdan que cada detalle tiene un propósito.",
+            "title": "Sacred Mandala — Blackwork & Dotwork",
+            "description": "Tattoos are more than designs — they are balance, energy, and connection. Mandalas remind us that every detail has a purpose.",
             "style": "Blackwork / Dotwork / Ornamental",
-            "tags": ["mandala", "dotwork", "blackwork", "ornamental", "geometría sagrada"]
+            "tags": [
+              "mandala",
+              "dotwork",
+              "blackwork",
+              "ornamental",
+              "sacred geometry"
+            ]
           },
           {
             "image": "/gallery/nina/02.jpg",
-            "title": "Huella de Mascota — Pet Tattoo",
-            "description": "Pata de perro 'Congo' con retoque al mes. Dotwork detallado que honra el vínculo con tu compañero fiel. Nada más lindo que ver cómo sana un tattoo con el tiempo.",
+            "title": "Pet Footprint — Pet Tattoo",
+            "description": "Paw of dog 'Congo' with touch-up after a month. Detailed dotwork honoring the bond with your faithful companion. Nothing more beautiful than seeing how a tattoo heals over time.",
             "style": "Dotwork / Pet Portrait",
-            "tags": ["mascota", "pata", "dotwork", "memorial"]
+            "tags": [
+              "mascota",
+              "pata",
+              "dotwork",
+              "memorial"
+            ]
           },
           {
             "image": "/gallery/nina/03.jpg",
-            "title": "Escorpio Celestial — Freehand Fine Line",
-            "description": "Diseño zodiacal freehand con signo de Escorpio, estrellas, lunas y planetas. Proceso intuitivo y orgánico — así nacen los tatuajes con alma.",
+            "title": "Celestial Scorpio — Freehand Fine Line",
+            "description": "Freehand zodiac design with Scorpio sign, stars, moons, and planets. Intuitive and organic process — this is how tattoos with soul are born.",
             "style": "Fine Line / Freehand",
-            "tags": ["zodíaco", "escorpio", "fine line", "celestial", "freehand"]
+            "tags": [
+              "zodiac",
+              "scorpio",
+              "fine line",
+              "celestial",
+              "freehand"
+            ]
           },
           {
             "image": "/gallery/nina/04.jpg",
-            "title": "Valentine's Special — Amor en Tinta",
-            "description": "Ofertas especiales para solteros, parejas, amigos y familia. Porque el amor también se tatúa.",
+            "title": "Valentine's Special — Love in Ink",
+            "description": "Special offers for singles, couples, friends, and family. Because love is also tattooed.",
             "style": "Fine Line / Flash",
-            "tags": ["valentines", "flash", "amor", "parejas"]
+            "tags": [
+              "valentines",
+              "flash",
+              "amor",
+              "parejas"
+            ]
           }
         ],
         "additionalStyles": [
           {
-            "style": "Blackwork Geométrico 3D",
-            "description": "Cubo tridimensional con meandros griegos integrado sobre un patrón de Flower of Life en la nuca — precisión arquitectónica en piel."
+            "style": "3D Geometric Blackwork",
+            "description": "Three-dimensional cube with Greek meanders integrated over a Flower of Life pattern on the nape — architectural precision on skin."
           },
           {
-            "style": "Girasol Ornamental",
-            "description": "Girasol enmarcado en composición de diamante con bordes ornamentales en blackwork, combinando lo botánico con lo estructural."
+            "style": "Ornamental Sunflower",
+            "description": "Sunflower framed in diamond composition with ornamental edges in blackwork, combining the botanical with the structural."
           },
           {
-            "style": "Lettering Floral",
-            "description": "Tipografía caligráfica 'Good Speed' entrelazada con flores silvestres y margaritas en fine line."
+            "style": "Floral Lettering",
+            "description": "Calligraphic typography 'Good Speed' intertwined with wildflowers and daisies in fine line."
           },
           {
-            "style": "Dragón Ornamental",
-            "description": "Dragón estilizado con escamas detalladas en un estilo que fusiona lo ornamental con lo mitológico."
+            "style": "Ornamental Dragon",
+            "description": "Stylized dragon with detailed scales in a style that fuses the ornamental with the mythological."
           },
           {
-            "style": "Ramas y Espinas",
-            "description": "Diseños orgánicos de ramas con espinas que fluyen con la anatomía del cuerpo."
+            "style": "Branches and Thorns",
+            "description": "Organic branch designs with thorns that flow with the body's anatomy."
           }
         ]
       }
@@ -224,7 +288,7 @@
       "id": "karli",
       "fullName": "Karlii Castillo",
       "displayName": "Karli",
-      "role": "Black & Grey Realism, Mitología & Retratos",
+      "role": "Black & Grey Realism, Mythology & Portraits",
       "instagram": {
         "username": "karlii_castillo_tattoos",
         "verified": true,
@@ -232,67 +296,88 @@
         "followers": 2232,
         "following": 2440
       },
-      "bio": "Artista cubana residente en Cuba Tattoo Studio, Albuquerque, NM. Karli combina un dominio excepcional del black & grey realism con una versatilidad que abarca desde mitología griega épica hasta diseños florales delicados. Su trabajo se caracteriza por la intensidad emocional y la atención meticulosa al detalle.",
+      "bio": "Cuban artist residing at Cuba Tattoo Studio, Albuquerque, NM. Karli combines exceptional mastery of black & grey realism with versatility ranging from epic Greek mythology to delicate floral designs. Her work is characterized by emotional intensity and meticulous attention to detail.",
       "origin": "Cuba",
       "profileImage": "/artists/karli.jpg",
       "specialties": [
         "Black & Grey Realism",
-        "Mitología Griega",
-        "Realismo Religioso",
-        "Retratos de Mascotas",
+        "Greek Mythology",
+        "Religious Realism",
+        "Pet Portraits",
         "Floral & Botanical",
         "Cover-ups",
         "Micro/Small Tattoos"
       ],
-      "styleDescription": "Karli domina el black & grey realism con una intensidad que da vida a figuras mitológicas como Zeus y Medusa, otorgándoles una presencia casi escultórica sobre la piel. Sus retratos religiosos capturan espiritualidad con un detalle fotográfico, mientras que su lado más delicado se expresa en diseños florales, retratos de mascotas y piezas pequeñas que demuestran que la versatilidad y la maestría pueden coexistir.",
-      "signatureStyle": "Figuras mitológicas griegas en black & grey con toques de color en los ojos (azul/naranja), retratos animales hiperrealistas, y mangas florales en escala de grises con mandalas integrados.",
-      "highlights": ["Available", "Healed", "Me", "Cuba.Tt", "Collabs", "Small", "Fresh", "Cover up"],
+      "styleDescription": "Karli dominates black & grey realism with an intensity that brings mythological figures like Zeus and Medusa to life, giving them an almost sculptural presence on the skin. Her religious portraits capture spirituality with photographic detail, while her more delicate side is expressed in floral designs, pet portraits, and small pieces proving that versatility and mastery can coexist.",
+      "signatureStyle": "Greek mythological figures in black & grey with touches of color in the eyes (blue/orange), hyperrealistic animal portraits, and floral sleeves in grayscale with integrated mandalas.",
+      "highlights": [
+        "Available",
+        "Healed",
+        "Me",
+        "Cuba.Tt",
+        "Collabs",
+        "Small",
+        "Fresh",
+        "Cover up"
+      ],
       "portfolio": {
-        "description": "El portfolio de Karli es un testimonio de versatilidad dentro de la excelencia. Sus piezas de mitología griega — Zeus con ojos azules eléctricos, Medusa con ojos de fuego — son obras maestras de black & grey con toques selectivos de color. Su dominio se extiende a retratos realistas de mascotas, diseños florales ornamentales, paisajes de pinos, y lettering con elementos celestiales. Cada pieza refleja una artista que entiende que un gran tatuaje nace de la fusión entre técnica impecable y conexión emocional.",
+        "description": "Karli's portfolio is a testament to versatility within excellence. Her Greek mythology pieces — Zeus with electric blue eyes, Medusa with fiery eyes — are masterpieces of black & grey with selective touches of color. Her mastery extends to realistic pet portraits, ornamental floral designs, pine landscapes, and lettering with celestial elements. Each piece reflects an artist who understands that a great tattoo is born from the fusion of impeccable technique and emotional connection.",
         "featuredWorks": [
           {
             "image": "/gallery/karli/01.jpg",
-            "title": "Zeus — El Poder de la Mitología",
-            "description": "Un diseño poderoso, lleno de personalidad, que representa tenacidad, fuerza y valor. Zeus con ojos azules eléctricos y meandros griegos que enmarcan la composición.",
+            "title": "Zeus — The Power of Mythology",
+            "description": "A powerful design, full of personality, representing tenacity, strength, and courage. Zeus with electric blue eyes and Greek meanders framing the composition.",
             "style": "Black & Grey Realism",
-            "tags": ["zeus", "mitología griega", "black&grey", "realismo", "poder"]
+            "tags": [
+              "zeus",
+              "greek mythology",
+              "black&grey",
+              "realism",
+              "power"
+            ]
           },
           {
             "image": "/gallery/karli/02.jpg",
-            "title": "Mandala Floral — Significado e Intención",
-            "description": "Diseño floral delicado con mucho significado e intención. Mandala con flores en dotwork que demuestra la versatilidad de Karli en estilos más suaves.",
+            "title": "Floral Mandala — Meaning and Intention",
+            "description": "Delicate floral design with much meaning and intention. Mandala with dotwork flowers demonstrating Karli's versatility in softer styles.",
             "style": "Dotwork / Floral",
-            "tags": ["mandala", "floral", "dotwork", "delicado", "significado"]
+            "tags": [
+              "mandala",
+              "floral",
+              "dotwork",
+              "delicado",
+              "significado"
+            ]
           }
         ],
         "additionalStyles": [
           {
-            "style": "Medusa con Ojos de Fuego",
-            "description": "Medusa en black & grey con ojos naranjas ardientes y serpientes detalladas — una pieza que combina horror mitológico con belleza oscura."
+            "style": "Medusa with Fiery Eyes",
+            "description": "Medusa in black & grey with burning orange eyes and detailed snakes — a piece that combines mythological horror with dark beauty."
           },
           {
-            "style": "Cristo Hiperrealista",
-            "description": "Retrato de Cristo con corona de espinas en black & grey de nivel fotográfico, capturando la espiritualidad y el sufrimiento con detalle extraordinario."
+            "style": "Hyperrealistic Christ",
+            "description": "Portrait of Christ with crown of thorns in black & grey of photographic level, capturing spirituality and suffering with extraordinary detail."
           },
           {
-            "style": "León con Mariposa",
-            "description": "León realista en black & grey con una mariposa delicada posada sobre su nariz — contraste entre fuerza y fragilidad."
+            "style": "Lion with Butterfly",
+            "description": "Realistic lion in black & grey with a delicate butterfly perched on its nose — contrast between strength and fragility."
           },
           {
-            "style": "Retrato de Mascota",
-            "description": "French Bulldog 'Millie' con corona, retrato hiperrealista que captura la personalidad única de cada mascota."
+            "style": "Pet Portrait",
+            "description": "French Bulldog 'Millie' with crown, hyperrealistic portrait capturing the unique personality of each pet."
           },
           {
-            "style": "Ojo con Flores",
-            "description": "Ojo hiperrealista rodeado de flores y hojas tropicales — una pieza que fusiona anatomía con botánica."
+            "style": "Eye with Flowers",
+            "description": "Hyperrealistic eye surrounded by flowers and tropical leaves — a piece that fuses anatomy with botany."
           },
           {
-            "style": "Manga Floral",
-            "description": "Manga de antebrazo con flores, mandalas y patrones ornamentales integrados en un diseño cohesivo de black & grey."
+            "style": "Floral Sleeve",
+            "description": "Forearm sleeve with flowers, mandalas, and ornamental patterns integrated into a cohesive black & grey design."
           },
           {
-            "style": "Paisaje de Pinos",
-            "description": "Silueta de bosque de pinos en black work — paisaje natural que evoca serenidad y conexión con la naturaleza."
+            "style": "Pine Landscape",
+            "description": "Pine forest silhouette in black work — natural landscape evoking serenity and connection with nature."
           }
         ]
       }

@@ -11,7 +11,7 @@ interface Props {
   achievements?: string[];
   additionalStyles?: AdditionalStyle[];
   accentColor: string;
-  animateDir?: 'left' | 'right';
+  animateDir?: "left" | "right";
 }
 
 const {
@@ -21,7 +21,7 @@ const {
   achievements = [],
   additionalStyles = [],
   accentColor,
-  animateDir = 'left',
+  animateDir = "left",
 } = Astro.props;
 ---
 
@@ -29,21 +29,23 @@ const {
   {/* Bio */}
   <div
     class="liquid-glass rounded-[24px] p-6 sm:p-8 space-y-6"
-    data-animate-left={animateDir === 'left' ? '' : undefined}
-    data-animate-right={animateDir === 'right' ? '' : undefined}
+    data-animate-left={animateDir === "left" ? "" : undefined}
+    data-animate-right={animateDir === "right" ? "" : undefined}
   >
-    <h3 class="text-xl font-bold text-white" data-animate-heading>Sobre Mi</h3>
+    <h3 class="text-xl font-bold text-white" data-animate-heading>About Me</h3>
     <p class="text-white/60 text-base leading-relaxed font-light">{bio}</p>
   </div>
 
   {/* Style Description */}
   <div
     class="liquid-glass rounded-[24px] p-6 sm:p-8 space-y-4"
-    data-animate-left={animateDir === 'left' ? '' : undefined}
-    data-animate-right={animateDir === 'right' ? '' : undefined}
+    data-animate-left={animateDir === "left" ? "" : undefined}
+    data-animate-right={animateDir === "right" ? "" : undefined}
   >
-    <h3 class="text-xl font-bold text-white" data-animate-heading>Mi Estilo</h3>
-    <p class="text-white/60 text-base leading-relaxed font-light">{styleDescription}</p>
+    <h3 class="text-xl font-bold text-white" data-animate-heading>My Style</h3>
+    <p class="text-white/60 text-base leading-relaxed font-light">
+      {styleDescription}
+    </p>
     <p class="italic text-sm font-medium" style={`color: ${accentColor};`}>
       &ldquo;{signatureStyle}&rdquo;
     </p>
@@ -57,7 +59,7 @@ const {
         data-animate-scale
       >
         <h3 class="text-xl font-bold text-white" data-animate-heading>
-          Logros
+          Achievements
         </h3>
         <ul class="space-y-3">
           {achievements.map((achievement) => (
@@ -78,17 +80,16 @@ const {
   {
     additionalStyles.length > 0 && (
       <div class="space-y-4" data-animate>
-        <h3
-          class="text-xl font-bold text-white px-2"
-          data-animate-heading
-        >
-          Estilos Adicionales
+        <h3 class="text-xl font-bold text-white px-2" data-animate-heading>
+          Additional Styles
         </h3>
         <div class="space-y-3">
           {additionalStyles.map((s) => (
             <div class="rounded-[20px] bg-white/[0.03] border border-white/[0.05] p-5 hover:bg-white/[0.05] transition-colors duration-300">
               <h4 class="text-sm font-semibold text-white mb-1">{s.style}</h4>
-              <p class="text-white/40 text-xs leading-relaxed">{s.description}</p>
+              <p class="text-white/40 text-xs leading-relaxed">
+                {s.description}
+              </p>
             </div>
           ))}
         </div>

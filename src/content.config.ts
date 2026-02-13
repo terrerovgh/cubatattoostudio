@@ -33,7 +33,7 @@ const artists = defineCollection({
 
 const sections = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/sections' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     order: z.number(),
     id: z.string(),
     backgroundImage: z.string(),
@@ -43,9 +43,22 @@ const sections = defineCollection({
       'grid-gallery',
       'list-services',
       'booking-cta',
+      'promo-grid',
     ]),
     title: z.string().optional(),
     subtitle: z.string().optional(),
+    promos: z.array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        link: z.string().optional(),
+        date: z.string().optional(),
+        images: z.array(image()).optional(), // Carousel support
+        image: image().optional(), // Fallback for single image
+        type: z.enum(['event', 'flash', 'promo']).default('promo'),
+        position: z.number().optional(), // Custom ordering
+      })
+    ).optional(),
     artists: z
       .array(
         z.object({

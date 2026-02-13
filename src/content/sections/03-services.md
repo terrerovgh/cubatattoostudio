@@ -3,27 +3,27 @@ order: 3
 id: services
 backgroundImage: /backgrounds/services.svg
 layout: list-services
-title: Nuestros Servicios
+title: Our Services
 services:
-  - name: Tatuajes Personalizados
-    description: Diseños únicos creados exclusivamente para ti, desde la primera línea hasta el último detalle
+  - name: Custom Tattoos
+    description: Unique designs created exclusively for you, from the first line to the last detail
   - name: Color Realism
-    description: Retratos hiperrealistas y piezas vibrantes con colores neón, cromáticos y efectos de iluminación impactantes
+    description: Hyper-realistic portraits and vibrant pieces with neon colors, chromatic and striking lighting effects
   - name: Black & Grey Realism
-    description: Realismo en escala de grises con profundidad cinematográfica — mitología griega, figuras religiosas y retratos
+    description: Realism in grayscale with cinematic depth — Greek mythology, religious figures and portraits
   - name: Fine Line & Dotwork
-    description: Líneas delicadas, mandalas, diseños geométricos, ornamentales y micro tatuajes con precisión artesanal
+    description: Delicate lines, mandalas, geometric designs, ornamental and micro tattoos with artisanal precision
   - name: Cover-ups
-    description: Transformación experta de tatuajes existentes en obras de arte renovadas
+    description: Expert transformation of existing tattoos into renewed works of art
   - name: Neo-Traditional & New School
-    description: Diseños con contraste audaz, simbolismo oscuro y colores vibrantes que fusionan lo clásico con lo contemporáneo
+    description: Designs with bold contrast, dark symbolism and vibrant colors that fuse the classic with the contemporary
   - name: Floral & Botanical
-    description: Desde girasoles ornamentales hasta ramas minimalistas — diseños botánicos con alma y significado
-  - name: Tatuajes de Mascotas
-    description: Retratos realistas y huellas estilizadas para honrar a tu compañero fiel
-  - name: Flash Days & Eventos
-    description: Eventos especiales con diseños exclusivos, walk-ins y precios promocionales
-  - name: Consultas Gratuitas
-    description: Planifica tu pieza perfecta con una consulta de diseño sin costo
-    price: Gratis
+    description: From ornamental sunflowers to minimalist branches — botanical designs with soul and meaning
+  - name: Pet Tattoos
+    description: Realistic portraits and stylized footprints to honor your faithful companion
+  - name: Flash Days & Events
+    description: Special events with exclusive designs, walk-ins and promotional prices
+  - name: Free Consultations
+    description: Plan your perfect piece with a no-cost design consultation
+    price: Free
 ---

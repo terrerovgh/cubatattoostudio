@@ -39,6 +39,10 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
   const posts = initialPosts || [];
   const artists = initialArtists || {};
 
+  const [displayedPosts, setDisplayedPosts] = useState<Post[]>([]);
+  const [page, setPage] = useState(1);
+  const POSTS_PER_PAGE = 12;
+
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
 
@@ -66,6 +70,26 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
       ? posts
       : posts.filter((p) => p.artist === activeFilter);
 
+  // Update displayed posts when filter or page changes
+  useEffect(() => {
+    // If filter changed, reset page to 1 (this effect handles it because activeFilter is a dep)
+    // But we need to distinguish if it was a filter change or a page change
+    // Actually, simpler:
+    const sliced = filteredPosts.slice(0, page * POSTS_PER_PAGE);
+    setDisplayedPosts(sliced);
+  }, [activeFilter, page, posts, filteredPosts]); // filteredPosts depends on activeFilter
+
+  // Reset page when filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [activeFilter]);
+
+  const hasMore = displayedPosts.length < filteredPosts.length;
+
+  const handleLoadMore = () => {
+    setPage(prev => prev + 1);
+  };
+
   // Fallback placeholder grid when no data
   const placeholders: Post[] = Array.from({ length: 6 }, (_, i) => ({
     id: `placeholder-${i}`,
@@ -77,7 +101,7 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
     attributes: undefined
   }));
 
-  const items = filteredPosts.length > 0 ? filteredPosts : placeholders;
+  const items = displayedPosts.length > 0 ? displayedPosts : placeholders;
   const showFilters = availableFilters.length > 2;
 
   return (
@@ -184,6 +208,18 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
           </button>
         ))}
       </div>
+
+      {/* Load More Button */}
+      {hasMore && items.length > 0 && items[0].id !== 'placeholder-0' && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={handleLoadMore}
+            className="px-6 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all text-sm font-medium"
+          >
+            Load More
+          </button>
+        </div>
+      )}
 
       {/* Instagram CTA */}
       <div className="text-center mt-10">

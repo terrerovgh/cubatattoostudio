@@ -14,10 +14,10 @@ interface CalendarNavProps {
   accentColor: string;
 }
 
-const DAY_HEADERS = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
+const DAY_HEADERS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const MONTH_NAMES = [
-  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
 ];
 const DAY_MAP: DayName[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
@@ -190,11 +190,11 @@ export default function CalendarNav({ schedule, blockedDates = [], note, accentC
             className="w-2.5 h-2.5 rounded-sm"
             style={{ background: `${accentColor}30` }}
           />
-          Disponible
+          Available
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-sm bg-white/[0.04]" />
-          No disponible
+          Not Available
         </div>
       </div>
 

@@ -34,7 +34,7 @@ const ARTIST_MAP = {
 
 const ALL_FOLDERS = ['studio', 'david', 'nina', 'karli'];
 
-const POSTS_PER_ARTIST = 6;
+const POSTS_PER_ARTIST = 24;
 const SRC_DIR = resolve(__dirname, '../src');
 const OUTPUT_TS = resolve(SRC_DIR, 'data/instagram.ts');
 const ASSETS_DIR = resolve(SRC_DIR, 'assets');
@@ -118,7 +118,7 @@ function getCaption(node) {
   return '';
 }
 
-function processAllPosts(nodes) {
+function processAllPosts(nodes, forcedFolder = null) {
   const posts = [];
 
   for (const node of nodes) {
@@ -138,7 +138,8 @@ function processAllPosts(nodes) {
     if (!imageUrl) continue;
 
     const username = node.user?.username || '';
-    const artistFolder = ARTIST_MAP[username] || 'studio';
+    // If we passed a specific folder (artist), use it. Otherwise, try to map from username (legacy logic)
+    const artistFolder = forcedFolder || ARTIST_MAP[username] || 'studio';
 
     posts.push({
       id: node.pk || node.id || `post-${posts.length}`,
@@ -192,45 +193,62 @@ async function main() {
   const imports = []; // { name: string, path: string }
 
   if (!apiKey) {
-    console.log('[instagram] No INSTAGRAM_RAPIDAPI_KEY found — trying local fallback...');
+    console.log('[instagram] No INSTAGRAM_RAPIDAPI_KEY found — using local fallback...');
     runLocalFallback();
     return;
   }
 
   console.log('[instagram] Starting fetch via instagram120.p.rapidapi.com...\n');
 
-  // 1. Fetch & Process
-  console.log(`[instagram] Fetching @${STUDIO_USERNAME}...`);
-  const nodes = await fetchPostsRaw(STUDIO_USERNAME);
-  const allPosts = processAllPosts(nodes);
-
+  // 1. Fetch & Process for EACH artist + studio
   const postsByArtist = {};
+  const artistProfiles = {};
+
+  // Initialize arrays
   for (const folder of ALL_FOLDERS) {
     postsByArtist[folder] = [];
   }
-  for (const post of allPosts) {
-    const folder = post.artistFolder;
-    if (!postsByArtist[folder]) postsByArtist[folder] = [];
-    postsByArtist[folder].push(post);
-  }
 
-  // 2. Profiles
-  const artistProfiles = {};
-  for (const post of allPosts) {
-    const folder = post.artistFolder;
-    if (folder !== 'studio' && !artistProfiles[folder] && post.user.username) {
-      artistProfiles[folder] = {
-        username: post.user.username,
-        fullName: post.user.fullName,
-        profilePicUrl: post.user.profilePicUrl,
-        localProfilePic: null, // Will be replaced by import variable name
-      };
+  // Iterate over all mapped users (including studio if mapped, though studio is usually special)
+  // Our ARTIST_MAP maps instagram_username -> folder_name
+  // We also want to fetch the studio account: 'cubatattoostudio' -> 'studio'
+
+  const ACCOUNTS_TO_FETCH = [
+    { username: STUDIO_USERNAME, folder: 'studio' },
+    ...Object.entries(ARTIST_MAP).map(([username, folder]) => ({ username, folder }))
+  ];
+
+  for (const { username, folder } of ACCOUNTS_TO_FETCH) {
+    console.log(`[instagram] Fetching @${username} (${folder})...`);
+    try {
+      const nodes = await fetchPostsRaw(username);
+
+      // Process nodes to standard format
+      const posts = processAllPosts(nodes, folder); // Modified processAllPosts to take folder override
+
+      // Add to collection
+      postsByArtist[folder].push(...posts);
+
+      // Extract profile info from the first valid post if available
+      if (posts.length > 0 && !artistProfiles[folder]) {
+        const p = posts[0];
+        artistProfiles[folder] = {
+          username: p.user.username,
+          fullName: p.user.fullName,
+          profilePicUrl: p.user.profilePicUrl,
+          localProfilePic: null,
+        };
+      }
+    } catch (err) {
+      console.error(`  [error] Failed to fetch ${username}: ${err.message}`);
     }
+
+    await sleep(2000); // Be nice to API
   }
 
-  // Download Profiles
+  // 2. Download Profiles
   for (const [folder, profile] of Object.entries(artistProfiles)) {
-    if (profile.profilePicUrl) {
+    if (profile && profile.profilePicUrl) {
       const filename = `${folder}.jpg`;
       const destPath = resolve(ARTISTS_DIR, filename);
       console.log(`[instagram] Profile pic: ${folder}`);
@@ -239,13 +257,14 @@ async function main() {
       if (downloaded) {
         const importName = `profile_${folder}`;
         imports.push({ name: importName, path: `../assets/artists/${filename}` });
-        profile.localProfilePic = importName; // Use variable name
+        profile.localProfilePic = importName;
       }
     }
   }
 
-  // 3. Posts
+  // 3. Download Posts & Build Result
   for (const folder of ALL_FOLDERS) {
+    // Take top N posts
     const posts = (postsByArtist[folder] || []).slice(0, POSTS_PER_ARTIST);
     const localPosts = [];
 
@@ -253,6 +272,7 @@ async function main() {
 
     for (let i = 0; i < posts.length; i++) {
       const post = posts[i];
+      // Use original ID if possible to avoid dupes, but standardized filename
       const num = String(i + 1).padStart(2, '0');
       const filename = `${num}.jpg`;
       const destPath = resolve(GALLERY_DIR, folder, filename);
@@ -266,7 +286,7 @@ async function main() {
 
       localPosts.push({
         id: post.id,
-        imageUrl: downloaded ? importName : post.imageUrl, // Use variable name or raw URL
+        imageUrl: downloaded ? importName : post.imageUrl,
         caption: post.caption,
         permalink: post.permalink,
         artist: folder,
@@ -345,12 +365,12 @@ export interface InstagramData {
         for (const k in o) {
           const val = o[k];
           if ((k === 'imageUrl' || k === 'localProfilePic') && typeof val === 'string') {
-             // Check if this value is one of our import names
-             if (imports.some(imp => imp.name === val)) {
-                const token = `__VAR_${val}__`;
-                replacements[token] = val;
-                o[k] = token;
-             }
+            // Check if this value is one of our import names
+            if (imports.some(imp => imp.name === val)) {
+              const token = `__VAR_${val}__`;
+              replacements[token] = val;
+              o[k] = token;
+            }
           } else {
             traverse(val);
           }
@@ -364,8 +384,8 @@ export interface InstagramData {
     let json = JSON.stringify(clone, null, 2);
 
     for (const [token, varName] of Object.entries(replacements)) {
-       // Replace "token" with varName (unquoted)
-       json = json.split(`"${token}"`).join(varName);
+      // Replace "token" with varName (unquoted)
+      json = json.split(`"${token}"`).join(varName);
     }
 
     return json;
@@ -396,7 +416,7 @@ function runLocalFallback() {
 
   if (!hasSrcImages && !hasPublicImages) {
     console.log('[instagram] No local images found for fallback. Generating empty data.');
-    writeTsOutput([], { studio: {posts:[]}, artists: {} }, []);
+    writeTsOutput([], { studio: { posts: [] }, artists: {} }, []);
     return;
   }
 
@@ -418,33 +438,33 @@ function runLocalFallback() {
 
     // In src mode, we just read. In public mode, we copy to src.
     if (!hasSrcImages) {
-       ensureDir(resolve(GALLERY_DIR, folder));
+      ensureDir(resolve(GALLERY_DIR, folder));
     }
 
     const files = readdirSync(srcFolder).filter(f => f.match(/\.(jpg|jpeg|png|webp)$/i));
     const localPosts = [];
 
     files.forEach((file, index) => {
-       const srcFile = resolve(srcFolder, file);
-       const destFile = resolve(GALLERY_DIR, folder, file);
+      const srcFile = resolve(srcFolder, file);
+      const destFile = resolve(GALLERY_DIR, folder, file);
 
-       if (!hasSrcImages) {
-         copyFileSync(srcFile, destFile);
-       }
+      if (!hasSrcImages) {
+        copyFileSync(srcFile, destFile);
+      }
 
-       const cleanName = file.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9]/g, "_");
-       const importName = `img_${folder}_${cleanName}`;
+      const cleanName = file.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9]/g, "_");
+      const importName = `img_${folder}_${cleanName}`;
 
-       imports.push({ name: importName, path: `../assets/gallery/${folder}/${file}` });
+      imports.push({ name: importName, path: `../assets/gallery/${folder}/${file}` });
 
-       localPosts.push({
-         id: `local-${folder}-${index}`,
-         imageUrl: importName,
-         caption: 'Local fallback image',
-         permalink: '',
-         artist: folder,
-         isLocal: true,
-       });
+      localPosts.push({
+        id: `local-${folder}-${index}`,
+        imageUrl: importName,
+        caption: 'Local fallback image',
+        permalink: '',
+        artist: folder,
+        isLocal: true,
+      });
     });
 
     if (folder === 'studio') {
@@ -459,21 +479,21 @@ function runLocalFallback() {
       const srcProfile = resolve(srcArtistsDir, profilePicName);
 
       if (existsSync(srcProfile)) {
-         if (!hasSrcImages) {
-            ensureDir(ARTISTS_DIR);
-            copyFileSync(srcProfile, resolve(ARTISTS_DIR, profilePicName));
-         }
+        if (!hasSrcImages) {
+          ensureDir(ARTISTS_DIR);
+          copyFileSync(srcProfile, resolve(ARTISTS_DIR, profilePicName));
+        }
 
-         const importName = `profile_${folder}`;
-         imports.push({ name: importName, path: `../assets/artists/${profilePicName}` });
-         profilePicVar = importName;
+        const importName = `profile_${folder}`;
+        imports.push({ name: importName, path: `../assets/artists/${profilePicName}` });
+        profilePicVar = importName;
       }
 
       result.artists[folder] = {
         profile: {
-           username: `${folder}_fallback`,
-           fullName: `${folder} Fallback`,
-           localProfilePic: profilePicVar
+          username: `${folder}_fallback`,
+          fullName: `${folder} Fallback`,
+          localProfilePic: profilePicVar
         },
         posts: localPosts,
       };

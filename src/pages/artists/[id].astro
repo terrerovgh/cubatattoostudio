@@ -1,16 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
-import { getImage } from 'astro:assets';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArtistHero from '../../components/artist/ArtistHero.astro';
-import ArtistBio from '../../components/artist/ArtistBio.astro';
-import ArtistGalleryGrid from '../../components/artist/ArtistGalleryGrid';
-import CalendarNav from '../../components/artist/CalendarNav';
-import portfolioData from '../../data/artists-portfolio.json';
-import instagramData from '../../data/instagram';
+import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArtistHero from "../../components/artist/ArtistHero.astro";
+import ArtistBio from "../../components/artist/ArtistBio.astro";
+import ArtistGalleryGrid from "../../components/artist/ArtistGalleryGrid";
+import CalendarNav from "../../components/artist/CalendarNav";
+import portfolioData from "../../data/artists-portfolio.json";
+import instagramData from "../../data/instagram";
 
 export async function getStaticPaths() {
-  const artistEntries = await getCollection('artists');
+  const artistEntries = await getCollection("artists");
   return artistEntries.map((entry) => ({
     params: { id: entry.data.id },
     props: { entry },
@@ -24,41 +24,57 @@ const artistId = config.id;
 // Load rich data from JSON
 const artistData = (portfolioData.artists as Record<string, any>)[artistId];
 if (!artistData) {
-  return Astro.redirect('/');
+  return Astro.redirect("/");
 }
 
 // Filter instagram posts for this artist and optimize images
 const artistPosts = instagramData.posts.filter((p) => p.artist === artistId);
 const optimizedPosts = await Promise.all(
   artistPosts.map(async (post) => {
-    if (post.isLocal && typeof post.imageUrl === 'object') {
+    if (post.isLocal && typeof post.imageUrl === "object") {
       try {
         const optimized = await getImage({
           src: post.imageUrl,
-          format: 'webp',
+          format: "webp",
           width: 600,
           quality: 80,
         });
 
         // Match with featured work data if available
-        const imagePath = `/gallery/${artistId}/${post.id.split('-').pop()}.jpg`;
+        const imagePath = `/gallery/${artistId}/${post.id.split("-").pop()}.jpg`;
         const featuredWork = artistData.portfolio?.featuredWorks?.find(
-          (fw: any) => fw.image === imagePath || post.id.includes(fw.image?.split('/').pop()?.replace('.jpg', '') || '__none__')
+          (fw: any) =>
+            fw.image === imagePath ||
+            post.id.includes(
+              fw.image?.split("/").pop()?.replace(".jpg", "") || "__none__",
+            ),
         );
 
         return {
           ...post,
           imageUrl: optimized.src,
-          srcSet: optimized.srcSet?.attribute || '',
+          srcSet: optimized.srcSet?.attribute || "",
           attributes: optimized.attributes,
-          featuredWork: featuredWork || null,
+          featuredWork: featuredWork || undefined,
         };
       } catch (e) {
-        return { ...post, featuredWork: null };
+        return {
+          ...post,
+          imageUrl:
+            typeof post.imageUrl === "string"
+              ? post.imageUrl
+              : post.imageUrl.src,
+          featuredWork: undefined,
+        };
       }
     }
-    return { ...post, featuredWork: null };
-  })
+    return {
+      ...post,
+      imageUrl:
+        typeof post.imageUrl === "string" ? post.imageUrl : post.imageUrl.src,
+      featuredWork: undefined,
+    };
+  }),
 );
 
 // Match featured works to posts by index as fallback
@@ -70,10 +86,11 @@ optimizedPosts.forEach((post, i) => {
 });
 
 const pageTitle = `${artistData.displayName} — Cuba Tattoo Studio`;
-const pageDescription = artistData.bio?.substring(0, 160) || `Portfolio de ${artistData.fullName}`;
+const pageDescription =
+  artistData.bio?.substring(0, 160) || `Portfolio of ${artistData.fullName}`;
 
 // Determine animation direction based on layout
-const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
+const animateDir = config.layout === "gallery-right" ? "right" : "left";
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} mode="artist">
@@ -84,8 +101,7 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
       artistAccentLight: config.accentColorLight,
       artistAccentDark: config.accentColorDark,
     }}
-  >
-  </style>
+  ></style>
 
   {/* Back to studio nav */}
   <nav
@@ -97,12 +113,23 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
         href="/"
         class="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
       >
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
         </svg>
         Cuba Tattoo Studio
       </a>
-      <span class="text-sm font-medium text-white/70">{artistData.displayName}</span>
+      <span class="text-sm font-medium text-white/70"
+        >{artistData.displayName}</span
+      >
       {
         artistData.instagram && (
           <a
@@ -134,7 +161,7 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
   {/* Content Section — layout driven by .md config */}
   <div class="max-w-7xl mx-auto px-4 sm:px-8 pb-24 space-y-12">
     {
-      config.layout === 'gallery-top' ? (
+      config.layout === "gallery-top" ? (
         <>
           {/* Gallery full width */}
           <section id="gallery" data-section="gallery" class="space-y-6">
@@ -164,12 +191,15 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
             />
             {config.availability && (
               <div class="space-y-6">
-                <div class="liquid-glass rounded-[24px] p-6 sm:p-8" data-animate-right>
+                <div
+                  class="liquid-glass rounded-[24px] p-6 sm:p-8"
+                  data-animate-right
+                >
                   <h3
                     class="text-xl font-bold text-white mb-6"
                     data-animate-heading
                   >
-                    Disponibilidad
+                    Availability
                   </h3>
                   <CalendarNav
                     client:visible
@@ -187,8 +217,8 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
         /* gallery-left or gallery-right: 2-column layout */
         <div
           class:list={[
-            'grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8',
-            config.layout === 'gallery-right' && 'lg:grid-cols-[1fr_1.2fr]',
+            "grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8",
+            config.layout === "gallery-right" && "lg:grid-cols-[1fr_1.2fr]",
           ]}
         >
           {/* Gallery column */}
@@ -196,8 +226,8 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
             id="gallery"
             data-section="gallery"
             class:list={[
-              'space-y-6',
-              config.layout === 'gallery-right' && 'lg:order-2',
+              "space-y-6",
+              config.layout === "gallery-right" && "lg:order-2",
             ]}
           >
             <h2
@@ -216,8 +246,8 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
           {/* Bio + Calendar column */}
           <div
             class:list={[
-              'space-y-8',
-              config.layout === 'gallery-right' && 'lg:order-1',
+              "space-y-8",
+              config.layout === "gallery-right" && "lg:order-1",
             ]}
           >
             <ArtistBio
@@ -232,14 +262,14 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
             {config.availability && (
               <div
                 class="liquid-glass rounded-[24px] p-6 sm:p-8"
-                data-animate-left={animateDir === 'left' ? '' : undefined}
-                data-animate-right={animateDir === 'right' ? '' : undefined}
+                data-animate-left={animateDir === "left" ? "" : undefined}
+                data-animate-right={animateDir === "right" ? "" : undefined}
               >
                 <h3
                   class="text-xl font-bold text-white mb-6"
                   data-animate-heading
                 >
-                  Disponibilidad
+                  Availability
                 </h3>
                 <CalendarNav
                   client:visible
@@ -261,10 +291,19 @@ const animateDir = config.layout === 'gallery-right' ? 'right' : 'left';
         href="/"
         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white/50 hover:text-white bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-all duration-300"
       >
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
         </svg>
-        Volver al Estudio
+        Back to Studio
       </a>
     </div>
   </div>

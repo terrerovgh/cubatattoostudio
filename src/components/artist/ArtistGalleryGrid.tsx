@@ -25,6 +25,11 @@ interface ArtistGalleryGridProps {
 
 export default function ArtistGalleryGrid({ posts, accentColor }: ArtistGalleryGridProps) {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [page, setPage] = useState(1);
+  const POSTS_PER_PAGE = 12;
+
+  const displayedPosts = posts.slice(0, page * POSTS_PER_PAGE);
+  const hasMore = displayedPosts.length < posts.length;
 
   if (posts.length === 0) {
     return (
@@ -40,7 +45,7 @@ export default function ArtistGalleryGrid({ posts, accentColor }: ArtistGalleryG
         className="columns-2 sm:columns-3 gap-3 space-y-3"
         data-stagger-wave
       >
-        {posts.map((post) => (
+        {displayedPosts.map((post) => (
           <button
             key={post.id}
             onClick={() => setSelectedPost(post)}
@@ -84,6 +89,21 @@ export default function ArtistGalleryGrid({ posts, accentColor }: ArtistGalleryG
           </button>
         ))}
       </div>
+
+      {hasMore && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => setPage(p => p + 1)}
+            className="px-6 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all text-sm font-medium"
+            style={{
+              borderColor: `${accentColor}40`,
+              color: accentColor
+            }}
+          >
+            Load More Works
+          </button>
+        </div>
+      )}
 
       {/* Lightbox */}
       {selectedPost && (

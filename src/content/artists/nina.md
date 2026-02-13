@@ -16,5 +16,5 @@ availability:
     saturday: { start: "12:00", end: "17:00" }
     sunday: null
   blockedDates: []
-  note: "Consultas por DM en Instagram. Disponible para disenos freehand."
+  note: "Consultations via DM on Instagram. Available for freehand designs."
 ---

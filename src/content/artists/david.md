@@ -18,5 +18,5 @@ availability:
   blockedDates:
     - "2026-03-15"
     - "2026-03-16"
-  note: "Walk-ins welcome los sabados. Para piezas grandes, agendar con anticipacion."
+  note: "Walk-ins welcome on Saturdays. For large pieces, please book in advance."
 ---

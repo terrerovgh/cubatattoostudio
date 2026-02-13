@@ -16,5 +16,5 @@ availability:
     saturday: { start: "11:00", end: "15:00" }
     sunday: null
   blockedDates: []
-  note: "Especialidad en mitologia griega y retratos de mascotas. Reservar con 2 semanas de anticipacion."
+  note: "Specialty in Greek mythology and pet portraits. Book 2 weeks in advance."
 ---
