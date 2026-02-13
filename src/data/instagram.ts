@@ -3,9 +3,9 @@
 // Do not edit manually
 
 import img_studio_promo_flash from '../assets/gallery/studio/promo-flash.jpg';
-import img_studio_promo_guest from '../assets/gallery/studio/promo-guest.jpg';
 import img_studio_promo_merch from '../assets/gallery/studio/promo-merch.jpg';
 import img_studio_promo_relg from '../assets/gallery/studio/promo-relg.jpg';
+import img_studio_promo_walkins from '../assets/gallery/studio/promo-walkins.jpg';
 import img_david_01 from '../assets/gallery/david/01.jpg';
 import img_david_02 from '../assets/gallery/david/02.jpg';
 import img_david_03 from '../assets/gallery/david/03.jpg';
@@ -77,14 +77,6 @@ const instagramData: InstagramData = {
     },
     {
       "id": "local-studio-1",
-      "imageUrl": img_studio_promo_guest,
-      "caption": "Local fallback image",
-      "permalink": "",
-      "artist": "studio",
-      "isLocal": true
-    },
-    {
-      "id": "local-studio-2",
       "imageUrl": img_studio_promo_merch,
       "caption": "Local fallback image",
       "permalink": "",
@@ -92,8 +84,16 @@ const instagramData: InstagramData = {
       "isLocal": true
     },
     {
-      "id": "local-studio-3",
+      "id": "local-studio-2",
       "imageUrl": img_studio_promo_relg,
+      "caption": "Local fallback image",
+      "permalink": "",
+      "artist": "studio",
+      "isLocal": true
+    },
+    {
+      "id": "local-studio-3",
+      "imageUrl": img_studio_promo_walkins,
       "caption": "Local fallback image",
       "permalink": "",
       "artist": "studio",
@@ -353,14 +353,6 @@ const instagramData: InstagramData = {
       },
       {
         "id": "local-studio-1",
-        "imageUrl": img_studio_promo_guest,
-        "caption": "Local fallback image",
-        "permalink": "",
-        "artist": "studio",
-        "isLocal": true
-      },
-      {
-        "id": "local-studio-2",
         "imageUrl": img_studio_promo_merch,
         "caption": "Local fallback image",
         "permalink": "",
@@ -368,8 +360,16 @@ const instagramData: InstagramData = {
         "isLocal": true
       },
       {
-        "id": "local-studio-3",
+        "id": "local-studio-2",
         "imageUrl": img_studio_promo_relg,
+        "caption": "Local fallback image",
+        "permalink": "",
+        "artist": "studio",
+        "isLocal": true
+      },
+      {
+        "id": "local-studio-3",
+        "imageUrl": img_studio_promo_walkins,
         "caption": "Local fallback image",
         "permalink": "",
         "artist": "studio",
@@ -646,7 +646,7 @@ const instagramData: InstagramData = {
       ]
     }
   },
-  "lastFetched": "2026-02-13T19:54:28.036Z"
+  "lastFetched": "2026-02-13T20:19:36.096Z"
 };
 
 export default instagramData;

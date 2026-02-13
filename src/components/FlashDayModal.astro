@@ -1,0 +1,214 @@
+---
+import { Image } from "astro:assets";
+import promoFlash from "../assets/gallery/studio/promo-flash.jpg";
+---
+
+<dialog
+    id="flash-day-modal"
+    class="group fixed inset-0 z-50 w-full h-full bg-black/90 backdrop-blur-md p-4 sm:p-8 overflow-y-auto"
+>
+    <div
+        class="relative w-full max-w-4xl mx-auto bg-zinc-900 border border-red-900/50 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
+    >
+        {/* Close Button */}
+        <button
+            id="close-flash-modal"
+            class="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-red-900/80 rounded-full text-white transition-colors cursor-pointer border border-white/10"
+            aria-label="Close modal"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        {/* Hero Section (Image) */}
+        <div class="w-full md:w-1/2 h-64 md:h-auto relative">
+            <div class="absolute inset-0 bg-red-900/20 mix-blend-overlay z-10">
+            </div>
+            <Image
+                src={promoFlash}
+                alt="Valentine's Flash Day"
+                class="w-full h-full object-cover"
+                width={800}
+            />
+            <div
+                class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent md:bg-gradient-to-r"
+            >
+            </div>
+        </div>
+
+        {/* Content Section */}
+        <div class="w-full md:w-1/2 p-8 md:p-10 flex flex-col text-white">
+            <div class="mb-6">
+                <span
+                    class="inline-block px-3 py-1 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-xs font-bold uppercase tracking-widest mb-4"
+                >
+                    Event Details
+                </span>
+                <h2
+                    class="text-3xl md:text-4xl font-black text-white mb-2 uppercase italic tracking-tighter"
+                >
+                    Valentine's <span class="text-red-500">Flash Day</span>
+                </h2>
+                <p
+                    class="text-zinc-400 text-sm font-medium uppercase tracking-wide"
+                >
+                    Saturday, Feb 14th • 11am - Late
+                </p>
+            </div>
+
+            <div class="space-y-6 flex-grow">
+                <div class="space-y-2">
+                    <h3
+                        class="text-lg font-bold text-white border-b border-white/10 pb-1"
+                    >
+                        Rules & Info
+                    </h3>
+                    <ul
+                        class="text-zinc-300 text-sm space-y-2 list-disc list-inside marker:text-red-500"
+                    >
+                        <li>
+                            First come, first served (Check-in start at 10:30am)
+                        </li>
+                        <li>Arms & Legs placements only</li>
+                        <li>No modifications to designs</li>
+                        <li>Cash preferred, Card accepted (+3% fee)</li>
+                    </ul>
+                </div>
+
+                <div class="space-y-2">
+                    <h3
+                        class="text-lg font-bold text-white border-b border-white/10 pb-1"
+                    >
+                        Pricing
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="bg-white/5 p-3 rounded border border-white/5 text-center"
+                        >
+                            <span class="block text-2xl font-black text-red-500"
+                                >$80</span
+                            >
+                            <span
+                                class="text-xs text-zinc-400 uppercase tracking-widest"
+                                >Simple</span
+                            >
+                        </div>
+                        <div
+                            class="bg-white/5 p-3 rounded border border-white/5 text-center"
+                        >
+                            <span class="block text-2xl font-black text-white"
+                                >$150</span
+                            >
+                            <span
+                                class="text-xs text-zinc-400 uppercase tracking-widest"
+                                >Complex</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-white/10">
+                <p class="text-center text-zinc-500 text-xs mb-4">
+                    *Designs available to view at the studio only.
+                </p>
+                <button
+                    onclick="window.location.href='/booking'"
+                    class="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-widest hover:tracking-[0.2em] transition-all duration-300 rounded shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+                >
+                    Book Your Slot
+                </button>
+            </div>
+        </div>
+    </div>
+</dialog>
+
+<style>
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    dialog[open] {
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+</style>
+
+<script>
+    const dialog = document.getElementById(
+        "flash-day-modal",
+    ) as HTMLDialogElement;
+    const closeBtn = document.getElementById("close-flash-modal");
+
+    // Function to open modal (can be called from other components)
+    window.openFlashModal = () => {
+        dialog?.showModal();
+        document.body.style.overflow = "hidden"; // Prevent background scrolling
+    };
+
+    const closeModal = () => {
+        dialog?.close();
+        document.body.style.overflow = "";
+    };
+
+    closeBtn?.addEventListener("click", closeModal);
+
+    // Close when clicking backdrop
+    dialog?.addEventListener("click", (e) => {
+        const rect = dialog.getBoundingClientRect();
+        const isInDialog =
+            rect.top <= e.clientY &&
+            e.clientY <= rect.top + rect.height &&
+            rect.left <= e.clientX &&
+            e.clientX <= rect.left + rect.width;
+        if (!isInDialog) {
+            closeModal();
+        }
+    });
+
+    // Handle ESC key
+    dialog?.addEventListener("close", () => {
+        document.body.style.overflow = "";
+    });
+</script>
+
+<script>
+    // Add type definition for window function
+    declare global {
+        interface Window {
+            openFlashModal: () => void;
+        }
+    }
+</script>

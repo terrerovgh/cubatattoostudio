@@ -7,7 +7,6 @@ import ArtistBio from "../../components/artist/ArtistBio.astro";
 import ArtistGalleryGrid from "../../components/artist/ArtistGalleryGrid";
 import CalendarNav from "../../components/artist/CalendarNav";
 import portfolioData from "../../data/artists-portfolio.json";
-import instagramData from "../../data/instagram";
 
 export async function getStaticPaths() {
   const artistEntries = await getCollection("artists");
@@ -27,63 +26,42 @@ if (!artistData) {
   return Astro.redirect("/");
 }
 
-// Filter instagram posts for this artist and optimize images
-const artistPosts = instagramData.posts.filter((p) => p.artist === artistId);
-const optimizedPosts = await Promise.all(
-  artistPosts.map(async (post) => {
-    if (post.isLocal && typeof post.imageUrl === "object") {
-      try {
-        const optimized = await getImage({
-          src: post.imageUrl,
-          format: "webp",
-          width: 600,
-          quality: 80,
-        });
+// Process portfolio images
+const featuredWorks = artistData.portfolio?.featuredWorks || [];
+const galleryItems = await Promise.all(
+  featuredWorks.map(async (work: any, index: number) => {
+    // Generate a stable ID for the work
+    const workId = `${artistId}-work-${index}`;
 
-        // Match with featured work data if available
-        const imagePath = `/gallery/${artistId}/${post.id.split("-").pop()}.jpg`;
-        const featuredWork = artistData.portfolio?.featuredWorks?.find(
-          (fw: any) =>
-            fw.image === imagePath ||
-            post.id.includes(
-              fw.image?.split("/").pop()?.replace(".jpg", "") || "__none__",
-            ),
-        );
+    try {
+      // Optimize the image
+      const optimized = await getImage({
+        src: work.image,
+        format: "webp",
+        width: 800,
+        quality: 85,
+        inferSize: true,
+      });
 
-        return {
-          ...post,
-          imageUrl: optimized.src,
-          srcSet: optimized.srcSet?.attribute || "",
-          attributes: optimized.attributes,
-          featuredWork: featuredWork || undefined,
-        };
-      } catch (e) {
-        return {
-          ...post,
-          imageUrl:
-            typeof post.imageUrl === "string"
-              ? post.imageUrl
-              : post.imageUrl.src,
-          featuredWork: undefined,
-        };
-      }
+      return {
+        id: workId,
+        imageUrl: optimized.src,
+        srcSet: optimized.srcSet?.attribute || "",
+        attributes: optimized.attributes,
+        featuredWork: work,
+        caption: work.title,
+      };
+    } catch (e) {
+      console.error(`Failed to optimize image ${work.image}:`, e);
+      return {
+        id: workId,
+        imageUrl: work.image,
+        featuredWork: work,
+        caption: work.title,
+      };
     }
-    return {
-      ...post,
-      imageUrl:
-        typeof post.imageUrl === "string" ? post.imageUrl : post.imageUrl.src,
-      featuredWork: undefined,
-    };
   }),
 );
-
-// Match featured works to posts by index as fallback
-const featuredWorks = artistData.portfolio?.featuredWorks || [];
-optimizedPosts.forEach((post, i) => {
-  if (!post.featuredWork && featuredWorks[i]) {
-    post.featuredWork = featuredWorks[i];
-  }
-});
 
 const pageTitle = `${artistData.displayName} — Cuba Tattoo Studio`;
 const pageDescription =
@@ -173,8 +151,14 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
             </h2>
             <ArtistGalleryGrid
               client:visible
-              posts={optimizedPosts}
+              posts={galleryItems}
               accentColor={config.accentColor}
+              artistProfile={{
+                name: artistData.displayName,
+                image: artistData.profileImage,
+                role: artistData.role,
+                id: artistData.id,
+              }}
             />
           </section>
 
@@ -238,8 +222,14 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
             </h2>
             <ArtistGalleryGrid
               client:visible
-              posts={optimizedPosts}
+              posts={galleryItems}
               accentColor={config.accentColor}
+              artistProfile={{
+                name: artistData.displayName,
+                image: artistData.profileImage,
+                role: artistData.role,
+                id: artistData.id,
+              }}
             />
           </section>
 

@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import SectionWrapper from "../SectionWrapper.astro";
+import FlashDayModal from "../FlashDayModal.astro";
 
 interface Props {
     id: string;
@@ -242,6 +243,8 @@ if (sortedPromos.length > 0) {
     </div>
 </SectionWrapper>
 
+<FlashDayModal />
+
 <style>
     .marquee-track {
         animation: marquee 40s linear infinite;
@@ -256,6 +259,21 @@ if (sortedPromos.length > 0) {
         }
     }
 </style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        // Handle Flash Day Modal Links
+        const flashLinks = document.querySelectorAll('a[href="#flash-day"]');
+        flashLinks.forEach((link) => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                if (window.openFlashModal) {
+                    window.openFlashModal();
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     // Simple Carousel Logic
