@@ -26,17 +26,38 @@ if (!artistData) {
   return Astro.redirect("/");
 }
 
-// Process portfolio images
+// Load all images for this artist from the public gallery folder
+const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/public/gallery/**/*.{jpg,jpeg,png,webp}",
+);
+
+// Filter images for current artist
+const artistGalleryPaths = Object.keys(galleryImages).filter((path) =>
+  path.includes(`/gallery/${artistId}/`),
+);
+
+// Get featured works for metadata matching
 const featuredWorks = artistData.portfolio?.featuredWorks || [];
+
+// Process all images found in the directory
 const galleryItems = await Promise.all(
-  featuredWorks.map(async (work: any, index: number) => {
-    // Generate a stable ID for the work
+  artistGalleryPaths.map(async (imagePath, index) => {
+    // Generate a stable ID
     const workId = `${artistId}-work-${index}`;
+    // Extract filename for matching
+    const filename = imagePath.split("/").pop();
+
+    // Find matching metadata if available
+    const metadata = featuredWorks.find((fw: any) =>
+      fw.image.endsWith(filename || ""),
+    );
 
     try {
-      // Optimize the image
+      // Fix: imagePath from glob includes /public, but content is served from root
+      const publicPath = imagePath.replace("/public", "");
+
       const optimized = await getImage({
-        src: work.image,
+        src: publicPath,
         format: "webp",
         width: 800,
         quality: 85,
@@ -48,16 +69,29 @@ const galleryItems = await Promise.all(
         imageUrl: optimized.src,
         srcSet: optimized.srcSet?.attribute || "",
         attributes: optimized.attributes,
-        featuredWork: work,
-        caption: work.title,
+        featuredWork: metadata
+          ? {
+              ...metadata,
+              style: metadata.style || "Portfolio",
+              tags: metadata.tags || ["tattoo"],
+            }
+          : {
+              // Default metadata for non-featured images
+              title: "Portfolio Piece",
+              description: "Work by " + artistData.displayName,
+              style: "Tattoo",
+              tags: ["tattoo", artistId],
+            },
+        caption: metadata?.title || "Portfolio Piece",
       };
     } catch (e) {
-      console.error(`Failed to optimize image ${work.image}:`, e);
+      console.error(`Failed to optimize image ${imagePath}:`, e);
+      const publicPath = imagePath.replace("/public", "");
       return {
         id: workId,
-        imageUrl: work.image,
-        featuredWork: work,
-        caption: work.title,
+        imageUrl: publicPath,
+        featuredWork: metadata || undefined,
+        caption: metadata?.title || "Portfolio Piece",
       };
     }
   }),
