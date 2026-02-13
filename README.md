@@ -2,6 +2,8 @@
 
 Landing page premium para Cuba Tattoo Studio en Albuquerque, NM. Experiencia inmersiva tipo app nativa con glassmorphism oscuro, fondos dinámicos con crossfade, y navegación dock estilo iOS.
 
+**Sitio en produccion:** [cubatattoostudio.com](https://cubatattoostudio.com)
+
 ## Tabla de Contenidos
 
 - [Vision del Proyecto](#vision-del-proyecto)
@@ -11,11 +13,14 @@ Landing page premium para Cuba Tattoo Studio en Albuquerque, NM. Experiencia inm
 - [Inicio Rapido](#inicio-rapido)
 - [Gestion de Contenido](#gestion-de-contenido)
 - [Componentes](#componentes)
+- [Sistema de Cache de Imagenes](#sistema-de-cache-de-imagenes)
+- [API de Imagenes (R2)](#api-de-imagenes-r2)
 - [Sistema de Diseno](#sistema-de-diseno)
 - [Integracion Instagram](#integracion-instagram)
 - [Flujos de Usuario](#flujos-de-usuario)
-- [Plan de Implementacion](#plan-de-implementacion)
 - [Despliegue](#despliegue)
+- [CI/CD](#cicd)
+- [Variables de Entorno](#variables-de-entorno)
 - [Verificacion y Testing](#verificacion-y-testing)
 
 ---
@@ -47,19 +52,31 @@ Crear una landing page que impresione visualmente a clientes potenciales, muestr
 
 | Tecnologia | Version | Proposito |
 |---|---|---|
-| **Astro** | 5.17+ | Framework SSG — genera HTML estatico |
+| **Astro** | 5.17+ | Framework SSG con soporte SSR por ruta |
 | **React** | 19.2+ | Islands interactivos (client:only) |
 | **Tailwind CSS** | 4.1+ | Estilos utility-first via Vite plugin |
 | **GSAP** | 3.14+ | ScrollTrigger para deteccion de secciones y animaciones |
 | **Nano Stores** | 1.1+ | State management entre React islands |
 | **Lucide React** | 0.563+ | Iconos para dock navigation |
+| **idb** | 8.0+ | Wrapper Promise-based para IndexedDB (cache de imagenes) |
 | **TypeScript** | Strict | Tipado en todo el proyecto |
+
+### Infraestructura
+
+| Servicio | Proposito |
+|---|---|
+| **Cloudflare Workers** | Hosting y runtime (SSR para API routes) |
+| **Cloudflare R2** | Almacenamiento de imagenes (upload/serve) |
+| **GitHub Actions** | CI/CD — deploy automatico en push a `main` |
 
 ### Dependencias de Desarrollo
 
 | Dependencia | Proposito |
 |---|---|
-| `@tailwindcss/vite` | Plugin Vite para Tailwind v4 (reemplaza @astrojs/tailwind deprecado) |
+| `@astrojs/cloudflare` | Adapter para Cloudflare Workers |
+| `wrangler` | CLI de Cloudflare para deploy y desarrollo local |
+| `@cloudflare/workers-types` | Tipos TypeScript para Workers runtime |
+| `@tailwindcss/vite` | Plugin Vite para Tailwind v4 |
 | `@types/react` | Tipos TypeScript para React |
 | `@types/react-dom` | Tipos TypeScript para React DOM |
 
@@ -121,37 +138,52 @@ z-100 Lightbox Gallery (fixed, modal) — cuando esta abierto
 | `FloatingDock` | `client:only="react"` | Requiere estado reactivo para hover/active |
 | `GallerySection` | `client:visible` | Lightbox interactivo, lazy-loaded |
 
+### API Routes (SSR)
+
+Las rutas bajo `src/pages/api/` usan `export const prerender = false` para ejecutarse como Cloudflare Workers en runtime (no pre-renderizadas).
+
 ---
 
 ## Estructura del Proyecto
 
 ```
 cubatattoostudio/
-├── astro.config.mjs           # Astro config: React integration + Tailwind Vite plugin
-├── tsconfig.json              # TypeScript strict + path alias @/*
-├── package.json               # Scripts: dev, prebuild, build, preview
+├── astro.config.mjs           # Astro config: React + Cloudflare adapter + Tailwind
+├── wrangler.jsonc             # Cloudflare Workers config: R2, custom domains, assets
+├── tsconfig.json              # TypeScript strict + workers-types
+├── package.json               # Scripts: dev, build, preview, deploy, migrate-r2
 ├── .env.example               # Variables de entorno documentadas
 ├── .gitignore                 # node_modules, dist, .env, .astro
 │
+├── .github/workflows/
+│   └── deploy.yml             # CI/CD: build + deploy a Cloudflare en push a main
+│
 ├── scripts/
-│   └── fetch-insta.js         # Script prebuild: fetch Instagram posts → JSON
+│   ├── fetch-insta.js         # Script prebuild: fetch Instagram posts → JSON
+│   └── migrate-to-r2.js      # Migrar imagenes locales a Cloudflare R2
 │
 ├── public/                    # Assets estaticos (copiados tal cual a dist/)
-│   ├── favicon.svg            # Monograma "CT" en gold (#C8956C)
-│   ├── backgrounds/           # Imagenes de fondo por seccion
-│   │   ├── hero.svg           # Fondo hero (placeholder SVG oscuro)
-│   │   ├── artists.svg        # Fondo artistas (tono purpura oscuro)
-│   │   ├── services.svg       # Fondo servicios (tono azul oscuro)
-│   │   ├── gallery.svg        # Fondo galeria (tono calido oscuro)
-│   │   └── booking.svg        # Fondo booking (acento gold sutil)
-│   └── artists/               # Fotos de artistas
-│       ├── david.svg          # Placeholder avatar "D"
-│       ├── nina.svg           # Placeholder avatar "N"
-│       └── karli.svg          # Placeholder avatar "K"
+│   ├── logo.svg               # Logo principal (hero, favicon, OG image)
+│   ├── .assetsignore          # Excluye _worker.js de assets publicos
+│   ├── backgrounds/           # Imagenes de fondo por seccion (SVG)
+│   ├── gallery/               # Imagenes de galeria
+│   │   ├── david/             # Trabajos de David
+│   │   ├── karli/             # Trabajos de Karli
+│   │   ├── nina/              # Trabajos de Nina
+│   │   └── studio/            # Fotos del estudio
+│   └── artists/               # Fotos de perfil de artistas (JPG)
 │
 └── src/
+    ├── env.d.ts               # Tipos TypeScript para Cloudflare bindings (R2, ASSETS)
     ├── content.config.ts      # Schema de Content Collections (Zod)
-    ├── store.ts               # Nano Stores: $activeSection, $currentBackground
+    ├── store.ts               # Nano Stores: secciones, fondos, cache stats
+    │
+    ├── lib/
+    │   ├── imageCache.ts      # Servicio IndexedDB: get, put, delete, clean, stats
+    │   └── imageUtils.ts      # Compresion, validacion, IDs de imagenes
+    │
+    ├── hooks/
+    │   └── useImageCache.ts   # Hook React: cache-first image loading
     │
     ├── styles/
     │   └── global.css         # Tailwind v4 import + design tokens + scrollbar
@@ -168,22 +200,27 @@ cubatattoostudio/
     │       └── 05-booking.md
     │
     ├── layouts/
-    │   └── BaseLayout.astro   # Layout base: head, fonts, OG tags, islands
+    │   └── BaseLayout.astro   # Layout base: head, fonts, OG tags, preloads, islands
     │
     ├── pages/
-    │   └── index.astro        # Pagina principal: orquesta secciones desde collection
+    │   ├── index.astro        # Pagina principal: orquesta secciones desde collection
+    │   └── api/images/        # API routes (SSR en Cloudflare Workers)
+    │       ├── upload.ts      # POST — subir imagen a R2
+    │       ├── [...id].ts     # GET/DELETE — servir/eliminar imagen de R2
+    │       └── cache-status.ts # GET — listar imagenes en R2
     │
     └── components/
         ├── BackgroundManager.tsx     # Island: crossfade de fondos (z-0, fixed)
         ├── ScrollObserver.tsx        # Island: GSAP ScrollTrigger (invisible)
-        ├── FloatingDock.tsx          # Island: dock iOS con magnificacion
+        ├── FloatingDock.tsx          # Island: dock iOS con glass-morphism inline
+        ├── CachedImage.tsx           # Wrapper: cache IndexedDB para imagenes R2
         ├── GlassCard.astro           # Componente puro: tarjeta glassmorphism
         ├── SectionWrapper.astro      # Componente puro: wrapper de seccion
         └── sections/
-            ├── HeroSection.astro         # Seccion hero: titulo + CTA
+            ├── HeroSection.astro         # Seccion hero: logo + CTA
             ├── ArtistsSection.astro      # Seccion artistas: grid de profiles
             ├── ServicesSection.astro      # Seccion servicios: lista premium
-            ├── GallerySection.tsx        # Seccion galeria: grid + lightbox (React)
+            ├── GallerySection.tsx        # Seccion galeria: grid + lightbox + cache
             ├── GallerySectionWrapper.astro # Wrapper Astro para GallerySection
             └── BookingSection.astro      # Seccion booking: CTA + contacto
 ```
@@ -194,22 +231,22 @@ cubatattoostudio/
 
 ### Requisitos Previos
 
-- Node.js 18+
-- npm o pnpm
+- Node.js 22+
+- npm
 
 ### Instalacion
 
 ```bash
 # Clonar repositorio
-git clone <repo-url> cubatattoostudio
+git clone https://github.com/terrerovgh/cubatattoostudio.git
 cd cubatattoostudio
 
 # Instalar dependencias
 npm install
 
-# (Opcional) Configurar Instagram API
+# (Opcional) Configurar variables de entorno
 cp .env.example .env
-# Editar .env con tu INSTAGRAM_ACCESS_TOKEN
+# Editar .env con tus tokens
 
 # Iniciar servidor de desarrollo
 npm run dev
@@ -223,7 +260,9 @@ El sitio estara disponible en `http://localhost:4321`
 |---|---|
 | `npm run dev` | Servidor de desarrollo en localhost:4321 |
 | `npm run build` | Build de produccion a `./dist/` (ejecuta prebuild primero) |
-| `npm run preview` | Preview del build de produccion |
+| `npm run preview` | Preview local con Cloudflare Workers runtime (acceso a R2) |
+| `npm run deploy` | Build + deploy a Cloudflare Workers |
+| `npm run migrate-r2` | Migrar imagenes locales de `public/gallery/` a R2 |
 | `npm run astro` | CLI de Astro para comandos adicionales |
 
 ---
@@ -375,6 +414,25 @@ Componente Astro puro (zero JS) para tarjetas con efecto glassmorphism.
 - `rounded-3xl shadow-2xl` — esquinas redondeadas + sombra
 - `mx-4 sm:mx-8 lg:mx-auto` — margen para flotar (nunca toca edges)
 
+### CachedImage (`src/components/CachedImage.tsx`)
+
+Componente wrapper que decide automaticamente si cachear una imagen en IndexedDB.
+
+**Comportamiento:**
+- Si `src` empieza con `/api/images/` → usa `useImageCache` hook (imagen R2, cacheada en IndexedDB)
+- De lo contrario → renderiza `<img>` normal (imagen estatica, sin overhead de cache)
+- Muestra spinner mientras carga desde cache/red
+
+**Props:**
+| Prop | Descripcion |
+|---|---|
+| `imageId` | ID unico de la imagen |
+| `src` | URL de la imagen |
+| `alt` | Texto alternativo |
+| `artist?` | Nombre del artista (para metadata de cache) |
+| `className?` | Clases CSS |
+| `loading?` | `'lazy'` o `'eager'` |
+
 ### SectionWrapper (`src/components/SectionWrapper.astro`)
 
 Wrapper para cada seccion de la pagina. Proporciona atributos `data-section` y `data-bg` que el ScrollObserver lee.
@@ -387,6 +445,92 @@ Wrapper para cada seccion de la pagina. Proporciona atributos `data-section` y `
 | `class` | Clases CSS adicionales |
 
 **Estilos:** `min-h-screen flex items-center justify-center py-20 lg:py-32`
+
+---
+
+## Sistema de Cache de Imagenes
+
+### Arquitectura
+
+```
+Navegador → IndexedDB cache (Blob) → API /api/images/* → Cloudflare R2
+                                   ↘ /gallery/* (imagenes estaticas, sin cache)
+```
+
+### IndexedDB (`src/lib/imageCache.ts`)
+
+- **Base de datos:** `cubatattoo-images`, version 1
+- **Object store:** `images` con keyPath `id`
+- **Indices:** `by-expiry`, `by-artist`, `by-cached-at`
+- **TTL:** 7 dias por defecto, verificacion lazy al leer
+- **Eviccion LRU:** limpieza automatica al alcanzar 50MB
+- **SSR guard:** rechaza operaciones si `window` no esta definido
+
+**API publica:**
+
+| Funcion | Descripcion |
+|---|---|
+| `getCachedImage(id)` | Obtener imagen cacheada (verifica TTL) |
+| `putCachedImage(entry)` | Guardar imagen en cache |
+| `deleteCachedImage(id)` | Eliminar imagen del cache |
+| `getAllCachedImages()` | Listar todas las imagenes cacheadas |
+| `clearCache()` | Limpiar todo el cache |
+| `getCacheStats()` | Obtener conteo y tamaño total |
+| `cleanExpired()` | Eliminar entradas expiradas |
+
+### Hook React (`src/hooks/useImageCache.ts`)
+
+```typescript
+const { imageUrl, loading, error, fromCache } = useImageCache(imageId, networkUrl, options?)
+```
+
+**Resolucion:** IndexedDB cache → fetch de red → URL raw como fallback.
+Crea `URL.createObjectURL(blob)` para renderizar, limpia URLs al desmontar.
+
+### Utilidades (`src/lib/imageUtils.ts`)
+
+| Funcion | Descripcion |
+|---|---|
+| `compressImage(blob, options)` | Redimensionar via Canvas, configurable |
+| `generateImageId(artist)` | ID unico desde timestamp + random |
+| `getMimeType(file)` | Deteccion MIME desde File.type o extension |
+| `validateImageFile(file, maxSizeMB)` | Validacion de tipo y tamaño |
+
+---
+
+## API de Imagenes (R2)
+
+Todas las rutas usan `export const prerender = false` y se ejecutan como Cloudflare Workers.
+
+| Endpoint | Metodo | Auth | Descripcion |
+|----------|--------|------|-------------|
+| `/api/images/upload` | POST | Bearer token | Subir imagen (FormData: file, artist, caption) |
+| `/api/images/{id}` | GET | No | Servir imagen con ETag/304 |
+| `/api/images/{id}` | DELETE | Bearer token | Eliminar imagen de R2 |
+| `/api/images/cache-status` | GET | No | Listar imagenes en R2 |
+
+### Upload
+
+```bash
+curl -X POST \
+  -F "file=@imagen.jpg" \
+  -F "artist=david" \
+  -F "caption=Nuevo trabajo" \
+  -H "Authorization: Bearer <UPLOAD_SECRET>" \
+  https://cubatattoostudio.com/api/images/upload
+```
+
+**Respuesta:** `{ id, url, artist, caption }`
+
+### Servir imagen
+
+```bash
+curl https://cubatattoostudio.com/api/images/gallery/david/1234567890-abc123.jpg
+```
+
+Soporta `If-None-Match` (ETag) para respuestas 304 Not Modified.
+
+> **Nota:** Las API routes de R2 requieren que el binding `r2_buckets` este habilitado en `wrangler.jsonc`. Actualmente esta comentado pendiente de que el API token tenga el permiso R2 Storage: Edit.
 
 ---
 
@@ -499,13 +643,13 @@ Si no hay token o la API falla:
 ### Flujo 1: Exploracion por Scroll
 
 ```
-Visitante llega → Hero (impacto visual, CTA "Book a Consultation")
+Visitante llega → Hero (logo + CTA "Reserva tu Consulta")
     ↓ scroll
 Artistas (David, Nina, Karli — fotos, roles, Instagram links)
     ↓ scroll (fondo cambia con crossfade suave)
 Servicios (lista tipo menu — Custom, Cover-ups, Fine Line...)
     ↓ scroll
-Galeria (grid de Instagram, lightbox al click)
+Galeria (grid filtrable por artista, lightbox al click)
     ↓ scroll
 Booking (CTA grande gold, telefono, email, redes sociales)
 ```
@@ -523,7 +667,7 @@ Visitante ve dock flotante en bottom
 
 ```
 Visitante ve portfolio de artista → decide booking
-    → Click "Book a Consultation" (hero) o icono dock "Book"
+    → Click "Reserva tu Consulta" (hero) o icono dock "Book"
     → Llega a BookingSection → click CTA → redirige a bookingUrl
     → O usa telefono/email para contactar directamente
 ```
@@ -540,75 +684,103 @@ Admin edita src/content/sections/02-artists.md
 
 ---
 
-## Plan de Implementacion
-
-### Estado Actual: Completado
-
-Todas las fases del plan original han sido implementadas:
-
-| Fase | Estado | Descripcion |
-|---|---|---|
-| Phase 1 | Completada | Scaffold Astro, React, Tailwind v4, GSAP, Nano Stores |
-| Phase 2 | Completada | Store, BackgroundManager, ScrollObserver, BaseLayout |
-| Phase 3 | Completada | GlassCard, SectionWrapper, FloatingDock |
-| Phase 4 | Completada | Content Collections schema + 5 secciones .md |
-| Phase 5 | Completada | index.astro + 5 section components |
-| Phase 6 | Completada | Instagram fetch script + placeholder data |
-| Phase 7 | Completada | Animaciones GSAP, responsive, scrollbar styling |
-| Phase 8 | Completada | SEO meta tags, OG tags, favicon, build exitoso |
-
-### Decisiones Arquitectonicas Tomadas
-
-1. **Tailwind v4 via Vite plugin** (no @astrojs/tailwind deprecado) — mejor rendimiento, CSS-first config
-2. **client:only="react"** para los 3 islands principales — evita SSR de componentes que requieren browser APIs
-3. **Nano Stores** en lugar de React Context — funciona entre islands independientes
-4. **Content Collections con glob loader** — Content Layer API de Astro 5
-5. **Instagram en build-time** — sin fetch client-side, sin CORS, sin API keys expuestas
-6. **SVG placeholders** — permiten desarrollo sin fotos reales, reemplazables por WebP
-7. **GlassCard como componente Astro puro** — zero JS, maximo rendimiento
-
-### Pendientes / Mejoras Futuras
-
-- [ ] Reemplazar SVG placeholders con fotos reales (WebP recomendado)
-- [ ] Configurar Instagram API token en `.env`
-- [ ] Configurar URL real de booking en `05-booking.md`
-- [ ] Actualizar datos de contacto (telefono, email, direccion)
-- [ ] Actualizar handles de Instagram de los artistas
-- [ ] Agregar Structured Data (LocalBusiness schema JSON-LD)
-- [ ] Agregar @astrojs/sitemap para SEO
-- [ ] Configurar CI/CD para deploy automatico
-- [ ] Agregar analytics (Google Analytics / Plausible)
-- [ ] Optimizar imagenes con srcset para diferentes tamaños
-- [ ] Agregar apple-touch-icon para iOS
-
----
-
 ## Despliegue
 
-### Build de Produccion
+### Cloudflare Workers
+
+El sitio se despliega como Cloudflare Worker con assets estaticos. La configuracion esta en `wrangler.jsonc`.
+
+**Dominios configurados:**
+- `cubatattoostudio.com` (principal)
+- `www.cubatattoostudio.com`
+
+Ambos usan `custom_domain: true` — Cloudflare crea y gestiona los registros DNS automaticamente.
+
+### Deploy manual
+
+```bash
+npm run deploy
+```
+
+Esto ejecuta `astro build && wrangler deploy`. Requiere autenticacion via `wrangler login` o las variables `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`.
+
+### Build de produccion (solo build)
 
 ```bash
 npm run build
 ```
 
-Esto ejecuta:
+Ejecuta:
 1. `prebuild` — fetch Instagram posts (o fallback)
-2. `astro build` — genera HTML estatico en `./dist/`
+2. `astro build` — genera output en `./dist/`
 
-### Preview Local
+### Preview local con Workers runtime
 
 ```bash
 npm run preview
 ```
 
-### Plataformas Recomendadas
+Usa `wrangler dev` para ejecutar localmente con acceso a R2 y el runtime de Cloudflare Workers.
 
-El output es **HTML estatico puro** — compatible con cualquier hosting:
+---
 
-- **Vercel**: `npm run build`, output dir: `dist`
-- **Netlify**: build command: `npm run build`, publish dir: `dist`
-- **Cloudflare Pages**: framework preset: Astro
-- **GitHub Pages**: deploy desde `dist/`
+## CI/CD
+
+### GitHub Actions
+
+Cada push a `main` ejecuta automaticamente el workflow `.github/workflows/deploy.yml`:
+
+```
+push a main → checkout → setup node 22 → npm ci → astro build → wrangler deploy
+```
+
+Tiempo tipico: ~45 segundos.
+
+### Secrets requeridos en GitHub
+
+| Secret | Descripcion |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Token API de Cloudflare con permisos Workers Scripts: Edit |
+| `CLOUDFLARE_ACCOUNT_ID` | ID de cuenta de Cloudflare |
+
+Configurar en: GitHub repo → Settings → Secrets and variables → Actions.
+
+---
+
+## Variables de Entorno
+
+Ver `.env.example` para la lista completa.
+
+| Variable | Uso | Requerida |
+|----------|-----|-----------|
+| `INSTAGRAM_ACCESS_TOKEN` | Fetch de posts de Instagram en build time | No |
+| `INSTAGRAM_RAPIDAPI_KEY` | API alternativa de Instagram via RapidAPI | No |
+| `R2_ACCOUNT_ID` | Cuenta de Cloudflare para R2 | Solo para R2 |
+| `R2_ACCESS_KEY_ID` | Credenciales de acceso a R2 | Solo para R2 |
+| `R2_SECRET_ACCESS_KEY` | Secret key de R2 | Solo para R2 |
+| `R2_BUCKET_NAME` | Nombre del bucket R2 | Solo para R2 |
+| `UPLOAD_SECRET` | Token Bearer para autenticar uploads via API | Solo para uploads |
+
+### Decisiones Arquitectonicas
+
+1. **Astro `output: 'static'` con Cloudflare adapter** — Astro 5 soporta SSR por ruta via `prerender = false` sin necesidad de `output: 'hybrid'`
+2. **Tailwind v4 via Vite plugin** (no @astrojs/tailwind deprecado) — mejor rendimiento, CSS-first config
+3. **client:only="react"** para islands — evita SSR de componentes que requieren browser APIs
+4. **Nano Stores** en lugar de React Context — funciona entre islands independientes
+5. **Content Collections con glob loader** — Content Layer API de Astro 5
+6. **Instagram en build-time** — sin fetch client-side, sin CORS, sin API keys expuestas
+7. **IndexedDB con Blob storage** — 33% mas eficiente que base64, TTL + LRU nativo
+8. **`custom_domain: true`** en Wrangler — Cloudflare gestiona DNS automaticamente
+9. **`public/.assetsignore`** — previene exposicion de `_worker.js` en assets publicos
+10. **Imagenes en git** — gallery images tracked en git para que CI/CD builds las incluyan
+
+### Pendientes / Mejoras Futuras
+
+- [ ] Habilitar R2 binding en `wrangler.jsonc` (requiere permiso R2 Storage: Edit en API token)
+- [ ] Agregar Structured Data (LocalBusiness schema JSON-LD)
+- [ ] Agregar @astrojs/sitemap para SEO
+- [ ] Agregar analytics (Google Analytics / Plausible)
+- [ ] Optimizar imagenes con srcset para diferentes tamaños
 
 ---
 
@@ -624,25 +796,12 @@ El output es **HTML estatico puro** — compatible con cualquier hosting:
 [ ] Responsive 768px — grid artistas 3 columnas
 [ ] Responsive 1440px — cards centradas max-w-4xl
 [ ] GlassCards — flotan con margen, nunca tocan bordes del viewport
+[ ] Galeria — filtro por artista funcional, lightbox abre/cierra
+[ ] Imagenes — todas las imagenes cargan en /gallery/ (sin 404)
 [ ] Content — editar .md, rebuild, cambios reflejados
-[ ] npm run build — build estatico exitoso sin errores
-[ ] npm run preview — preview funcional en localhost
-[ ] Lighthouse — performance score > 90
-```
-
-### Output del Build
-
-```
-dist/
-├── index.html                    # Pagina principal
-├── favicon.svg                   # Favicon
-├── backgrounds/                  # Imagenes de fondo
-├── artists/                      # Fotos de artistas
-└── _astro/                       # JS bundles
-    ├── client.Dc9Vh3na.js        # React runtime (~186KB gzip ~58KB)
-    ├── ScrollObserver.BZXCjf-2.js # GSAP bundle (~115KB gzip ~45KB)
-    ├── FloatingDock.CGutWVWS.js  # Dock + Lucide icons (~7KB)
-    ├── GallerySection.vm3aiw3L.js # Gallery component (~4.6KB)
-    ├── BackgroundManager.C54ieUGo.js # Background crossfade (~1KB)
-    └── store.CrJuNOjd.js         # Nano Stores (~0.6KB)
+[ ] npm run build — build exitoso sin errores
+[ ] npm run deploy — deploy a Cloudflare sin errores
+[ ] CI/CD — push a main → GitHub Actions → deploy exitoso
+[ ] Produccion — cubatattoostudio.com carga correctamente
+[ ] Cache — DevTools → Application → IndexedDB → cubatattoo-images (si R2 activo)
 ```
