@@ -28,11 +28,10 @@ const {
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
   <GlassCard maxWidth="max-w-5xl">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {
-        /* 1. Main Booking CTA - Spans full width on desktop if desired, or just huge top block */
-      }
+      {/* 1. Main Booking CTA */}
       <div
-        class="md:col-span-2 relative overflow-hidden group rounded-[32px] bg-[var(--color-gold)] p-8 sm:p-12 flex flex-col items-center justify-center text-center space-y-8"
+        class="md:col-span-2 relative overflow-hidden group rounded-[32px] bg-[var(--color-gold)] p-8 sm:p-12 flex flex-col items-center justify-center text-center space-y-8 prismatic-border"
+        data-animate-scale
       >
         <div class="relative z-10 space-y-6">
           <h2 class="text-3xl md:text-5xl font-bold text-black tracking-tight">
@@ -75,9 +74,10 @@ const {
       {/* 2. Contact Info Block */}
       <div
         class="rounded-[32px] bg-white/[0.03] border border-white/[0.05] p-8 flex flex-col justify-between space-y-8 hover:bg-white/[0.05] transition-colors duration-300"
+        data-animate-left
       >
         <div>
-          <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+          <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3" data-animate-heading>
             <span
               class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm"
               >📍</span
@@ -122,8 +122,9 @@ const {
       {/* 3. Socials / Connect Block */}
       <div
         class="rounded-[32px] bg-white/[0.03] border border-white/[0.05] p-8 flex flex-col justify-center items-center text-center space-y-6 hover:bg-white/[0.05] transition-colors duration-300"
+        data-animate-right
       >
-        <h3 class="text-xl font-bold text-white mb-2">Follow Our Work</h3>
+        <h3 class="text-xl font-bold text-white mb-2" data-animate-heading>Follow Our Work</h3>
         <p class="text-white/40 text-sm max-w-xs">
           Check out our latest tattoos and flashes on Instagram.
         </p>

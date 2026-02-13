@@ -1,5 +1,4 @@
 ---
-import GlassCard from "../GlassCard.astro";
 import SectionWrapper from "../SectionWrapper.astro";
 
 interface Props {
@@ -10,50 +9,135 @@ interface Props {
 }
 
 const { id, backgroundImage, title, subtitle } = Astro.props;
+
+// Particle configuration — varied sizes, positions, and timing for organic feel
+const particles = [
+  { size: 3, top: "12%", left: "8%", duration: "14s", delay: "0s" },
+  { size: 2, top: "25%", left: "85%", duration: "18s", delay: "2s" },
+  { size: 4, top: "60%", left: "5%", duration: "11s", delay: "4s" },
+  { size: 2, top: "75%", left: "92%", duration: "16s", delay: "1s" },
+  { size: 5, top: "18%", left: "45%", duration: "20s", delay: "3s" },
+  { size: 3, top: "80%", left: "30%", duration: "13s", delay: "5s" },
+  { size: 2, top: "40%", left: "95%", duration: "17s", delay: "2.5s" },
+  { size: 4, top: "55%", left: "15%", duration: "15s", delay: "1.5s" },
+  { size: 3, top: "35%", left: "70%", duration: "19s", delay: "4.5s" },
+  { size: 2, top: "90%", left: "55%", duration: "12s", delay: "0.5s" },
+];
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
-  <GlassCard class="text-center" maxWidth="max-w-3xl">
-    <div class="space-y-10">
-      <div class="flex flex-col items-center gap-6">
-        <img
-          src="/logo.svg"
-          alt={title || "Cuba Tattoo Studio"}
-          class="w-full max-w-md sm:max-w-lg lg:max-w-xl h-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.5)]"
-        />
-        {title && <h1 class="sr-only">{title}</h1>}
-      </div>
-      {
-        subtitle && (
-          <p class="text-lg sm:text-xl text-white/70 font-light max-w-lg mx-auto tracking-wide leading-relaxed">
-            {subtitle}
-          </p>
-        )
-      }
-      <div class="pt-2">
-        <a
-          href="#booking"
-          class="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl
-                 bg-[var(--color-gold)] text-black font-semibold text-base
-                 transition-all duration-500 ease-out
-                 hover:shadow-[0_8px_30px_rgba(200,149,108,0.3)]
-                 hover:scale-[1.03] active:scale-[0.98]"
-        >
-          Reserva tu Consulta
-          <svg
-            class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
-          </svg>
-        </a>
-      </div>
+  {/* Vignette overlay for cinematic depth */}
+  <div class="hero-vignette"></div>
+
+  {/* Floating gold particles */}
+  {
+    particles.map((p) => (
+      <div
+        class="hero-particle"
+        style={`width: ${p.size}px; height: ${p.size}px; top: ${p.top}; left: ${p.left}; --duration: ${p.duration}; --delay: ${p.delay}; opacity: 0.2;`}
+      />
+    ))
+  }
+
+  {/* SVG Ornament — top left corner */}
+  <svg
+    class="hero-ornament top-8 left-8 sm:top-12 sm:left-12 w-32 h-32 sm:w-40 sm:h-40"
+    viewBox="0 0 160 160"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M10 80 Q10 10 80 10" />
+    <path d="M20 70 Q20 20 70 20" />
+    <path d="M10 10 L10 50" />
+    <path d="M10 10 L50 10" />
+    <circle cx="10" cy="10" r="2" fill="currentColor" style="fill: var(--color-gold); opacity: 0.15;" />
+  </svg>
+
+  {/* SVG Ornament — bottom right corner */}
+  <svg
+    class="hero-ornament bottom-8 right-8 sm:bottom-12 sm:right-12 w-32 h-32 sm:w-40 sm:h-40 rotate-180"
+    viewBox="0 0 160 160"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M10 80 Q10 10 80 10" />
+    <path d="M20 70 Q20 20 70 20" />
+    <path d="M10 10 L10 50" />
+    <path d="M10 10 L50 10" />
+    <circle cx="10" cy="10" r="2" fill="currentColor" style="fill: var(--color-gold); opacity: 0.15;" />
+  </svg>
+
+  {/* Main content — no GlassCard, clean cinematic layout */}
+  <div class="relative z-10 flex flex-col items-center text-center px-6 sm:px-8 space-y-8 max-w-3xl mx-auto">
+    {/* Logo — dramatic reveal */}
+    <div data-hero="logo" class="w-full">
+      <img
+        src="/logo.svg"
+        alt={title || "Cuba Tattoo Studio"}
+        class="w-full max-w-md sm:max-w-lg lg:max-w-xl h-auto mx-auto drop-shadow-[0_4px_32px_rgba(200,149,108,0.15)]"
+      />
+      {title && <h1 class="sr-only">{title}</h1>}
     </div>
-  </GlassCard>
+
+    {/* Decorative gold line */}
+    <div
+      data-hero="line"
+      class="w-[40%] sm:w-[30%] h-px mx-auto"
+      style="background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent); transform-origin: center;"
+    >
+    </div>
+
+    {/* Subtitle */}
+    {
+      subtitle && (
+        <p
+          data-hero="subtitle"
+          class="text-lg sm:text-xl text-white/60 font-light max-w-lg mx-auto tracking-wide leading-relaxed"
+        >
+          {subtitle}
+        </p>
+      )
+    }
+
+    {/* CTA Button with prismatic border */}
+    <div data-hero="cta" class="pt-2">
+      <a
+        href="#booking"
+        class="prismatic-border group inline-flex items-center gap-3 px-8 py-4 rounded-2xl
+               bg-[var(--color-gold)] text-black font-semibold text-base
+               transition-all duration-500 ease-out
+               hover:shadow-[0_8px_30px_rgba(200,149,108,0.3)]
+               hover:scale-[1.03] active:scale-[0.98]"
+      >
+        Reserva tu Consulta
+        <svg
+          class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  {/* Scroll indicator */}
+  <div
+    data-hero="scroll"
+    class="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+  >
+    <span class="text-[10px] uppercase tracking-[0.2em] text-white/30 font-medium">Scroll</span>
+    <svg
+      class="w-5 h-5 text-white/30"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="1.5"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+  </div>
 </SectionWrapper>

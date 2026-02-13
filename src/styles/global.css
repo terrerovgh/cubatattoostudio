@@ -103,6 +103,18 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
+  25% { transform: translateY(-30px) translateX(10px); opacity: 0.4; }
+  50% { transform: translateY(-15px) translateX(-5px); opacity: 0.15; }
+  75% { transform: translateY(-40px) translateX(8px); opacity: 0.35; }
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
 /* ─── Liquid Glass ──────────────────────── */
 
 .liquid-glass {
@@ -223,6 +235,52 @@ body {
   z-index: -1;
 }
 
+/* ─── Hero Decorative ──────────────────── */
+
+.hero-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--color-gold);
+  pointer-events: none;
+  will-change: transform;
+  animation: particleFloat var(--duration, 12s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-ornament {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-ornament path {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 0.5;
+  opacity: 0.12;
+}
+
+.scroll-indicator {
+  animation: bounceDown 2s ease-in-out infinite;
+}
+
+/* ─── Section Dividers ─────────────────── */
+
+.section-divider-ornament {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent);
+  opacity: 0.5;
+}
+
 /* ─── Typography ────────────────────────── */
 
 .text-gradient-gold {
@@ -249,4 +307,16 @@ body {
 
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* ─── Reduced Motion ───────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-particle,
+  .scroll-indicator,
+  .liquid-shimmer,
+  .prismatic-border::after,
+  .ambient-glow::before {
+    animation: none !important;
+  }
 }

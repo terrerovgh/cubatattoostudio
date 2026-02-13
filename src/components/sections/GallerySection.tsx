@@ -44,7 +44,7 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
 
   useEffect(() => {
     // Clean old cached images occasionally
-    cleanExpired().catch(() => {});
+    cleanExpired().catch(() => { });
   }, []);
 
   // Build available filters from actual data
@@ -67,10 +67,14 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
       : posts.filter((p) => p.artist === activeFilter);
 
   // Fallback placeholder grid when no data
-  const placeholders = Array.from({ length: 6 }, (_, i) => ({
+  const placeholders: Post[] = Array.from({ length: 6 }, (_, i) => ({
     id: `placeholder-${i}`,
     imageUrl: '',
     caption: 'Coming soon',
+    artist: undefined,
+    isLocal: false,
+    srcSet: undefined,
+    attributes: undefined
   }));
 
   const items = filteredPosts.length > 0 ? filteredPosts : placeholders;
@@ -91,11 +95,10 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
                   activeFilter === filter
                     ? 'rgba(200, 149, 108, 0.15)'
                     : 'rgba(255, 255, 255, 0.04)',
-                border: `1px solid ${
-                  activeFilter === filter
-                    ? 'rgba(200, 149, 108, 0.3)'
-                    : 'rgba(255, 255, 255, 0.06)'
-                }`,
+                border: `1px solid ${activeFilter === filter
+                  ? 'rgba(200, 149, 108, 0.3)'
+                  : 'rgba(255, 255, 255, 0.06)'
+                  }`,
                 color:
                   activeFilter === filter
                     ? '#C8956C'
@@ -108,45 +111,46 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
         </div>
       )}
 
-      {/* Image grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+      {/* Image grid - Masonry Layout with wave stagger */}
+      <div className="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4" data-stagger-wave>
         {items.map((item) => (
           <button
             key={item.id}
             onClick={() => item.imageUrl && setSelectedPost(item)}
-            className="aspect-square rounded-[18px] overflow-hidden
+            className="w-full break-inside-avoid mb-4 rounded-[18px] overflow-hidden
                        bg-white/[0.03] border border-white/[0.05]
                        transition-all duration-500 ease-out
                        hover:border-white/[0.12] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]
                        hover:scale-[1.02]
-                       group relative"
+                       group relative block"
+            data-wave-item
           >
             {item.imageUrl ? (
               item.isLocal ? (
-                 <img
-                    src={item.imageUrl}
-                    srcSet={item.srcSet}
-                    alt={item.caption || 'Tattoo work'}
-                    className="w-full h-full object-cover
+                <img
+                  src={item.imageUrl}
+                  srcSet={item.srcSet}
+                  alt={item.caption || 'Tattoo work'}
+                  className="w-full h-auto object-cover
                            transition-transform duration-700 ease-out
                            group-hover:scale-110"
-                    loading="lazy"
-                    {...item.attributes}
-                 />
+                  loading="lazy"
+                  {...item.attributes}
+                />
               ) : (
                 <CachedImage
                   imageId={item.id}
                   src={item.imageUrl}
                   alt={item.caption || 'Tattoo work'}
                   artist={item.artist}
-                  className="w-full h-full object-cover
+                  className="w-full h-auto object-cover
                            transition-transform duration-700 ease-out
                            group-hover:scale-110"
                   loading="lazy"
                 />
               )
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-white/15">
+              <div className="w-full aspect-square flex items-center justify-center text-white/15">
                 <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                   <path
                     strokeLinecap="round"
@@ -215,25 +219,25 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
             onClick={(e) => e.stopPropagation()}
           >
             {selectedPost.isLocal ? (
-               <img
-                  src={selectedPost.imageUrl}
-                  srcSet={selectedPost.srcSet}
-                  alt={selectedPost.caption || 'Tattoo work'}
-                  className="w-full h-full object-contain"
-                  {...selectedPost.attributes}
-                  // We override width/height for lightbox to be responsive/contain
-                  width={undefined}
-                  height={undefined}
-               />
+              <img
+                src={selectedPost.imageUrl}
+                srcSet={selectedPost.srcSet}
+                alt={selectedPost.caption || 'Tattoo work'}
+                className="w-full h-full object-contain"
+                {...selectedPost.attributes}
+                // We override width/height for lightbox to be responsive/contain
+                width={undefined}
+                height={undefined}
+              />
             ) : (
-                <CachedImage
-                  imageId={selectedPost.id}
-                  src={selectedPost.imageUrl}
-                  alt={selectedPost.caption || 'Tattoo work'}
-                  artist={selectedPost.artist}
-                  className="w-full h-full object-contain"
-                  loading="eager"
-                />
+              <CachedImage
+                imageId={selectedPost.id}
+                src={selectedPost.imageUrl}
+                alt={selectedPost.caption || 'Tattoo work'}
+                artist={selectedPost.artist}
+                className="w-full h-full object-contain"
+                loading="eager"
+              />
             )}
             <button
               onClick={() => setSelectedPost(null)}

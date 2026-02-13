@@ -1,0 +1,155 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+    title: string;
+    description: string;
+    price?: string;
+    image: ImageMetadata;
+    class?: string;
+}
+
+const { title, description, price, image, class: className = "" } = Astro.props;
+---
+
+<div class={`previewCard ${className}`}>
+    <Image src={image} alt={title} class="backdrop" width={600} />
+    <div class="content">
+        <div class="category">Service</div>
+        <div class="title">{title}</div>
+        <div class="description">
+            <p>{description}</p>
+            {price && <span>{price}</span>}
+        </div>
+    </div>
+</div>
+
+<style>
+    .previewCard {
+        --gutter: 1.5rem;
+        --brightness: 0.85;
+        --saturation: 1.5;
+        --frostRadius: 1.5rem;
+
+        padding: var(--gutter);
+        border-radius: var(--gutter);
+        /* aspect-ratio: 4 / 3;  Removed fixed aspect ratio to fit grid content */
+        width: 100%;
+        min-height: 280px; /* Ensure minimum height */
+        display: grid;
+        justify-content: start;
+        align-content: end;
+        position: relative;
+        background: #333;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 250ms ease-in-out;
+    }
+
+    .previewCard:hover {
+        transform: scale(1.02);
+    }
+
+    /* Target likely image inside astro Image component */
+    .backdrop {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        user-select: none;
+        transition: transform 500ms ease-in-out;
+        z-index: 0;
+    }
+
+    .previewCard:hover .backdrop {
+        transform: scale(1.1);
+    }
+
+    .previewCard:after {
+        content: "";
+        position: absolute;
+        inset: -0.5rem;
+        z-index: 1;
+        pointer-events: none;
+        backdrop-filter: blur(var(--frostRadius)) saturate(var(--saturation))
+            brightness(var(--brightness));
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.1) 100%
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(0, 0, 0, 0.1) 40%,
+            rgba(0, 0, 0, 0.5) 55%,
+            black 75%
+        );
+        /* Ensure mask works on all browsers */
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(0, 0, 0, 0.1) 40%,
+            rgba(0, 0, 0, 0.5) 55%,
+            black 75%
+        );
+    }
+
+    .content {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        bottom: 0;
+        justify-content: start;
+        align-content: end;
+        gap: 0.5rem;
+        width: 100%;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); /* Enhance readability */
+    }
+
+    .title {
+        font-size: 1.5rem; /* Adjusted for card size */
+        font-weight: 700;
+        color: white;
+        line-height: 1.2;
+    }
+
+    .category {
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.1rem;
+        opacity: 0.8;
+        font-size: 0.75rem;
+        color: var(--color-gold, #c8956c);
+    }
+
+    .description {
+        font-size: 0.95rem;
+        line-height: 1.4;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .description p {
+        margin: 0;
+        /* overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical; */
+    }
+
+    .description span {
+        font-size: 1rem;
+        font-weight: 600;
+        white-space: nowrap;
+        color: var(--color-gold, #c8956c);
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+    }
+</style>
