@@ -1,6 +1,6 @@
 ---
-import GlassCard from '../GlassCard.astro';
-import SectionWrapper from '../SectionWrapper.astro';
+import GlassCard from "../GlassCard.astro";
+import SectionWrapper from "../SectionWrapper.astro";
 
 interface Service {
   name: string;
@@ -19,38 +19,72 @@ const { id, backgroundImage, title, services = [] } = Astro.props;
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
-  <GlassCard maxWidth="max-w-2xl" glow>
-    {title && (
-      <h2
-        class="text-gradient-white text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12 tracking-[-0.02em]"
-        data-animate-heading
-      >
-        {title}
-      </h2>
-    )}
-
-    <div class="space-y-1">
-      {services.map((service, i) => (
-        <div
-          class="group flex items-start justify-between gap-6 py-5 px-4 -mx-4 rounded-2xl
-                 transition-all duration-300 ease-out
-                 hover:bg-white/[0.03]"
+  <GlassCard maxWidth="max-w-6xl">
+    {
+      title && (
+        <h2
+          class="text-gradient-white text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12 tracking-[-0.02em]"
+          data-animate-heading
         >
-          <div class="space-y-1.5 min-w-0">
-            <h3 class="text-[15px] font-medium tracking-tight text-white/90 group-hover:text-white transition-colors duration-300">
-              {service.name}
-            </h3>
-            <p class="text-white/35 text-sm font-light leading-relaxed">
-              {service.description}
-            </p>
-          </div>
-          {service.price && (
-            <span class="text-[var(--color-gold)] font-medium text-sm whitespace-nowrap mt-0.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
-              {service.price}
-            </span>
-          )}
-        </div>
-      ))}
+          {title}
+        </h2>
+      )
+    }
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]"
+    >
+      {
+        services.map((service, i) => {
+          // First item is the tall one (Left column)
+          const isFeatured = i === 0;
+
+          return (
+            <div
+              class={`relative overflow-hidden group p-8 rounded-[32px] bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-all duration-500
+              ${isFeatured ? "md:row-span-2 md:flex md:flex-col md:justify-end" : "flex flex-col justify-between"}
+            `}
+            >
+              {/* Hover Gradient Effect */}
+              <div class="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div
+                class={`relative z-10 ${isFeatured ? "space-y-4" : "space-y-3"}`}
+              >
+                <div class="flex justify-between items-start gap-4">
+                  <h3
+                    class={`font-bold text-white tracking-tight ${isFeatured ? "text-3xl lg:text-4xl" : "text-xl lg:text-2xl"}`}
+                  >
+                    {service.name}
+                  </h3>
+                  {service.price && (
+                    <span class="text-[var(--color-gold)] font-medium text-sm px-3 py-1 rounded-full bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20">
+                      {service.price}
+                    </span>
+                  )}
+                </div>
+
+                <p
+                  class={`text-white/60 font-light leading-relaxed ${isFeatured ? "text-lg max-w-sm" : "text-sm"}`}
+                >
+                  {service.description}
+                </p>
+
+                {isFeatured && (
+                  <div class="pt-4">
+                    <span class="inline-flex items-center gap-2 text-sm font-medium text-white/40 group-hover:text-white transition-colors">
+                      More Details{" "}
+                      <span class="group-hover:translate-x-1 transition-transform">
+                        →
+                      </span>
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })
+      }
     </div>
   </GlassCard>
 </SectionWrapper>

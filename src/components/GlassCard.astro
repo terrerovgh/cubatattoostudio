@@ -9,29 +9,25 @@ interface Props {
 }
 
 const {
-  class: className = '',
-  padding = 'p-8 sm:p-10 lg:p-12',
-  maxWidth = 'max-w-4xl',
+  class: className = "",
+  padding = "p-8 sm:p-10 lg:p-12",
+  maxWidth = "max-w-4xl",
   animate = true,
   elevated = false,
   glow = false,
 } = Astro.props;
 
-const glassClass = elevated ? 'liquid-glass-elevated' : 'liquid-glass';
+const glassClass = elevated ? "liquid-glass-elevated" : "liquid-glass";
 ---
 
 <div
   class:list={[
-    glassClass,
-    'rounded-[28px] transition-all duration-500',
-    'hover:border-[var(--color-glass-border-hover)]',
-    'mx-4 sm:mx-8 lg:mx-auto',
-    glow && 'ambient-glow',
+    "mx-4 sm:mx-8 lg:mx-auto transition-all duration-500",
     padding,
     maxWidth,
     className,
   ]}
-  data-animate={animate ? '' : undefined}
+  data-animate={animate ? "" : undefined}
 >
   <div class="relative z-10">
     <slot />

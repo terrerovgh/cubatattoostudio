@@ -56,19 +56,23 @@ export default function BackgroundManager() {
 
       {/* Mesh gradient overlay — depth & atmosphere */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 80% 60% at 20% 10%, rgba(200, 149, 108, 0.04) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 80% at 80% 90%, rgba(200, 149, 108, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 50% 50%, rgba(10, 10, 12, 0.4) 0%, rgba(5, 5, 8, 0.8) 100%),
             linear-gradient(to bottom,
-              rgba(10, 10, 12, 0.5) 0%,
-              rgba(10, 10, 12, 0.3) 30%,
-              rgba(10, 10, 12, 0.35) 60%,
-              rgba(10, 10, 12, 0.7) 100%
+              rgba(5, 5, 8, 0.6) 0%,
+              rgba(5, 5, 8, 0.4) 40%,
+              rgba(5, 5, 8, 0.5) 60%,
+              rgba(5, 5, 8, 0.9) 100%
             )
           `,
+          mixBlendMode: 'multiply'
         }}
+      />
+      <div 
+        className="absolute inset-0 pointer-events-none bg-black/30"
+        style={{ backdropFilter: 'brightness(0.7) contrast(1.1)' }}
       />
 
       {/* Noise texture — subtle film grain */}
