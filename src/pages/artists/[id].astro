@@ -6,6 +6,8 @@ import ArtistHero from "../../components/artist/ArtistHero.astro";
 import ArtistBio from "../../components/artist/ArtistBio.astro";
 import ArtistGalleryGrid from "../../components/artist/ArtistGalleryGrid";
 import CalendarNav from "../../components/artist/CalendarNav";
+import NinaAlgorithmicBackground from "../../components/artist/NinaAlgorithmicBackground";
+import SplashCursor from "../../components/artist/SplashCursor";
 import portfolioData from "../../data/artists-portfolio.json";
 
 export async function getStaticPaths() {
@@ -114,6 +116,31 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
       artistAccentDark: config.accentColorDark,
     }}
   ></style>
+
+  {/* Algorithmic constellation background — driven by .md config */}
+  {config.constellation?.enabled && (
+    <NinaAlgorithmicBackground
+      client:only="react"
+      accentColor={config.accentColor}
+      constellation={config.constellation}
+    />
+  )}
+
+  {/* WebGL splash cursor effect — driven by .md config */}
+  {config.splashCursor?.enabled && (
+    <SplashCursor
+      client:only="react"
+      SIM_RESOLUTION={config.splashCursor.SIM_RESOLUTION}
+      DYE_RESOLUTION={config.splashCursor.DYE_RESOLUTION}
+      DENSITY_DISSIPATION={config.splashCursor.DENSITY_DISSIPATION}
+      VELOCITY_DISSIPATION={config.splashCursor.VELOCITY_DISSIPATION}
+      PRESSURE={config.splashCursor.PRESSURE}
+      CURL={config.splashCursor.CURL}
+      SPLAT_RADIUS={config.splashCursor.SPLAT_RADIUS}
+      SPLAT_FORCE={config.splashCursor.SPLAT_FORCE}
+      COLOR_UPDATE_SPEED={config.splashCursor.COLOR_UPDATE_SPEED}
+    />
+  )}
 
   {/* Back to studio nav */}
   <nav

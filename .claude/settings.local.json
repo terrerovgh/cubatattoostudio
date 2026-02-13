@@ -41,7 +41,10 @@
       "Bash(gh run list:*)",
       "Bash(gh run watch:*)",
       "WebFetch(domain:cubatattoostudio.com)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(grep:*)",
+      "Bash(npx astro dev:*)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

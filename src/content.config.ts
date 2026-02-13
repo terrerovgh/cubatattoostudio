@@ -3,6 +3,44 @@ import { glob } from 'astro/loaders';
 
 const scheduleSlot = z.object({ start: z.string(), end: z.string() }).nullable();
 
+const constellationMandala = z.object({
+  petals: z.number().min(3).max(24),
+  layers: z.number().min(1).max(8),
+  scale: z.number().min(0.05).max(0.5).default(0.2),
+  position: z.tuple([z.number(), z.number()]),
+});
+
+const constellationRose = z.object({
+  k: z.number(),
+  scale: z.number().min(0.03).max(0.4).default(0.12),
+  position: z.tuple([z.number(), z.number()]),
+});
+
+const constellationSchema = z.object({
+  enabled: z.boolean().default(false),
+  colors: z.array(z.string()).min(1).max(6).default(['#B49AD4', '#C4A8E0', '#9B7EC8']),
+  starDensity: z.number().min(0).max(1).default(0.4),
+  rotationSpeed: z.number().min(0).max(0.1).default(0.008),
+  mandalas: z.array(constellationMandala).default([]),
+  roses: z.array(constellationRose).default([]),
+  sacredGeometry: z.boolean().default(true),
+  geometricShapes: z.boolean().default(true),
+  phyllotaxis: z.boolean().default(true),
+});
+
+const splashCursorSchema = z.object({
+  enabled: z.boolean().default(false),
+  SIM_RESOLUTION: z.number().default(128),
+  DYE_RESOLUTION: z.number().default(1440),
+  DENSITY_DISSIPATION: z.number().default(3.5),
+  VELOCITY_DISSIPATION: z.number().default(2),
+  PRESSURE: z.number().default(0.1),
+  CURL: z.number().default(3),
+  SPLAT_RADIUS: z.number().default(0.2),
+  SPLAT_FORCE: z.number().default(6000),
+  COLOR_UPDATE_SPEED: z.number().default(10),
+});
+
 const artists = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/artists' }),
   schema: z.object({
@@ -12,6 +50,8 @@ const artists = defineCollection({
     accentColorDark: z.string().default('#A87A55'),
     backgroundImage: z.string().default('/backgrounds/artists.svg'),
     layout: z.enum(['gallery-left', 'gallery-right', 'gallery-top']).default('gallery-left'),
+    constellation: constellationSchema.optional(),
+    splashCursor: splashCursorSchema.optional(),
     availability: z
       .object({
         timezone: z.string().default('America/Denver'),
