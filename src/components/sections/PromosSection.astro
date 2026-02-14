@@ -42,6 +42,10 @@ if (sortedPromos.length > 0) {
         displayPromos = [...sortedPromos, ...sortedPromos];
     }
 }
+
+// Prepare the list for marquee (double the display list to create the seamless loop)
+// The key is that the marquee animation translates -50%, so we need two identical sets side-by-side.
+const marqueePromos = [...displayPromos, ...displayPromos];
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
@@ -79,7 +83,7 @@ if (sortedPromos.length > 0) {
                 class="marquee-track flex gap-6 w-max hover:[animation-play-state:paused]"
             >
                 {
-                    displayPromos.map((promo, index) => {
+                    marqueePromos.map((promo, index) => {
                         // Determine images to show (single or array)
                         const imagesList =
                             promo.images && promo.images.length > 0
@@ -93,6 +97,7 @@ if (sortedPromos.length > 0) {
                             <a
                                 href={promo.link || "#"}
                                 class="promo-card group/card relative block w-[300px] sm:w-[350px] h-[450px] flex-shrink-0 rounded-[24px] overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-[0_0_30px_rgba(200,149,108,0.15)] hover:scale-[1.02]"
+                                data-index={index}
                             >
                                 {/* Background Images (Carousel) */}
                                 <div class="absolute inset-0 z-0 bg-black">
@@ -170,74 +175,6 @@ if (sortedPromos.length > 0) {
                         );
                     })
                 }
-                {
-                    // DUPLICATE FOR MARQUEE (Simplified rendering for duplicate)
-                    displayPromos.map((promo, index) => {
-                        const imagesList =
-                            promo.images && promo.images.length > 0
-                                ? promo.images
-                                : promo.image
-                                  ? [promo.image]
-                                  : [];
-                        const hasCarousel = imagesList.length > 1;
-
-                        return (
-                            <a
-                                href={promo.link || "#"}
-                                aria-hidden="true"
-                                class="promo-card group/card relative block w-[300px] sm:w-[350px] h-[450px] flex-shrink-0 rounded-[24px] overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-[0_0_30px_rgba(200,149,108,0.15)] hover:scale-[1.02]"
-                            >
-                                {/* Background Images (Carousel) */}
-                                <div class="absolute inset-0 z-0 bg-black">
-                                    {imagesList.map((imgSrc, imgIndex) => {
-                                        if (!imgSrc) return null;
-                                        return (
-                                            <div
-                                                class={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${imgIndex === 0 ? "opacity-100" : "opacity-0"} ${hasCarousel ? "carousel-image" : ""}`}
-                                                data-img-index={imgIndex}
-                                            >
-                                                <Image
-                                                    src={imgSrc}
-                                                    alt={`${promo.title} - ${imgIndex + 1}`}
-                                                    class="w-full h-full object-cover"
-                                                    width={400}
-                                                />
-                                            </div>
-                                        );
-                                    })}
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
-                                </div>
-                                {/* Badge & Content */}
-                                <div class="absolute top-4 right-4 z-20">
-                                    <span
-                                        class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider backdrop-blur-md border ${
-                                            promo.type === "flash"
-                                                ? "bg-red-500/20 border-red-500/30 text-red-200"
-                                                : promo.type === "event"
-                                                  ? "bg-purple-500/20 border-purple-500/30 text-purple-200"
-                                                  : "bg-[var(--color-gold)]/20 border-[var(--color-gold)]/30 text-[var(--color-gold)]"
-                                        }`}
-                                    >
-                                        {promo.type}
-                                    </span>
-                                </div>
-                                <div class="relative z-20 h-full p-6 flex flex-col justify-end">
-                                    {promo.date && (
-                                        <p class="text-white/70 text-sm font-medium mb-2 uppercase tracking-wide">
-                                            {promo.date}
-                                        </p>
-                                    )}
-                                    <h3 class="text-2xl font-bold text-white mb-2">
-                                        {promo.title}
-                                    </h3>
-                                    <p class="text-white/60 text-sm line-clamp-3">
-                                        {promo.description}
-                                    </p>
-                                </div>
-                            </a>
-                        );
-                    })
-                }
             </div>
         </div>
     </div>
@@ -261,7 +198,7 @@ if (sortedPromos.length > 0) {
 </style>
 
 <script>
-    document.addEventListener("astro:page-load", () => {
+    function initPromos() {
         // Handle Flash Day Modal Links
         const flashLinks = document.querySelectorAll('a[href="#flash-day"]');
         flashLinks.forEach((link) => {
@@ -269,15 +206,13 @@ if (sortedPromos.length > 0) {
                 e.preventDefault();
                 if (window.openFlashModal) {
                     window.openFlashModal();
+                } else {
+                    console.warn("Flash Modal function not found");
                 }
             });
         });
-    });
-</script>
 
-<script>
-    // Simple Carousel Logic
-    document.addEventListener("astro:page-load", () => {
+        // Simple Carousel Logic
         const cards = document.querySelectorAll(".promo-card");
 
         cards.forEach((card) => {
@@ -285,7 +220,7 @@ if (sortedPromos.length > 0) {
             if (images.length <= 1) return;
 
             let currentIndex = 0;
-            let interval: ReturnType<typeof setInterval>;
+            let interval;
 
             const startCarousel = () => {
                 interval = setInterval(() => {
@@ -305,5 +240,11 @@ if (sortedPromos.length > 0) {
 
             startCarousel();
         });
-    });
+    }
+
+    // Run on load
+    initPromos();
+
+    // Support View Transitions if added later
+    document.addEventListener("astro:page-load", initPromos);
 </script>

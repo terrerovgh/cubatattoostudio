@@ -1,45 +1,84 @@
 
-> cubatattoostudio@1.0.0 preview
-> wrangler dev
+> cubatattoostudio@1.0.0 dev
+> astro dev
 
+18:02:06 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+18:02:06 [@astrojs/cloudflare] If you see the error "Invalid binding `SESSION`" in your build output, you need to add the binding to your wrangler config file.
+18:02:06 [WARN] [adapter] Cloudflare does not support sharp at runtime. However, you can configure `imageService: "compile"` to optimize images with sharp on prerendered pages during build time.
+18:02:08 [types] Generated 1ms
+18:02:09 [content] Syncing content
+18:02:09 [content] Synced content
+18:02:09 [vite] Re-optimizing dependencies because vite config has changed
 
- ⛅️ wrangler 4.65.0
-───────────────────
-Your Worker has access to the following bindings:
-Binding                     Resource                  Mode
-env.ASSETS                  Assets                    local
-env.UPLOAD_SECRET ("")      Environment Variable      local
+ astro  v5.17.2 ready in 5330 ms
 
-⎔ Starting local server...
-[wrangler:info] Ready on http://localhost:8787
-[wrangler:info] GET / 200 OK (49ms)
-[wrangler:info] GET /backgrounds/hero.svg 200 OK (31ms)
-[wrangler:info] GET /logo.svg 200 OK (36ms)
-[wrangler:info] GET /_astro/index.1oh1HxS8.css 200 OK (38ms)
-[wrangler:info] GET /_astro/BackgroundManager.BfHz3ZZL.js 200 OK (8ms)
-[wrangler:info] GET /_astro/client.Dc9Vh3na.js 200 OK (18ms)
-[wrangler:info] GET /artists/david.jpg 200 OK (34ms)
-[wrangler:info] GET /artists/karli.jpg 200 OK (27ms)
-[wrangler:info] GET /artists/nina.jpg 200 OK (35ms)
-[wrangler:info] GET /_astro/01.QwiZEY6U_tjYRY.webp 200 OK (38ms)
-[wrangler:info] GET /_astro/FloatingDock.CwbwWXRF.js 200 OK (54ms)
-[wrangler:info] GET /_astro/ScrollObserver.CzEH7kG_.js 200 OK (57ms)
-[wrangler:info] GET /_astro/jsx-runtime.D_zvdyIk.js 200 OK (24ms)
-[wrangler:info] GET /_astro/index.DiEladB3.js 200 OK (44ms)
-[wrangler:info] GET /_astro/store.CrJuNOjd.js 200 OK (46ms)
-[wrangler:info] GET /_astro/index.DIEz7UgV.js 200 OK (46ms)
-[wrangler:info] GET /_astro/02.RDLqmdqe_aitKf.webp 200 OK (24ms)
-[wrangler:info] GET /_astro/02.BKM098q1_Z238T1W.webp 200 OK (26ms)
-[wrangler:info] GET /_astro/01.q8vHl2Lk_Zje3lG.webp 200 OK (27ms)
-[wrangler:info] GET /_astro/03.BreSMMjj_2rMSvl.webp 200 OK (7ms)
-[wrangler:info] GET /_astro/04.BNHhtVmt_ZrEBkv.webp 200 OK (11ms)
-[wrangler:info] GET /backgrounds/services.svg 200 OK (14ms)
-[wrangler:info] GET /_astro/01.5s8Zyo1D_ZgfYhS.webp 200 OK (20ms)
-[wrangler:info] GET /_astro/01.Dyr2WNw4_ZNG8bU.webp 200 OK (21ms)
-[wrangler:info] GET /_astro/02.DBDjziOx_Z1fi4yO.webp 200 OK (32ms)
-[wrangler:info] GET /_astro/03.Dbj-MfPx_Zx3IaH.webp 200 OK (29ms)
-[wrangler:info] GET /_astro/02.BAXlvlFg_1KxxOP.webp 200 OK (44ms)
-[wrangler:info] GET /_astro/04.oSnc3mLU_Z2krcKQ.webp 200 OK (28ms)
-[wrangler:info] GET /backgrounds/gallery.svg 200 OK (11ms)
-[wrangler:info] GET /_astro/GallerySection.Dg54i9Cf.js 200 OK (8ms)
-[wrangler:info] GET /backgrounds/booking.svg 200 OK (8ms)
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+18:02:09 watching for file changes...
+18:03:08 [200] / 511ms
+18:03:09 [200] /_image 213ms
+18:03:09 [200] /_image 332ms
+18:03:09 [200] /_image 340ms
+18:03:09 [200] /_image 388ms
+18:04:04 [200] / 29ms
+18:04:05 [200] /_image 115ms
+18:04:05 [200] /_image 152ms
+18:04:05 [200] /_image 154ms
+18:04:05 [200] /_image 221ms
+18:04:07 [404] /backgrounds/events.jpg 2ms
+18:04:08 [200] /_image 165ms
+18:04:08 [200] /_image 198ms
+18:04:08 [200] /_image 250ms
+18:04:08 [200] /_image 322ms
+18:04:08 [200] /_image 387ms
+18:04:08 [200] /_image 638ms
+18:05:01 [200] / 19ms
+18:05:02 [200] /_image 81ms
+18:05:02 [200] /_image 96ms
+18:05:02 [200] /_image 170ms
+18:05:02 [200] /_image 167ms
+18:05:04 [404] /backgrounds/events.jpg 1ms
+18:05:05 [200] /_image 203ms
+18:05:05 [200] /_image 193ms
+18:05:05 [200] /_image 228ms
+18:05:05 [200] /_image 274ms
+18:05:05 [200] /_image 333ms
+18:05:05 [200] /_image 658ms
+18:05:34 [200] / 17ms
+18:05:34 [200] /_image 143ms
+18:05:34 [200] /_image 130ms
+18:05:34 [200] /_image 184ms
+18:05:34 [200] /_image 179ms
+18:05:37 [404] /backgrounds/events.jpg 1ms
+18:05:37 [200] /_image 99ms
+18:05:37 [200] /_image 195ms
+18:05:37 [200] /_image 229ms
+18:05:37 [200] /_image 232ms
+18:05:37 [200] /_image 383ms
+18:05:37 [200] /_image 701ms
+18:06:27 [200] / 21ms
+18:06:27 [200] /_image 143ms
+18:06:27 [200] /_image 149ms
+18:06:27 [200] /_image 195ms
+18:06:27 [200] /_image 203ms
+18:06:30 [404] /backgrounds/events.jpg 2ms
+18:06:30 [200] /_image 126ms
+18:06:30 [200] /_image 197ms
+18:06:31 [200] /_image 255ms
+18:06:31 [200] /_image 261ms
+18:06:31 [200] /_image 328ms
+18:06:31 [200] /_image 638ms
+18:07:01 [200] / 20ms
+18:07:02 [200] /_image 132ms
+18:07:02 [200] /_image 130ms
+18:07:02 [200] /_image 151ms
+18:07:02 [200] /_image 192ms
+18:07:04 [404] /backgrounds/events.jpg 1ms
+18:07:05 [200] /_image 101ms
+18:07:05 [200] /_image 226ms
+18:07:05 [200] /_image 268ms
+18:07:05 [200] /_image 333ms
+18:07:05 [200] /_image 406ms
+18:07:05 [200] /_image 666ms
+18:07:07 [200] /_image 281ms
