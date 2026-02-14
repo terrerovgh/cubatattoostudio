@@ -17,19 +17,23 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
   <div class="color-bends-bg">
     <ColorBends
       client:only="react"
-      colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
-      rotation={0}
-      speed={0.2}
-      scale={1}
-      frequency={1}
-      warpStrength={1}
-      mouseInfluence={1}
-      parallax={0.5}
-      noise={0.1}
-      transparent
-      autoRotate={0}
+      colors={["#8B5E3C", "#4A3558", "#2E524A"]}
+      rotation={25}
+      speed={0.06}
+      scale={1.3}
+      frequency={0.5}
+      warpStrength={0.5}
+      mouseInfluence={0.12}
+      parallax={0.1}
+      noise={0.025}
+      transparent={false}
+      autoRotate={0.4}
+      curve={1.2}
     />
   </div>
+
+  {/* Dark vignette for depth */}
+  <div class="hero-vignette"></div>
 
   {/* Main content */}
   <div class="relative z-[5] flex flex-col items-center text-center px-6 sm:px-8 space-y-8 max-w-3xl mx-auto">
