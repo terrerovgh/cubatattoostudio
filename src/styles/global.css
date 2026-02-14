@@ -235,6 +235,16 @@ body {
   z-index: -1;
 }
 
+/* ─── ColorBends Background ────────────── */
+
+.color-bends-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--color-surface-primary);
+}
+
 /* ─── Hero Decorative ──────────────────── */
 
 .hero-particle {
@@ -245,20 +255,21 @@ body {
   will-change: transform;
   animation: particleFloat var(--duration, 12s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
+  z-index: 3;
 }
 
 .hero-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.15) 0%, transparent 35%, rgba(0, 0, 0, 0.3) 75%, rgba(0, 0, 0, 0.55) 100%);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .hero-ornament {
   position: absolute;
   pointer-events: none;
-  z-index: 1;
+  z-index: 3;
 }
 
 .hero-ornament path {
