@@ -1,10 +1,11 @@
 import { useStore } from '@nanostores/react';
 import { $activeSection } from '@/store';
-import { Home, Users, Palette, LayoutGrid, CalendarDays } from 'lucide-react';
+import { Home, Users, Palette, LayoutGrid, CalendarDays, Megaphone } from 'lucide-react';
 import { useState } from 'react';
 
 const dockItems = [
   { id: 'hero', icon: Home, label: 'Home' },
+  { id: 'promotions', icon: Megaphone, label: 'Promos' },
   { id: 'artists', icon: Users, label: 'Artists' },
   { id: 'services', icon: Palette, label: 'Services' },
   { id: 'gallery', icon: LayoutGrid, label: 'Gallery' },

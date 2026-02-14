@@ -28,9 +28,10 @@ if (!artistData) {
   return Astro.redirect("/");
 }
 
-// Load all images for this artist from the public gallery folder
+// Load all images for this artist from the src/assets/gallery folder
+// We use src/assets so getImage receives ImageMetadata
 const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
-  "/public/gallery/**/*.{jpg,jpeg,png,webp}",
+  "/src/assets/gallery/**/*.{jpg,jpeg,png,webp}",
 );
 
 // Filter images for current artist
@@ -55,15 +56,15 @@ const galleryItems = await Promise.all(
     );
 
     try {
-      // Fix: imagePath from glob includes /public, but content is served from root
-      const publicPath = imagePath.replace("/public", "");
+      // Import the image module to get metadata
+      const imageModule = await galleryImages[imagePath]();
+      const imageMetadata = imageModule.default;
 
       const optimized = await getImage({
-        src: publicPath,
+        src: imageMetadata,
         format: "webp",
         width: 800,
         quality: 85,
-        inferSize: true,
       });
 
       return {
@@ -88,10 +89,12 @@ const galleryItems = await Promise.all(
       };
     } catch (e) {
       console.error(`Failed to optimize image ${imagePath}:`, e);
-      const publicPath = imagePath.replace("/public", "");
+      // Fallback to direct path if optimization fails (unlikely with src imports)
+      // We construct a path assuming the file might be in public/gallery as well, or just fail gracefully
+      const filename = imagePath.split("/").pop();
       return {
         id: workId,
-        imageUrl: publicPath,
+        imageUrl: `/gallery/${artistId}/${filename}`,
         featuredWork: metadata || undefined,
         caption: metadata?.title || "Portfolio Piece",
       };
