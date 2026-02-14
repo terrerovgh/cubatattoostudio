@@ -1,0 +1,61 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { FlashDrops } from "../../components/flash/FlashDrops";
+---
+
+<BaseLayout
+  title="Flash Designs & Drops | Cuba Tattoo Studio"
+  description="Browse exclusive flash tattoo designs from Cuba Tattoo Studio artists. Limited drops with early bird discounts. Claim yours before they're gone!"
+  mode="artist"
+>
+  <section class="min-h-screen py-12 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto mb-8">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm transition-colors"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+
+    <FlashDrops client:only="react" />
+
+    <div class="max-w-6xl mx-auto mt-16 pt-8 border-t border-white/10 text-center">
+      <p class="text-white/40 text-sm mb-2">
+        Want a custom design instead?
+      </p>
+      <a
+        href="/booking"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C8956C] text-black font-semibold text-sm hover:bg-[#D4A574] transition-colors"
+      >
+        Book a Custom Session
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

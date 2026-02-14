@@ -1,0 +1,70 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BookingWizard } from "../../components/booking/BookingWizard";
+---
+
+<BaseLayout
+  title="Book Your Tattoo | Cuba Tattoo Studio"
+  description="Book your tattoo appointment online at Cuba Tattoo Studio. Choose your artist, describe your vision, pick a time, and secure your spot with a deposit."
+  mode="artist"
+>
+  <section class="min-h-screen py-12 px-4 md:px-8">
+    {/* Back Link */}
+    <div class="max-w-4xl mx-auto mb-8">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm transition-colors"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+
+    {/* Header */}
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+        Book Your <span class="text-gradient-gold">Session</span>
+      </h1>
+      <p class="text-white/50 max-w-xl mx-auto">
+        Choose your artist, describe your vision, pick a date, and secure your
+        spot. We'll take care of the rest.
+      </p>
+    </div>
+
+    {/* Booking Wizard */}
+    <BookingWizard client:only="react" />
+
+    {/* Studio Info Footer */}
+    <div class="max-w-4xl mx-auto mt-16 pt-8 border-t border-white/10">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div>
+          <h4 class="text-white font-medium mb-1">Location</h4>
+          <p class="text-white/40 text-sm">
+            1311 San Mateo Blvd NE, Albuquerque, NM 87109
+          </p>
+        </div>
+        <div>
+          <h4 class="text-white font-medium mb-1">Hours</h4>
+          <p class="text-white/40 text-sm">Tue-Sat: 11am - 7pm</p>
+        </div>
+        <div>
+          <h4 class="text-white font-medium mb-1">Contact</h4>
+          <p class="text-white/40 text-sm">(505) 492-9806</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
