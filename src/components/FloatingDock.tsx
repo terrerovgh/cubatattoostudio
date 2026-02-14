@@ -9,14 +9,18 @@ const dockItems = [
   { id: 'artists', icon: Users, label: 'Artists' },
   { id: 'services', icon: Palette, label: 'Services' },
   { id: 'gallery', icon: LayoutGrid, label: 'Gallery' },
-  { id: 'booking', icon: CalendarDays, label: 'Book', accent: true },
+  { id: 'booking', icon: CalendarDays, label: 'Book', accent: true, href: '/booking' },
 ];
 
 export default function FloatingDock() {
   const activeSection = useStore($activeSection);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  const scrollTo = (id: string) => {
+  const scrollTo = (id: string, href?: string) => {
+    if (href) {
+      window.location.href = href;
+      return;
+    }
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
@@ -36,14 +40,14 @@ export default function FloatingDock() {
       }}
       aria-label="Main navigation"
     >
-      {dockItems.map(({ id, icon: Icon, label, accent }) => {
+      {dockItems.map(({ id, icon: Icon, label, accent, href }) => {
         const isActive = activeSection === id;
         const isHovered = hoveredId === id;
 
         return (
           <button
             key={id}
-            onClick={() => scrollTo(id)}
+            onClick={() => scrollTo(id, href)}
             onMouseEnter={() => setHoveredId(id)}
             onMouseLeave={() => setHoveredId(null)}
             className="relative flex flex-col items-center justify-center

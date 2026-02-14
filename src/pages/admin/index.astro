@@ -1,0 +1,33 @@
+---
+export const prerender = true;
+
+import "../../styles/global.css";
+import { AdminDashboard } from "../../components/admin/AdminDashboard";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Admin Dashboard | Cuba Tattoo Studio</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="theme-color" content="#0a0a0c" />
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body
+    class="bg-[var(--color-surface-primary)] text-white font-sans overflow-x-hidden"
+  >
+    <AdminDashboard client:only="react" />
+  </body>
+</html>
