@@ -3,13 +3,18 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroSection from "../components/sections/HeroSection.astro";
 import ArtistsSection from "../components/sections/ArtistsSection.astro";
-import ServicesSection from "../components/sections/ServicesSection.astro";
 import GallerySectionWrapper from "../components/sections/GallerySectionWrapper.astro";
 import BookingSection from "../components/sections/BookingSection.astro";
 import PromosSection from "../components/sections/PromosSection.astro";
 
 const allSections = await getCollection("sections");
-const sections = allSections.sort((a, b) => a.data.order - b.data.order);
+console.log(
+  "Index.astro sections loaded:",
+  allSections.map((s) => s.id),
+);
+const sections = allSections.sort(
+  (a, b) => (a.data.order || 99) - (b.data.order || 99),
+);
 ---
 
 <BaseLayout>
@@ -17,73 +22,63 @@ const sections = allSections.sort((a, b) => a.data.order - b.data.order);
     sections.map((section) => {
       const { data } = section;
 
-      if (data.layout === "hero-center") {
+      if (data.sectionLayout === "hero-center") {
         return (
           <HeroSection
-            id={data.id}
+            id={data.id || "hero"}
             backgroundImage={data.backgroundImage}
-            title={data.title}
-            subtitle={data.subtitle}
+            title={data.title || ""}
+            subtitle={data.subtitle || ""}
           />
         );
       }
 
-      if (data.layout === "profile-card") {
+      if (data.sectionLayout === "profile-card") {
         return (
           <ArtistsSection
-            id={data.id}
+            id={data.id || "artists"}
             backgroundImage={data.backgroundImage}
-            title={data.title}
-            artists={data.artists}
+            title={data.title || ""}
+            artists={data.artists || []}
           />
         );
       }
 
-      if (data.layout === "list-services") {
-        return (
-          <ServicesSection
-            id={data.id}
-            backgroundImage={data.backgroundImage}
-            title={data.title}
-            services={data.services}
-          />
-        );
-      }
-
-      if (data.layout === "grid-gallery") {
+      if (data.sectionLayout === "grid-gallery") {
         return (
           <GallerySectionWrapper
-            id={data.id}
+            id={data.id || "gallery"}
             backgroundImage={data.backgroundImage}
-            title={data.title}
-            subtitle={data.subtitle}
+            title={data.title || ""}
+            subtitle={data.subtitle || ""}
+            services={data.services || []}
           />
         );
       }
 
-      if (data.layout === "booking-cta") {
+      if (data.sectionLayout === "booking-cta") {
         return (
           <BookingSection
-            id={data.id}
+            id={data.id || "booking"}
             backgroundImage={data.backgroundImage}
-            title={data.title}
-            subtitle={data.subtitle}
-            bookingUrl={data.bookingUrl}
-            phone={data.phone}
-            email={data.email}
-            address={data.address}
+            title={data.title || ""}
+            subtitle={data.subtitle || ""}
+            bookingUrl={data.bookingUrl || "/booking"}
+            phone={data.phone || ""}
+            email={data.email || ""}
+            address={data.address || ""}
           />
         );
       }
 
-      if (data.layout === "promo-grid") {
+      if (data.sectionLayout === "promo-grid") {
         return (
           <PromosSection
-            id={data.id}
+            id={data.id || "promos"}
             backgroundImage={data.backgroundImage}
-            title={data.title}
-            subtitle={data.subtitle}
-            promos={data.promos}
+            title={data.title || ""}
+            subtitle={data.subtitle || ""}
+            promos={data.promos || []}
           />
         );
       }

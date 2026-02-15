@@ -108,11 +108,10 @@ const marqueePromos = [...displayPromos, ...displayPromos];
                                                 class={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${imgIndex === 0 ? "opacity-100" : "opacity-0"} ${hasCarousel ? "carousel-image" : ""}`}
                                                 data-img-index={imgIndex}
                                             >
-                                                <Image
+                                                <img
                                                     src={imgSrc}
                                                     alt={`${promo.title} - ${imgIndex + 1}`}
                                                     class="w-full h-full object-cover"
-                                                    width={400}
                                                 />
                                             </div>
                                         );

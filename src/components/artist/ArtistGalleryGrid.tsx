@@ -29,9 +29,19 @@ interface ArtistGalleryGridProps {
   posts: Post[];
   accentColor: string;
   artistProfile?: ArtistProfile;
+  columns?: number;
+  mobileColumns?: number;
+  gap?: string;
 }
 
-export default function ArtistGalleryGrid({ posts, accentColor, artistProfile }: ArtistGalleryGridProps) {
+export default function ArtistGalleryGrid({
+  posts,
+  accentColor,
+  artistProfile,
+  columns = 3,
+  mobileColumns = 2,
+  gap = "gap-3",
+}: ArtistGalleryGridProps) {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [page, setPage] = useState(1);
@@ -101,9 +111,39 @@ export default function ArtistGalleryGrid({ posts, accentColor, artistProfile }:
     );
   }
 
+  const getColumnsStyle = () => {
+    // We use inline styles for columns because Tailwind JIT might not pick up dynamic class names
+    // unless they are safelisted. Inline styles are safer for this dynamic configuration.
+    return {
+      columnCount: mobileColumns,
+      // We can use a media query in CSS or just rely on the 'md' breakpoint if we wanted complex logic,
+      // but inline styles don't support media queries directly without a library.
+      // A simple approach is to use a class for mobile and a style for desktop override,
+      // or use standard Tailwind classes if we stick to a limited set (2, 3, 4).
+      // Let's use a hybrid: Default to mobile columns via style, and use Tailwind md:columns-* classes if mapped.
+    };
+  };
+
+  // Map for desktop columns to Tailwind classes to ensure they work with JIT if present in source
+  const desktopClassMap: Record<number, string> = {
+    1: "md:columns-1",
+    2: "md:columns-2",
+    3: "md:columns-3",
+    4: "md:columns-4",
+  };
+
+  const mobileClassMap: Record<number, string> = {
+    1: "columns-1",
+    2: "columns-2",
+    3: "columns-3",
+  };
+
   return (
     <>
-      <div className="columns-2 sm:columns-3 gap-2.5 sm:gap-3" data-stagger-wave>
+      <div
+        className={`${mobileClassMap[mobileColumns] || 'columns-2'} ${desktopClassMap[columns] || 'md:columns-3'} ${gap}`}
+        data-stagger-wave
+      >
         {displayedPosts.map((post, index) => (
           <button
             key={post.id}

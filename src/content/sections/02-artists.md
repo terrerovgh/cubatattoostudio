@@ -2,7 +2,7 @@
 order: 2
 id: artists
 backgroundImage: /backgrounds/artists.svg
-layout: profile-card
+sectionLayout: profile-card
 title: Our Artists
 artists:
   - name: David Guzman

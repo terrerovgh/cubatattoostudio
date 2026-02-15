@@ -11,6 +11,18 @@ interface Post {
   isLocal?: boolean;
   srcSet?: string;
   attributes?: any;
+  type?: 'post';
+}
+
+export interface Service {
+  name: string;
+  description: string;
+  fullDescription: string;
+  priceList: { item: string; price: string }[];
+  galleryImages: string[];
+  videos?: string[];
+  reviews: { author: string; comment: string; rating: number }[];
+  type?: 'service';
 }
 
 interface ArtistData {
@@ -25,6 +37,7 @@ interface ArtistData {
 interface GallerySectionProps {
   initialPosts: Post[];
   initialArtists: Record<string, ArtistData>;
+  services?: Service[];
 }
 
 const ARTIST_LABELS: Record<string, string> = {
@@ -35,15 +48,124 @@ const ARTIST_LABELS: Record<string, string> = {
   karli: 'Karli',
 };
 
-export default function GallerySection({ initialPosts, initialArtists }: GallerySectionProps) {
+type GalleryServiceItem = Service & {
+  type: 'service';
+  id: string;
+  imageUrl: string;
+  caption?: string;
+  artist?: string;
+  isLocal?: boolean;
+  srcSet?: string;
+  attributes?: any;
+};
+
+// Internal component for the carousel card
+const ServiceCarouselCard = ({ item, onClick }: { item: GalleryServiceItem; onClick: () => void }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const media = [
+    ...(item.videos || []).map(src => ({ type: 'video' as const, src })),
+    ...(item.galleryImages || []).map(src => ({ type: 'image' as const, src }))
+  ];
+
+  useEffect(() => {
+    if (media.length <= 1) return;
+
+    // Randomize interval between 4s and 7s to avoid synchronized switching
+    const randomInterval = Math.floor(Math.random() * 3000) + 4000;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % media.length);
+    }, randomInterval);
+
+    return () => clearInterval(interval);
+  }, [media.length]);
+
+  const currentMedia = media[currentIndex];
+
+  return (
+    <div
+      onClick={onClick}
+      className={`w-full break-inside-avoid mb-4 rounded-[18px] overflow-hidden
+                  bg-white/[0.03] border border-white/[0.05]
+                  transition-all duration-500 ease-out
+                  hover:border-white/[0.12] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]
+                  hover:scale-[1.02]
+                  group relative block text-left cursor-pointer aspect-[4/5]`} // Enforce aspect ratio for services
+    >
+      {/* Carousel Media */}
+      <div className="absolute inset-0 bg-black">
+        {media.map((m, i) => (
+          <div
+            key={`${item.id}-media-${i}`}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out
+                       ${i === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+          >
+            {m.type === 'video' ? (
+              <video
+                src={m.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <img
+                src={m.src}
+                alt={item.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            )}
+          </div>
+        ))}
+        {/* Overlay gradient always on top */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-20" />
+      </div>
+
+      {/* Content Overlay */}
+      <div className="absolute inset-0 z-30 flex flex-col justify-end p-5">
+        <h3 className="text-white font-bold text-xl leading-tight mb-2 drop-shadow-lg">
+          {item.name}
+        </h3>
+        <p className="text-white/90 text-sm font-light line-clamp-2 drop-shadow-md mb-3">
+          {item.description}
+        </p>
+        <div className="flex items-center text-[10px] uppercase tracking-wider font-bold text-[var(--color-gold)]">
+          <span className="bg-black/30 backdrop-blur-sm px-2 py-1 rounded">View Services</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type GalleryItem = (Post & { type: 'post' }) | GalleryServiceItem;
+
+export default function GallerySection({ initialPosts, initialArtists, services = [] }: GallerySectionProps) {
   const posts = initialPosts || [];
   const artists = initialArtists || {};
 
-  const [displayedPosts, setDisplayedPosts] = useState<Post[]>([]);
-  const [page, setPage] = useState(1);
-  const POSTS_PER_PAGE = 12;
+  // Combine services and posts. Services come first or interleaved?
+  // Let's prepend services for now so they are prominent.
+  // We need to tag them with a type.
+  const normalizedServices: GalleryItem[] = services.map((s, i) => ({
+    ...s,
+    type: 'service',
+    id: `service-${i}`,
+    // Use the first gallery image as the main image for the card (fallback)
+    imageUrl: s.galleryImages?.[0] || '',
+    caption: s.description,
+    artist: 'studio', // Services are usually studio-wide or can be filtered if we add metadata
+    isLocal: true,
+  }));
 
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const normalizedPosts: GalleryItem[] = posts.map(p => ({ ...p, type: 'post' }));
+
+  const [displayedItems, setDisplayedItems] = useState<GalleryItem[]>([]);
+  const [page, setPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
+
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
@@ -64,45 +186,58 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
     }
   }
 
-  // Filter posts based on active tab
-  const filteredPosts =
-    activeFilter === 'all'
-      ? posts
-      : posts.filter((p) => p.artist === activeFilter);
+  // Filter items based on active tab
+  // For services, we currently show them in 'all' and 'studio'. 
+  // If we want to filter services by artist, we'd need to add that metadata to services.
+  // For now, let's show services only in 'all' or specific artist if we can infer it? 
+  // Actually, services seem to be general. Let's keep them in 'all' and maybe 'studio'.
+  const filteredItems = (activeFilter === 'all' ? [...normalizedServices, ...normalizedPosts] : normalizedPosts)
+    .filter((item) => {
+      if (activeFilter === 'all') return true;
+      if (item.type === 'service') return false; // Hide services when filtering by specific artist for now
+      return item.artist === activeFilter;
+    });
 
   // Update displayed posts when filter or page changes
   useEffect(() => {
-    // If filter changed, reset page to 1 (this effect handles it because activeFilter is a dep)
-    // But we need to distinguish if it was a filter change or a page change
-    // Actually, simpler:
-    const sliced = filteredPosts.slice(0, page * POSTS_PER_PAGE);
-    setDisplayedPosts(sliced);
-  }, [activeFilter, page, posts, filteredPosts]); // filteredPosts depends on activeFilter
+    const sliced = filteredItems.slice(0, page * ITEMS_PER_PAGE);
+    setDisplayedItems(sliced);
+  }, [activeFilter, page, posts, services]);
 
   // Reset page when filter changes
   useEffect(() => {
     setPage(1);
   }, [activeFilter]);
 
-  const hasMore = displayedPosts.length < filteredPosts.length;
+  const hasMore = displayedItems.length < filteredItems.length;
 
   const handleLoadMore = () => {
     setPage(prev => prev + 1);
   };
 
   // Fallback placeholder grid when no data
-  const placeholders: Post[] = Array.from({ length: 6 }, (_, i) => ({
+  const placeholders: GalleryItem[] = Array.from({ length: 6 }, (_, i) => ({
     id: `placeholder-${i}`,
     imageUrl: '',
     caption: 'Coming soon',
     artist: undefined,
     isLocal: false,
     srcSet: undefined,
-    attributes: undefined
+    attributes: undefined,
+    type: 'post'
   }));
 
-  const items = displayedPosts.length > 0 ? displayedPosts : placeholders;
+  const items = displayedItems.length > 0 ? displayedItems : placeholders;
   const showFilters = availableFilters.length > 2;
+
+  // Selected Service specific logic
+  const [activeServiceImage, setActiveServiceImage] = useState<string>('');
+
+  useEffect(() => {
+    if (selectedItem?.type === 'service' && selectedItem.galleryImages?.length) {
+      setActiveServiceImage(selectedItem.galleryImages[0]);
+    }
+  }, [selectedItem]);
 
   return (
     <>
@@ -138,74 +273,82 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
       {/* Image grid - Masonry Layout with wave stagger */}
       <div className="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4" data-stagger-wave>
         {items.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => item.imageUrl && setSelectedPost(item)}
-            className="w-full break-inside-avoid mb-4 rounded-[18px] overflow-hidden
-                       bg-white/[0.03] border border-white/[0.05]
-                       transition-all duration-500 ease-out
-                       hover:border-white/[0.12] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]
-                       hover:scale-[1.02]
-                       group relative block"
-            data-wave-item
-          >
-            {item.imageUrl ? (
-              item.isLocal ? (
-                <img
-                  src={item.imageUrl}
-                  srcSet={item.srcSet}
-                  alt={item.caption || 'Tattoo work'}
-                  className="w-full h-auto object-cover
-                           transition-transform duration-700 ease-out
-                           group-hover:scale-110"
-                  loading="lazy"
-                  {...item.attributes}
-                />
-              ) : (
-                <CachedImage
-                  imageId={item.id}
-                  src={item.imageUrl}
-                  alt={item.caption || 'Tattoo work'}
-                  artist={item.artist}
-                  className="w-full h-auto object-cover
-                           transition-transform duration-700 ease-out
-                           group-hover:scale-110"
-                  loading="lazy"
-                />
-              )
-            ) : (
-              <div className="w-full aspect-square flex items-center justify-center text-white/15">
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+          item.type === 'service' ? (
+            <ServiceCarouselCard
+              key={item.id}
+              item={item}
+              onClick={() => setSelectedItem(item)}
+            />
+          ) : (
+            <button
+              key={item.id}
+              onClick={() => item.imageUrl && setSelectedItem(item)}
+              className={`w-full break-inside-avoid mb-4 rounded-[18px] overflow-hidden
+                        bg-white/[0.03] border border-white/[0.05]
+                        transition-all duration-500 ease-out
+                        hover:border-white/[0.12] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]
+                        hover:scale-[1.02]
+                        group relative block text-left`}
+              data-wave-item
+            >
+              {item.imageUrl ? (
+                item.isLocal ? (
+                  <img
+                    src={item.imageUrl}
+                    srcSet={item.srcSet}
+                    alt={item.caption || 'Tattoo work'}
+                    className="w-full h-auto object-cover
+                             transition-transform duration-700 ease-out
+                             group-hover:scale-110"
+                    loading="lazy"
+                    {...item.attributes}
                   />
-                </svg>
-              </div>
-            )}
+                ) : (
+                  <CachedImage
+                    imageId={item.id}
+                    src={item.imageUrl}
+                    alt={item.caption || 'Tattoo work'}
+                    artist={item.artist}
+                    className="w-full h-auto object-cover
+                             transition-transform duration-700 ease-out
+                             group-hover:scale-110"
+                    loading="lazy"
+                  />
+                )
+              ) : (
+                <div className="w-full aspect-square flex items-center justify-center text-white/15">
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+              )}
 
-            {/* Hover overlay with artist badge */}
-            {item.imageUrl && (
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-end">
-                {item.artist && (
-                  <span
-                    className="m-2 px-2.5 py-1 rounded-lg text-[10px] font-medium
-                               opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0
-                               transition-all duration-300"
-                    style={{
-                      background: 'rgba(0, 0, 0, 0.5)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      color: 'rgba(255, 255, 255, 0.7)',
-                    }}
-                  >
-                    {ARTIST_LABELS[item.artist] || item.artist}
-                  </span>
-                )}
-              </div>
-            )}
-          </button>
+              {/* Hover overlay for Posts */}
+              {item.type === 'post' && item.imageUrl && (
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-end">
+                  {item.artist && (
+                    <span
+                      className="m-2 px-2.5 py-1 rounded-lg text-[10px] font-medium
+                                opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0
+                                transition-all duration-300"
+                      style={{
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                      }}
+                    >
+                      {ARTIST_LABELS[item.artist] || item.artist}
+                    </span>
+                  )}
+                </div>
+              )}
+            </button>
+          )
         ))}
       </div>
 
@@ -216,7 +359,7 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
             onClick={handleLoadMore}
             className="px-6 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all text-sm font-medium"
           >
-            Load More
+            Load MoreItems
           </button>
         </div>
       )}
@@ -237,87 +380,181 @@ export default function GallerySection({ initialPosts, initialArtists }: Gallery
         </a>
       </div>
 
-      {/* Lightbox — Liquid Glass */}
-      {selectedPost && (
+      {/* Lightbox / Service Modal */}
+      {selectedItem && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-4 cursor-pointer"
           style={{
             background: 'rgba(0, 0, 0, 0.85)',
             backdropFilter: 'blur(20px) saturate(0.8)',
             WebkitBackdropFilter: 'blur(20px) saturate(0.8)',
           }}
-          onClick={() => setSelectedPost(null)}
+          onClick={() => setSelectedItem(null)}
         >
-          <div
-            className="relative max-w-3xl max-h-[85vh] rounded-[20px] overflow-hidden
-                       shadow-[0_32px_80px_rgba(0,0,0,0.6)]
-                       border border-white/[0.06]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {selectedPost.isLocal ? (
-              <img
-                src={selectedPost.imageUrl}
-                srcSet={selectedPost.srcSet}
-                alt={selectedPost.caption || 'Tattoo work'}
-                className="w-full h-full object-contain"
-                {...selectedPost.attributes}
-                // We override width/height for lightbox to be responsive/contain
-                width={undefined}
-                height={undefined}
-              />
-            ) : (
-              <CachedImage
-                imageId={selectedPost.id}
-                src={selectedPost.imageUrl}
-                alt={selectedPost.caption || 'Tattoo work'}
-                artist={selectedPost.artist}
-                className="w-full h-full object-contain"
-                loading="eager"
-              />
-            )}
-            <button
-              onClick={() => setSelectedPost(null)}
-              className="absolute top-4 right-4 w-9 h-9 rounded-full
-                         flex items-center justify-center
-                         text-white/60 hover:text-white transition-all duration-300"
-              style={{
-                background: 'rgba(0, 0, 0, 0.4)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-              }}
-              aria-label="Close"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            {/* Bottom info bar */}
+          {selectedItem.type === 'service' ? (
+            // SERVICE DETAIL MODAL (Redesigned for service content)
             <div
-              className="absolute bottom-0 left-0 right-0 p-5 flex items-end justify-between gap-4"
-              style={{
-                background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
-              }}
+              className="relative w-full max-w-4xl max-h-[90vh] rounded-[24px] overflow-hidden
+                         shadow-[0_40px_100px_rgba(0,0,0,0.7)]
+                         border border-white/[0.08] bg-[#0A0A0A] flex flex-col md:flex-row"
+              onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex-1 min-w-0">
-                {selectedPost.caption && (
-                  <p className="text-sm text-white/70 font-light line-clamp-2">{selectedPost.caption}</p>
+              {/* Left side: Image Gallery */}
+              <div className="w-full md:w-1/2 h-64 md:h-auto bg-black/50 relative group">
+                {activeServiceImage && (
+                  <img
+                    src={activeServiceImage}
+                    alt={selectedItem.name}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+                {/* Thumbnails overlay */}
+                <div className="absolute bottom-4 left-4 right-4 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                  {selectedItem.galleryImages?.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveServiceImage(img);
+                      }}
+                      className={`w-12 h-12 rounded-lg overflow-hidden border-2 shrink-0 transition-all
+                                ${activeServiceImage === img ? 'border-[var(--color-gold)] scale-110' : 'border-white/20 hover:border-white/60'}`}
+                    >
+                      <img src={img} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right side: Content */}
+              <div className="w-full md:w-1/2 p-8 md:p-10 overflow-y-auto custom-scrollbar">
+                <h2 className="text-3xl font-bold text-gradient-gold mb-2">{selectedItem.name}</h2>
+                <div className="w-12 h-1 bg-[var(--color-gold)] mb-6 rounded-full opacity-50"></div>
+
+                <p className="text-white/80 leading-relaxed mb-8 whitespace-pre-line text-sm md:text-base">
+                  {selectedItem.fullDescription}
+                </p>
+
+                {/* Pricing */}
+                {selectedItem.priceList && selectedItem.priceList.length > 0 && (
+                  <div className="mb-8 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--color-gold)] mb-4 flex items-center">
+                      <span className="w-2 h-2 rounded-full bg-[var(--color-gold)] mr-2"></span>
+                      Pricing
+                    </h4>
+                    <div className="space-y-3">
+                      {selectedItem.priceList.map((p, i) => (
+                        <div key={i} className="flex justify-between items-center text-sm border-b border-dashed border-white/10 pb-2 last:border-0 last:pb-0">
+                          <span className="text-white/60">{p.item}</span>
+                          <span className="font-medium text-white">{p.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Reviews (if any) */}
+                {selectedItem.reviews && selectedItem.reviews.length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Reviews</h4>
+                    {selectedItem.reviews.map((rev, i) => (
+                      <blockquote key={i} className="text-sm text-white/60 italic border-l-2 border-[var(--color-gold)] pl-4 py-1">
+                        "{rev.comment}" <span className="block text-xs font-normal text-white/40 not-italic mt-1">- {rev.author}</span>
+                      </blockquote>
+                    ))}
+                  </div>
+                )}
+
+                <a href="#booking" onClick={() => setSelectedItem(null)} className="w-full block text-center bg-[var(--color-gold)] text-black font-bold py-3 rounded-xl hover:bg-[#D4A37D] transition-colors">
+                  Book This Service
+                </a>
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedItem(null)}
+                className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full
+                           flex items-center justify-center
+                           text-white/50 hover:text-white bg-black/20 hover:bg-black/60 transition-all"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          ) : (
+            // STANDARD IMAGE MODAL
+            <div
+              className="relative max-w-3xl max-h-[85vh] rounded-[20px] overflow-hidden
+                         shadow-[0_32px_80px_rgba(0,0,0,0.6)]
+                         border border-white/[0.06]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {selectedItem.isLocal ? (
+                <img
+                  src={selectedItem.imageUrl}
+                  srcSet={selectedItem.srcSet}
+                  alt={selectedItem.caption || 'Tattoo work'}
+                  className="w-full h-full object-contain"
+                  {...selectedItem.attributes}
+                  // We override width/height for lightbox to be responsive/contain
+                  width={undefined}
+                  height={undefined}
+                />
+              ) : (
+                <CachedImage
+                  imageId={selectedItem.id}
+                  src={selectedItem.imageUrl}
+                  alt={selectedItem.caption || 'Tattoo work'}
+                  artist={selectedItem.artist}
+                  className="w-full h-full object-contain"
+                  loading="eager"
+                />
+              )}
+              <button
+                onClick={() => setSelectedItem(null)}
+                className="absolute top-4 right-4 w-9 h-9 rounded-full
+                           flex items-center justify-center
+                           text-white/60 hover:text-white transition-all duration-300"
+                style={{
+                  background: 'rgba(0, 0, 0, 0.4)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                }}
+                aria-label="Close"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Bottom info bar */}
+              <div
+                className="absolute bottom-0 left-0 right-0 p-5 flex items-end justify-between gap-4"
+                style={{
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
+                }}
+              >
+                <div className="flex-1 min-w-0">
+                  {selectedItem.caption && (
+                    <p className="text-sm text-white/70 font-light line-clamp-2">{selectedItem.caption}</p>
+                  )}
+                </div>
+                {selectedItem.artist && (
+                  <span
+                    className="px-3 py-1 rounded-lg text-[11px] font-medium shrink-0"
+                    style={{
+                      background: 'rgba(200, 149, 108, 0.2)',
+                      border: '1px solid rgba(200, 149, 108, 0.3)',
+                      color: '#C8956C',
+                    }}
+                  >
+                    {ARTIST_LABELS[selectedItem.artist] || selectedItem.artist}
+                  </span>
                 )}
               </div>
-              {selectedPost.artist && (
-                <span
-                  className="px-3 py-1 rounded-lg text-[11px] font-medium shrink-0"
-                  style={{
-                    background: 'rgba(200, 149, 108, 0.2)',
-                    border: '1px solid rgba(200, 149, 108, 0.3)',
-                    color: '#C8956C',
-                  }}
-                >
-                  {ARTIST_LABELS[selectedPost.artist] || selectedPost.artist}
-                </span>
-              )}
             </div>
-          </div>
+          )}
         </div>
       )}
     </>

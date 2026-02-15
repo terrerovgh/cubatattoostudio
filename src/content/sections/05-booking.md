@@ -2,7 +2,7 @@
 order: 5
 id: booking
 backgroundImage: /backgrounds/booking.svg
-layout: booking-cta
+sectionLayout: booking-cta
 title: Book Your Session
 subtitle: Art is worn on the skin. Schedule your appointment and turn your vision into reality.
 bookingUrl: "/booking"

@@ -3,12 +3,9 @@ import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArtistHero from "../../components/artist/ArtistHero.astro";
-import ArtistBio from "../../components/artist/ArtistBio.astro";
-import ArtistGalleryGrid from "../../components/artist/ArtistGalleryGrid";
 import CalendarNav from "../../components/artist/CalendarNav";
 import NinaAlgorithmicBackground from "../../components/artist/NinaAlgorithmicBackground";
 import SplashCursor from "../../components/artist/SplashCursor";
-import portfolioData from "../../data/artists-portfolio.json";
 
 export async function getStaticPaths() {
   const artistEntries = await getCollection("artists");
@@ -22,73 +19,69 @@ const { entry } = Astro.props;
 const config = entry.data;
 const artistId = config.id;
 
-// Load rich data from JSON
-const artistData = (portfolioData.artists as Record<string, any>)[artistId];
-if (!artistData) {
+const artistData = {
+  ...config,
+  id: artistId,
+  fullName: config.name || config.displayName || artistId,
+  displayName: config.displayName || config.name || artistId,
+  role: config.role || "",
+  bio: config.bio || "",
+  profileImage: config.profileImage || `/artists/${artistId}.jpg`,
+  styleDescription: config.styleDescription || "",
+  signatureStyle: config.signatureStyle || "",
+  instagram: config.socials?.instagram
+    ? {
+        username: config.socials.instagram,
+        url: `https://instagram.com/${config.socials.instagram}`,
+      }
+    : null,
+  specialties: config.specialties || [],
+  services: config.services || [],
+  gallery: config.gallery || [],
+};
+
+if (!artistData.id) {
   return Astro.redirect("/");
 }
 
-// Load all images for this artist from the src/assets/gallery folder
-const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
+// Load gallery images from src/assets/gallery
+const allGalleryImages = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/gallery/**/*.{jpg,jpeg,png,webp}",
 );
 
-// Filter images for current artist
-const artistGalleryPaths = Object.keys(galleryImages).filter((path) =>
-  path.includes(`/gallery/${artistId}/`),
-);
+// Build curated gallery from .md config
+const curatedGallery = await Promise.all(
+  artistData.gallery.map(async (item: any, index: number) => {
+    const imagePath = `/src/assets/gallery/${artistId}/${item.image}`;
+    const loader = allGalleryImages[imagePath];
 
-// Get featured works for metadata matching
-const featuredWorks = artistData.portfolio?.featuredWorks || [];
-
-// Process all images found in the directory
-const galleryItems = await Promise.all(
-  artistGalleryPaths.map(async (imagePath, index) => {
-    const workId = `${artistId}-work-${index}`;
-    const filename = imagePath.split("/").pop();
-
-    const metadata = featuredWorks.find((fw: any) =>
-      fw.image.endsWith(filename || ""),
-    );
+    if (!loader) {
+      // Fallback to public path
+      return {
+        id: `${artistId}-${index}`,
+        src: `/gallery/${artistId}/${item.image}`,
+        size: item.size || "normal",
+      };
+    }
 
     try {
-      const imageModule = await galleryImages[imagePath]();
-      const imageMetadata = imageModule.default;
-
+      const imageModule = await loader();
       const optimized = await getImage({
-        src: imageMetadata,
+        src: imageModule.default,
         format: "webp",
-        width: 800,
+        width: item.size === "wide" ? 1000 : 800,
         quality: 85,
       });
-
       return {
-        id: workId,
-        imageUrl: optimized.src,
-        srcSet: optimized.srcSet?.attribute || "",
-        attributes: optimized.attributes,
-        featuredWork: metadata
-          ? {
-              ...metadata,
-              style: metadata.style || "Portfolio",
-              tags: metadata.tags || ["tattoo"],
-            }
-          : {
-              title: "Portfolio Piece",
-              description: "Work by " + artistData.displayName,
-              style: "Tattoo",
-              tags: ["tattoo", artistId],
-            },
-        caption: metadata?.title || "Portfolio Piece",
+        id: `${artistId}-${index}`,
+        src: optimized.src,
+        size: item.size || "normal",
       };
     } catch (e) {
-      console.error(`Failed to optimize image ${imagePath}:`, e);
-      const filename = imagePath.split("/").pop();
       return {
-        id: workId,
-        imageUrl: `/gallery/${artistId}/${filename}`,
-        featuredWork: metadata || undefined,
-        caption: metadata?.title || "Portfolio Piece",
+        id: `${artistId}-${index}`,
+        src: `/gallery/${artistId}/${item.image}`,
+        size: item.size || "normal",
       };
     }
   }),
@@ -97,12 +90,9 @@ const galleryItems = await Promise.all(
 const pageTitle = `${artistData.displayName} — Cuba Tattoo Studio`;
 const pageDescription =
   artistData.bio?.substring(0, 160) || `Portfolio of ${artistData.fullName}`;
-
-const animateDir = config.layout === "gallery-right" ? "right" : "left";
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} mode="artist">
-  {/* Inject artist accent colors */}
   <style
     define:vars={{
       artistAccent: config.accentColor,
@@ -111,32 +101,34 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
     }}
   ></style>
 
-  {/* Algorithmic constellation background */}
-  {config.constellation?.enabled && (
-    <NinaAlgorithmicBackground
-      client:only="react"
-      accentColor={config.accentColor}
-      constellation={config.constellation}
-    />
-  )}
+  {/* Background effects */}
+  {
+    config.constellation?.enabled && (
+      <NinaAlgorithmicBackground
+        client:only="react"
+        accentColor={config.accentColor}
+        constellation={config.constellation}
+      />
+    )
+  }
+  {
+    config.splashCursor?.enabled && (
+      <SplashCursor
+        client:only="react"
+        SIM_RESOLUTION={config.splashCursor.SIM_RESOLUTION}
+        DYE_RESOLUTION={config.splashCursor.DYE_RESOLUTION}
+        DENSITY_DISSIPATION={config.splashCursor.DENSITY_DISSIPATION}
+        VELOCITY_DISSIPATION={config.splashCursor.VELOCITY_DISSIPATION}
+        PRESSURE={config.splashCursor.PRESSURE}
+        CURL={config.splashCursor.CURL}
+        SPLAT_RADIUS={config.splashCursor.SPLAT_RADIUS}
+        SPLAT_FORCE={config.splashCursor.SPLAT_FORCE}
+        COLOR_UPDATE_SPEED={config.splashCursor.COLOR_UPDATE_SPEED}
+      />
+    )
+  }
 
-  {/* WebGL splash cursor effect */}
-  {config.splashCursor?.enabled && (
-    <SplashCursor
-      client:only="react"
-      SIM_RESOLUTION={config.splashCursor.SIM_RESOLUTION}
-      DYE_RESOLUTION={config.splashCursor.DYE_RESOLUTION}
-      DENSITY_DISSIPATION={config.splashCursor.DENSITY_DISSIPATION}
-      VELOCITY_DISSIPATION={config.splashCursor.VELOCITY_DISSIPATION}
-      PRESSURE={config.splashCursor.PRESSURE}
-      CURL={config.splashCursor.CURL}
-      SPLAT_RADIUS={config.splashCursor.SPLAT_RADIUS}
-      SPLAT_FORCE={config.splashCursor.SPLAT_FORCE}
-      COLOR_UPDATE_SPEED={config.splashCursor.COLOR_UPDATE_SPEED}
-    />
-  )}
-
-  {/* Top nav — glassmorphism with Book CTA */}
+  {/* Top nav */}
   <nav
     class="fixed top-0 left-0 right-0 z-50 px-4 py-3"
     style="background: rgba(8, 8, 10, 0.6); backdrop-filter: blur(30px) saturate(1.5); -webkit-backdrop-filter: blur(30px) saturate(1.5); border-bottom: 1px solid rgba(255, 255, 255, 0.05);"
@@ -192,152 +184,110 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
     </div>
   </nav>
 
-  {/* Hero Section */}
-  <ArtistHero
-    name={artistData.fullName}
-    role={artistData.role}
-    profileImage={artistData.profileImage}
-    instagram={artistData.instagram}
-    specialties={artistData.specialties || []}
-    accentColor={config.accentColor}
-  />
+  {
+    /* ═══════════════════════════════════════════════════════════
+      SECTION 1: Hero Card (Background + Photo + Description + Buttons)
+      ═══════════════════════════════════════════════════════════ */
+  }
+  <div class="artist-page">
+    <ArtistHero
+      name={artistData.fullName}
+      role={artistData.role}
+      profileImage={artistData.profileImage}
+      backgroundImage={config.backgroundImage}
+      bio={artistData.bio}
+      instagram={artistData.instagram}
+      accentColor={config.accentColor}
+      displayName={artistData.displayName}
+    />
 
-  {/* Content Section — layout driven by .md config */}
-  <div class="container-wide pb-24 space-y-12">
     {
-      config.layout === "gallery-top" ? (
-        <>
-          <section id="gallery" data-section="gallery" class="space-y-6">
-            <h2
-              class="text-fluid-md font-bold text-white tracking-tight"
-              data-animate-heading
-            >
-              Portfolio
-            </h2>
-            <ArtistGalleryGrid
-              client:visible
-              posts={galleryItems}
-              accentColor={config.accentColor}
-              artistProfile={{
-                name: artistData.displayName,
-                image: artistData.profileImage,
-                role: artistData.role,
-                id: artistData.id,
-              }}
-            />
-          </section>
+      /* ═══════════════════════════════════════════════════════════
+        SECTION 2: Bio + Calendar — side by side
+        ═══════════════════════════════════════════════════════════ */
+    }
+    <div class="grid-two-cards">
+      {/* Bio Card */}
+      <div class="glass-card" data-animate>
+        <h3 class="card-title">Bio</h3>
+        <p class="card-text">{artistData.styleDescription}</p>
+        <p class="card-signature" style={`color: ${config.accentColor};`}>
+          &ldquo;{artistData.signatureStyle}&rdquo;
+        </p>
+      </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <ArtistBio
-              bio={artistData.bio}
-              styleDescription={artistData.styleDescription}
-              signatureStyle={artistData.signatureStyle}
-              achievements={artistData.achievements}
-              additionalStyles={artistData.portfolio?.additionalStyles}
+      {/* Calendar Card */}
+      {
+        config.availability && (
+          <div class="glass-card" data-animate>
+            <h3 class="card-title">Calendar</h3>
+            <CalendarNav
+              client:visible
+              schedule={config.availability.schedule}
+              blockedDates={config.availability.blockedDates}
+              note={config.availability.note}
               accentColor={config.accentColor}
-              animateDir="left"
             />
-            {config.availability && (
-              <div class="space-y-6">
-                <div
-                  class="liquid-glass rounded-[24px] p-6 sm:p-8"
-                  data-animate-right
-                >
-                  <h3
-                    class="text-xl font-bold text-white mb-6"
-                    data-animate-heading
-                  >
-                    Availability
-                  </h3>
-                  <CalendarNav
-                    client:visible
-                    schedule={config.availability.schedule}
-                    blockedDates={config.availability.blockedDates}
-                    note={config.availability.note}
-                    accentColor={config.accentColor}
-                  />
-                </div>
-              </div>
-            )}
           </div>
-        </>
-      ) : (
-        <div
-          class:list={[
-            "grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8",
-            config.layout === "gallery-right" && "lg:grid-cols-[1fr_1.2fr]",
-          ]}
-        >
-          <section
-            id="gallery"
-            data-section="gallery"
-            class:list={[
-              "space-y-6",
-              config.layout === "gallery-right" && "lg:order-2",
-            ]}
-          >
-            <h2
-              class="text-fluid-md font-bold text-white tracking-tight"
-              data-animate-heading
-            >
-              Portfolio
-            </h2>
-            <ArtistGalleryGrid
-              client:visible
-              posts={galleryItems}
-              accentColor={config.accentColor}
-              artistProfile={{
-                name: artistData.displayName,
-                image: artistData.profileImage,
-                role: artistData.role,
-                id: artistData.id,
-              }}
-            />
-          </section>
+        )
+      }
+    </div>
 
-          <div
-            class:list={[
-              "space-y-8",
-              config.layout === "gallery-right" && "lg:order-1",
-            ]}
-          >
-            <ArtistBio
-              bio={artistData.bio}
-              styleDescription={artistData.styleDescription}
-              signatureStyle={artistData.signatureStyle}
-              achievements={artistData.achievements}
-              additionalStyles={artistData.portfolio?.additionalStyles}
-              accentColor={config.accentColor}
-              animateDir={animateDir}
-            />
-            {config.availability && (
+    {
+      /* ═══════════════════════════════════════════════════════════
+        SECTION 3: Services — 3 circles
+        ═══════════════════════════════════════════════════════════ */
+    }
+    {
+      artistData.services.length > 0 && (
+        <div class="services-row" data-animate>
+          {artistData.services.map((service: any) => (
+            <div class="service-item">
               <div
-                class="liquid-glass rounded-[24px] p-6 sm:p-8"
-                data-animate-left={animateDir === "left" ? "" : undefined}
-                data-animate-right={animateDir === "right" ? "" : undefined}
+                class="service-circle"
+                style={`border-color: ${config.accentColor}30; background: ${config.accentColor}08;`}
               >
-                <h3
-                  class="text-xl font-bold text-white mb-6"
-                  data-animate-heading
-                >
-                  Availability
-                </h3>
-                <CalendarNav
-                  client:visible
-                  schedule={config.availability.schedule}
-                  blockedDates={config.availability.blockedDates}
-                  note={config.availability.note}
-                  accentColor={config.accentColor}
-                />
+                <span class="service-icon">{service.icon}</span>
               </div>
-            )}
-          </div>
+              <span class="service-label">{service.label}</span>
+            </div>
+          ))}
         </div>
       )
     }
 
-    {/* Back to studio CTA */}
-    <div class="text-center pt-8" data-animate>
+    {
+      /* ═══════════════════════════════════════════════════════════
+        SECTION 4: Gallery — Bento Grid
+        ═══════════════════════════════════════════════════════════ */
+    }
+    {
+      curatedGallery.length > 0 && (
+        <section class="gallery-section" id="gallery" data-section="gallery">
+          <div class="bento-grid">
+            {curatedGallery.map((item: any) => (
+              <div
+                class:list={[
+                  "bento-item",
+                  item.size === "tall" && "bento-tall",
+                  item.size === "wide" && "bento-wide",
+                ]}
+              >
+                <img
+                  src={item.src}
+                  alt={`Work by ${artistData.displayName}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {/* Back to studio */}
+    <div class="text-center pt-4 pb-8" data-animate>
       <a
         href="/"
         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white/50 hover:text-white bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-all duration-300"
@@ -359,7 +309,7 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
     </div>
   </div>
 
-  {/* Sticky mobile CTA — bottom bar */}
+  {/* Sticky mobile CTA */}
   <div
     class="fixed bottom-0 left-0 right-0 z-50 sm:hidden px-4 pb-[env(safe-area-inset-bottom,8px)] pt-3"
     style={`background: rgba(8, 8, 10, 0.85); backdrop-filter: blur(30px) saturate(1.5); -webkit-backdrop-filter: blur(30px) saturate(1.5); border-top: 1px solid rgba(255, 255, 255, 0.05);`}
@@ -370,9 +320,228 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
       style={`background: ${config.accentColor};`}
     >
       Book with {artistData.displayName}
-      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+      <svg
+        class="w-4 h-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
       </svg>
     </a>
   </div>
 </BaseLayout>
+
+<style>
+  /* ─── Page Container ──────────────────────────────────── */
+  .artist-page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 80px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .artist-page {
+      padding: 100px 24px 40px;
+      gap: 20px;
+    }
+  }
+
+  /* ─── Two-card grid (Bio + Calendar) ──────────────────── */
+  .grid-two-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media (min-width: 640px) {
+    .grid-two-cards {
+      gap: 20px;
+    }
+  }
+
+  /* ─── Glass Card ──────────────────────────────────────── */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 0.85rem;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .glass-card {
+      border-radius: 20px;
+      padding: 1.25rem;
+    }
+  }
+
+  .card-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .card-title {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .card-text {
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 300;
+  }
+
+  @media (min-width: 640px) {
+    .card-text {
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+  }
+
+  .card-signature {
+    font-size: 0.65rem;
+    font-style: italic;
+    font-weight: 500;
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .card-signature {
+      font-size: 0.75rem;
+      margin-top: 0.75rem;
+    }
+  }
+
+  /* ─── Services Row ────────────────────────────────────── */
+  .services-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0.5rem 0;
+  }
+
+  .service-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .service-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .service-circle:hover {
+    transform: scale(1.08);
+  }
+
+  .service-icon {
+    font-size: 1.5rem;
+  }
+
+  .service-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    max-width: 80px;
+  }
+
+  @media (min-width: 640px) {
+    .service-circle {
+      width: 76px;
+      height: 76px;
+    }
+
+    .service-icon {
+      font-size: 1.75rem;
+    }
+
+    .service-label {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* ─── Bento Gallery Grid ──────────────────────────────── */
+  .gallery-section {
+    width: 100%;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    grid-auto-flow: dense;
+  }
+
+  @media (min-width: 640px) {
+    .bento-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+  }
+
+  .bento-item {
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: transform 0.3s ease;
+  }
+
+  .bento-item:hover {
+    transform: scale(1.02);
+  }
+
+  .bento-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Normal items get a fixed aspect ratio */
+  .bento-item:not(.bento-tall):not(.bento-wide) {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Tall: spans 2 rows */
+  .bento-tall {
+    grid-row: span 2;
+    min-height: 300px;
+  }
+
+  @media (min-width: 640px) {
+    .bento-tall {
+      min-height: 400px;
+    }
+  }
+
+  /* Wide: spans 2 columns */
+  .bento-wide {
+    grid-column: span 2;
+    aspect-ratio: 2 / 1;
+  }
+</style>

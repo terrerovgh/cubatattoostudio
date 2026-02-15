@@ -10,9 +10,10 @@ interface Props {
   backgroundImage: string;
   title?: string;
   subtitle?: string;
+  services?: any[];
 }
 
-const { id, backgroundImage, title, subtitle } = Astro.props;
+const { id, backgroundImage, title, subtitle, services = [] } = Astro.props;
 
 // Process posts to generate optimized images
 const optimizedPosts = await Promise.all(
@@ -93,22 +94,11 @@ if (instagramData.artists) {
       }
     </div>
     <div class="space-y-8" data-animate>
-      {
-        title && (
-          <h2 class="text-gradient-white text-3xl sm:text-4xl lg:text-5xl font-bold text-center tracking-[-0.02em]">
-            {title}
-          </h2>
-        )
-      }
-      {
-        subtitle && (
-          <p class="text-center text-white/35 text-sm font-light">{subtitle}</p>
-        )
-      }
       <GallerySection
         client:visible
         initialPosts={optimizedPosts}
         initialArtists={optimizedArtists}
+        services={services}
       />
     </div>
   </GlassCard>

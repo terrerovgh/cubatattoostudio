@@ -3,95 +3,212 @@ interface Props {
   name: string;
   role: string;
   profileImage: string;
-  instagram?: { username: string; publications: number; followers: number };
-  specialties: string[];
+  backgroundImage: string;
+  bio: string;
+  instagram?: { username: string } | null;
   accentColor: string;
+  displayName: string;
 }
 
-const { name, role, profileImage, instagram, specialties, accentColor } =
-  Astro.props;
+const {
+  name,
+  role,
+  profileImage,
+  backgroundImage,
+  bio,
+  instagram,
+  accentColor,
+  displayName,
+} = Astro.props;
 ---
 
-<section
-  class="min-h-[50vh] sm:min-h-[60vh] flex items-center justify-center py-20 lg:py-28 relative"
-  id="artist-hero"
-  data-section="artist-hero"
->
-  <div
-    class="relative z-10 flex flex-col items-center text-center px-6 sm:px-8 max-w-3xl mx-auto space-y-6 sm:space-y-8"
-  >
-    {/* Profile photo — clip-path reveal */}
-    <div class="relative" data-animate-clip>
-      <div
-        class="w-32 h-32 sm:w-40 sm:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden ring-2 ring-offset-4 ring-offset-transparent"
-        style={`ring-color: ${accentColor};`}
-      >
-        <img
-          src={profileImage}
-          alt={name}
-          class="w-full h-full object-cover"
-          loading="eager"
-          style="aspect-ratio: 1 / 1;"
-        />
-      </div>
-      <div
-        class="absolute -inset-2 rounded-full opacity-20 blur-xl -z-10"
-        style={`background: ${accentColor};`}
-      >
-      </div>
+<section class="artist-hero-card" id="artist-hero" data-section="artist-hero">
+  {/* Background image with gradient overlay */}
+  <div class="hero-bg">
+    <img src={backgroundImage} alt="" class="hero-bg-img" loading="eager" />
+    <div class="hero-bg-overlay"></div>
+  </div>
+
+  {/* Content */}
+  <div class="hero-content">
+    {/* Profile photo */}
+    <div class="hero-avatar" data-animate-clip>
+      <img src={profileImage} alt={name} loading="eager" />
+      <div class="hero-avatar-glow" style={`background: ${accentColor};`}></div>
     </div>
 
-    {/* Name & Role */}
-    <div data-animate-heading>
-      <h1
-        class="text-fluid-xl font-bold tracking-tight mb-2"
-      >
-        {name}
-      </h1>
-      <p
-        class="text-base sm:text-lg uppercase tracking-widest font-medium opacity-80"
-        style={`color: ${accentColor};`}
-      >
-        {role}
-      </p>
+    {/* Description */}
+    <div class="hero-info" data-animate>
+      <p class="hero-description">{bio}</p>
     </div>
 
-    {/* Instagram link */}
-    {
-      instagram && (
-        <a
-          href={`https://instagram.com/${instagram.username}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.03]"
-          style={`background: ${accentColor}20; border: 1px solid ${accentColor}40; color: ${accentColor};`}
-          data-animate
+    {/* Buttons */}
+    <div class="hero-actions" data-animate>
+      {
+        instagram && (
+          <a
+            href={`https://instagram.com/${instagram.username}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero-btn hero-btn-social"
+            style={`border-color: ${accentColor}40; color: ${accentColor};`}
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            </svg>
+            Social
+          </a>
+        )
+      }
+      <a
+        href="/booking"
+        class="hero-btn hero-btn-book"
+        style={`background: ${accentColor}; color: #000;`}
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
         >
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-          </svg>
-          @{instagram.username}
-        </a>
-      )
-    }
-
-    {/* Specialty tags — horizontal scroll on mobile, wrap on desktop */}
-    <div
-      class="w-full max-w-xl scroll-x-fade sm:overflow-visible"
-      data-animate
-    >
-      <div class="flex sm:flex-wrap sm:justify-center gap-2 px-1 sm:px-0 w-max sm:w-auto mx-auto">
-        {
-          specialties.map((spec) => (
-            <span
-              class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium text-white/70 border border-white/[0.06]"
-              style={`background: ${accentColor}10;`}
-            >
-              {spec}
-            </span>
-          ))
-        }
-      </div>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+          ></path>
+        </svg>
+        Book
+      </a>
     </div>
   </div>
 </section>
+
+<style>
+  .artist-hero-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    min-height: 420px;
+    display: flex;
+    align-items: flex-end;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(8, 8, 12, 0.2) 0%,
+      rgba(8, 8, 12, 0.6) 50%,
+      rgba(8, 8, 12, 0.95) 100%
+    );
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .hero-avatar {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
+
+  .hero-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .hero-avatar-glow {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    opacity: 0.2;
+    filter: blur(16px);
+    z-index: -1;
+  }
+
+  .hero-info {
+    max-width: 400px;
+  }
+
+  .hero-description {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .hero-btn:hover {
+    transform: scale(1.03);
+  }
+
+  .hero-btn-social {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid;
+  }
+
+  .hero-btn-book {
+    border: none;
+  }
+
+  @media (min-width: 640px) {
+    .artist-hero-card {
+      min-height: 480px;
+    }
+
+    .hero-avatar {
+      width: 120px;
+      height: 120px;
+    }
+
+    .hero-description {
+      font-size: 0.85rem;
+    }
+  }
+</style>
