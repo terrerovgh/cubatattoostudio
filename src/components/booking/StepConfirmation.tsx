@@ -18,29 +18,29 @@ export function StepConfirmation({ form, bookingId, priceEstimate }: Props) {
     <div className="text-center space-y-8">
       {/* Success Icon */}
       <div className="flex justify-center">
-        <div className="w-20 h-20 rounded-full bg-[#C8956C]/20 flex items-center justify-center">
-          <div className="w-14 h-14 rounded-full bg-[#C8956C] flex items-center justify-center text-black text-2xl font-bold">
+        <div className="w-24 h-24 sm:w-20 sm:h-20 rounded-full bg-[#C8956C]/20 flex items-center justify-center">
+          <div className="w-16 h-16 sm:w-14 sm:h-14 rounded-full bg-[#C8956C] flex items-center justify-center text-black text-3xl sm:text-2xl font-bold">
             ✓
           </div>
         </div>
       </div>
 
       <div>
-        <h2 className="text-3xl font-bold text-white mb-3">Booking Confirmed!</h2>
-        <p className="text-white/60 max-w-md mx-auto">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Booking Confirmed!</h2>
+        <p className="text-white/60 max-w-md mx-auto text-sm sm:text-base">
           Your appointment has been scheduled. Check your email for confirmation details and your digital consent form.
         </p>
       </div>
 
       {/* Booking ID */}
       {bookingId && (
-        <div className="inline-block px-4 py-2 rounded-lg bg-white/5 text-white/60 text-sm font-mono">
+        <div className="inline-block px-4 py-2.5 rounded-lg bg-white/5 text-white/60 text-sm font-mono">
           Booking ID: {bookingId.slice(0, 8).toUpperCase()}
         </div>
       )}
 
       {/* Summary Card */}
-      <div className="max-w-md mx-auto p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] text-left space-y-4">
+      <div className="max-w-md mx-auto p-5 sm:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] text-left space-y-4">
         <h3 className="font-bold text-white text-center mb-4">Appointment Details</h3>
 
         <div className="grid grid-cols-2 gap-4 text-sm">
@@ -95,8 +95,8 @@ export function StepConfirmation({ form, bookingId, priceEstimate }: Props) {
       <div className="max-w-md mx-auto space-y-3">
         <h4 className="font-bold text-white text-sm">What's Next?</h4>
 
-        <div className="space-y-3 text-left">
-          <div className="flex gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+        <div className="space-y-2.5 text-left">
+          <div className="flex gap-3 p-3.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
             <div className="w-8 h-8 rounded-lg bg-[#C8956C]/20 flex items-center justify-center text-[#C8956C] text-xs font-bold flex-shrink-0">1</div>
             <div>
               <p className="text-sm text-white font-medium">Check your email</p>
@@ -104,7 +104,7 @@ export function StepConfirmation({ form, bookingId, priceEstimate }: Props) {
             </div>
           </div>
 
-          <div className="flex gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+          <div className="flex gap-3 p-3.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
             <div className="w-8 h-8 rounded-lg bg-[#C8956C]/20 flex items-center justify-center text-[#C8956C] text-xs font-bold flex-shrink-0">2</div>
             <div>
               <p className="text-sm text-white font-medium">Complete consent form</p>
@@ -112,7 +112,7 @@ export function StepConfirmation({ form, bookingId, priceEstimate }: Props) {
             </div>
           </div>
 
-          <div className="flex gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+          <div className="flex gap-3 p-3.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
             <div className="w-8 h-8 rounded-lg bg-[#C8956C]/20 flex items-center justify-center text-[#C8956C] text-xs font-bold flex-shrink-0">3</div>
             <div>
               <p className="text-sm text-white font-medium">Prepare for your session</p>
@@ -120,7 +120,7 @@ export function StepConfirmation({ form, bookingId, priceEstimate }: Props) {
             </div>
           </div>
 
-          <div className="flex gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+          <div className="flex gap-3 p-3.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
             <div className="w-8 h-8 rounded-lg bg-[#C8956C]/20 flex items-center justify-center text-[#C8956C] text-xs font-bold flex-shrink-0">4</div>
             <div>
               <p className="text-sm text-white font-medium">Visit our studio</p>
@@ -135,14 +135,14 @@ export function StepConfirmation({ form, bookingId, priceEstimate }: Props) {
         {bookingId && (
           <a
             href={`/consent/${bookingId}`}
-            className="px-6 py-3 rounded-xl bg-[#C8956C] text-black font-semibold text-sm hover:bg-[#D4A574] transition-colors"
+            className="px-6 py-4 sm:py-3 rounded-xl bg-[#C8956C] text-black font-semibold text-sm hover:bg-[#DABA8F] active:scale-[0.98] transition-all text-center"
           >
             Complete Consent Form
           </a>
         )}
         <a
           href="/"
-          className="px-6 py-3 rounded-xl bg-white/5 text-white/80 font-medium text-sm hover:bg-white/10 transition-colors"
+          className="px-6 py-4 sm:py-3 rounded-xl bg-white/5 text-white/80 font-medium text-sm hover:bg-white/10 active:bg-white/15 transition-colors text-center"
         >
           Back to Home
         </a>

@@ -22,10 +22,8 @@ const { id, backgroundImage, title, artists = [] } = Astro.props;
 
 /**
  * Resolve artist profile image — prefer downloaded .jpg over .svg placeholder.
- * The fetch-insta.js script saves profile pics as /artists/{name}.jpg
  */
 function resolveArtistImage(artist: Artist): string {
-  // Extract the artist folder name from the image path (e.g., /artists/david.svg → david)
   const match = artist.image.match(/\/artists\/(\w+)\./);
   if (match) {
     const name = match[1];
@@ -35,16 +33,16 @@ function resolveArtistImage(artist: Artist): string {
       return jpgPath;
     }
   }
-  return artist.image; // Fallback to configured image (SVG placeholder)
+  return artist.image;
 }
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
-  <div class="w-full max-w-5xl mx-4 sm:mx-8 lg:mx-auto space-y-12">
+  <div class="container-standard space-y-12">
     {
       title && (
         <h2
-          class="text-gradient-white text-3xl sm:text-4xl lg:text-5xl font-bold text-center tracking-[-0.02em]"
+          class="text-gradient-white text-fluid-lg font-bold text-center"
           data-animate-heading
         >
           {title}
@@ -57,6 +55,7 @@ function resolveArtistImage(artist: Artist): string {
         artists.map((artist, index) => {
           const imageSrc = resolveArtistImage(artist);
           const isEven = index % 2 === 0;
+          const artistId = artist.image.match(/\/artists\/(\w+)\./)?.[1];
 
           return (
             <>
@@ -68,15 +67,16 @@ function resolveArtistImage(artist: Artist): string {
                 />
               )}
               <div
-                class={`flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-24 ${!isEven ? "md:flex-row-reverse" : ""}`}
+                class={`grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-16 lg:gap-24`}
               >
                 {/* Image Side — clip-path reveal + parallax */}
                 <div
-                  class="w-full md:w-1/2 flex justify-center"
+                  class={`flex justify-center ${!isEven ? "md:order-2" : ""}`}
                   data-parallax="0.08"
                 >
-                  <div
-                    class="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 group ambient-glow"
+                  <a
+                    href={artistId ? `/artists/${artistId}` : "#"}
+                    class="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80 group ambient-glow block"
                     data-animate-clip
                   >
                     <div class="absolute inset-0 rounded-[2rem] rotate-3 bg-white/[0.03] border border-white/[0.05] transition-transform duration-500 group-hover:rotate-6" />
@@ -85,89 +85,82 @@ function resolveArtistImage(artist: Artist): string {
                       <img
                         src={imageSrc}
                         alt={artist.name}
-                        class="w-full h-full object-cover"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
+                        style="aspect-ratio: 1 / 1;"
                       />
                       <div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[2rem]" />
                     </div>
-                  </div>
+                  </a>
                 </div>
 
                 {/* Content Side — directional slide */}
                 <div
-                  class={`w-full md:w-1/2 text-center ${isEven ? "md:text-left" : "md:text-right"} space-y-6`}
+                  class={`text-center ${isEven ? "md:text-left" : "md:text-right"} space-y-5 ${!isEven ? "md:order-1" : ""}`}
                   data-animate-left={isEven ? "" : undefined}
                   data-animate-right={!isEven ? "" : undefined}
                 >
                   <div>
-                    <h3 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2">
+                    <h3 class="text-fluid-md font-bold tracking-tight mb-2">
                       {artist.name}
                     </h3>
-                    <p class="text-[var(--color-gold)] text-lg uppercase tracking-widest font-medium opacity-80">
+                    <p class="text-[var(--color-gold)] text-sm sm:text-base uppercase tracking-widest font-medium opacity-80">
                       {artist.role}
                     </p>
                   </div>
 
-                  <p class="text-white/60 text-lg sm:text-xl font-light leading-relaxed max-w-md mx-auto md:mx-0">
+                  <p class="text-white/55 text-fluid-body-lg font-light leading-relaxed max-w-md mx-auto md:mx-0">
                     Specializing in custom designs that tell your unique story.
                   </p>
 
-                  {artist.instagram && (
-                    <div
-                      class={`flex ${isEven ? "md:justify-start" : "md:justify-end"} justify-center pt-2`}
-                    >
+                  {/* Actions — grouped for clarity */}
+                  <div class={`flex flex-col gap-3 items-center ${isEven ? "md:items-start" : "md:items-end"}`}>
+                    {/* Portfolio CTA — primary action */}
+                    {artistId && (
+                      <a
+                        href={`/artists/${artistId}`}
+                        class="card-hover-lift inline-flex items-center gap-3 px-6 py-3 rounded-xl
+                               bg-white/[0.04] border border-white/[0.08]
+                               hover:border-[var(--color-gold)]/30 hover:bg-[var(--color-gold)]/5
+                               text-white/70 hover:text-[var(--color-gold)]
+                               transition-all duration-300 text-sm font-medium group/cta"
+                      >
+                        Ver Portfolio
+                        <svg
+                          class="w-4 h-4 transition-transform duration-300 group-hover/cta:translate-x-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                          />
+                        </svg>
+                      </a>
+                    )}
+
+                    {/* Instagram — secondary */}
+                    {artist.instagram && (
                       <a
                         href={`https://instagram.com/${artist.instagram.replace("@", "")}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="group inline-flex items-center gap-3 text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-all duration-300"
+                        class="inline-flex items-center gap-2 text-white/35 hover:text-[var(--color-gold)] transition-colors duration-300 text-xs tracking-wide"
                       >
-                        <span class="w-10 h-10 rounded-full border border-[var(--color-gold)]/30 flex items-center justify-center group-hover:border-[var(--color-gold)] group-hover:bg-[var(--color-gold)]/10 transition-all">
-                          <svg
-                            class="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                          </svg>
-                        </span>
-                        <span class="text-sm tracking-wide font-medium">
-                          Follow Profile
-                        </span>
-                      </a>
-                    </div>
-                  )}
-
-                  {/* Portfolio link */}
-                  {(() => {
-                    const artistId =
-                      artist.image.match(/\/artists\/(\w+)\./)?.[1];
-                    return artistId ? (
-                      <div
-                        class={`flex ${isEven ? "md:justify-start" : "md:justify-end"} justify-center pt-1`}
-                      >
-                        <a
-                          href={`/artists/${artistId}`}
-                          class="group inline-flex items-center gap-2 text-white/40 hover:text-[var(--color-gold)] transition-all duration-300 text-sm tracking-wide font-medium"
+                        <svg
+                          class="w-3.5 h-3.5"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
                         >
-                          Ver Portfolio
-                          <svg
-                            class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                            />
-                          </svg>
-                        </a>
-                      </div>
-                    ) : null;
-                  })()}
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                        </svg>
+                        <span>{artist.instagram}</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </>

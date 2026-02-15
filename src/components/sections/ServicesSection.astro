@@ -34,7 +34,7 @@ const { id, backgroundImage, title, services = [] } = Astro.props;
     {
       title && (
         <h2
-          class="text-gradient-white text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12 tracking-[-0.02em]"
+          class="text-gradient-white text-fluid-lg font-bold text-center mb-10 sm:mb-12"
           data-animate-heading
           data-parallax="-0.05"
         >
@@ -43,13 +43,13 @@ const { id, backgroundImage, title, services = [] } = Astro.props;
       )
     }
 
-    <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
       {
         services.map((service, i) => {
           const image = galleryImages[i % galleryImages.length];
 
           return (
-            <div class="break-inside-avoid mb-6 block" data-animate-scale>
+            <div data-animate-scale>
               <FrostedServiceCard
                 title={service.name}
                 description={service.description}

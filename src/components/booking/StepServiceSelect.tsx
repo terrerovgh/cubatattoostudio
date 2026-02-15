@@ -52,14 +52,11 @@ export function StepServiceSelect({ form, updateForm, onNext }: Props) {
   const [ideaText, setIdeaText] = useState('');
 
   const selectedArtist = ARTISTS.find((a) => a.id === form.artist_id);
-
   const canProceed = form.artist_id && form.service_type;
 
-  // Simple AI matching: suggest artist based on service
   const suggestArtist = () => {
     if (!form.service_type) return;
     const service = form.service_type;
-
     if (['Color Realism', 'Neo-Traditional'].includes(service)) {
       updateForm({ artist_id: 'david' });
     } else if (['Fine Line & Dotwork', 'Floral & Botanical'].includes(service)) {
@@ -71,50 +68,46 @@ export function StepServiceSelect({ form, updateForm, onNext }: Props) {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       {/* Artist Selection */}
       <div>
-        <h3 className="text-xl font-bold text-white mb-2">Choose Your Artist</h3>
-        <p className="text-white/50 text-sm mb-6">Each artist brings a unique style and vision</p>
+        <h3 className="text-lg sm:text-xl font-bold text-white mb-1.5">Choose Your Artist</h3>
+        <p className="text-white/45 text-sm mb-5">Each artist brings a unique style and vision</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {ARTISTS.map((artist) => (
             <button
               key={artist.id}
               onClick={() => updateForm({ artist_id: artist.id })}
               className={`
-                relative p-6 rounded-2xl text-left transition-all duration-300
+                relative p-4 sm:p-5 rounded-2xl text-left transition-all duration-300
                 ${form.artist_id === artist.id
-                  ? 'bg-white/10 border-2 ring-1'
+                  ? 'bg-white/10 border-2'
                   : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
                 }
               `}
               style={{
                 borderColor: form.artist_id === artist.id ? artist.accent : undefined,
-                ringColor: form.artist_id === artist.id ? `${artist.accent}40` : undefined,
               }}
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <div
-                  className="w-16 h-16 rounded-xl bg-cover bg-center flex-shrink-0"
-                  style={{ backgroundImage: `url(${artist.image})` }}
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-cover bg-center flex-shrink-0"
+                  style={{ backgroundImage: `url(${artist.image})`, aspectRatio: '1 / 1' }}
                 />
-                <div className="min-w-0">
-                  <h4 className="font-bold text-white text-lg">{artist.name}</h4>
-                  <p className="text-white/50 text-xs mt-0.5">{artist.role}</p>
+                <div className="min-w-0 flex-1">
+                  <h4 className="font-bold text-white text-base sm:text-lg">{artist.name}</h4>
+                  <p className="text-white/45 text-xs mt-0.5 line-clamp-1">{artist.role}</p>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-1.5 mt-4">
+              <div className="flex flex-wrap gap-1.5 mt-3">
                 {artist.specialties.slice(0, 3).map((s) => (
-                  <span
-                    key={s}
-                    className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/5 text-white/60"
-                  >
+                  <span key={s} className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/5 text-white/55">
                     {s}
                   </span>
                 ))}
                 {artist.specialties.length > 3 && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/5 text-white/40">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/5 text-white/35">
                     +{artist.specialties.length - 3}
                   </span>
                 )}
@@ -134,18 +127,17 @@ export function StepServiceSelect({ form, updateForm, onNext }: Props) {
 
       {/* AI Suggestion */}
       <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
-        <p className="text-sm text-white/60 mb-3">Not sure which artist? Describe your tattoo idea:</p>
-        <div className="flex gap-3">
+        <p className="text-sm text-white/55 mb-3">Not sure which artist? Describe your tattoo idea:</p>
+        <div className="flex gap-2 sm:gap-3">
           <input
             type="text"
             value={ideaText}
             onChange={(e) => setIdeaText(e.target.value)}
-            placeholder="e.g., A realistic portrait of my dog with flowers..."
-            className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C8956C]/50"
+            placeholder="e.g., A realistic portrait with flowers..."
+            className="input-premium flex-1 text-sm"
           />
           <button
             onClick={() => {
-              // Simple keyword matching
               const text = ideaText.toLowerCase();
               if (text.match(/color|neon|portrait|vibrant|realism/)) {
                 updateForm({ artist_id: 'david', description: ideaText });
@@ -158,7 +150,7 @@ export function StepServiceSelect({ form, updateForm, onNext }: Props) {
               }
               setShowSuggestion(true);
             }}
-            className="px-5 py-3 rounded-xl bg-[#C8956C]/20 text-[#C8956C] font-medium text-sm hover:bg-[#C8956C]/30 transition-colors whitespace-nowrap"
+            className="px-4 sm:px-5 py-3 rounded-xl bg-[#C8956C]/20 text-[#C8956C] font-medium text-sm hover:bg-[#C8956C]/30 transition-colors whitespace-nowrap"
           >
             Match Me
           </button>
@@ -172,10 +164,10 @@ export function StepServiceSelect({ form, updateForm, onNext }: Props) {
 
       {/* Service Selection */}
       <div>
-        <h3 className="text-xl font-bold text-white mb-2">Select Service</h3>
-        <p className="text-white/50 text-sm mb-6">What type of tattoo are you looking for?</p>
+        <h3 className="text-lg sm:text-xl font-bold text-white mb-1.5">Select Service</h3>
+        <p className="text-white/45 text-sm mb-5">What type of tattoo are you looking for?</p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
           {SERVICES.map((service) => (
             <button
               key={service.id}
@@ -184,7 +176,7 @@ export function StepServiceSelect({ form, updateForm, onNext }: Props) {
                 if (!form.artist_id) suggestArtist();
               }}
               className={`
-                p-4 rounded-xl text-left transition-all duration-300
+                p-4 rounded-xl text-left transition-all duration-300 min-h-[56px]
                 ${form.service_type === service.id
                   ? 'bg-[#C8956C]/15 border border-[#C8956C]/40'
                   : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
@@ -194,21 +186,21 @@ export function StepServiceSelect({ form, updateForm, onNext }: Props) {
               <h4 className={`font-semibold text-sm ${form.service_type === service.id ? 'text-[#C8956C]' : 'text-white'}`}>
                 {service.label}
               </h4>
-              <p className="text-white/40 text-xs mt-1">{service.desc}</p>
+              <p className="text-white/40 text-xs mt-0.5">{service.desc}</p>
             </button>
           ))}
         </div>
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-end pt-4">
+      <div className="flex justify-end pt-2">
         <button
           onClick={onNext}
           disabled={!canProceed}
           className={`
-            px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300
+            w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300
             ${canProceed
-              ? 'bg-[#C8956C] text-black hover:bg-[#D4A574]'
+              ? 'bg-[#C8956C] text-black hover:bg-[#DABA8F] active:scale-[0.98]'
               : 'bg-white/5 text-white/30 cursor-not-allowed'
             }
           `}

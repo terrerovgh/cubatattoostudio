@@ -163,20 +163,20 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
   const canProceed = form.scheduled_date && form.scheduled_time;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 sm:space-y-10">
       {/* Client Info */}
       <div>
-        <h3 className="text-xl font-bold text-white mb-2">Your Information</h3>
-        <p className="text-white/50 text-sm mb-6">We need a few details to confirm your appointment</p>
+        <h3 className="text-lg sm:text-xl font-bold text-white mb-1.5">Your Information</h3>
+        <p className="text-white/45 text-sm mb-5">We need a few details to confirm your appointment</p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div>
             <label className="block text-xs font-medium text-white/60 mb-1.5">First Name *</label>
             <input
               type="text"
               value={form.first_name}
               onChange={(e) => updateForm({ first_name: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C8956C]/50"
+              className="input-premium w-full"
               placeholder="Your first name"
             />
           </div>
@@ -186,7 +186,7 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
               type="text"
               value={form.last_name}
               onChange={(e) => updateForm({ last_name: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C8956C]/50"
+              className="input-premium w-full"
               placeholder="Your last name"
             />
           </div>
@@ -196,7 +196,7 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
               type="email"
               value={form.email}
               onChange={(e) => updateForm({ email: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C8956C]/50"
+              className="input-premium w-full"
               placeholder="your@email.com"
             />
           </div>
@@ -206,7 +206,7 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
               type="tel"
               value={form.phone}
               onChange={(e) => updateForm({ phone: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C8956C]/50"
+              className="input-premium w-full"
               placeholder="(505) 000-0000"
             />
           </div>
@@ -215,27 +215,27 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
 
       {/* Calendar */}
       <div>
-        <h3 className="text-xl font-bold text-white mb-2">Choose a Date</h3>
-        <p className="text-white/50 text-sm mb-6">
+        <h3 className="text-lg sm:text-xl font-bold text-white mb-1.5">Choose a Date</h3>
+        <p className="text-white/45 text-sm mb-5">
           {form.artist_id && <>Available times for <span className="text-[#C8956C] capitalize">{form.artist_id}</span></>}
           {' '}• Tue-Sat, 11am-7pm
         </p>
 
-        <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-6">
+        <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6">
           {/* Month Navigation */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-5 sm:mb-6">
             <button
               onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-              className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+              className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
             >
               ‹
             </button>
-            <h4 className="text-lg font-bold text-white">
+            <h4 className="text-base sm:text-lg font-bold text-white">
               {MONTH_NAMES[currentMonth.getMonth()]} {currentMonth.getFullYear()}
             </h4>
             <button
               onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
-              className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+              className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
             >
               ›
             </button>
@@ -259,14 +259,14 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
                 disabled={!day.isAvailable || day.dayNum === 0}
                 className={`
                   aspect-square rounded-xl flex items-center justify-center text-sm font-medium
-                  transition-all duration-200
+                  transition-all duration-200 min-h-[40px]
                   ${day.dayNum === 0 ? 'invisible' : ''}
                   ${isSelectedDate(day.date)
                     ? 'bg-[#C8956C] text-black font-bold'
                     : day.isToday
                       ? 'bg-[#C8956C]/10 text-[#C8956C] ring-1 ring-[#C8956C]/30'
                       : day.isAvailable
-                        ? 'text-white/80 hover:bg-white/10 cursor-pointer'
+                        ? 'text-white/80 hover:bg-white/10 active:bg-white/15 cursor-pointer'
                         : 'text-white/15 cursor-not-allowed'
                   }
                 `}
@@ -299,7 +299,7 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
           ) : availableSlots.length === 0 ? (
             <p className="text-center py-8 text-white/40">No available slots for this date</p>
           ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
               {availableSlots.map((slot) => (
                 <button
                   key={slot.time}
@@ -310,11 +310,11 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
                   }}
                   disabled={!slot.available}
                   className={`
-                    p-3 rounded-xl text-center transition-all duration-200
+                    p-3.5 sm:p-3 rounded-xl text-center transition-all duration-200 min-h-[48px]
                     ${form.scheduled_time === slot.time
                       ? 'bg-[#C8956C] text-black font-bold'
                       : slot.available
-                        ? 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] text-white/80'
+                        ? 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] active:bg-white/10 text-white/80'
                         : 'bg-white/[0.02] text-white/15 cursor-not-allowed line-through'
                     }
                   `}
@@ -334,12 +334,12 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
 
       {/* Price Summary */}
       {priceEstimate && form.scheduled_date && form.scheduled_time && (
-        <div className="p-4 rounded-xl bg-[#C8956C]/10 border border-[#C8956C]/20 flex items-center justify-between">
+        <div className="p-4 sm:p-5 rounded-xl bg-[#C8956C]/10 border border-[#C8956C]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <p className="text-sm text-white font-medium">Estimated: ${priceEstimate.total_min} — ${priceEstimate.total_max}</p>
             <p className="text-xs text-white/50">Deposit: ${priceEstimate.deposit_required} (applied to final cost)</p>
           </div>
-          <div className="text-right">
+          <div className="sm:text-right">
             <p className="text-sm text-white/50">Duration</p>
             <p className="text-sm text-white font-medium">{form.estimated_duration >= 60 ? `${Math.round(form.estimated_duration / 60)}h` : `${form.estimated_duration}min`}</p>
           </div>
@@ -347,10 +347,10 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
       )}
 
       {/* Navigation */}
-      <div className="flex justify-between pt-4">
+      <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-4">
         <button
           onClick={onBack}
-          className="px-6 py-3 rounded-xl font-medium text-sm text-white/60 hover:text-white transition-colors"
+          className="px-6 py-3.5 sm:py-3 rounded-xl font-medium text-sm text-white/60 hover:text-white transition-colors text-center"
         >
           ← Back
         </button>
@@ -358,9 +358,9 @@ export function StepCalendar({ form, updateForm, priceEstimate, onNext, onBack }
           onClick={onNext}
           disabled={!canProceed || !form.first_name || !form.email}
           className={`
-            px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300
+            w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300
             ${canProceed && form.first_name && form.email
-              ? 'bg-[#C8956C] text-black hover:bg-[#D4A574]'
+              ? 'bg-[#C8956C] text-black hover:bg-[#DABA8F] active:scale-[0.98]'
               : 'bg-white/5 text-white/30 cursor-not-allowed'
             }
           `}

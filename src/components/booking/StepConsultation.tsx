@@ -58,32 +58,32 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
   const canProceed = form.description && form.placement && form.size_category;
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       {/* Tattoo Description */}
       <div>
-        <h3 className="text-xl font-bold text-white mb-2">Describe Your Tattoo</h3>
-        <p className="text-white/50 text-sm mb-4">Tell us about your vision — the more detail, the better</p>
+        <h3 className="text-lg sm:text-xl font-bold text-white mb-1.5">Describe Your Tattoo</h3>
+        <p className="text-white/45 text-sm mb-4">Tell us about your vision — the more detail, the better</p>
         <textarea
           value={form.description}
           onChange={(e) => updateForm({ description: e.target.value })}
           placeholder="Describe your tattoo idea... Include any specific elements, colors, mood, or meaning you want to capture."
           rows={4}
-          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C8956C]/50 resize-none"
+          className="input-premium w-full resize-none"
         />
       </div>
 
       {/* Reference Images */}
       <div>
-        <h3 className="text-lg font-bold text-white mb-2">Reference Images</h3>
-        <p className="text-white/50 text-sm mb-4">Upload up to 5 inspiration images</p>
+        <h3 className="text-lg font-bold text-white mb-1.5">Reference Images</h3>
+        <p className="text-white/45 text-sm mb-4">Upload up to 5 inspiration images</p>
 
         <div className="flex flex-wrap gap-3">
           {previewImages.map((src, i) => (
-            <div key={i} className="relative w-24 h-24 rounded-xl overflow-hidden group">
+            <div key={i} className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden group">
               <img src={src} alt={`Reference ${i + 1}`} className="w-full h-full object-cover" />
               <button
                 onClick={() => removeImage(i)}
-                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xl"
+                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 active:opacity-100 transition-opacity flex items-center justify-center text-white text-xl"
               >
                 ×
               </button>
@@ -93,7 +93,7 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
           {previewImages.length < 5 && (
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-24 h-24 rounded-xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center text-white/30 hover:border-[#C8956C]/30 hover:text-[#C8956C]/60 transition-colors"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center text-white/30 hover:border-[#C8956C]/30 hover:text-[#C8956C]/60 active:border-[#C8956C]/40 transition-colors"
             >
               <span className="text-2xl mb-1">+</span>
               <span className="text-[10px]">Add Photo</span>
@@ -113,8 +113,8 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
 
       {/* Body Placement Selector */}
       <div>
-        <h3 className="text-lg font-bold text-white mb-2">Placement</h3>
-        <p className="text-white/50 text-sm mb-4">Where do you want your tattoo?</p>
+        <h3 className="text-lg font-bold text-white mb-1.5">Placement</h3>
+        <p className="text-white/45 text-sm mb-4">Where do you want your tattoo?</p>
         <BodySelector
           selected={form.placement}
           onSelect={(placement) => updateForm({ placement })}
@@ -123,16 +123,16 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
 
       {/* Size Selection */}
       <div>
-        <h3 className="text-lg font-bold text-white mb-2">Size</h3>
-        <p className="text-white/50 text-sm mb-4">Approximate size of your tattoo</p>
+        <h3 className="text-lg font-bold text-white mb-1.5">Size</h3>
+        <p className="text-white/45 text-sm mb-4">Approximate size of your tattoo</p>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
           {SIZES.map((size) => (
             <button
               key={size.id}
               onClick={() => updateForm({ size_category: size.id })}
               className={`
-                p-4 rounded-xl text-left transition-all duration-300
+                p-4 rounded-xl text-left transition-all duration-300 min-h-[64px]
                 ${form.size_category === size.id
                   ? 'bg-[#C8956C]/15 border border-[#C8956C]/40'
                   : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
@@ -150,9 +150,9 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
       </div>
 
       {/* Options */}
-      <div className="flex gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <label className={`
-          flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all
+          flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all min-h-[56px]
           ${form.is_cover_up ? 'bg-[#C8956C]/15 border border-[#C8956C]/40' : 'bg-white/[0.03] border border-white/[0.06]'}
         `}>
           <input
@@ -161,7 +161,7 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
             onChange={(e) => updateForm({ is_cover_up: e.target.checked })}
             className="sr-only"
           />
-          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center text-xs ${form.is_cover_up ? 'bg-[#C8956C] border-[#C8956C] text-black' : 'border-white/20'}`}>
+          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center text-xs flex-shrink-0 ${form.is_cover_up ? 'bg-[#C8956C] border-[#C8956C] text-black' : 'border-white/20'}`}>
             {form.is_cover_up && '✓'}
           </div>
           <div>
@@ -171,7 +171,7 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
         </label>
 
         <label className={`
-          flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all
+          flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all min-h-[56px]
           ${form.is_touch_up ? 'bg-[#C8956C]/15 border border-[#C8956C]/40' : 'bg-white/[0.03] border border-white/[0.06]'}
         `}>
           <input
@@ -180,7 +180,7 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
             onChange={(e) => updateForm({ is_touch_up: e.target.checked })}
             className="sr-only"
           />
-          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center text-xs ${form.is_touch_up ? 'bg-[#C8956C] border-[#C8956C] text-black' : 'border-white/20'}`}>
+          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center text-xs flex-shrink-0 ${form.is_touch_up ? 'bg-[#C8956C] border-[#C8956C] text-black' : 'border-white/20'}`}>
             {form.is_touch_up && '✓'}
           </div>
           <div>
@@ -192,7 +192,7 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
 
       {/* Price Preview */}
       {priceEstimate && (
-        <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+        <div className="p-5 sm:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
           <h3 className="text-lg font-bold text-white mb-4">Estimated Price</h3>
           <div className="space-y-2">
             {priceEstimate.breakdown.map((item, i) => (
@@ -218,10 +218,10 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
       )}
 
       {/* Navigation */}
-      <div className="flex justify-between pt-4">
+      <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-4">
         <button
           onClick={onBack}
-          className="px-6 py-3 rounded-xl font-medium text-sm text-white/60 hover:text-white transition-colors"
+          className="px-6 py-3.5 sm:py-3 rounded-xl font-medium text-sm text-white/60 hover:text-white transition-colors text-center"
         >
           ← Back
         </button>
@@ -229,9 +229,9 @@ export function StepConsultation({ form, updateForm, priceEstimate, onNext, onBa
           onClick={onNext}
           disabled={!canProceed}
           className={`
-            px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300
+            w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300
             ${canProceed
-              ? 'bg-[#C8956C] text-black hover:bg-[#D4A574]'
+              ? 'bg-[#C8956C] text-black hover:bg-[#DABA8F] active:scale-[0.98]'
               : 'bg-white/5 text-white/30 cursor-not-allowed'
             }
           `}

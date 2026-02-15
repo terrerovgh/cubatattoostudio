@@ -53,7 +53,7 @@ export function StepPayment({ form, updateForm, priceEstimate, isSubmitting, onS
   return (
     <div className="space-y-8">
       {/* Booking Summary */}
-      <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+      <div className="p-5 sm:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
         <h3 className="text-lg font-bold text-white mb-4">Booking Summary</h3>
 
         <div className="space-y-3">
@@ -114,13 +114,13 @@ export function StepPayment({ form, updateForm, priceEstimate, isSubmitting, onS
       {/* Payment Method Selection */}
       <div>
         <h3 className="text-lg font-bold text-white mb-4">Payment Method</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
           {PAYMENT_METHODS.map((method) => (
             <button
               key={method.id}
               onClick={() => updateForm({ payment_method: method.id })}
               className={`
-                p-4 rounded-xl text-left transition-all duration-300
+                p-4 rounded-xl text-left transition-all duration-300 min-h-[64px]
                 ${form.payment_method === method.id
                   ? 'bg-[#C8956C]/15 border border-[#C8956C]/40'
                   : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
@@ -139,14 +139,14 @@ export function StepPayment({ form, updateForm, priceEstimate, isSubmitting, onS
 
       {/* Card Details */}
       {form.payment_method === 'card' && (
-        <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] space-y-4">
+        <div className="p-5 sm:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] space-y-4">
           <div>
             <label className="block text-xs font-medium text-white/60 mb-1.5">Name on Card</label>
             <input
               type="text"
               value={cardName}
               onChange={(e) => setCardName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-[#C8956C]/50"
+              className="input-premium w-full"
               placeholder="John Doe"
             />
           </div>
@@ -156,18 +156,18 @@ export function StepPayment({ form, updateForm, priceEstimate, isSubmitting, onS
               type="text"
               value={cardNumber}
               onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-mono focus:outline-none focus:border-[#C8956C]/50"
+              className="input-premium w-full font-mono"
               placeholder="4242 4242 4242 4242"
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-xs font-medium text-white/60 mb-1.5">Expiry</label>
               <input
                 type="text"
                 value={cardExpiry}
                 onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-mono focus:outline-none focus:border-[#C8956C]/50"
+                className="input-premium w-full font-mono"
                 placeholder="MM/YY"
               />
             </div>
@@ -177,14 +177,14 @@ export function StepPayment({ form, updateForm, priceEstimate, isSubmitting, onS
                 type="text"
                 value={cardCvc}
                 onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-mono focus:outline-none focus:border-[#C8956C]/50"
+                className="input-premium w-full font-mono"
                 placeholder="123"
               />
             </div>
           </div>
 
           <div className="flex items-center gap-2 text-xs text-white/40 pt-2">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
             <span>Secured by Stripe — your card info never touches our servers</span>
@@ -194,18 +194,18 @@ export function StepPayment({ form, updateForm, priceEstimate, isSubmitting, onS
 
       {/* Gift Card */}
       <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-        <p className="text-sm text-white/60 mb-3">Have a gift card or promo code?</p>
-        <div className="flex gap-3">
+        <p className="text-sm text-white/55 mb-3">Have a gift card or promo code?</p>
+        <div className="flex gap-2 sm:gap-3">
           <input
             type="text"
             value={giftCardCode}
             onChange={(e) => setGiftCardCode(e.target.value.toUpperCase())}
-            className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-mono placeholder-white/30 focus:outline-none focus:border-[#C8956C]/50"
+            className="input-premium flex-1 font-mono"
             placeholder="ENTER CODE"
           />
           <button
             onClick={() => setGiftCardApplied(true)}
-            className="px-5 py-3 rounded-xl bg-white/5 text-white/60 font-medium text-sm hover:bg-white/10 transition-colors"
+            className="px-5 py-3 rounded-xl bg-white/5 text-white/60 font-medium text-sm hover:bg-white/10 active:bg-white/15 transition-colors whitespace-nowrap"
           >
             Apply
           </button>
@@ -216,26 +216,26 @@ export function StepPayment({ form, updateForm, priceEstimate, isSubmitting, onS
       </div>
 
       {/* Terms */}
-      <label className="flex items-start gap-3 cursor-pointer">
+      <label className="flex items-start gap-3 cursor-pointer min-h-[48px] py-1">
         <input
           type="checkbox"
           checked={agreeTerms}
           onChange={(e) => setAgreeTerms(e.target.checked)}
           className="sr-only"
         />
-        <div className={`w-5 h-5 rounded border-2 flex-shrink-0 flex items-center justify-center text-xs mt-0.5 ${agreeTerms ? 'bg-[#C8956C] border-[#C8956C] text-black' : 'border-white/20'}`}>
+        <div className={`w-6 h-6 rounded border-2 flex-shrink-0 flex items-center justify-center text-xs mt-0.5 ${agreeTerms ? 'bg-[#C8956C] border-[#C8956C] text-black' : 'border-white/20'}`}>
           {agreeTerms && '✓'}
         </div>
-        <span className="text-sm text-white/60">
+        <span className="text-sm text-white/60 leading-relaxed">
           I agree to the <a href="#" className="text-[#C8956C] underline">cancellation policy</a>. The deposit is non-refundable if cancelled within 48 hours of the appointment. I understand that the final price may vary based on the complexity and duration of the session.
         </span>
       </label>
 
       {/* Navigation */}
-      <div className="flex justify-between pt-4">
+      <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-4">
         <button
           onClick={onBack}
-          className="px-6 py-3 rounded-xl font-medium text-sm text-white/60 hover:text-white transition-colors"
+          className="px-6 py-3.5 sm:py-3 rounded-xl font-medium text-sm text-white/60 hover:text-white transition-colors text-center"
         >
           ← Back
         </button>
@@ -243,9 +243,9 @@ export function StepPayment({ form, updateForm, priceEstimate, isSubmitting, onS
           onClick={handleSubmit}
           disabled={!canSubmit || isSubmitting}
           className={`
-            px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2
+            w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2
             ${canSubmit && !isSubmitting
-              ? 'bg-[#C8956C] text-black hover:bg-[#D4A574]'
+              ? 'bg-[#C8956C] text-black hover:bg-[#DABA8F] active:scale-[0.98]'
               : 'bg-white/5 text-white/30 cursor-not-allowed'
             }
           `}

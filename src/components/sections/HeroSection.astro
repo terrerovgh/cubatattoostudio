@@ -32,46 +32,47 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
     />
   </div>
 
-  {/* Dark vignette for depth */}
+  {/* Dark vignette — slightly lighter on mobile for better visibility */}
   <div class="hero-vignette"></div>
 
-  {/* Main content */}
-  <div class="relative z-[5] flex flex-col items-center text-center px-6 sm:px-8 space-y-8 max-w-3xl mx-auto">
-    {/* Logo */}
-    <div data-hero="logo" class="w-full">
+  {/* Main content — fluid spacing with breathing room */}
+  <div class="relative z-[5] flex flex-col items-center text-center px-6 sm:px-8 max-w-3xl mx-auto">
+    {/* Logo — prominent with generous top space */}
+    <div data-hero="logo" class="w-full mb-6 sm:mb-8">
       <img
         src="/logo.svg"
         alt={title || "Cuba Tattoo Studio"}
-        class="w-full max-w-md sm:max-w-lg lg:max-w-xl h-auto mx-auto drop-shadow-[0_4px_32px_rgba(200,149,108,0.15)]"
+        class="w-full max-w-[280px] sm:max-w-lg lg:max-w-xl h-auto mx-auto drop-shadow-[0_4px_32px_rgba(200,149,108,0.15)]"
       />
       {title && <h1 class="sr-only">{title}</h1>}
     </div>
 
-    {/* Decorative gold line */}
+    {/* Decorative gold line — micro pause */}
     <div
       data-hero="line"
-      class="w-[40%] sm:w-[30%] h-px mx-auto"
+      class="w-[30%] sm:w-[25%] h-px mx-auto mb-6 sm:mb-8"
       style="background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent); transform-origin: center;"
     >
     </div>
 
-    {/* Subtitle */}
+    {/* Subtitle — more breathing room before CTA */}
     {
       subtitle && (
         <p
           data-hero="subtitle"
-          class="text-lg sm:text-xl text-white/60 font-light max-w-lg mx-auto tracking-wide leading-relaxed"
+          class="text-fluid-body-lg text-white/55 font-light max-w-md sm:max-w-lg mx-auto tracking-wide leading-relaxed mb-10 sm:mb-12"
         >
           {subtitle}
         </p>
       )
     }
 
-    {/* CTA Button with prismatic border */}
-    <div data-hero="cta" class="pt-2">
+    {/* CTA Button — generous touch target, prominent on mobile */}
+    <div data-hero="cta">
       <a
         href="#booking"
-        class="prismatic-border group inline-flex items-center gap-3 px-8 py-4 rounded-2xl
+        class="prismatic-border group inline-flex items-center justify-center gap-3
+               px-8 py-4 min-w-[220px] rounded-2xl
                bg-[var(--color-gold)] text-black font-semibold text-base
                transition-all duration-500 ease-out
                hover:shadow-[0_8px_30px_rgba(200,149,108,0.3)]
@@ -94,10 +95,10 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
     </div>
   </div>
 
-  {/* Scroll indicator */}
+  {/* Scroll indicator — safe area aware */}
   <div
     data-hero="scroll"
-    class="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 z-[5] flex flex-col items-center gap-2"
+    class="scroll-indicator absolute bottom-8 pb-[env(safe-area-inset-bottom,0px)] left-1/2 -translate-x-1/2 z-[5] flex flex-col items-center gap-2"
   >
     <span class="text-[10px] uppercase tracking-[0.2em] text-white/30 font-medium">Scroll</span>
     <svg

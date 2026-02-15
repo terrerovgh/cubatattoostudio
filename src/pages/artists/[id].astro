@@ -29,7 +29,6 @@ if (!artistData) {
 }
 
 // Load all images for this artist from the src/assets/gallery folder
-// We use src/assets so getImage receives ImageMetadata
 const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/gallery/**/*.{jpg,jpeg,png,webp}",
 );
@@ -45,18 +44,14 @@ const featuredWorks = artistData.portfolio?.featuredWorks || [];
 // Process all images found in the directory
 const galleryItems = await Promise.all(
   artistGalleryPaths.map(async (imagePath, index) => {
-    // Generate a stable ID
     const workId = `${artistId}-work-${index}`;
-    // Extract filename for matching
     const filename = imagePath.split("/").pop();
 
-    // Find matching metadata if available
     const metadata = featuredWorks.find((fw: any) =>
       fw.image.endsWith(filename || ""),
     );
 
     try {
-      // Import the image module to get metadata
       const imageModule = await galleryImages[imagePath]();
       const imageMetadata = imageModule.default;
 
@@ -79,7 +74,6 @@ const galleryItems = await Promise.all(
               tags: metadata.tags || ["tattoo"],
             }
           : {
-              // Default metadata for non-featured images
               title: "Portfolio Piece",
               description: "Work by " + artistData.displayName,
               style: "Tattoo",
@@ -89,8 +83,6 @@ const galleryItems = await Promise.all(
       };
     } catch (e) {
       console.error(`Failed to optimize image ${imagePath}:`, e);
-      // Fallback to direct path if optimization fails (unlikely with src imports)
-      // We construct a path assuming the file might be in public/gallery as well, or just fail gracefully
       const filename = imagePath.split("/").pop();
       return {
         id: workId,
@@ -106,7 +98,6 @@ const pageTitle = `${artistData.displayName} — Cuba Tattoo Studio`;
 const pageDescription =
   artistData.bio?.substring(0, 160) || `Portfolio of ${artistData.fullName}`;
 
-// Determine animation direction based on layout
 const animateDir = config.layout === "gallery-right" ? "right" : "left";
 ---
 
@@ -120,7 +111,7 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
     }}
   ></style>
 
-  {/* Algorithmic constellation background — driven by .md config */}
+  {/* Algorithmic constellation background */}
   {config.constellation?.enabled && (
     <NinaAlgorithmicBackground
       client:only="react"
@@ -129,7 +120,7 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
     />
   )}
 
-  {/* WebGL splash cursor effect — driven by .md config */}
+  {/* WebGL splash cursor effect */}
   {config.splashCursor?.enabled && (
     <SplashCursor
       client:only="react"
@@ -145,10 +136,10 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
     />
   )}
 
-  {/* Back to studio nav */}
+  {/* Top nav — glassmorphism with Book CTA */}
   <nav
     class="fixed top-0 left-0 right-0 z-50 px-4 py-3"
-    style="background: rgba(10, 10, 12, 0.6); backdrop-filter: blur(30px) saturate(1.5); -webkit-backdrop-filter: blur(30px) saturate(1.5); border-bottom: 1px solid rgba(255, 255, 255, 0.05);"
+    style="background: rgba(8, 8, 10, 0.6); backdrop-filter: blur(30px) saturate(1.5); -webkit-backdrop-filter: blur(30px) saturate(1.5); border-bottom: 1px solid rgba(255, 255, 255, 0.05);"
   >
     <div class="max-w-5xl mx-auto flex items-center justify-between">
       <a
@@ -167,26 +158,37 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
             stroke-linejoin="round"
             d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
         </svg>
-        Cuba Tattoo Studio
+        <span class="hidden sm:inline">Cuba Tattoo Studio</span>
       </a>
+
       <span class="text-sm font-medium text-white/70"
         >{artistData.displayName}</span
       >
-      {
-        artistData.instagram && (
-          <a
-            href={`https://instagram.com/${artistData.instagram.username}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-white/40 hover:text-white transition-colors"
-            aria-label="Instagram"
-          >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-            </svg>
-          </a>
-        )
-      }
+
+      <div class="flex items-center gap-3">
+        {
+          artistData.instagram && (
+            <a
+              href={`https://instagram.com/${artistData.instagram.username}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-white/40 hover:text-white transition-colors"
+              aria-label="Instagram"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+              </svg>
+            </a>
+          )
+        }
+        <a
+          href="/booking"
+          class="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 hover:scale-[1.03]"
+          style={`background: ${config.accentColor}; color: black;`}
+        >
+          Book Session
+        </a>
+      </div>
     </div>
   </nav>
 
@@ -201,14 +203,13 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
   />
 
   {/* Content Section — layout driven by .md config */}
-  <div class="max-w-7xl mx-auto px-4 sm:px-8 pb-24 space-y-12">
+  <div class="container-wide pb-24 space-y-12">
     {
       config.layout === "gallery-top" ? (
         <>
-          {/* Gallery full width */}
           <section id="gallery" data-section="gallery" class="space-y-6">
             <h2
-              class="text-2xl sm:text-3xl font-bold text-white tracking-tight"
+              class="text-fluid-md font-bold text-white tracking-tight"
               data-animate-heading
             >
               Portfolio
@@ -226,7 +227,6 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
             />
           </section>
 
-          {/* Bio + Calendar side by side */}
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <ArtistBio
               bio={artistData.bio}
@@ -262,14 +262,12 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
           </div>
         </>
       ) : (
-        /* gallery-left or gallery-right: 2-column layout */
         <div
           class:list={[
             "grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8",
             config.layout === "gallery-right" && "lg:grid-cols-[1fr_1.2fr]",
           ]}
         >
-          {/* Gallery column */}
           <section
             id="gallery"
             data-section="gallery"
@@ -279,7 +277,7 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
             ]}
           >
             <h2
-              class="text-2xl sm:text-3xl font-bold text-white tracking-tight"
+              class="text-fluid-md font-bold text-white tracking-tight"
               data-animate-heading
             >
               Portfolio
@@ -297,7 +295,6 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
             />
           </section>
 
-          {/* Bio + Calendar column */}
           <div
             class:list={[
               "space-y-8",
@@ -360,5 +357,22 @@ const animateDir = config.layout === "gallery-right" ? "right" : "left";
         Back to Studio
       </a>
     </div>
+  </div>
+
+  {/* Sticky mobile CTA — bottom bar */}
+  <div
+    class="fixed bottom-0 left-0 right-0 z-50 sm:hidden px-4 pb-[env(safe-area-inset-bottom,8px)] pt-3"
+    style={`background: rgba(8, 8, 10, 0.85); backdrop-filter: blur(30px) saturate(1.5); -webkit-backdrop-filter: blur(30px) saturate(1.5); border-top: 1px solid rgba(255, 255, 255, 0.05);`}
+  >
+    <a
+      href="/booking"
+      class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-semibold text-black transition-all active:scale-[0.98]"
+      style={`background: ${config.accentColor};`}
+    >
+      Book with {artistData.displayName}
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+      </svg>
+    </a>
   </div>
 </BaseLayout>

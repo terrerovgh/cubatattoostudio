@@ -37,6 +37,7 @@ export default function FloatingDock() {
         border: '1px solid rgba(255, 255, 255, 0.08)',
         boxShadow:
           'inset 0 1px 0 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 0 rgba(0, 0, 0, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2)',
+        paddingBottom: 'max(6px, env(safe-area-inset-bottom, 6px))',
       }}
       aria-label="Main navigation"
     >
@@ -54,8 +55,10 @@ export default function FloatingDock() {
                        rounded-2xl transition-all duration-300 ease-out
                        group cursor-pointer"
             style={{
-              width: accent ? 52 : 46,
-              height: accent ? 52 : 46,
+              width: accent ? 54 : 48,
+              height: accent ? 54 : 48,
+              minWidth: 44,
+              minHeight: 44,
               transform: isHovered ? 'scale(1.15) translateY(-2px)' : 'scale(1)',
               background: isActive
                 ? accent
@@ -86,7 +89,7 @@ export default function FloatingDock() {
               }}
             />
 
-            {/* Label — visible on hover */}
+            {/* Label — visible on hover or active */}
             <span
               className="text-[8px] font-medium tracking-wide mt-0.5 transition-all duration-300"
               style={{

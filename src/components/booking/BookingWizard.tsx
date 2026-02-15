@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { BookingFormData, SizeCategory, PriceEstimate } from '../../types/booking';
 import { StepServiceSelect } from './StepServiceSelect';
 import { StepConsultation } from './StepConsultation';
@@ -8,11 +8,11 @@ import { StepConfirmation } from './StepConfirmation';
 import { calculatePriceEstimate } from '../../lib/pricing';
 
 const STEPS = [
-  { id: 'service', label: 'Artist & Service', icon: '✦' },
-  { id: 'details', label: 'Your Tattoo', icon: '◇' },
-  { id: 'schedule', label: 'Schedule', icon: '◈' },
-  { id: 'payment', label: 'Payment', icon: '⬡' },
-  { id: 'confirm', label: 'Confirmed', icon: '✓' },
+  { id: 'service', label: 'Artist & Service', shortLabel: 'Artist' },
+  { id: 'details', label: 'Your Tattoo', shortLabel: 'Details' },
+  { id: 'schedule', label: 'Schedule', shortLabel: 'Date' },
+  { id: 'payment', label: 'Payment', shortLabel: 'Pay' },
+  { id: 'confirm', label: 'Confirmed', shortLabel: 'Done' },
 ];
 
 const INITIAL_FORM: BookingFormData = {
@@ -45,12 +45,14 @@ export function BookingWizard() {
   const [bookingId, setBookingId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [direction, setDirection] = useState<'forward' | 'back'>('forward');
+  const [animating, setAnimating] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const updateForm = useCallback((updates: Partial<BookingFormData>) => {
     setForm((prev) => {
       const next = { ...prev, ...updates };
 
-      // Recalculate price when relevant fields change
       if (
         updates.size_category !== undefined ||
         updates.style !== undefined ||
@@ -76,15 +78,27 @@ export function BookingWizard() {
     });
   }, []);
 
+  const animateStep = useCallback((newStep: number, dir: 'forward' | 'back') => {
+    setDirection(dir);
+    setAnimating(true);
+    // Short timeout for exit animation
+    setTimeout(() => {
+      setStep(newStep);
+      setAnimating(false);
+      // Scroll to top of wizard
+      contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  }, []);
+
   const handleNext = useCallback(() => {
     setError(null);
-    setStep((s) => Math.min(s + 1, STEPS.length - 1));
-  }, []);
+    animateStep(Math.min(step + 1, STEPS.length - 1), 'forward');
+  }, [step, animateStep]);
 
   const handleBack = useCallback(() => {
     setError(null);
-    setStep((s) => Math.max(s - 1, 0));
-  }, []);
+    animateStep(Math.max(step - 1, 0), 'back');
+  }, [step, animateStep]);
 
   const handleSubmit = useCallback(async (paymentMethodId?: string) => {
     setIsSubmitting(true);
@@ -107,107 +121,118 @@ export function BookingWizard() {
       }
 
       setBookingId(data.data.booking.id);
-      setStep(4); // Confirmation step
+      animateStep(4, 'forward');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setIsSubmitting(false);
     }
-  }, [form]);
+  }, [form, animateStep]);
+
+  // Progress percentage
+  const progress = step === 4 ? 100 : (step / (STEPS.length - 1)) * 100;
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Progress Steps */}
-      <div className="flex items-center justify-between mb-12 px-4">
-        {STEPS.map((s, i) => (
-          <div key={s.id} className="flex items-center flex-1">
-            <div className="flex flex-col items-center relative">
-              <div
-                className={`
-                  w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
-                  transition-all duration-500
-                  ${i < step
-                    ? 'bg-[#C8956C] text-black'
-                    : i === step
-                      ? 'bg-[#C8956C]/20 text-[#C8956C] ring-2 ring-[#C8956C]/50'
-                      : 'bg-white/5 text-white/30'
-                  }
-                `}
-              >
-                {i < step ? '✓' : s.icon}
-              </div>
+    <div className="w-full max-w-4xl mx-auto" ref={contentRef}>
+      {/* Progress Bar — segmented, modern */}
+      <div className="mb-10 sm:mb-12 px-2">
+        {/* Step labels */}
+        <div className="flex justify-between mb-3">
+          {STEPS.map((s, i) => (
+            <div key={s.id} className="flex flex-col items-center flex-1">
               <span
                 className={`
-                  mt-2 text-xs font-medium whitespace-nowrap
-                  ${i <= step ? 'text-white/80' : 'text-white/30'}
+                  text-[10px] sm:text-xs font-medium transition-colors duration-300
+                  ${i <= step ? 'text-[#C8956C]' : 'text-white/25'}
                 `}
               >
-                {s.label}
+                <span className="sm:hidden">{s.shortLabel}</span>
+                <span className="hidden sm:inline">{s.label}</span>
               </span>
             </div>
-            {i < STEPS.length - 1 && (
-              <div
-                className={`
-                  flex-1 h-px mx-3 mt-[-20px] transition-colors duration-500
-                  ${i < step ? 'bg-[#C8956C]/60' : 'bg-white/10'}
-                `}
-              />
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Segmented progress bar */}
+        <div className="flex gap-1.5">
+          {STEPS.map((s, i) => (
+            <div
+              key={s.id}
+              className="progress-segment flex-1"
+              style={{
+                '--progress': i < step ? '1' : i === step ? '0.5' : '0',
+              } as React.CSSProperties}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Error Banner */}
       {error && (
-        <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+        <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-start gap-3">
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+          </svg>
           {error}
         </div>
       )}
 
-      {/* Step Content */}
-      <div className="min-h-[500px]">
-        {step === 0 && (
-          <StepServiceSelect
-            form={form}
-            updateForm={updateForm}
-            onNext={handleNext}
-          />
-        )}
-        {step === 1 && (
-          <StepConsultation
-            form={form}
-            updateForm={updateForm}
-            priceEstimate={priceEstimate}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        )}
-        {step === 2 && (
-          <StepCalendar
-            form={form}
-            updateForm={updateForm}
-            priceEstimate={priceEstimate}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        )}
-        {step === 3 && (
-          <StepPayment
-            form={form}
-            updateForm={updateForm}
-            priceEstimate={priceEstimate}
-            isSubmitting={isSubmitting}
-            onSubmit={handleSubmit}
-            onBack={handleBack}
-          />
-        )}
-        {step === 4 && (
-          <StepConfirmation
-            form={form}
-            bookingId={bookingId}
-            priceEstimate={priceEstimate}
-          />
-        )}
+      {/* Step Content — card container with glass effect */}
+      <div className="liquid-glass rounded-[24px] sm:rounded-[28px] p-5 sm:p-8 lg:p-10 overflow-hidden">
+        <div
+          className={`
+            min-h-[400px] sm:min-h-[500px] transition-all duration-200 ease-out
+            ${animating ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}
+          `}
+          style={{
+            transform: animating
+              ? direction === 'forward' ? 'translateX(20px)' : 'translateX(-20px)'
+              : 'translateX(0)',
+          }}
+        >
+          {step === 0 && (
+            <StepServiceSelect
+              form={form}
+              updateForm={updateForm}
+              onNext={handleNext}
+            />
+          )}
+          {step === 1 && (
+            <StepConsultation
+              form={form}
+              updateForm={updateForm}
+              priceEstimate={priceEstimate}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          )}
+          {step === 2 && (
+            <StepCalendar
+              form={form}
+              updateForm={updateForm}
+              priceEstimate={priceEstimate}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          )}
+          {step === 3 && (
+            <StepPayment
+              form={form}
+              updateForm={updateForm}
+              priceEstimate={priceEstimate}
+              isSubmitting={isSubmitting}
+              onSubmit={handleSubmit}
+              onBack={handleBack}
+            />
+          )}
+          {step === 4 && (
+            <StepConfirmation
+              form={form}
+              bookingId={bookingId}
+              priceEstimate={priceEstimate}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
