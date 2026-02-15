@@ -3,6 +3,12 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import type { ApiResponse } from '../../../types/booking';
 
+interface CreateIntentRequest {
+  booking_id: string;
+  amount: number;
+  payment_method_id?: string;
+}
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const env = locals.runtime.env;
@@ -14,7 +20,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const { booking_id, amount, payment_method_id } = await request.json();
+    const { booking_id, amount, payment_method_id } = await request.json() as CreateIntentRequest;
 
     if (!booking_id || !amount) {
       return Response.json(

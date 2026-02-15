@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.6",
     "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/react": "^4.4.2",
     "@nanostores/react": "^1.0.0",
@@ -24,7 +25,8 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "stripe": "^20.3.1",
-    "three": "^0.182.0"
+    "three": "^0.182.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260212.0",

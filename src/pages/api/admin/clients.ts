@@ -2,12 +2,20 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import type { ApiResponse } from '../../../types/booking';
+import { z } from 'zod';
 
 function checkAuth(request: Request, env: Env): boolean {
   const auth = request.headers.get('authorization');
   if (!auth || !env.ADMIN_PASSWORD) return false;
   return auth.replace('Bearer ', '') === env.ADMIN_PASSWORD;
 }
+
+const PatchClientSchema = z.object({
+  client_id: z.string().min(1),
+  notes: z.string().optional(),
+  preferred_artist: z.string().optional(),
+  loyalty_tier: z.enum(['standard', 'silver', 'gold', 'vip']).optional(),
+});
 
 export const GET: APIRoute = async ({ request, url, locals }) => {
   const env = locals.runtime.env;
@@ -95,11 +103,17 @@ export const PATCH: APIRoute = async ({ request, locals }) => {
 
   try {
     const db = env.DB;
-    const { client_id, notes, preferred_artist, loyalty_tier } = await request.json();
+    const json = await request.json().catch(() => ({}));
+    const bodyResult = PatchClientSchema.safeParse(json);
 
-    if (!client_id) {
-      return Response.json({ success: false, error: 'client_id required' } satisfies ApiResponse, { status: 400 });
+    if (!bodyResult.success) {
+      return Response.json(
+        { success: false, error: 'Validation failed', data: bodyResult.error.format() } satisfies ApiResponse,
+        { status: 400 }
+      );
     }
+
+    const { client_id, notes, preferred_artist, loyalty_tier } = bodyResult.data;
 
     const updates: string[] = [];
     const values: any[] = [];
@@ -107,6 +121,11 @@ export const PATCH: APIRoute = async ({ request, locals }) => {
     if (notes !== undefined) { updates.push('notes = ?'); values.push(notes); }
     if (preferred_artist) { updates.push('preferred_artist = ?'); values.push(preferred_artist); }
     if (loyalty_tier) { updates.push('loyalty_tier = ?'); values.push(loyalty_tier); }
+
+    if (updates.length === 0) {
+      return Response.json({ success: false, error: 'No fields to update' } satisfies ApiResponse, { status: 400 });
+    }
+
     updates.push("updated_at = datetime('now')");
     values.push(client_id);
 
