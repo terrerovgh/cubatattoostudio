@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { cleanExpired } from '@/lib/imageCache';
 import CachedImage from '@/components/CachedImage';
+import ServiceCarouselCard, { type Service } from '../services/ServiceCarouselCard';
+import ServiceModal from '../services/ServiceModal';
 
 interface Post {
   id: string;
@@ -12,17 +14,6 @@ interface Post {
   srcSet?: string;
   attributes?: any;
   type?: 'post';
-}
-
-export interface Service {
-  name: string;
-  description: string;
-  fullDescription: string;
-  priceList: { item: string; price: string }[];
-  galleryImages: string[];
-  videos?: string[];
-  reviews: { author: string; comment: string; rating: number }[];
-  type?: 'service';
 }
 
 interface ArtistData {
@@ -48,95 +39,16 @@ const ARTIST_LABELS: Record<string, string> = {
   karli: 'Karli',
 };
 
+// We extend Service but ensure it matches what the grid expects
 type GalleryServiceItem = Service & {
   type: 'service';
   id: string;
-  imageUrl: string;
+  imageUrl: string; // Used as fallback or main image
   caption?: string;
   artist?: string;
   isLocal?: boolean;
   srcSet?: string;
   attributes?: any;
-};
-
-// Internal component for the carousel card
-const ServiceCarouselCard = ({ item, onClick }: { item: GalleryServiceItem; onClick: () => void }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const media = [
-    ...(item.videos || []).map(src => ({ type: 'video' as const, src })),
-    ...(item.galleryImages || []).map(src => ({ type: 'image' as const, src }))
-  ];
-
-  useEffect(() => {
-    if (media.length <= 1) return;
-
-    // Randomize interval between 4s and 7s to avoid synchronized switching
-    const randomInterval = Math.floor(Math.random() * 3000) + 4000;
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % media.length);
-    }, randomInterval);
-
-    return () => clearInterval(interval);
-  }, [media.length]);
-
-  const currentMedia = media[currentIndex];
-
-  return (
-    <div
-      onClick={onClick}
-      className={`w-full break-inside-avoid mb-4 rounded-[18px] overflow-hidden
-                  bg-white/[0.03] border border-white/[0.05]
-                  transition-all duration-500 ease-out
-                  hover:border-white/[0.12] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]
-                  hover:scale-[1.02]
-                  group relative block text-left cursor-pointer aspect-[4/5]`} // Enforce aspect ratio for services
-    >
-      {/* Carousel Media */}
-      <div className="absolute inset-0 bg-black">
-        {media.map((m, i) => (
-          <div
-            key={`${item.id}-media-${i}`}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out
-                       ${i === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-          >
-            {m.type === 'video' ? (
-              <video
-                src={m.src}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <img
-                src={m.src}
-                alt={item.name}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            )}
-          </div>
-        ))}
-        {/* Overlay gradient always on top */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-20" />
-      </div>
-
-      {/* Content Overlay */}
-      <div className="absolute inset-0 z-30 flex flex-col justify-end p-5">
-        <h3 className="text-white font-bold text-xl leading-tight mb-2 drop-shadow-lg">
-          {item.name}
-        </h3>
-        <p className="text-white/90 text-sm font-light line-clamp-2 drop-shadow-md mb-3">
-          {item.description}
-        </p>
-        <div className="flex items-center text-[10px] uppercase tracking-wider font-bold text-[var(--color-gold)]">
-          <span className="bg-black/30 backdrop-blur-sm px-2 py-1 rounded">View Services</span>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 type GalleryItem = (Post & { type: 'post' }) | GalleryServiceItem;
@@ -145,17 +57,15 @@ export default function GallerySection({ initialPosts, initialArtists, services 
   const posts = initialPosts || [];
   const artists = initialArtists || {};
 
-  // Combine services and posts. Services come first or interleaved?
-  // Let's prepend services for now so they are prominent.
-  // We need to tag them with a type.
+  // Combine services and posts. Services come first.
   const normalizedServices: GalleryItem[] = services.map((s, i) => ({
     ...s,
     type: 'service',
-    id: `service-${i}`,
+    id: s.id || `service-${i}`,
     // Use the first gallery image as the main image for the card (fallback)
     imageUrl: s.galleryImages?.[0] || '',
     caption: s.description,
-    artist: 'studio', // Services are usually studio-wide or can be filtered if we add metadata
+    artist: 'studio',
     isLocal: true,
   }));
 
@@ -169,14 +79,10 @@ export default function GallerySection({ initialPosts, initialArtists, services 
   const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
-    // Clean old cached images occasionally
     cleanExpired().catch(() => { });
   }, []);
 
-  // Build available filters from actual data
   const availableFilters = ['all'];
-
-  // Check if studio posts exist (studio is usually filtered by artistFolder='studio' in posts list)
   const hasStudioPosts = posts.some(p => p.artist === 'studio');
   if (hasStudioPosts) availableFilters.push('studio');
 
@@ -186,25 +92,18 @@ export default function GallerySection({ initialPosts, initialArtists, services 
     }
   }
 
-  // Filter items based on active tab
-  // For services, we currently show them in 'all' and 'studio'. 
-  // If we want to filter services by artist, we'd need to add that metadata to services.
-  // For now, let's show services only in 'all' or specific artist if we can infer it? 
-  // Actually, services seem to be general. Let's keep them in 'all' and maybe 'studio'.
   const filteredItems = (activeFilter === 'all' ? [...normalizedServices, ...normalizedPosts] : normalizedPosts)
     .filter((item) => {
       if (activeFilter === 'all') return true;
-      if (item.type === 'service') return false; // Hide services when filtering by specific artist for now
+      if (item.type === 'service') return false; // Hide services when filtering by specific artist
       return item.artist === activeFilter;
     });
 
-  // Update displayed posts when filter or page changes
   useEffect(() => {
     const sliced = filteredItems.slice(0, page * ITEMS_PER_PAGE);
     setDisplayedItems(sliced);
   }, [activeFilter, page, posts, services]);
 
-  // Reset page when filter changes
   useEffect(() => {
     setPage(1);
   }, [activeFilter]);
@@ -215,7 +114,6 @@ export default function GallerySection({ initialPosts, initialArtists, services 
     setPage(prev => prev + 1);
   };
 
-  // Fallback placeholder grid when no data
   const placeholders: GalleryItem[] = Array.from({ length: 6 }, (_, i) => ({
     id: `placeholder-${i}`,
     imageUrl: '',
@@ -229,15 +127,6 @@ export default function GallerySection({ initialPosts, initialArtists, services 
 
   const items = displayedItems.length > 0 ? displayedItems : placeholders;
   const showFilters = availableFilters.length > 2;
-
-  // Selected Service specific logic
-  const [activeServiceImage, setActiveServiceImage] = useState<string>('');
-
-  useEffect(() => {
-    if (selectedItem?.type === 'service' && selectedItem.galleryImages?.length) {
-      setActiveServiceImage(selectedItem.galleryImages[0]);
-    }
-  }, [selectedItem]);
 
   return (
     <>
@@ -382,108 +271,22 @@ export default function GallerySection({ initialPosts, initialArtists, services 
 
       {/* Lightbox / Service Modal */}
       {selectedItem && (
-        <div
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-4 cursor-pointer"
-          style={{
-            background: 'rgba(0, 0, 0, 0.85)',
-            backdropFilter: 'blur(20px) saturate(0.8)',
-            WebkitBackdropFilter: 'blur(20px) saturate(0.8)',
-          }}
-          onClick={() => setSelectedItem(null)}
-        >
-          {selectedItem.type === 'service' ? (
-            // SERVICE DETAIL MODAL (Redesigned for service content)
-            <div
-              className="relative w-full max-w-4xl max-h-[90vh] rounded-[24px] overflow-hidden
-                         shadow-[0_40px_100px_rgba(0,0,0,0.7)]
-                         border border-white/[0.08] bg-[#0A0A0A] flex flex-col md:flex-row"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Left side: Image Gallery */}
-              <div className="w-full md:w-1/2 h-64 md:h-auto bg-black/50 relative group">
-                {activeServiceImage && (
-                  <img
-                    src={activeServiceImage}
-                    alt={selectedItem.name}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-                {/* Thumbnails overlay */}
-                <div className="absolute bottom-4 left-4 right-4 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                  {selectedItem.galleryImages?.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveServiceImage(img);
-                      }}
-                      className={`w-12 h-12 rounded-lg overflow-hidden border-2 shrink-0 transition-all
-                                ${activeServiceImage === img ? 'border-[var(--color-gold)] scale-110' : 'border-white/20 hover:border-white/60'}`}
-                    >
-                      <img src={img} className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right side: Content */}
-              <div className="w-full md:w-1/2 p-8 md:p-10 overflow-y-auto custom-scrollbar">
-                <h2 className="text-3xl font-bold text-gradient-gold mb-2">{selectedItem.name}</h2>
-                <div className="w-12 h-1 bg-[var(--color-gold)] mb-6 rounded-full opacity-50"></div>
-
-                <p className="text-white/80 leading-relaxed mb-8 whitespace-pre-line text-sm md:text-base">
-                  {selectedItem.fullDescription}
-                </p>
-
-                {/* Pricing */}
-                {selectedItem.priceList && selectedItem.priceList.length > 0 && (
-                  <div className="mb-8 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--color-gold)] mb-4 flex items-center">
-                      <span className="w-2 h-2 rounded-full bg-[var(--color-gold)] mr-2"></span>
-                      Pricing
-                    </h4>
-                    <div className="space-y-3">
-                      {selectedItem.priceList.map((p, i) => (
-                        <div key={i} className="flex justify-between items-center text-sm border-b border-dashed border-white/10 pb-2 last:border-0 last:pb-0">
-                          <span className="text-white/60">{p.item}</span>
-                          <span className="font-medium text-white">{p.price}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Reviews (if any) */}
-                {selectedItem.reviews && selectedItem.reviews.length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Reviews</h4>
-                    {selectedItem.reviews.map((rev, i) => (
-                      <blockquote key={i} className="text-sm text-white/60 italic border-l-2 border-[var(--color-gold)] pl-4 py-1">
-                        "{rev.comment}" <span className="block text-xs font-normal text-white/40 not-italic mt-1">- {rev.author}</span>
-                      </blockquote>
-                    ))}
-                  </div>
-                )}
-
-                <a href="#booking" onClick={() => setSelectedItem(null)} className="w-full block text-center bg-[var(--color-gold)] text-black font-bold py-3 rounded-xl hover:bg-[#D4A37D] transition-colors">
-                  Book This Service
-                </a>
-              </div>
-
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full
-                           flex items-center justify-center
-                           text-white/50 hover:text-white bg-black/20 hover:bg-black/60 transition-all"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          ) : (
-            // STANDARD IMAGE MODAL
+        selectedItem.type === 'service' ? (
+          <ServiceModal
+            item={selectedItem}
+            onClose={() => setSelectedItem(null)}
+          />
+        ) : (
+          <div
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-4 cursor-pointer"
+            style={{
+              background: 'rgba(0, 0, 0, 0.85)',
+              backdropFilter: 'blur(20px) saturate(0.8)',
+              WebkitBackdropFilter: 'blur(20px) saturate(0.8)',
+            }}
+            onClick={() => setSelectedItem(null)}
+          >
+            {/* STANDARD IMAGE MODAL */}
             <div
               className="relative max-w-3xl max-h-[85vh] rounded-[20px] overflow-hidden
                          shadow-[0_32px_80px_rgba(0,0,0,0.6)]
@@ -554,8 +357,8 @@ export default function GallerySection({ initialPosts, initialArtists, services 
                 )}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )
       )}
     </>
   );

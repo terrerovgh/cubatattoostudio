@@ -1,199 +1,159 @@
-import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, Star } from 'lucide-react';
-
-export interface ServiceData {
-    name: string;
-    description: string;
-    images: string[];
-    videos?: string[];
-    fullDescription?: string;
-    priceList?: { item: string; price: string }[];
-    reviews?: { author: string; comment: string; rating: number }[];
-    price?: string;
-    // Grid Configuration
-    colSpanMobile?: number;
-    rowSpanMobile?: number;
-    colSpanTablet?: number;
-    rowSpanTablet?: number;
-    colSpanDesktop?: number;
-    rowSpanDesktop?: number;
-}
+import { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
+import type { Service } from './ServiceCarouselCard';
 
 interface ServiceModalProps {
-    service: ServiceData | null;
-    isOpen: boolean;
-    onClose: () => void;
+  item: Service;
+  onClose: () => void;
 }
 
-export default function ServiceModal({ service, isOpen, onClose }: ServiceModalProps) {
-    const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+export default function ServiceModal({ item, onClose }: ServiceModalProps) {
+  const [activeMedia, setActiveMedia] = useState<{ type: 'image' | 'video', src: string } | null>(null);
 
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [isOpen]);
+  const media = [
+    ...(item.videos || []).map(src => ({ type: 'video' as const, src })),
+    ...(item.galleryImages || []).map(src => ({ type: 'image' as const, src }))
+  ];
 
-    useEffect(() => {
-        setActiveMediaIndex(0);
-    }, [service]);
+  useEffect(() => {
+    if (media.length > 0) {
+      setActiveMedia(media[0]);
+    }
+  }, [item]);
 
-    if (!service || !isOpen) return null;
+  if (!item) return null;
 
-    const allMedia = [...(service.images || []), ...(service.videos || [])];
+  return (
+    <div
+      className="fixed inset-0 z-[1000] flex items-center justify-center p-4 cursor-pointer"
+      style={{
+        background: 'rgba(0, 0, 0, 0.85)',
+        backdropFilter: 'blur(20px) saturate(0.8)',
+        WebkitBackdropFilter: 'blur(20px) saturate(0.8)',
+      }}
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-4xl max-h-[90vh] rounded-[24px] overflow-hidden
+                   shadow-[0_40px_100px_rgba(0,0,0,0.7)]
+                   border border-white/[0.08] bg-[#0A0A0A] flex flex-col md:flex-row"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Left side: Image/Video Gallery */}
+        <div className="w-full md:w-1/2 h-64 md:h-auto bg-black/50 relative group flex flex-col">
+          <div className="flex-1 relative overflow-hidden">
+            {activeMedia && (
+              activeMedia.type === 'video' ? (
+                <video
+                  src={activeMedia.src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  controls
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <img
+                  src={activeMedia.src}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              )
+            )}
+          </div>
 
-    const handleNext = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setActiveMediaIndex((prev) => (prev + 1) % allMedia.length);
-    };
-
-    const handlePrev = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setActiveMediaIndex((prev) => (prev - 1 + allMedia.length) % allMedia.length);
-    };
-
-    return (
-        <div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
-            style={{
-                background: 'rgba(0, 0, 0, 0.6)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-            }}
-            onClick={onClose}
-        >
-            <div
-                className="w-full max-w-5xl bg-[#1a1a1a] rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh] border border-white/10"
-                onClick={(e) => e.stopPropagation()}
-            >
-                {/* Media Section (Left/Top) */}
-                <div className="w-full md:w-1/2 bg-black relative flex items-center justify-center h-[300px] md:h-auto min-h-[300px]">
-                    {allMedia.length > 0 ? (
-                        <>
-                            <img
-                                src={allMedia[activeMediaIndex]}
-                                alt={service.name}
-                                className="w-full h-full object-cover"
-                            />
-
-                            {allMedia.length > 1 && (
-                                <>
-                                    <button
-                                        onClick={handlePrev}
-                                        className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
-                                    >
-                                        <ChevronLeft size={20} />
-                                    </button>
-                                    <button
-                                        onClick={handleNext}
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
-                                    >
-                                        <ChevronRight size={20} />
-                                    </button>
-
-                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                                        {allMedia.map((_, idx) => (
-                                            <div
-                                                key={idx}
-                                                className={`w-2 h-2 rounded-full transition-all ${idx === activeMediaIndex ? 'bg-white w-4' : 'bg-white/40'
-                                                    }`}
-                                            />
-                                        ))}
-                                    </div>
-                                </>
-                            )}
-                        </>
-                    ) : (
-                        <div className="text-white/40 flex flex-col items-center">
-                            <span>No media available</span>
-                        </div>
-                    )}
-                </div>
-
-                {/* Content Section (Right/Bottom) */}
-                <div className="w-full md:w-1/2 flex flex-col h-full bg-[#1a1a1a]">
-                    {/* Header */}
-                    <div className="p-6 border-b border-white/5 relative">
-                        <h2 className="text-2xl font-bold text-white mb-1">{service.name}</h2>
-                        <p className="text-white/60 text-sm">{service.description}</p>
-                        <button
-                            onClick={onClose}
-                            className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors"
-                        >
-                            <X size={24} />
-                        </button>
-                    </div>
-
-                    {/* Scrollable Content */}
-                    <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar">
-
-                        {/* Full Description */}
-                        <div>
-                            <h3 className="text-[var(--color-gold)] text-xs font-bold uppercase tracking-wider mb-3">About the Service</h3>
-                            <div className="text-white/80 space-y-4 leading-relaxed text-sm md:text-base whitespace-pre-line">
-                                {service.fullDescription || service.description}
-                            </div>
-                        </div>
-
-                        {/* Pricing */}
-                        {service.priceList && service.priceList.length > 0 && (
-                            <div>
-                                <h3 className="text-[var(--color-gold)] text-xs font-bold uppercase tracking-wider mb-3">Pricing</h3>
-                                <div className="bg-white/5 rounded-xl p-4 space-y-3">
-                                    {service.priceList.map((item, idx) => (
-                                        <div key={idx} className="flex justify-between items-center text-sm border-b border-white/5 last:border-0 pb-2 last:pb-0">
-                                            <span className="text-white/90 font-medium">{item.item}</span>
-                                            <span className="text-white/60">{item.price}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Reviews */}
-                        {service.reviews && service.reviews.length > 0 && (
-                            <div>
-                                <h3 className="text-[var(--color-gold)] text-xs font-bold uppercase tracking-wider mb-3">Client Reviews</h3>
-                                <div className="space-y-4">
-                                    {service.reviews.map((review, idx) => (
-                                        <div key={idx} className="bg-white/[0.03] p-4 rounded-xl border border-white/5">
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <span className="text-white font-medium text-sm">{review.author}</span>
-                                                <div className="flex gap-0.5 text-[var(--color-gold)]">
-                                                    {Array.from({ length: 5 }).map((_, starIdx) => (
-                                                        <Star
-                                                            key={starIdx}
-                                                            size={12}
-                                                            fill={starIdx < review.rating ? "currentColor" : "none"}
-                                                            className={starIdx < review.rating ? "opacity-100" : "opacity-30"}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <p className="text-white/70 text-xs italic">"{review.comment}"</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Footer CTA */}
-                    <div className="p-6 border-t border-white/10 mt-auto bg-[#1a1a1a]">
-                        <a
-                            href="/booking"
-                            className="block w-full text-center py-3 bg-[var(--color-gold)] text-black font-bold rounded-lg hover:bg-[#d4a883] transition-colors"
-                        >
-                            Book This Service
-                        </a>
-                    </div>
-                </div>
-            </div>
+          {/* Thumbnails overlay */}
+          <div className="bg-black/40 backdrop-blur-md border-t border-white/10 p-3 flex gap-2 overflow-x-auto scrollbar-hide">
+            {media.map((m, i) => (
+              <button
+                key={i}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveMedia(m);
+                }}
+                className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 transition-all relative
+                          ${activeMedia?.src === m.src ? 'border-[var(--color-gold)] opacity-100' : 'border-white/20 opacity-60 hover:opacity-100 hover:border-white/60'}`}
+              >
+                {m.type === 'video' ? (
+                  <video
+                    src={m.src}
+                    className="w-full h-full object-cover"
+                    muted
+                  />
+                ) : (
+                  <img src={m.src} className="w-full h-full object-cover" />
+                )}
+                {m.type === 'video' && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                    <div className="w-0 h-0 border-l-[6px] border-l-white border-y-[4px] border-y-transparent ml-0.5"></div>
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
-    );
+
+        {/* Right side: Content */}
+        <div className="w-full md:w-1/2 p-6 md:p-10 overflow-y-auto custom-scrollbar flex flex-col h-[60vh] md:h-auto">
+          <h2 className="text-3xl font-bold text-gradient-gold mb-2">{item.name}</h2>
+          <div className="w-12 h-1 bg-[var(--color-gold)] mb-6 rounded-full opacity-50 shrink-0"></div>
+
+          <p className="text-white/80 leading-relaxed mb-8 whitespace-pre-line text-sm md:text-base">
+            {item.fullDescription}
+          </p>
+
+          {/* Pricing */}
+          {item.priceList && item.priceList.length > 0 && (
+            <div className="mb-8 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--color-gold)] mb-4 flex items-center">
+                <span className="w-2 h-2 rounded-full bg-[var(--color-gold)] mr-2"></span>
+                Pricing
+              </h4>
+              <div className="space-y-3">
+                {item.priceList.map((p, i) => (
+                  <div key={i} className="flex justify-between items-center text-sm border-b border-dashed border-white/10 pb-2 last:border-0 last:pb-0">
+                    <span className="text-white/60">{p.item}</span>
+                    <span className="font-medium text-white">{p.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Reviews (if any) */}
+          {item.reviews && item.reviews.length > 0 && (
+            <div className="mb-6">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Reviews</h4>
+              {item.reviews.map((rev, i) => (
+                <blockquote key={i} className="text-sm text-white/60 italic border-l-2 border-[var(--color-gold)] pl-4 py-1 mb-2 last:mb-0">
+                  "{rev.comment}" <span className="block text-xs font-normal text-white/40 not-italic mt-1">- {rev.author}</span>
+                </blockquote>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-auto pt-6">
+            <a
+              href="#booking"
+              onClick={onClose}
+              className="w-full block text-center bg-[var(--color-gold)] text-black font-bold py-3 rounded-xl hover:bg-[#D4A37D] transition-colors"
+            >
+              Book This Service
+            </a>
+          </div>
+        </div>
+
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full
+                     flex items-center justify-center
+                     text-white/50 hover:text-white bg-black/20 hover:bg-black/60 transition-all backdrop-blur-sm"
+        >
+          <X size={20} />
+        </button>
+      </div>
+    </div>
+  );
 }
