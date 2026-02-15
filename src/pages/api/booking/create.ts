@@ -16,7 +16,7 @@ const BookingSchema = z.object({
     last_name: z.string().min(1, "Last name is required"),
     phone: z.string().optional(),
     date_of_birth: z.string().optional(),
-    size_category: z.enum(['tiny', 'small', 'medium', 'large', 'xlarge', 'custom']).optional(),
+    size_category: z.enum(['tiny', 'small', 'medium', 'large', 'xlarge', 'custom']),
     style: z.string().optional(),
     is_cover_up: z.boolean().optional(),
     is_touch_up: z.boolean().optional(),
