@@ -38,7 +38,7 @@ export async function compressImage(
   canvas.height = newHeight;
   const ctx = canvas.getContext('2d')!;
   ctx.drawImage(imageBitmap, 0, 0, newWidth, newHeight);
-  imageBitmap.close();
+  imageBitmap.close(); // Correctly close after synchronous draw
 
   return new Promise((resolve) => {
     canvas.toBlob((b) => resolve(b!), mimeType, quality);

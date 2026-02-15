@@ -1,8 +1,6 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { generateAftercareMessages } from '../../../lib/aftercare';
-import { calculateBookingPoints, calculateTier } from '../../../lib/loyalty';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const env = locals.runtime.env;
@@ -35,7 +33,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       case 'payment_intent.succeeded': {
         const intent = event.data.object;
         const bookingId = intent.metadata?.booking_id;
-        const clientId = intent.metadata?.client_id;
+        // const clientId = intent.metadata?.client_id; // Unused
 
         if (bookingId) {
           // Update payment record

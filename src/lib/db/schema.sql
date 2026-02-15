@@ -79,6 +79,7 @@ CREATE INDEX IF NOT EXISTS idx_bookings_client ON bookings(client_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_artist ON bookings(artist_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(scheduled_date);
 CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bookings_slot ON bookings(artist_id, scheduled_date, scheduled_time) WHERE status NOT IN ('cancelled', 'no_show', 'rescheduled');
 
 -- ─── Payments ─────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS payments (

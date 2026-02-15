@@ -109,20 +109,26 @@ export async function clearCache(): Promise<void> {
 
 export async function getCacheStats(): Promise<CacheStats> {
   const db = await getDB();
-  const all = await db.getAll(STORE_NAME);
-  if (all.length === 0) {
-    return { count: 0, totalSize: 0, oldestEntry: null, newestEntry: null };
-  }
+  // Use cursor to avoid loading all blobs into memory
+  let count = 0;
   let totalSize = 0;
   let oldest = Infinity;
   let newest = 0;
-  for (const entry of all) {
+
+  const tx = db.transaction(STORE_NAME, 'readonly');
+  let cursor = await tx.store.openCursor();
+
+  while (cursor) {
+    const entry = cursor.value;
+    count++;
     totalSize += entry.size;
     if (entry.cachedAt < oldest) oldest = entry.cachedAt;
     if (entry.cachedAt > newest) newest = entry.cachedAt;
+    cursor = await cursor.continue();
   }
+
   return {
-    count: all.length,
+    count,
     totalSize,
     oldestEntry: oldest === Infinity ? null : oldest,
     newestEntry: newest === 0 ? null : newest,
@@ -147,16 +153,30 @@ export async function cleanExpired(): Promise<number> {
 
 async function evictIfNeeded(incomingSize: number): Promise<void> {
   const db = await getDB();
-  const all = await db.getAll(STORE_NAME);
-  let totalSize = all.reduce((sum, e) => sum + e.size, 0);
+
+  // 1. Calculate current size using cursor to maintain low memory footprint
+  let totalSize = 0;
+  {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    let cursor = await tx.store.openCursor();
+    while (cursor) {
+      totalSize += cursor.value.size;
+      cursor = await cursor.continue();
+    }
+  }
+
   if (totalSize + incomingSize <= MAX_CACHE_SIZE_BYTES) return;
 
-  all.sort((a, b) => a.cachedAt - b.cachedAt);
+  // 2. Evict oldest entries until we have space
   const tx = db.transaction(STORE_NAME, 'readwrite');
-  for (const entry of all) {
-    if (totalSize + incomingSize <= MAX_CACHE_SIZE_BYTES) break;
-    await tx.store.delete(entry.id);
-    totalSize -= entry.size;
+  const index = tx.store.index('by-cached-at');
+  let cursor = await index.openCursor(); // Ascending order (oldest first)
+
+  while (cursor && totalSize + incomingSize > MAX_CACHE_SIZE_BYTES) {
+    const size = cursor.value.size;
+    await cursor.delete();
+    totalSize -= size;
+    cursor = await cursor.continue();
   }
   await tx.done;
 }
