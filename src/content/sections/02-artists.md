@@ -5,11 +5,11 @@ backgroundImage: /backgrounds/artists.svg
 layout: profile-card
 title: Our Artists
 artists:
-  - name: David Guzman Claveria
+  - name: David Guzman
     role: Founder & Main Artist — Color Realism, Black & Grey, Neo-Traditional
     image: /artists/david.svg
     instagram: "@david_guzman_tattoo"
-  - name: Nina (Jaline Romero Heredia)
+  - name: Nina
     role: Specialist in Fine Line, Dotwork, Ornamental & Geometric Blackwork
     image: /artists/nina.svg
     instagram: "@goodnina_tattooing"
