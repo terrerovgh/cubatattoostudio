@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import type { CreateBookingRequest, ApiResponse, CreateBookingResponse } from '../../../types/booking';
 import { calculatePriceEstimate, estimateDuration } from '../../../lib/pricing';
 import { z } from 'zod';
+import Stripe from 'stripe';
 
 const BookingSchema = z.object({
   form_data: z.object({
@@ -157,8 +158,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let paymentIntent: { client_secret: string; amount: number } | undefined;
 
     if (stripe_payment_method_id && env.STRIPE_SECRET_KEY) {
-      const stripe = await import('stripe');
-      const stripeClient = new stripe.default(env.STRIPE_SECRET_KEY);
+      const stripeClient = new Stripe(env.STRIPE_SECRET_KEY, {
+        apiVersion: '2024-12-18.acacia'
+      });
 
       const intent = await stripeClient.paymentIntents.create({
         amount: Math.round(estimate.deposit_required * 100), // cents

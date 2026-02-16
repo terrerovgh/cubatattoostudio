@@ -2,6 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import type { ApiResponse } from '../../../types/booking';
+import Stripe from 'stripe';
 
 interface CreateIntentRequest {
   booking_id: string;
@@ -39,8 +40,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const stripe = await import('stripe');
-    const stripeClient = new stripe.default(env.STRIPE_SECRET_KEY);
+    const stripeClient = new Stripe(env.STRIPE_SECRET_KEY, {
+        apiVersion: '2024-12-18.acacia'
+    });
 
     const intentParams: any = {
       amount: Math.round(amount * 100),

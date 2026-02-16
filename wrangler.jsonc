@@ -1,32 +1,40 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "cubatattoostudio",
-  "compatibility_date": "2026-02-12",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": "dist/_worker.js/index.js",
-  "routes": [
-    { "pattern": "cubatattoostudio.com", "custom_domain": true },
-    { "pattern": "www.cubatattoostudio.com", "custom_domain": true }
-  ],
-  "assets": {
-    "directory": "dist",
-    "binding": "ASSETS"
-  },
-  "r2_buckets": [
-    {
-      "binding": "R2_BUCKET",
-      "bucket_name": "cubatattoostudio",
-      "preview_bucket_name": "cubatattoostudio"
-    }
-  ],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "cubatattoostudio-db",
-      "database_id": "YOUR_DATABASE_ID_HERE"
-    }
-  ],
-  "vars": {
-    "SITE_URL": "https://cubatattoostudio.com"
-  }
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "cubatattoostudio",
+	"compatibility_date": "2026-02-12",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"main": "dist/_worker.js/index.js",
+	"routes": [
+		{
+			"pattern": "cubatattoostudio.com",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.cubatattoostudio.com",
+			"custom_domain": true
+		}
+	],
+	"assets": {
+		"directory": "dist",
+		"binding": "ASSETS"
+	},
+	"r2_buckets": [
+		{
+			"binding": "R2_BUCKET",
+			"bucket_name": "cubatattoostudio",
+			"preview_bucket_name": "cubatattoostudio"
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "cubatattoostudio-db",
+			"database_id": "f163ebf8-bfe4-414d-a47b-afe86365d573"
+		}
+	],
+	"vars": {
+		"SITE_URL": "https://cubatattoostudio.com"
+	}
 }

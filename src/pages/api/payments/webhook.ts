@@ -1,6 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import Stripe from 'stripe';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const env = locals.runtime.env;
@@ -10,8 +11,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return new Response('Stripe not configured', { status: 500 });
   }
 
-  const stripe = await import('stripe');
-  const stripeClient = new stripe.default(env.STRIPE_SECRET_KEY);
+  const stripeClient = new Stripe(env.STRIPE_SECRET_KEY, {
+    apiVersion: '2024-12-18.acacia'
+  });
 
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
