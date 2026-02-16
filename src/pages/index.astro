@@ -7,6 +7,8 @@ import GallerySectionWrapper from "../components/sections/GallerySectionWrapper.
 import BookingSection from "../components/sections/BookingSection.astro";
 import PromosSection from "../components/sections/PromosSection.astro";
 
+export const prerender = true;
+
 const allSections = await getCollection("sections");
 console.log(
   "Index.astro sections loaded:",
@@ -26,7 +28,7 @@ const sections = allSections.sort(
         return (
           <HeroSection
             id={data.id || "hero"}
-            backgroundImage={data.backgroundImage}
+            backgroundImage={data.backgroundImage || ""}
             title={data.title || ""}
             subtitle={data.subtitle || ""}
           />
@@ -37,7 +39,7 @@ const sections = allSections.sort(
         return (
           <ArtistsSection
             id={data.id || "artists"}
-            backgroundImage={data.backgroundImage}
+            backgroundImage={data.backgroundImage || ""}
             title={data.title || ""}
             artists={data.artists || []}
           />
@@ -48,7 +50,7 @@ const sections = allSections.sort(
         return (
           <GallerySectionWrapper
             id={data.id || "gallery"}
-            backgroundImage={data.backgroundImage}
+            backgroundImage={data.backgroundImage || ""}
             title={data.title || ""}
             subtitle={data.subtitle || ""}
             services={data.services || []}
@@ -60,7 +62,7 @@ const sections = allSections.sort(
         return (
           <BookingSection
             id={data.id || "booking"}
-            backgroundImage={data.backgroundImage}
+            backgroundImage={data.backgroundImage || ""}
             title={data.title || ""}
             subtitle={data.subtitle || ""}
             bookingUrl={data.bookingUrl || "/booking"}
@@ -75,7 +77,7 @@ const sections = allSections.sort(
         return (
           <PromosSection
             id={data.id || "promos"}
-            backgroundImage={data.backgroundImage}
+            backgroundImage={data.backgroundImage || ""}
             title={data.title || ""}
             subtitle={data.subtitle || ""}
             promos={data.promos || []}

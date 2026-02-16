@@ -20,7 +20,7 @@ export function FlashDrops() {
       const params = new URLSearchParams({ status: 'available' });
       if (filterArtist) params.set('artist_id', filterArtist);
       const res = await fetch(`/api/flash/drops?${params}`);
-      const data = await res.json();
+      const data = await res.json() as any;
       if (data.success) setDesigns(data.data.designs || []);
     } catch (err) {
       console.error('Failed to fetch flash designs:', err);
@@ -40,7 +40,7 @@ export function FlashDrops() {
           ...claimForm,
         }),
       });
-      const data = await res.json();
+      const data = await res.json() as any;
       if (data.success) {
         setClaimResult(data);
         fetchDesigns();

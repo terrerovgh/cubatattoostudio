@@ -16,8 +16,8 @@ export function LoyaltyWidget() {
         fetch(`/api/loyalty/points?email=${encodeURIComponent(email)}`),
         fetch('/api/loyalty/redeem'),
       ]);
-      const pointsData = await pointsRes.json();
-      const rewardsData = await rewardsRes.json();
+      const pointsData = await pointsRes.json() as any;
+      const rewardsData = await rewardsRes.json() as any;
 
       if (pointsData.success) setData(pointsData.data);
       if (rewardsData.success) setRewards(rewardsData.data.rewards || []);

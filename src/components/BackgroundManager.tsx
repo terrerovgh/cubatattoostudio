@@ -7,7 +7,7 @@ export default function BackgroundManager() {
   const [displayedBg, setDisplayedBg] = useState(currentBg);
   const [nextBg, setNextBg] = useState<string | null>(null);
   const [transitioning, setTransitioning] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (currentBg === displayedBg) return;

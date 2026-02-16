@@ -19,10 +19,16 @@ export const GET: APIRoute = async () => {
   } satisfies ApiResponse);
 };
 
+interface RedeemRequest {
+  client_id: string;
+  reward_id: string;
+  booking_id?: string;
+}
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const db = locals.runtime.env.DB;
-    const { client_id, reward_id, booking_id } = await request.json();
+    const { client_id, reward_id, booking_id } = await request.json() as RedeemRequest;
 
     if (!client_id || !reward_id) {
       return Response.json({ success: false, error: 'client_id and reward_id required' } satisfies ApiResponse, { status: 400 });

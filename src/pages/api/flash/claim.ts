@@ -3,10 +3,17 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import type { ApiResponse } from '../../../types/booking';
 
+interface ClaimRequest {
+  flash_design_id: string;
+  email: string;
+  first_name: string;
+  last_name?: string;
+}
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const db = locals.runtime.env.DB;
-    const { flash_design_id, email, first_name, last_name } = await request.json();
+    const { flash_design_id, email, first_name, last_name } = await request.json() as ClaimRequest;
 
     if (!flash_design_id || !email || !first_name) {
       return Response.json({ success: false, error: 'Missing required fields' } satisfies ApiResponse, { status: 400 });

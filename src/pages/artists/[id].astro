@@ -7,6 +7,8 @@ import CalendarNav from "../../components/artist/CalendarNav";
 import NinaAlgorithmicBackground from "../../components/artist/NinaAlgorithmicBackground";
 import SplashCursor from "../../components/artist/SplashCursor";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const artistEntries = await getCollection("artists");
   return artistEntries.map((entry) => ({
@@ -106,8 +108,18 @@ const pageDescription =
     config.constellation?.enabled && (
       <NinaAlgorithmicBackground
         client:only="react"
-        accentColor={config.accentColor}
-        constellation={config.constellation}
+        accentColor={config.accentColor || '#ffffff'}
+        constellation={{
+          enabled: config.constellation?.enabled ?? true,
+          colors: config.constellation?.colors ?? [],
+          starDensity: config.constellation?.starDensity ?? 0.4,
+          rotationSpeed: config.constellation?.rotationSpeed ?? 0.1,
+          mandalas: config.constellation?.mandalas ?? [],
+          roses: config.constellation?.roses ?? [],
+          sacredGeometry: config.constellation?.sacredGeometry ?? false,
+          geometricShapes: config.constellation?.geometricShapes ?? false,
+          phyllotaxis: config.constellation?.phyllotaxis ?? false,
+        }}
       />
     )
   }
@@ -194,10 +206,10 @@ const pageDescription =
       name={artistData.fullName}
       role={artistData.role}
       profileImage={artistData.profileImage}
-      backgroundImage={config.backgroundImage}
+      backgroundImage={config.backgroundImage || ''}
       bio={artistData.bio}
       instagram={artistData.instagram}
-      accentColor={config.accentColor}
+      accentColor={config.accentColor || '#ffffff'}
       displayName={artistData.displayName}
     />
 
@@ -223,10 +235,10 @@ const pageDescription =
             <h3 class="card-title">Calendar</h3>
             <CalendarNav
               client:visible
-              schedule={config.availability.schedule}
+              schedule={config.availability.schedule || {}}
               blockedDates={config.availability.blockedDates}
               note={config.availability.note}
-              accentColor={config.accentColor}
+              accentColor={config.accentColor || '#ffffff'}
             />
           </div>
         )

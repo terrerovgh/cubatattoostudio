@@ -24,7 +24,7 @@ export function AdminDashboard() {
     setLoading(true);
     try {
       const res = await fetch('/api/admin/analytics', { headers: authHeaders });
-      const data = await res.json();
+      const data = await res.json() as any;
       if (data.success) {
         setStats(data.data.stats);
         setRevenueByArtist(data.data.revenue_by_artist || []);
@@ -44,7 +44,7 @@ export function AdminDashboard() {
       if (filterStatus) params.set('status', filterStatus);
       if (filterArtist) params.set('artist_id', filterArtist);
       const res = await fetch(`/api/admin/bookings?${params}`, { headers: authHeaders });
-      const data = await res.json();
+      const data = await res.json() as any;
       if (data.success) setBookings(data.data.bookings || []);
     } catch (err) {
       console.error('Failed to fetch bookings:', err);
@@ -58,7 +58,7 @@ export function AdminDashboard() {
       const params = new URLSearchParams();
       if (searchTerm) params.set('search', searchTerm);
       const res = await fetch(`/api/admin/clients?${params}`, { headers: authHeaders });
-      const data = await res.json();
+      const data = await res.json() as any;
       if (data.success) setClients(data.data.clients || []);
     } catch (err) {
       console.error('Failed to fetch clients:', err);
@@ -71,7 +71,7 @@ export function AdminDashboard() {
       const res = await fetch('/api/admin/analytics', { headers: { Authorization: `Bearer ${token}` } });
       if (res.ok) {
         setIsAuth(true);
-        const data = await res.json();
+        const data = await res.json() as any;
         if (data.success) {
           setStats(data.data.stats);
           setRevenueByArtist(data.data.revenue_by_artist || []);

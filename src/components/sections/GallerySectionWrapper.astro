@@ -43,7 +43,7 @@ const optimizedPosts = await Promise.all(
 );
 
 // Process artist profiles (if needed for avatars)
-const optimizedArtists = {};
+const optimizedArtists: Record<string, any> = {};
 if (instagramData.artists) {
   for (const [key, artist] of Object.entries(instagramData.artists)) {
     let profilePic = artist.profile?.localProfilePic;
@@ -96,8 +96,8 @@ if (instagramData.artists) {
     <div class="space-y-8" data-animate>
       <GallerySection
         client:visible
-        initialPosts={optimizedPosts}
-        initialArtists={optimizedArtists}
+        initialPosts={optimizedPosts as any}
+        initialArtists={optimizedArtists as any}
         services={services}
       />
     </div>
