@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { verifyUploadAuth } from '../../../lib/auth';
 
 export const prerender = false;
 
@@ -8,9 +9,7 @@ const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 export const POST: APIRoute = async (context) => {
   const { env } = context.locals.runtime;
 
-  const authHeader = context.request.headers.get('Authorization');
-  const expectedToken = env.UPLOAD_SECRET;
-  if (expectedToken && authHeader !== `Bearer ${expectedToken}`) {
+  if (!await verifyUploadAuth(context.request, env)) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
@@ -75,7 +74,6 @@ export const POST: APIRoute = async (context) => {
         status: 201,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
         },
       },
     );
@@ -92,7 +90,6 @@ export const OPTIONS: APIRoute = async () => {
   return new Response(null, {
     status: 204,
     headers: {
-      'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Max-Age': '86400',
