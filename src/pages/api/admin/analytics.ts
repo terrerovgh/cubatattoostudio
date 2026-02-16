@@ -2,16 +2,11 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import type { ApiResponse, DashboardStats } from '../../../types/booking';
-
-function checkAuth(request: Request, env: Env): boolean {
-  const auth = request.headers.get('authorization');
-  if (!auth || !env.ADMIN_PASSWORD) return false;
-  return auth.replace('Bearer ', '') === env.ADMIN_PASSWORD;
-}
+import { verifyAdminAuth } from '../../../lib/auth';
 
 export const GET: APIRoute = async ({ request, locals }) => {
   const env = locals.runtime.env;
-  if (!checkAuth(request, env)) {
+  if (!await verifyAdminAuth(request, env)) {
     return Response.json({ success: false, error: 'Unauthorized' } satisfies ApiResponse, { status: 401 });
   }
 

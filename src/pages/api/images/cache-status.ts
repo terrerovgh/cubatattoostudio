@@ -1,9 +1,17 @@
 import type { APIRoute } from 'astro';
+import { verifyAdminAuth } from '../../../lib/auth';
 
 export const prerender = false;
 
 export const GET: APIRoute = async (context) => {
   const { env } = context.locals.runtime;
+
+  if (!await verifyAdminAuth(context.request, env)) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   try {
     const listed = await env.R2_BUCKET.list({ prefix: 'gallery/', limit: 100 });
@@ -25,7 +33,6 @@ export const GET: APIRoute = async (context) => {
         headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=60',
-          'Access-Control-Allow-Origin': '*',
         },
       },
     );

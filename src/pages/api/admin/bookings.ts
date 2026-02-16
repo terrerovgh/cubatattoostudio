@@ -3,13 +3,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import type { ApiResponse } from '../../../types/booking';
 import { z } from 'zod';
-
-function checkAuth(request: Request, env: Env): boolean {
-  const auth = request.headers.get('authorization');
-  if (!auth || !env.ADMIN_PASSWORD) return false;
-  const token = auth.replace('Bearer ', '');
-  return token === env.ADMIN_PASSWORD;
-}
+import { verifyAdminAuth } from '../../../lib/auth';
 
 const PatchBookingSchema = z.object({
   booking_id: z.string().min(1),
@@ -21,7 +15,7 @@ const PatchBookingSchema = z.object({
 
 export const GET: APIRoute = async ({ request, url, locals }) => {
   const env = locals.runtime.env;
-  if (!checkAuth(request, env)) {
+  if (!await verifyAdminAuth(request, env)) {
     return Response.json({ success: false, error: 'Unauthorized' } satisfies ApiResponse, { status: 401 });
   }
 
@@ -93,7 +87,7 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
 
 export const PATCH: APIRoute = async ({ request, locals }) => {
   const env = locals.runtime.env;
-  if (!checkAuth(request, env)) {
+  if (!await verifyAdminAuth(request, env)) {
     return Response.json({ success: false, error: 'Unauthorized' } satisfies ApiResponse, { status: 401 });
   }
 

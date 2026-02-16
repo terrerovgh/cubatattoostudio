@@ -2,7 +2,8 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import type { ApiResponse } from '../../../types/booking';
-import { calculateTier, getTierBenefits, getNextTier, calculateBookingPoints } from '../../../lib/loyalty';
+import { calculateTier, getTierBenefits, getNextTier } from '../../../lib/loyalty';
+import { verifyAdminAuth } from '../../../lib/auth';
 
 export const GET: APIRoute = async ({ url, locals }) => {
   try {
@@ -57,9 +58,14 @@ export const GET: APIRoute = async ({ url, locals }) => {
 };
 
 export const POST: APIRoute = async ({ request, locals }) => {
+  const env = locals.runtime.env;
+  if (!await verifyAdminAuth(request, env)) {
+    return Response.json({ success: false, error: 'Unauthorized' } satisfies ApiResponse, { status: 401 });
+  }
+
   try {
-    const db = locals.runtime.env.DB;
-    const { client_id, type, points, booking_id, description } = await request.json();
+    const db = env.DB;
+    const { client_id, type, points, booking_id, description } = await request.json() as any;
 
     if (!client_id || !type || points === undefined) {
       return Response.json({ success: false, error: 'client_id, type, and points required' } satisfies ApiResponse, { status: 400 });
