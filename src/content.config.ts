@@ -62,6 +62,18 @@ const artists = defineCollection({
             note: z.string().optional()
         }).optional(),
 
+        // Gallery
+        gallery: z.array(z.object({
+            image: z.string(),
+            size: z.string().optional(),
+        })).optional(),
+
+        // Services
+        services: z.array(z.object({
+            label: z.string(),
+            icon: z.string(),
+        })).optional(),
+
         // Splash cursor settings
         splashCursor: z.object({
             enabled: z.boolean().default(false),

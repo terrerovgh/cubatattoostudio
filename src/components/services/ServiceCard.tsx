@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import type { ServiceData } from './ServiceModal';
+import type { Service } from './ServiceCarouselCard';
 
 interface ServiceCardProps {
-    service: ServiceData;
+    service: Service;
     onClick: () => void;
     className?: string;
 }
@@ -13,7 +13,7 @@ export default function ServiceCard({ service, onClick, className = '' }: Servic
     const [isHovered, setIsHovered] = useState(false);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-    const allMedia = [...(service.images || []), ...(service.videos || [])];
+    const allMedia = [...(service.galleryImages || []), ...(service.videos || [])];
 
     // Auto-play carousel on hover
     useEffect(() => {

@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import SectionWrapper from "../SectionWrapper.astro";
 import FlashDayModal from "../FlashDayModal.astro";
 
@@ -109,7 +108,7 @@ const marqueePromos = [...displayPromos, ...displayPromos];
                                                 data-img-index={imgIndex}
                                             >
                                                 <img
-                                                    src={imgSrc}
+                                                    src={typeof imgSrc === 'string' ? imgSrc : imgSrc.src}
                                                     alt={`${promo.title} - ${imgIndex + 1}`}
                                                     class="w-full h-full object-cover"
                                                 />
@@ -219,7 +218,7 @@ const marqueePromos = [...displayPromos, ...displayPromos];
             if (images.length <= 1) return;
 
             let currentIndex = 0;
-            let interval;
+            let interval: ReturnType<typeof setInterval>;
 
             const startCarousel = () => {
                 interval = setInterval(() => {
@@ -233,9 +232,10 @@ const marqueePromos = [...displayPromos, ...displayPromos];
                 }, 3000); // Change image every 3 seconds
             };
 
-            const stopCarousel = () => {
-                clearInterval(interval);
-            };
+            // Stop carousel when card is not visible or destroyed (simple cleanup)
+            // const stopCarousel = () => {
+            //     clearInterval(interval);
+            // };
 
             startCarousel();
         });

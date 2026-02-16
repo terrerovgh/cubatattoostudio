@@ -27,10 +27,14 @@ export const GET: APIRoute = async ({ url, locals }) => {
 };
 
 // Schedule aftercare messages when a booking is completed
+interface StatusRequest {
+  booking_id: string;
+}
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const db = locals.runtime.env.DB;
-    const { booking_id } = await request.json();
+    const { booking_id } = await request.json() as StatusRequest;
 
     if (!booking_id) {
       return Response.json({ success: false, error: 'booking_id required' } satisfies ApiResponse, { status: 400 });

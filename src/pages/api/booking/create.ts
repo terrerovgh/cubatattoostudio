@@ -159,7 +159,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     if (stripe_payment_method_id && env.STRIPE_SECRET_KEY) {
       const stripeClient = new Stripe(env.STRIPE_SECRET_KEY, {
-        apiVersion: '2024-12-18.acacia'
+        apiVersion: '2026-01-28.clover'
       });
 
       const intent = await stripeClient.paymentIntents.create({

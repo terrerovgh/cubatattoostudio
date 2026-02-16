@@ -30,6 +30,23 @@ export const GET: APIRoute = async ({ url, locals }) => {
   }
 };
 
+interface CreateDropRequest {
+  artist_id: string;
+  title: string;
+  description?: string;
+  image_url: string;
+  style?: string;
+  placement_suggestion?: string;
+  size_category?: string;
+  price: number;
+  original_price?: number;
+  is_drop?: boolean;
+  drop_date?: string;
+  drop_quantity?: number;
+  early_bird_discount?: number;
+  early_bird_slots?: number;
+}
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const env = locals.runtime.env;
@@ -43,7 +60,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       artist_id, title, description, image_url, style,
       placement_suggestion, size_category, price, original_price,
       is_drop, drop_date, drop_quantity, early_bird_discount, early_bird_slots,
-    } = await request.json();
+    } = await request.json() as CreateDropRequest;
 
     if (!artist_id || !title || !image_url || !price) {
       return Response.json({ success: false, error: 'Missing required fields' } satisfies ApiResponse, { status: 400 });

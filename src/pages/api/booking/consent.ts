@@ -7,7 +7,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const env = locals.runtime.env;
     const db = env.DB;
-    const body = await request.json();
+    const body = await request.json() as ConsentForm;
 
     const {
       booking_id,

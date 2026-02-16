@@ -12,6 +12,7 @@ export interface Service {
   type?: 'service';
   id?: string;
   imageUrl?: string;
+  price?: string;
 }
 
 interface ServiceCarouselCardProps {
