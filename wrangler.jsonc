@@ -19,13 +19,13 @@
       "preview_bucket_name": "cubatattoostudio"
     }
   ],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "cubatattoostudio-db",
-      "database_id": "YOUR_DATABASE_ID_HERE"
-    }
-  ],
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "cubatattoostudio-db",
+  //     "database_id": "YOUR_DATABASE_ID_HERE"
+  //   }
+  // ],
   "vars": {
     "SITE_URL": "https://cubatattoostudio.com"
   }
