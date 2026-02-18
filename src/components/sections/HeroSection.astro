@@ -23,7 +23,6 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
   <div class="color-bends-bg hidden lg:block">
     <ColorBends
       client:only="react"
-      client:visible
       colors={["#8B5E3C", "#4A3558", "#2E524A"]}
       rotation={25}
       speed={0.06}
