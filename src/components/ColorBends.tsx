@@ -1,5 +1,21 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import * as THREE from 'three';
+
+function useWebGLSupport(): boolean {
+  const [isSupported, setIsSupported] = useState(true);
+
+  useEffect(() => {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      setIsSupported(!!gl);
+    } catch {
+      setIsSupported(false);
+    }
+  }, []);
+
+  return isSupported;
+}
 
 type ColorBendsProps = {
   className?: string;
@@ -129,6 +145,7 @@ export default function ColorBends({
   noise = 0.1,
   curve = 6
 }: ColorBendsProps) {
+  const isWebGLSupported = useWebGLSupport();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -140,7 +157,18 @@ export default function ColorBends({
   const pointerCurrentRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0));
   const pointerSmoothRef = useRef<number>(8);
 
+  const gradientStyle = useMemo(() => {
+    const c1 = colors[0] || '#8B5E3C';
+    const c2 = colors[1] || '#4A3558';
+    const c3 = colors[2] || '#2E524A';
+    return {
+      background: `linear-gradient(${rotation}deg, ${c1} 0%, ${c2} 50%, ${c3} 100%)`,
+      opacity: transparent ? 0.85 : 1,
+    };
+  }, [colors, rotation, transparent]);
+
   useEffect(() => {
+    if (!isWebGLSupported) return;
     const container = containerRef.current!;
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -245,7 +273,7 @@ export default function ColorBends({
   useEffect(() => {
     const material = materialRef.current;
     const renderer = rendererRef.current;
-    if (!material) return;
+    if (!material || !isWebGLSupported) return;
 
     rotationRef.current = rotation;
     autoRotateRef.current = autoRotate;
@@ -289,13 +317,14 @@ export default function ColorBends({
     noise,
     colors,
     transparent,
-    curve
+    curve,
+    isWebGLSupported
   ]);
 
   useEffect(() => {
     const material = materialRef.current;
     const container = containerRef.current;
-    if (!material || !container) return;
+    if (!material || !container || !isWebGLSupported) return;
 
     const handlePointerMove = (e: PointerEvent) => {
       const rect = container.getBoundingClientRect();
@@ -308,7 +337,16 @@ export default function ColorBends({
     return () => {
       container.removeEventListener('pointermove', handlePointerMove);
     };
-  }, []);
+  }, [isWebGLSupported]);
 
-  return <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={style} />;
+  return (
+    <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={style}>
+      {!isWebGLSupported && (
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={gradientStyle}
+        />
+      )}
+    </div>
+  );
 }

@@ -125,7 +125,26 @@ export default function GallerySection({ initialPosts, initialArtists, services 
     type: 'post'
   }));
 
-  const items = displayedItems.length > 0 ? displayedItems : placeholders;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const SkeletonCard = () => (
+    <div className="w-full break-inside-avoid mb-4 rounded-[18px] overflow-hidden
+                    bg-white/[0.03] border border-white/[0.05]
+                    animate-pulse">
+      <div className="w-full aspect-square bg-white/[0.05]" />
+      <div className="p-3 space-y-2">
+        <div className="h-3 bg-white/[0.05] rounded w-3/4" />
+        <div className="h-2 bg-white/[0.05] rounded w-1/2" />
+      </div>
+    </div>
+  );
+
+  const items = displayedItems.length > 0 ? displayedItems : (isLoading ? [] : placeholders);
   const showFilters = availableFilters.length > 2;
 
   return (
@@ -180,31 +199,31 @@ export default function GallerySection({ initialPosts, initialArtists, services 
                         group relative block text-left`}
               data-wave-item
             >
-              {item.imageUrl ? (
-                item.isLocal ? (
-                  <img
-                    src={item.imageUrl}
-                    srcSet={item.srcSet}
-                    alt={item.caption || 'Tattoo work'}
-                    className="w-full h-auto object-cover
-                             transition-transform duration-700 ease-out
-                             group-hover:scale-110"
-                    loading="lazy"
-                    {...item.attributes}
-                  />
+                {item.imageUrl ? (
+                  item.isLocal ? (
+                    <img
+                      src={item.imageUrl}
+                      srcSet={item.srcSet}
+                      alt={item.caption || `Tattoo artwork by ${item.artist ? ARTIST_LABELS[item.artist] || item.artist : 'Cuba Tattoo Studio'}`}
+                      className="w-full h-auto object-cover
+                               transition-transform duration-700 ease-out
+                               group-hover:scale-110"
+                      loading="lazy"
+                      {...item.attributes}
+                    />
+                  ) : (
+                    <CachedImage
+                      imageId={item.id}
+                      src={item.imageUrl}
+                      alt={item.caption || `Custom tattoo design by ${item.artist ? ARTIST_LABELS[item.artist] || item.artist : 'our artists'}`}
+                      artist={item.artist}
+                      className="w-full h-auto object-cover
+                               transition-transform duration-700 ease-out
+                               group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  )
                 ) : (
-                  <CachedImage
-                    imageId={item.id}
-                    src={item.imageUrl}
-                    alt={item.caption || 'Tattoo work'}
-                    artist={item.artist}
-                    className="w-full h-auto object-cover
-                             transition-transform duration-700 ease-out
-                             group-hover:scale-110"
-                    loading="lazy"
-                  />
-                )
-              ) : (
                 <div className="w-full aspect-square flex items-center justify-center text-white/15">
                   <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                     <path
@@ -248,7 +267,7 @@ export default function GallerySection({ initialPosts, initialArtists, services 
             onClick={handleLoadMore}
             className="px-6 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all text-sm font-medium"
           >
-            Load MoreItems
+            Cargar más
           </button>
         </div>
       )}
@@ -297,10 +316,9 @@ export default function GallerySection({ initialPosts, initialArtists, services 
                 <img
                   src={selectedItem.imageUrl}
                   srcSet={selectedItem.srcSet}
-                  alt={selectedItem.caption || 'Tattoo work'}
+                  alt={selectedItem.caption || `Tattoo artwork by ${selectedItem.artist ? ARTIST_LABELS[selectedItem.artist] || selectedItem.artist : 'Cuba Tattoo Studio'}`}
                   className="w-full h-full object-contain"
                   {...selectedItem.attributes}
-                  // We override width/height for lightbox to be responsive/contain
                   width={undefined}
                   height={undefined}
                 />
@@ -308,7 +326,7 @@ export default function GallerySection({ initialPosts, initialArtists, services 
                 <CachedImage
                   imageId={selectedItem.id}
                   src={selectedItem.imageUrl}
-                  alt={selectedItem.caption || 'Tattoo work'}
+                  alt={selectedItem.caption || `Custom tattoo design by ${selectedItem.artist ? ARTIST_LABELS[selectedItem.artist] || selectedItem.artist : 'our artists'}`}
                   artist={selectedItem.artist}
                   className="w-full h-full object-contain"
                   loading="eager"

@@ -52,6 +52,50 @@ const {
     <!-- Theme color -->
     <meta name="theme-color" content="#0a0a0c" />
     <meta name="color-scheme" content="dark" />
+
+    <!-- Schema.org LocalBusiness -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "TattooParlor",
+      "name": "Cuba Tattoo Studio",
+      "description": description,
+      "url": "https://cubatattoostudio.com",
+      "telephone": "+1-505-492-9806",
+      "email": "info@cubatattoostudio.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1311 San Mateo Blvd NE",
+        "addressLocality": "Albuquerque",
+        "addressRegion": "NM",
+        "postalCode": "87109",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "35.1058",
+        "longitude": "-106.5856"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "11:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "11:00",
+          "closes": "17:00"
+        }
+      ],
+      "priceRange": "$$",
+      "image": "https://cubatattoostudio.com/logo.svg",
+      "sameAs": [
+        "https://instagram.com/cubatattoostudio",
+        "https://facebook.com/cubatattoostudio"
+      ]
+    })} />
   </head>
   <body
     class="bg-[var(--color-surface-primary)] text-white font-sans overflow-x-hidden"

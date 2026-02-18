@@ -13,10 +13,17 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
-  {/* ColorBends WebGL background */}
-  <div class="color-bends-bg">
+  {/* Static gradient fallback — always visible */}
+  <div 
+    class="color-bends-bg lg:hidden"
+    style="background: linear-gradient(25deg, #8B5E3C 0%, #4A3558 50%, #2E524A 100%);"
+  ></div>
+
+  {/* ColorBends WebGL background — only on desktop for performance */}
+  <div class="color-bends-bg hidden lg:block">
     <ColorBends
       client:only="react"
+      client:visible
       colors={["#8B5E3C", "#4A3558", "#2E524A"]}
       rotation={25}
       speed={0.06}

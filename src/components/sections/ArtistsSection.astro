@@ -1,7 +1,5 @@
 ---
 import SectionWrapper from "../SectionWrapper.astro";
-import { existsSync } from "fs";
-import { resolve } from "path";
 
 interface Artist {
   name: string;
@@ -21,17 +19,14 @@ interface Props {
 const { id, backgroundImage, title, artists = [] } = Astro.props;
 
 /**
- * Resolve artist profile image — prefer downloaded .jpg over .svg placeholder.
+ * Resolve artist profile image — prefer .jpg over .svg placeholder.
+ * Using URL-based resolution instead of fs for SSR compatibility.
  */
 function resolveArtistImage(artist: Artist): string {
   const match = artist.image.match(/\/artists\/(\w+)\./);
   if (match) {
     const name = match[1];
-    const jpgPath = `/artists/${name}.jpg`;
-    const jpgAbsolute = resolve(process.cwd(), `public${jpgPath}`);
-    if (existsSync(jpgAbsolute)) {
-      return jpgPath;
-    }
+    return `/artists/${name}.jpg`;
   }
   return artist.image;
 }

@@ -20,6 +20,14 @@ export default defineConfig({
       build: {
         rollupOptions: {
           external: [],
+          output: {
+            manualChunks: {
+              'three': ['three'],
+              'gsap': ['gsap'],
+              'vendor-react': ['react', 'react-dom'],
+              'vendor-stores': ['nanostores', '@nanostores/react'],
+            },
+          },
         },
       },
     },});

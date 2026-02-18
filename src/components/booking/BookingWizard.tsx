@@ -1,16 +1,14 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import type { BookingFormData, SizeCategory, PriceEstimate } from '../../types/booking';
 import { StepServiceSelect } from './StepServiceSelect';
-import { StepConsultation } from './StepConsultation';
-import { StepCalendar } from './StepCalendar';
+import { StepDetailsSchedule } from './StepDetailsSchedule';
 import { StepPayment } from './StepPayment';
 import { StepConfirmation } from './StepConfirmation';
 import { calculatePriceEstimate } from '../../lib/pricing';
 
 const STEPS = [
   { id: 'service', label: 'Artist & Service', shortLabel: 'Artist' },
-  { id: 'details', label: 'Your Tattoo', shortLabel: 'Details' },
-  { id: 'schedule', label: 'Schedule', shortLabel: 'Date' },
+  { id: 'details', label: 'Details & Schedule', shortLabel: 'Details' },
   { id: 'payment', label: 'Payment', shortLabel: 'Pay' },
   { id: 'confirm', label: 'Confirmed', shortLabel: 'Done' },
 ];
@@ -121,16 +119,13 @@ export function BookingWizard() {
       }
 
       setBookingId(data.data.booking.id);
-      animateStep(4, 'forward');
+      animateStep(3, 'forward');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setIsSubmitting(false);
     }
   }, [form, animateStep]);
-
-  // Progress percentage
-  const progress = step === 4 ? 100 : (step / (STEPS.length - 1)) * 100;
 
   return (
     <div className="w-full max-w-4xl mx-auto" ref={contentRef}>
@@ -198,7 +193,7 @@ export function BookingWizard() {
             />
           )}
           {step === 1 && (
-            <StepConsultation
+            <StepDetailsSchedule
               form={form}
               updateForm={updateForm}
               priceEstimate={priceEstimate}
@@ -207,15 +202,6 @@ export function BookingWizard() {
             />
           )}
           {step === 2 && (
-            <StepCalendar
-              form={form}
-              updateForm={updateForm}
-              priceEstimate={priceEstimate}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          {step === 3 && (
             <StepPayment
               form={form}
               updateForm={updateForm}
@@ -225,7 +211,7 @@ export function BookingWizard() {
               onBack={handleBack}
             />
           )}
-          {step === 4 && (
+          {step === 3 && (
             <StepConfirmation
               form={form}
               bookingId={bookingId}

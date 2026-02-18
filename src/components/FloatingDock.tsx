@@ -1,7 +1,7 @@
 import { useStore } from '@nanostores/react';
 import { $activeSection } from '@/store';
 import { Home, Users, Palette, LayoutGrid, CalendarDays, Megaphone } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const dockItems = [
   { id: 'hero', icon: Home, label: 'Home' },
@@ -15,8 +15,17 @@ const dockItems = [
 export default function FloatingDock() {
   const activeSection = useStore($activeSection);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  useEffect(() => {
+    if (isNavigating) {
+      const timer = setTimeout(() => setIsNavigating(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isNavigating]);
 
   const scrollTo = (id: string, href?: string) => {
+    setIsNavigating(true);
     if (href) {
       window.location.href = href;
       return;
@@ -38,7 +47,10 @@ export default function FloatingDock() {
         boxShadow:
           'inset 0 1px 0 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 0 rgba(0, 0, 0, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2)',
         paddingBottom: 'max(6px, env(safe-area-inset-bottom, 6px))',
+        opacity: isNavigating ? 0.7 : 1,
+        transition: 'opacity 0.2s ease',
       }}
+      role="navigation"
       aria-label="Main navigation"
     >
       {dockItems.map(({ id, icon: Icon, label, accent, href }) => {

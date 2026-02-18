@@ -226,6 +226,7 @@ CREATE TABLE IF NOT EXISTS flash_designs (
 CREATE INDEX IF NOT EXISTS idx_flash_artist ON flash_designs(artist_id);
 CREATE INDEX IF NOT EXISTS idx_flash_status ON flash_designs(status);
 CREATE INDEX IF NOT EXISTS idx_flash_drop_date ON flash_designs(drop_date);
+CREATE INDEX IF NOT EXISTS idx_flash_designs_artist ON flash_designs(artist_id);
 
 CREATE TABLE IF NOT EXISTS flash_claims (
   id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
