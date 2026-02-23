@@ -12,9 +12,9 @@ interface Props {
 const { id, backgroundImage, title, subtitle } = Astro.props;
 ---
 
-<SectionWrapper id={id} backgroundImage={backgroundImage}>
-  {/* Static gradient fallback — always visible */}
-  <div 
+<SectionWrapper id={id} backgroundImage={backgroundImage} class="!py-0">
+  {/* Static gradient fallback — always visible on mobile */}
+  <div
     class="color-bends-bg lg:hidden"
     style="background: linear-gradient(25deg, #8B5E3C 0%, #4A3558 50%, #2E524A 100%);"
   ></div>
@@ -38,53 +38,55 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
     />
   </div>
 
-  {/* Dark vignette — slightly lighter on mobile for better visibility */}
+  {/* Dark vignette */}
   <div class="hero-vignette"></div>
 
-  {/* Main content — fluid spacing with breathing room */}
-  <div class="relative z-[5] flex flex-col items-center text-center px-6 sm:px-8 max-w-3xl mx-auto">
-    {/* Logo — prominent with generous top space */}
-    <div data-hero="logo" class="w-full mb-6 sm:mb-8">
+  {/* Main content — vertically centered with dvh for mobile browser chrome */}
+  <div class="relative z-[5] flex flex-col items-center justify-center text-center px-5 sm:px-8 max-w-3xl mx-auto min-h-[100dvh] py-20">
+    {/* Logo — scales fluidly */}
+    <div data-hero="logo" class="w-full mb-5 sm:mb-8">
       <img
         src="/logo.svg"
         alt={title || "Cuba Tattoo Studio"}
-        class="w-full max-w-[280px] sm:max-w-lg lg:max-w-xl h-auto mx-auto drop-shadow-[0_4px_32px_rgba(200,149,108,0.15)]"
+        class="w-full max-w-[220px] sm:max-w-sm md:max-w-lg lg:max-w-xl h-auto mx-auto drop-shadow-[0_4px_32px_rgba(200,149,108,0.15)]"
+        width="480"
+        height="480"
       />
       {title && <h1 class="sr-only">{title}</h1>}
     </div>
 
-    {/* Decorative gold line — micro pause */}
+    {/* Decorative gold line */}
     <div
       data-hero="line"
-      class="w-[30%] sm:w-[25%] h-px mx-auto mb-6 sm:mb-8"
-      style="background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent); transform-origin: center;"
+      class="w-14 sm:w-20 h-px mx-auto mb-5 sm:mb-8"
+      style="background: linear-gradient(90deg, transparent, var(--color-gold), transparent); transform-origin: center; opacity: 0.45;"
     >
     </div>
 
-    {/* Subtitle — more breathing room before CTA */}
+    {/* Subtitle */}
     {
       subtitle && (
         <p
           data-hero="subtitle"
-          class="text-fluid-body-lg text-white/55 font-light max-w-md sm:max-w-lg mx-auto tracking-wide leading-relaxed mb-10 sm:mb-12"
+          class="text-[0.9rem] sm:text-base lg:text-lg text-white/50 font-light max-w-[280px] sm:max-w-md lg:max-w-lg mx-auto tracking-wide leading-relaxed mb-8 sm:mb-12"
         >
           {subtitle}
         </p>
       )
     }
 
-    {/* CTA Button — generous touch target, prominent on mobile */}
+    {/* CTA Button — generous touch target */}
     <div data-hero="cta">
       <a
         href="#booking"
-        class="prismatic-border group inline-flex items-center justify-center gap-3
-               px-8 py-4 min-w-[220px] rounded-2xl
-               bg-[var(--color-gold)] text-black font-semibold text-base
+        class="prismatic-border group inline-flex items-center justify-center gap-2.5
+               px-7 py-3.5 sm:px-8 sm:py-4 min-w-[200px] sm:min-w-[220px] rounded-2xl
+               bg-[var(--color-gold)] text-black font-semibold text-sm sm:text-base
                transition-all duration-500 ease-out
                hover:shadow-[0_8px_30px_rgba(200,149,108,0.3)]
-               hover:scale-[1.03] active:scale-[0.98]"
+               hover:scale-[1.03] active:scale-[0.97]"
       >
-        Reserva tu Consulta
+        Book Your Consultation
         <svg
           class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
           fill="none"
@@ -104,11 +106,11 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
   {/* Scroll indicator — safe area aware */}
   <div
     data-hero="scroll"
-    class="scroll-indicator absolute bottom-8 pb-[env(safe-area-inset-bottom,0px)] left-1/2 -translate-x-1/2 z-[5] flex flex-col items-center gap-2"
+    class="scroll-indicator absolute bottom-6 sm:bottom-8 pb-[env(safe-area-inset-bottom,0px)] left-1/2 -translate-x-1/2 z-[5] flex flex-col items-center gap-1.5"
   >
-    <span class="text-[10px] uppercase tracking-[0.2em] text-white/30 font-medium">Scroll</span>
+    <span class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/25 font-medium">Scroll</span>
     <svg
-      class="w-5 h-5 text-white/30"
+      class="w-4 h-4 sm:w-5 sm:h-5 text-white/25"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

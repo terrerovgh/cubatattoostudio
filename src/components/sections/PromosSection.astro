@@ -26,8 +26,7 @@ const sortedPromos = [...promos].sort(
     (a, b) => (a.position || 99) - (b.position || 99),
 );
 
-// Duplicate promos for infinite loop (ensure enough items to scroll)
-// If fewer than 6 items, triple them. If fewer than 10, double them.
+// Duplicate promos for infinite loop
 let displayPromos = sortedPromos;
 if (sortedPromos.length > 0) {
     if (sortedPromos.length < 4) {
@@ -43,23 +42,22 @@ if (sortedPromos.length > 0) {
 }
 
 // Prepare the list for marquee (double the display list to create the seamless loop)
-// The key is that the marquee animation translates -50%, so we need two identical sets side-by-side.
 const marqueePromos = [...displayPromos, ...displayPromos];
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
-    <div class="w-full overflow-hidden py-12">
-        <div class="text-center mb-12 px-4" data-animate>
+    <div class="w-full overflow-hidden py-8 sm:py-12">
+        <div class="text-center mb-8 sm:mb-12 px-5" data-animate>
             {
                 title && (
-                    <h2 class="text-gradient-white text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                    <h2 class="text-gradient-white text-2xl sm:text-3xl lg:text-5xl font-bold tracking-tight mb-3 sm:mb-4">
                         {title}
                     </h2>
                 )
             }
             {
                 subtitle && (
-                    <p class="text-white/60 text-lg max-w-2xl mx-auto">
+                    <p class="text-white/50 text-sm sm:text-base lg:text-lg max-w-md sm:max-w-2xl mx-auto leading-relaxed">
                         {subtitle}
                     </p>
                 )
@@ -68,18 +66,20 @@ const marqueePromos = [...displayPromos, ...displayPromos];
 
         {/* Marquee Container */}
         <div class="marquee-container relative w-full group">
-            {/* Gradient Masks */}
+            {/* Gradient Masks — use surface color for seamless fade */}
             <div
-                class="absolute left-0 top-0 bottom-0 w-12 sm:w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none"
+                class="absolute left-0 top-0 bottom-0 w-8 sm:w-24 lg:w-32 z-20 pointer-events-none"
+                style="background: linear-gradient(to right, var(--color-surface-primary), transparent);"
             >
             </div>
             <div
-                class="absolute right-0 top-0 bottom-0 w-12 sm:w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none"
+                class="absolute right-0 top-0 bottom-0 w-8 sm:w-24 lg:w-32 z-20 pointer-events-none"
+                style="background: linear-gradient(to left, var(--color-surface-primary), transparent);"
             >
             </div>
 
             <div
-                class="marquee-track flex gap-6 w-max hover:[animation-play-state:paused]"
+                class="marquee-track flex gap-4 sm:gap-6 w-max hover:[animation-play-state:paused]"
             >
                 {
                     marqueePromos.map((promo, index) => {
@@ -95,7 +95,7 @@ const marqueePromos = [...displayPromos, ...displayPromos];
                         return (
                             <a
                                 href={promo.link || "#"}
-                                class="promo-card group/card relative block w-[300px] sm:w-[350px] h-[450px] flex-shrink-0 rounded-[24px] overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-[0_0_30px_rgba(200,149,108,0.15)] hover:scale-[1.02]"
+                                class="promo-card group/card relative block w-[260px] sm:w-[320px] lg:w-[350px] h-[380px] sm:h-[420px] lg:h-[450px] flex-shrink-0 rounded-[20px] sm:rounded-[24px] overflow-hidden bg-white/5 border border-white/[0.08] hover:border-white/20 transition-all duration-500 hover:shadow-[0_0_30px_rgba(200,149,108,0.15)] hover:scale-[1.02]"
                                 data-index={index}
                             >
                                 {/* Background Images (Carousel) */}
@@ -111,17 +111,18 @@ const marqueePromos = [...displayPromos, ...displayPromos];
                                                     src={typeof imgSrc === 'string' ? imgSrc : imgSrc.src}
                                                     alt={`${promo.title} - ${imgIndex + 1}`}
                                                     class="w-full h-full object-cover"
+                                                    loading="lazy"
                                                 />
                                             </div>
                                         );
                                     })}
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
                                 </div>
 
                                 {/* Badge */}
-                                <div class="absolute top-4 right-4 z-20">
+                                <div class="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 flex items-center gap-1.5">
                                     <span
-                                        class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider backdrop-blur-md border ${
+                                        class={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-medium uppercase tracking-wider backdrop-blur-md border ${
                                             promo.type === "flash"
                                                 ? "bg-red-500/20 border-red-500/30 text-red-200"
                                                 : promo.type === "event"
@@ -132,30 +133,30 @@ const marqueePromos = [...displayPromos, ...displayPromos];
                                         {promo.type}
                                     </span>
                                     {hasCarousel && (
-                                        <span class="ml-2 inline-flex items-center px-2 py-1 rounded-full text-[10px] bg-black/50 border border-white/10 text-white/70 backdrop-blur-sm">
-                                            Multiple
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-[9px] sm:text-[10px] bg-black/50 border border-white/10 text-white/60 backdrop-blur-sm">
+                                            {imagesList.length} imgs
                                         </span>
                                     )}
                                 </div>
 
                                 {/* Content */}
-                                <div class="relative z-20 h-full p-6 flex flex-col justify-end">
+                                <div class="relative z-20 h-full p-5 sm:p-6 flex flex-col justify-end">
                                     {promo.date && (
-                                        <p class="text-white/70 text-sm font-medium mb-2 uppercase tracking-wide">
+                                        <p class="text-white/60 text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 uppercase tracking-wide">
                                             {promo.date}
                                         </p>
                                     )}
-                                    <h3 class="text-2xl font-bold text-white mb-2 group-hover/card:text-[var(--color-gold)] transition-colors">
+                                    <h3 class="text-xl sm:text-2xl font-bold text-white mb-1.5 sm:mb-2 group-hover/card:text-[var(--color-gold)] transition-colors leading-tight">
                                         {promo.title}
                                     </h3>
-                                    <p class="text-white/60 text-sm line-clamp-3 group-hover/card:text-white/80 transition-colors">
+                                    <p class="text-white/50 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 group-hover/card:text-white/70 transition-colors">
                                         {promo.description}
                                     </p>
 
-                                    <div class="mt-4 flex items-center gap-2 text-[var(--color-gold)] text-sm font-medium opacity-0 -translate-x-4 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-300 delay-100">
+                                    <div class="mt-3 sm:mt-4 flex items-center gap-2 text-[var(--color-gold)] text-xs sm:text-sm font-medium opacity-0 -translate-x-3 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-300 delay-100">
                                         <span>View Details</span>
                                         <svg
-                                            class="w-4 h-4"
+                                            class="w-3.5 h-3.5 sm:w-4 sm:h-4"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                             stroke="currentColor"
@@ -182,7 +183,14 @@ const marqueePromos = [...displayPromos, ...displayPromos];
 
 <style>
     .marquee-track {
-        animation: marquee 40s linear infinite;
+        animation: marquee 45s linear infinite;
+    }
+
+    /* Slower on mobile for readability */
+    @media (max-width: 640px) {
+        .marquee-track {
+            animation-duration: 35s;
+        }
     }
 
     @keyframes marquee {
@@ -191,6 +199,14 @@ const marqueePromos = [...displayPromos, ...displayPromos];
         }
         100% {
             transform: translateX(-50%);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .marquee-track {
+            animation: none;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
     }
 </style>
@@ -214,30 +230,20 @@ const marqueePromos = [...displayPromos, ...displayPromos];
         const cards = document.querySelectorAll(".promo-card");
 
         cards.forEach((card) => {
-            const images = card.querySelectorAll(".carousel-image"); // select grid items
+            const images = card.querySelectorAll(".carousel-image");
             if (images.length <= 1) return;
 
             let currentIndex = 0;
-            let interval: ReturnType<typeof setInterval>;
 
-            const startCarousel = () => {
-                interval = setInterval(() => {
-                    images[currentIndex].classList.remove("opacity-100");
-                    images[currentIndex].classList.add("opacity-0");
+            setInterval(() => {
+                images[currentIndex].classList.remove("opacity-100");
+                images[currentIndex].classList.add("opacity-0");
 
-                    currentIndex = (currentIndex + 1) % images.length;
+                currentIndex = (currentIndex + 1) % images.length;
 
-                    images[currentIndex].classList.remove("opacity-0");
-                    images[currentIndex].classList.add("opacity-100");
-                }, 3000); // Change image every 3 seconds
-            };
-
-            // Stop carousel when card is not visible or destroyed (simple cleanup)
-            // const stopCarousel = () => {
-            //     clearInterval(interval);
-            // };
-
-            startCarousel();
+                images[currentIndex].classList.remove("opacity-0");
+                images[currentIndex].classList.add("opacity-100");
+            }, 3000);
         });
     }
 

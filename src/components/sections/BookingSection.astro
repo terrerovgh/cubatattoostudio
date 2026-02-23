@@ -26,32 +26,33 @@ const {
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
-  <GlassCard maxWidth="max-w-5xl">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <GlassCard maxWidth="max-w-5xl" padding="p-4 sm:p-6 lg:p-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
       {/* 1. Main Booking CTA */}
       <div
-        class="md:col-span-2 relative overflow-hidden group rounded-[32px] bg-[var(--color-gold)] p-8 sm:p-12 flex flex-col items-center justify-center text-center space-y-8 prismatic-border"
+        class="md:col-span-2 relative overflow-hidden group rounded-[20px] sm:rounded-[28px] bg-[var(--color-gold)] p-6 sm:p-10 lg:p-12 flex flex-col items-center justify-center text-center space-y-5 sm:space-y-8 prismatic-border"
         data-animate-scale
       >
-        <div class="relative z-10 space-y-6">
-          <h2 class="text-3xl md:text-5xl font-bold text-black tracking-tight">
+        <div class="relative z-10 space-y-4 sm:space-y-6">
+          <h2 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-black tracking-tight leading-tight">
             {title || "Ready to start?"}
           </h2>
           <p
-            class="text-black/70 text-lg md:text-xl max-w-lg mx-auto font-medium"
+            class="text-black/60 text-sm sm:text-base lg:text-xl max-w-lg mx-auto font-medium"
           >
             {subtitle || "Book your consultation today."}
           </p>
 
           <a
             href={bookingUrl || "#"}
-            class="inline-flex items-center gap-3 px-8 py-4 rounded-xl
-                     bg-black text-white font-semibold text-lg
-                     transition-transform duration-300 hover:scale-[1.03]"
+            class="inline-flex items-center gap-2.5 px-6 py-3 sm:px-8 sm:py-4 rounded-xl
+                     bg-black text-white font-semibold text-sm sm:text-base lg:text-lg
+                     transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]
+                     hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]"
           >
             <span>Book Appointment</span>
             <svg
-              class="w-5 h-5"
+              class="w-4 h-4 sm:w-5 sm:h-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -64,7 +65,6 @@ const {
             </svg>
           </a>
         </div>
-        {/* Decorative background or pattern could go here */}
         <div
           class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         >
@@ -73,25 +73,25 @@ const {
 
       {/* 2. Contact Info Block */}
       <div
-        class="rounded-[32px] bg-white/[0.03] border border-white/[0.05] p-8 flex flex-col justify-between space-y-8 hover:bg-white/[0.05] transition-colors duration-300"
+        class="rounded-[20px] sm:rounded-[28px] bg-white/[0.03] border border-white/[0.05] p-5 sm:p-6 lg:p-8 flex flex-col justify-between space-y-5 sm:space-y-6 hover:bg-white/[0.05] transition-colors duration-300"
         data-animate-left
       >
         <div>
-          <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3" data-animate-heading>
+          <h3 class="text-base sm:text-lg lg:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2.5" data-animate-heading>
             <span
-              class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm"
+              class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 flex items-center justify-center text-xs sm:text-sm"
               >📍</span
             >
-            Contact Us
+            Contact
           </h3>
-          <div class="space-y-4">
+          <div class="space-y-3 sm:space-y-4">
             {
               phone && (
                 <a
                   href={`tel:${phone.replace(/[^+\d]/g, "")}`}
-                  class="flex items-center gap-4 text-white/60 hover:text-white transition-colors"
+                  class="flex items-center gap-3 text-white/55 hover:text-white transition-colors text-sm sm:text-base"
                 >
-                  <span class="text-[var(--color-gold)]">Phone</span>
+                  <span class="text-[var(--color-gold)] text-xs sm:text-sm font-medium min-w-[50px]">Phone</span>
                   <span>{phone}</span>
                 </a>
               )
@@ -100,17 +100,17 @@ const {
               email && (
                 <a
                   href={`mailto:${email}`}
-                  class="flex items-center gap-4 text-white/60 hover:text-white transition-colors"
+                  class="flex items-center gap-3 text-white/55 hover:text-white transition-colors text-sm sm:text-base"
                 >
-                  <span class="text-[var(--color-gold)]">Email</span>
-                  <span>{email}</span>
+                  <span class="text-[var(--color-gold)] text-xs sm:text-sm font-medium min-w-[50px]">Email</span>
+                  <span class="truncate">{email}</span>
                 </a>
               )
             }
             {
               address && (
-                <div class="flex items-center gap-4 text-white/60">
-                  <span class="text-[var(--color-gold)]">Studio</span>
+                <div class="flex items-start gap-3 text-white/55 text-sm sm:text-base">
+                  <span class="text-[var(--color-gold)] text-xs sm:text-sm font-medium min-w-[50px] mt-0.5">Studio</span>
                   <span>{address}</span>
                 </div>
               )
@@ -121,39 +121,39 @@ const {
 
       {/* 3. Quick Links Block */}
       <div
-        class="rounded-[32px] bg-white/[0.03] border border-white/[0.05] p-8 flex flex-col justify-center space-y-4 hover:bg-white/[0.05] transition-colors duration-300"
+        class="rounded-[20px] sm:rounded-[28px] bg-white/[0.03] border border-white/[0.05] p-5 sm:p-6 lg:p-8 flex flex-col justify-center space-y-3 hover:bg-white/[0.05] transition-colors duration-300"
         data-animate-right
       >
-        <h3 class="text-xl font-bold text-white mb-2" data-animate-heading>Quick Links</h3>
+        <h3 class="text-base sm:text-lg lg:text-xl font-bold text-white mb-1 sm:mb-2" data-animate-heading>Links</h3>
         <a
           href="/flash"
-          class="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-colors group"
+          class="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-colors group"
         >
-          <span class="w-10 h-10 rounded-lg bg-[var(--color-gold)]/10 flex items-center justify-center text-[var(--color-gold)]">✦</span>
+          <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[var(--color-gold)]/10 flex items-center justify-center text-[var(--color-gold)] text-sm">✦</span>
           <div>
-            <span class="text-white text-sm font-medium">Flash Designs</span>
-            <p class="text-white/40 text-xs">Pre-drawn designs at special prices</p>
+            <span class="text-white text-xs sm:text-sm font-medium">Flash Designs</span>
+            <p class="text-white/35 text-[10px] sm:text-xs">Pre-drawn designs at special prices</p>
           </div>
         </a>
         <a
           href="/loyalty"
-          class="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-colors group"
+          class="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-colors group"
         >
-          <span class="w-10 h-10 rounded-lg bg-[var(--color-gold)]/10 flex items-center justify-center text-[var(--color-gold)]">◇</span>
+          <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[var(--color-gold)]/10 flex items-center justify-center text-[var(--color-gold)] text-sm">◇</span>
           <div>
-            <span class="text-white text-sm font-medium">Loyalty Program</span>
-            <p class="text-white/40 text-xs">Earn points, unlock rewards</p>
+            <span class="text-white text-xs sm:text-sm font-medium">Loyalty Program</span>
+            <p class="text-white/35 text-[10px] sm:text-xs">Earn points, unlock rewards</p>
           </div>
         </a>
-        <div class="flex gap-3 pt-2">
+        <div class="flex gap-2.5 pt-1.5 sm:pt-2">
           <a
-            href="https://instagram.com/cubatatoostudio"
+            href="https://instagram.com/cubatattoostudio"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[var(--color-gold)] hover:text-black hover:border-[var(--color-gold)] transition-all duration-300"
+            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[var(--color-gold)] hover:text-black hover:border-[var(--color-gold)] transition-all duration-300"
             aria-label="Instagram"
           >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
               <path
                 d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
               ></path>
@@ -163,10 +163,10 @@ const {
             href="https://facebook.com/cubatattoostudio"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[var(--color-gold)] hover:text-black hover:border-[var(--color-gold)] transition-all duration-300"
+            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[var(--color-gold)] hover:text-black hover:border-[var(--color-gold)] transition-all duration-300"
             aria-label="Facebook"
           >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
               <path
                 d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
               ></path>

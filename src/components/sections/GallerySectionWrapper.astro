@@ -82,18 +82,18 @@ if (instagramData.artists) {
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
-  <GlassCard maxWidth="max-w-7xl">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+  <GlassCard maxWidth="max-w-7xl" padding="p-4 sm:p-6 lg:p-10">
+    <div class="text-center mb-6 sm:mb-10 lg:mb-12">
+      <h2 class="text-2xl sm:text-3xl lg:text-5xl font-bold mb-2 sm:mb-4 tracking-tight">
         {title}
       </h2>
       {
         subtitle && (
-          <p class="text-white/60 text-lg max-w-2xl mx-auto">{subtitle}</p>
+          <p class="text-white/50 text-xs sm:text-sm lg:text-base max-w-md sm:max-w-2xl mx-auto leading-relaxed">{subtitle}</p>
         )
       }
     </div>
-    <div class="space-y-8" data-animate>
+    <div class="space-y-6 sm:space-y-8" data-animate>
       <GallerySection
         client:visible
         initialPosts={optimizedPosts as any}

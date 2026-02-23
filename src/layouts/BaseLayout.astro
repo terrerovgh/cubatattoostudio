@@ -106,6 +106,26 @@ const {
       <slot />
     </main>
 
+    {/* Footer — studio info & bottom dock spacing */}
+    {mode === "home" && (
+      <footer class="relative z-10 footer-glass pb-24 sm:pb-20 pt-8 sm:pt-10">
+        <div class="container-standard">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+              <img src="/logo.svg" alt="Cuba Tattoo Studio" class="w-8 h-8 opacity-40" width="32" height="32" />
+              <div class="text-[11px] sm:text-xs text-white/25 leading-relaxed">
+                <p>Tue-Fri 11am-7pm &middot; Sat 11am-5pm &middot; Sun-Mon Closed</p>
+                <p class="mt-0.5">1311 San Mateo Blvd NE, Albuquerque, NM 87109</p>
+              </div>
+            </div>
+            <p class="text-[10px] sm:text-[11px] text-white/15">
+              &copy; {new Date().getFullYear()} Cuba Tattoo Studio
+            </p>
+          </div>
+        </div>
+      </footer>
+    )}
+
     <ScrollObserver client:only="react" />
     {mode !== "artist" && <FloatingDock client:only="react" />}
   </body>
