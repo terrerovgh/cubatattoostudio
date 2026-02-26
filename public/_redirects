@@ -1,8 +1,6 @@
 # Cuba Tattoo Studio — Cloudflare Redirects
 # Format: source  destination  status_code
-
-# www → apex
-https://www.cubatattoostudio.com/*  https://cubatattoostudio.com/:splat  301
+# Note: Only relative URLs allowed. www→apex redirect is handled by DNS.
 
 # Legacy booking URL
 /book  /#booking  301
@@ -25,7 +23,6 @@ https://www.cubatattoostudio.com/*  https://cubatattoostudio.com/:splat  301
 
 # Admin short links
 /login  /admin/login  302
-/admin  /admin  200
 
 # Artist portal
 /portal  /artist  302
@@ -33,6 +30,3 @@ https://www.cubatattoostudio.com/*  https://cubatattoostudio.com/:splat  301
 
 # Sitemap
 /sitemap  /sitemap.xml  301
-
-# 404 fallback (SPA style)
-/*  /404  404
