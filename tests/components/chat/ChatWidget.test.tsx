@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ChatWidget } from '../ChatWidget';
+import { ChatWidget } from '@/components/chat/ChatWidget';
 
 // Mock fetch
 global.fetch = vi.fn();

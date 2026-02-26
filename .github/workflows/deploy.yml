@@ -1,12 +1,42 @@
-name: Deploy to Cloudflare
+name: Deploy to Production
 
 on:
   push:
     branches: [main]
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false  # Never cancel an in-flight deploy
+
 jobs:
-  deploy:
+  # ── Pre-flight checks ─────────────────────────────────────────────────────
+  preflight:
+    name: Pre-flight Checks
     runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required secrets
+        id: check
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ]; then
+            echo "❌ CLOUDFLARE_API_TOKEN is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" ]; then
+            echo "❌ CLOUDFLARE_ACCOUNT_ID is not set"
+            exit 1
+          fi
+          echo "✅ All required secrets are set"
+          echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+
+  # ── Build ─────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: preflight
     steps:
       - uses: actions/checkout@v4
 
@@ -15,11 +45,161 @@ jobs:
           node-version: 22
           cache: npm
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci --prefer-offline
 
-      - run: npx astro build
+      - name: Prepare Instagram data
+        run: |
+          # Use cached data in CI to avoid rate limiting
+          if [ ! -f src/data/instagram.ts ]; then
+            echo "export const instagramPosts: any[] = [];" > src/data/instagram.ts
+          fi
+        env:
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
 
-      - uses: cloudflare/wrangler-action@v3
+      - name: Build
+        run: npx astro build
+        env:
+          NODE_ENV: production
+
+      - name: Verify build output
+        run: |
+          if [ ! -f "dist/_worker.js/index.js" ]; then
+            echo "❌ Worker entry point not found"
+            exit 1
+          fi
+          echo "✅ Build output verified"
+          du -sh dist/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 3
+
+  # ── Run Tests ─────────────────────────────────────────────────────────────
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: preflight
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Run unit tests
+        run: npm test -- --run
+
+  # ── Database Migration ────────────────────────────────────────────────────
+  migrate:
+    name: D1 Database Migration
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Run D1 schema migration (idempotent)
+        run: |
+          npx wrangler d1 execute cubatattoostudio-db \
+            --remote \
+            --file=src/lib/db/schema.sql
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: false
+
+      - name: Run D1 v2 migration (if needed)
+        run: |
+          npx wrangler d1 execute cubatattoostudio-db \
+            --remote \
+            --file=src/lib/db/migration-v2.sql
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true  # V2 migration may already be applied
+
+  # ── Deploy ────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to Cloudflare Workers
+    runs-on: ubuntu-latest
+    needs: [build, test, migrate]
+    environment:
+      name: production
+      url: https://cubatattoostudio.com
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+
+      - name: Deploy with Wrangler
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --compatibility-date=2026-02-12
+
+      - name: Purge Cloudflare Cache
+        run: |
+          curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}' \
+            | jq '.success'
+        env:
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        continue-on-error: true
+
+      - name: Smoke Test
+        run: |
+          sleep 15  # wait for propagation
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://cubatattoostudio.com)
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ Smoke test failed — HTTP $STATUS"
+            exit 1
+          fi
+          echo "✅ Smoke test passed — HTTP $STATUS"
+        continue-on-error: true
+
+  # ── Notify ────────────────────────────────────────────────────────────────
+  notify:
+    name: Notify
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+    steps:
+      - name: Deployment Summary
+        run: |
+          if [ "${{ needs.deploy.result }}" == "success" ]; then
+            echo "✅ Deployed commit ${{ github.sha }} to production"
+            echo "🌐 https://cubatattoostudio.com"
+          else
+            echo "❌ Deployment failed for commit ${{ github.sha }}"
+          fi

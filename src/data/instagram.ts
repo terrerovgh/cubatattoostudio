@@ -748,7 +748,7 @@ const instagramData: InstagramData = {
       ]
     }
   },
-  "lastFetched": "2026-02-22T06:22:13.192Z"
+  "lastFetched": "2026-02-26T16:08:13.677Z"
 };
 
 export default instagramData;

@@ -2,31 +2,37 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "cubatattoostudio",
 	"compatibility_date": "2026-02-12",
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
+	"compatibility_flags": ["nodejs_compat"],
 	"main": "dist/_worker.js/index.js",
+
+	// ── Custom Domains ──────────────────────────────────────────────────────
 	"routes": [
-		{
-			"pattern": "cubatattoostudio.com",
-			"custom_domain": true
-		},
-		{
-			"pattern": "www.cubatattoostudio.com",
-			"custom_domain": true
-		}
+		{ "pattern": "cubatattoostudio.com",     "custom_domain": true },
+		{ "pattern": "www.cubatattoostudio.com", "custom_domain": true }
 	],
+
+	// ── Static Assets (served from dist/) ──────────────────────────────────
 	"assets": {
 		"directory": "dist",
 		"binding": "ASSETS"
 	},
+
+	// ── R2 Object Storage ───────────────────────────────────────────────────
+	// Used for: gallery images, portfolio photos, flash design images,
+	//           consent form signatures, reference image uploads
 	"r2_buckets": [
 		{
 			"binding": "R2_BUCKET",
 			"bucket_name": "cubatattoostudio",
-			"preview_bucket_name": "cubatattoostudio"
+			"preview_bucket_name": "cubatattoostudio-preview"
 		}
 	],
+
+	// ── D1 Relational Database ──────────────────────────────────────────────
+	// Schema: src/lib/db/schema.sql
+	// Tables: clients, bookings, payments, consent_forms, flash_designs,
+	//         flash_claims, loyalty_transactions, aftercare_messages,
+	//         schedule_overrides, inventory_items, audit_log, chat_tokens
 	"d1_databases": [
 		{
 			"binding": "DB",
@@ -34,6 +40,10 @@
 			"database_id": "f163ebf8-bfe4-414d-a47b-afe86365d573"
 		}
 	],
+
+	// ── KV Namespaces ───────────────────────────────────────────────────────
+	// AUTH_SESSIONS : session tokens (24h TTL, __Host-session cookie)
+	// RATE_LIMITER  : per-IP sliding-window counters (15min / 5 attempts)
 	"kv_namespaces": [
 		{
 			"binding": "AUTH_SESSIONS",
@@ -44,24 +54,79 @@
 			"id": "0c1e22b8f2a44562907e6f2b208610c4"
 		}
 	],
+
+	// ── Durable Objects ─────────────────────────────────────────────────────
+	// CHAT_ROOM: per-booking real-time WebSocket chat
+	//            Uses Hibernation API + SQLite storage (free-tier friendly)
 	"durable_objects": {
 		"bindings": [
-			{
-				"name": "CHAT_ROOM",
-				"class_name": "ChatRoom"
-			}
+			{ "name": "CHAT_ROOM", "class_name": "ChatRoom" }
 		]
 	},
 	"migrations": [
-		{
-			"tag": "v1",
-			"new_sqlite_classes": ["ChatRoom"]
-		}
+		{ "tag": "v1", "new_sqlite_classes": ["ChatRoom"] }
 	],
+
+	// ── Workers AI ──────────────────────────────────────────────────────────
+	// Models: @cf/meta/llama-3.1-8b-instruct
+	// Used for: aftercare advice, reply suggestions, studio assistant
 	"ai": {
 		"binding": "AI"
 	},
+
+	// ── Observability ───────────────────────────────────────────────────────
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1
+	},
+
+	// ── Environment Variables (non-secret) ──────────────────────────────────
+	// Secrets go via: wrangler secret put SECRET_NAME
+	// Required secrets: ADMIN_PASSWORD, STRIPE_SECRET_KEY,
+	//                   STRIPE_WEBHOOK_SECRET, UPLOAD_SECRET
 	"vars": {
-		"SITE_URL": "https://cubatattoostudio.com"
+		"SITE_URL": "https://cubatattoostudio.com",
+		"ENVIRONMENT": "production"
+	},
+
+	// ── Staging Environment ──────────────────────────────────────────────────
+	"env": {
+		"staging": {
+			"name": "cubatattoostudio-staging",
+			"vars": {
+				"SITE_URL": "https://staging.cubatattoostudio.workers.dev",
+				"ENVIRONMENT": "staging"
+			},
+			"r2_buckets": [
+				{
+					"binding": "R2_BUCKET",
+					"bucket_name": "cubatattoostudio-preview",
+					"preview_bucket_name": "cubatattoostudio-preview"
+				}
+			],
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "cubatattoostudio-db",
+					"database_id": "f163ebf8-bfe4-414d-a47b-afe86365d573"
+				}
+			],
+			"kv_namespaces": [
+				{
+					"binding": "AUTH_SESSIONS",
+					"id": "15de9886c56148dc95b32460320b15b3"
+				},
+				{
+					"binding": "RATE_LIMITER",
+					"id": "0c1e22b8f2a44562907e6f2b208610c4"
+				}
+			],
+			"durable_objects": {
+				"bindings": [
+					{ "name": "CHAT_ROOM", "class_name": "ChatRoom" }
+				]
+			},
+			"ai": { "binding": "AI" }
+		}
 	}
 }

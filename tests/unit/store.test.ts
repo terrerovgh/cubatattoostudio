@@ -9,7 +9,7 @@ import {
   $artistAccent,
   $bookingDraft,
   clearBookingDraft,
-} from '../store';
+} from '@/store';
 
 describe('Store (Nanostores)', () => {
   beforeEach(() => {

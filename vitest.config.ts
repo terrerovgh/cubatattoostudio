@@ -7,17 +7,21 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: ['./src/tests/setup.ts'],
+    // Tests live in top-level tests/ so Astro/Vite never picks them up
+    setupFiles: ['./tests/setup.ts'],
+    include: ['tests/**/*.test.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
       include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'node_modules/',
-        'src/tests/',
-        '**/*.test.ts',
-        '**/*.test.tsx',
+        'src/env.d.ts',
+        'src/content.config.ts',
+        'src/pages/**',  // API endpoints — tested via integration tests
+        '**/*.d.ts',
         '**/index.ts',
+        'node_modules/',
       ],
     },
   },
