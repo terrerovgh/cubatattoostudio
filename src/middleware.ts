@@ -1,13 +1,65 @@
 import { defineMiddleware } from 'astro:middleware';
+import { extractSessionToken, getSession, verifyAdminAuth } from './lib/auth';
 
-export const onRequest = defineMiddleware(async (_, next) => {
+export const onRequest = defineMiddleware(async (context, next) => {
+  const { request, locals, url } = context;
+  const pathname = url.pathname;
+  const env = (locals as any).runtime?.env as Env | undefined;
+
+  // ─── Extract Session ───────────────────────────────
+  if (env?.AUTH_SESSIONS) {
+    const token = extractSessionToken(request);
+    if (token) {
+      locals.session = await getSession(token, env.AUTH_SESSIONS);
+    } else {
+      locals.session = null;
+    }
+  }
+
+  // ─── Route Protection ──────────────────────────────
+
+  // Admin pages (not login)
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
+    if (!locals.session || locals.session.role !== 'admin') {
+      return context.redirect('/admin/login');
+    }
+  }
+
+  // Artist dashboard pages (not login)
+  if (pathname.startsWith('/artist') && pathname !== '/artist/login') {
+    if (!locals.session || locals.session.role !== 'artist') {
+      return context.redirect('/artist/login');
+    }
+  }
+
+  // Admin API endpoints
+  if (pathname.startsWith('/api/admin/')) {
+    const hasSession = locals.session && locals.session.role === 'admin';
+    // Legacy Bearer token support for backward compatibility
+    const hasLegacyAuth = env ? await verifyAdminAuth(request, env) : false;
+
+    if (!hasSession && !hasLegacyAuth) {
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  }
+
+  // Artist API endpoints
+  if (pathname.startsWith('/api/artist/')) {
+    if (!locals.session || locals.session.role !== 'artist') {
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  }
+
+  // ─── Process Request ───────────────────────────────
   const response = await next();
 
-  // Create a new response with the same body and status, but mutable headers
-  // modifying response.headers directly might not work depending on the adapter/environment if headers are immutable
-  // usually in Astro middleware response.headers is mutable, but let's be safe.
-  // Actually, in Astro middleware, modifying the response object returned by next() is the way.
-
+  // ─── Security Headers ──────────────────────────────
   const headers = response.headers;
 
   headers.set('X-Frame-Options', 'DENY');
@@ -16,23 +68,16 @@ export const onRequest = defineMiddleware(async (_, next) => {
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
 
-  // Content Security Policy
   const csp = [
     "default-src 'self'",
-    // Images: allow self, data URIs, https (for external images), and blob (for client generation)
     "img-src 'self' data: https: blob:",
-    // Scripts: allow self, unsafe-inline (often needed), unsafe-eval (needed for some libs/dev), and Cloudflare analytics
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com",
-    // Styles: allow self, unsafe-inline, and Google Fonts
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    // Fonts: allow self and Google Fonts
     "font-src 'self' https://fonts.gstatic.com",
-    // Connect: allow self, Google Fonts, and HuggingFace (for AI models)
-    "connect-src 'self' https://fonts.googleapis.com https://huggingface.co https://cdn-lfs.huggingface.co https://*.huggingface.co",
-    // Workers: allow self and blob (for AI workers)
+    "connect-src 'self' https://fonts.googleapis.com https://huggingface.co https://cdn-lfs.huggingface.co https://*.huggingface.co wss://*.cubatattoostudio.com wss://cubatattoostudio.com",
     "worker-src 'self' blob:",
     "object-src 'none'",
-    "base-uri 'self'"
+    "base-uri 'self'",
   ];
 
   headers.set('Content-Security-Policy', csp.join('; '));

@@ -1,10 +1,12 @@
 ---
 export const prerender = false;
 import "../../styles/global.css";
-import { AdminDashboard } from "../../components/admin/AdminDashboard";
+import { ArtistLogin } from "../../components/artist/ArtistLogin";
 
-// Session is already verified by middleware — redirects to /admin/login if not admin
-const session = Astro.locals.session!;
+const session = Astro.locals.session;
+if (session?.role === 'artist') {
+  return Astro.redirect('/artist');
+}
 ---
 
 <!doctype html>
@@ -15,7 +17,7 @@ const session = Astro.locals.session!;
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>Admin Dashboard | Cuba Tattoo Studio</title>
+    <title>Artist Login | Cuba Tattoo Studio</title>
     <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,16 +30,8 @@ const session = Astro.locals.session!;
     <meta name="color-scheme" content="dark" />
   </head>
   <body
-    class="bg-[var(--color-surface-primary)] text-white font-sans overflow-x-hidden"
+    class="bg-[var(--color-surface-primary)] text-white font-sans overflow-x-hidden min-h-screen flex items-center justify-center"
   >
-    <AdminDashboard
-      client:only="react"
-      session={{
-        user_id: session.user_id,
-        email: session.email,
-        role: session.role,
-        display_name: session.display_name,
-      }}
-    />
+    <ArtistLogin client:only="react" />
   </body>
 </html>

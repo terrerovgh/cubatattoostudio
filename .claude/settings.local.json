@@ -44,7 +44,11 @@
       "Bash(test:*)",
       "Bash(grep:*)",
       "Bash(npx astro dev:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(npx astro check:*)",
+      "Bash(npx wrangler kv namespace create:*)",
+      "Bash(npx wrangler d1 execute:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }
