@@ -31,8 +31,8 @@ jobs:
             echo "export const instagramPosts: any[] = [];" > src/data/instagram.ts
           fi
 
-      - name: Build
-        run: npx astro build
+      - name: Build (astro build + patch DO exports)
+        run: npm run build
         env:
           NODE_ENV: production
 

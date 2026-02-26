@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "prebuild": "node scripts/fetch-insta.js",
-    "build": "astro build",
+    "build": "astro build && node scripts/patch-do-exports.mjs",
     "preview": "wrangler dev",
-    "deploy": "astro build && wrangler deploy",
+    "deploy": "astro build && node scripts/patch-do-exports.mjs && wrangler deploy",
     "migrate-r2": "node scripts/migrate-to-r2.js",
     "astro": "astro",
     "test": "vitest",
