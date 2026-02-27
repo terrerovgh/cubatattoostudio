@@ -245,7 +245,9 @@ export interface ArtistInfo {
   image: string;
   specialties: string[];
   instagram?: string;
+  accent: string;
   availability: WeeklySchedule;
+  portfolioImages?: string[];
 }
 
 export interface WeeklySchedule {
@@ -256,40 +258,43 @@ export interface TimeSlot {
   time: string;
   available: boolean;
   price_modifier: number;
+  period: 'morning' | 'afternoon' | 'evening';
 }
 
 export interface BookingFormData {
-  // Step 1: Service & Artist
+  // Step 1: Artist & Style
   artist_id: string;
   service_type: string;
   style: string;
 
-  // Step 2: Consultation
+  // Step 2: Vision
   description: string;
   placement: string;
+  body_region: string;
   size_category: SizeCategory;
   size_inches: string;
   is_cover_up: boolean;
   is_touch_up: boolean;
   reference_images: File[];
+  reference_image_urls: string[];
 
-  // Step 3: Calendar
+  // Step 3: Schedule
   scheduled_date: string;
   scheduled_time: string;
   estimated_duration: number;
 
-  // Step 4: Payment
-  deposit_amount: number;
-  payment_method: string;
-  gift_card_code?: string;
-  loyalty_discount?: number;
-
-  // Client info
+  // Step 4: Client Info
   first_name: string;
   last_name: string;
   email: string;
   phone: string;
   date_of_birth: string;
+
+  // Step 5: Payment
+  deposit_amount: number;
+  payment_method: string;
+  gift_card_code?: string;
+  loyalty_discount?: number;
 }
 
 export interface PriceEstimate {
@@ -299,10 +304,46 @@ export interface PriceEstimate {
   deposit_required: number;
   total_min: number;
   total_max: number;
+  estimated_duration: number;
   breakdown: {
     label: string;
     amount: number;
+    type?: 'base' | 'modifier' | 'surcharge' | 'discount';
   }[];
+}
+
+// ─── Body Map Types ──────────────────────────────────
+
+export type BodyView = 'front' | 'back';
+
+export interface BodyRegion {
+  id: string;
+  label: string;
+  category: 'head_neck' | 'arms' | 'torso' | 'shoulders' | 'legs';
+  svgPath: string;
+  view: BodyView;
+}
+
+// ─── Calendar Types ──────────────────────────────────
+
+export type CalendarDayStatus = 'open' | 'limited' | 'full' | 'closed' | 'past';
+
+export interface CalendarDay {
+  date: string;
+  status: CalendarDayStatus;
+  slotsAvailable: number;
+  isWeekend: boolean;
+  isToday: boolean;
+  priceModifier: number;
+}
+
+// ─── Artist Matching Types ───────────────────────────
+
+export interface ArtistMatchResult {
+  artist_id: string;
+  confidence: number;
+  matchedKeywords: string[];
+  reason: string;
 }
 
 // ─── Admin Types ──────────────────────────────────────

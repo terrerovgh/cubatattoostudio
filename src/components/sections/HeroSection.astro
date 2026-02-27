@@ -1,6 +1,5 @@
 ---
 import SectionWrapper from "../SectionWrapper.astro";
-import ColorBends from "../ColorBends.tsx";
 
 interface Props {
   id: string;
@@ -13,42 +12,126 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage} class="!py-0">
-  {/* Static gradient fallback — always visible on mobile */}
+  {/* Animated Desert Background */}
   <div
-    class="color-bends-bg lg:hidden"
-    style="background: linear-gradient(25deg, #8B5E3C 0%, #4A3558 50%, #2E524A 100%);"
-  ></div>
+    class="absolute inset-0 overflow-hidden pointer-events-none select-none"
+    style="background: linear-gradient(180deg, #08080a 0%, #1a1a24 100%);"
+  >
+    {/* Twinkling stars / Dust */}
+    <div class="absolute inset-0 opacity-40">
+      <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="starGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2" result="blur"></feGaussianBlur>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"
+            ></feComposite>
+          </filter>
+        </defs>
+        <g class="animate-pulse" style="animation-duration: 4s;">
+          <circle cx="15%" cy="20%" r="1" fill="#C8956C" filter="url(#starGlow)"
+          ></circle>
+          <circle cx="35%" cy="10%" r="1.5" fill="#fff"></circle>
+          <circle cx="65%" cy="30%" r="1" fill="#C8956C" filter="url(#starGlow)"
+          ></circle>
+          <circle cx="85%" cy="15%" r="2" fill="#fff" opacity="0.6"></circle>
+          <circle cx="10%" cy="40%" r="1.5" fill="#fff" opacity="0.4"></circle>
+          <circle cx="45%" cy="50%" r="1" fill="#C8956C"></circle>
+          <circle cx="75%" cy="45%" r="1.5" fill="#fff" opacity="0.7"></circle>
+          <circle cx="90%" cy="35%" r="1" fill="#C8956C" filter="url(#starGlow)"
+          ></circle>
+        </g>
+        <g
+          class="animate-pulse"
+          style="animation-duration: 7s; animation-delay: 2s;"
+        >
+          <circle cx="25%" cy="30%" r="1.5" fill="#fff" opacity="0.5"></circle>
+          <circle cx="55%" cy="15%" r="1" fill="#C8956C" filter="url(#starGlow)"
+          ></circle>
+          <circle cx="80%" cy="5%" r="1.5" fill="#fff"></circle>
+          <circle cx="5%" cy="25%" r="1" fill="#C8956C"></circle>
+          <circle cx="40%" cy="40%" r="2" fill="#fff" opacity="0.8"></circle>
+          <circle cx="70%" cy="20%" r="1" fill="#C8956C" filter="url(#starGlow)"
+          ></circle>
+          <circle cx="95%" cy="50%" r="1.5" fill="#fff" opacity="0.4"></circle>
+        </g>
+      </svg>
+    </div>
 
-  {/* ColorBends WebGL background — only on desktop for performance */}
-  <div class="color-bends-bg hidden lg:block">
-    <ColorBends
-      client:only="react"
-      colors={["#8B5E3C", "#4A3558", "#2E524A"]}
-      rotation={25}
-      speed={0.06}
-      scale={1.3}
-      frequency={0.5}
-      warpStrength={0.5}
-      mouseInfluence={0.12}
-      parallax={0.1}
-      noise={0.025}
-      transparent={false}
-      autoRotate={0.4}
-      curve={1.2}
-    />
+    {/* Subtle Sun / Moon glow setting behind the dunes */}
+    <div
+      class="absolute bottom-[20%] left-[50%] -translate-x-1/2 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] rounded-full mix-blend-screen animate-pulse"
+      style="background: radial-gradient(circle, rgba(200,149,108,0.15) 0%, rgba(200,149,108,0) 70%); animation-duration: 10s;"
+    >
+    </div>
+
+    {/* Desert Dunes Parallax Vectors */}
+    <div class="absolute bottom-0 w-full h-[50vh] min-h-[400px]">
+      <svg
+        class="absolute bottom-0 w-full h-full object-cover object-bottom"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+      >
+        <style>
+          .dune-layer-1 {
+            animation: panDunes 35s infinite alternate ease-in-out;
+            transform-origin: center bottom;
+          }
+          .dune-layer-2 {
+            animation: panDunes 45s infinite alternate-reverse ease-in-out;
+            transform-origin: center bottom;
+          }
+          .dune-layer-3 {
+            animation: panDunes 55s infinite alternate ease-in-out;
+            transform-origin: center bottom;
+          }
+          @keyframes panDunes {
+            0% {
+              transform: scale(1.1) translateX(-3%);
+            }
+            100% {
+              transform: scale(1.1) translateX(3%);
+            }
+          }
+        </style>
+        {/* Farthest dune */}
+        <path
+          class="dune-layer-3"
+          fill="#0b0b0f"
+          d="M0,256L48,245.3C96,235,192,213,288,213.3C384,213,480,235,576,234.7C672,235,768,213,864,197.3C960,181,1056,171,1152,176C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+        ></path>
+        {/* Middle dune */}
+        <path
+          class="dune-layer-2"
+          fill="#0d0d12"
+          d="M0,192L60,202.7C120,213,240,235,360,240C480,245,600,235,720,202.7C840,171,960,117,1080,112C1200,107,1320,149,1380,170.7L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+        ></path>
+        {/* Closest dune */}
+        <path
+          class="dune-layer-1"
+          fill="#111118"
+          d="M0,128L80,149.3C160,171,320,213,480,202.7C640,192,800,128,960,122.7C1120,117,1280,171,1360,197.3L1440,224L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"
+        ></path>
+      </svg>
+    </div>
   </div>
 
-  {/* Dark vignette */}
-  <div class="hero-vignette"></div>
+  {/* Dark vignette to blend edges */}
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="box-shadow: inset 0 0 150px rgba(8,8,10,0.9);"
+  >
+  </div>
 
   {/* Main content — vertically centered with dvh for mobile browser chrome */}
-  <div class="relative z-[5] flex flex-col items-center justify-center text-center px-5 sm:px-8 max-w-3xl mx-auto min-h-[100dvh] py-20">
+  <div
+    class="relative z-[5] flex flex-col items-center justify-center text-center px-5 sm:px-8 max-w-3xl mx-auto min-h-[100dvh] py-20 stagger-children"
+  >
     {/* Logo — scales fluidly */}
-    <div data-hero="logo" class="w-full mb-5 sm:mb-8">
+    <div data-hero="logo" class="w-full mb-6 sm:mb-10 ambient-glow">
       <img
         src="/logo.svg"
         alt={title || "Cuba Tattoo Studio"}
-        class="w-full max-w-[220px] sm:max-w-sm md:max-w-lg lg:max-w-xl h-auto mx-auto drop-shadow-[0_4px_32px_rgba(200,149,108,0.15)]"
+        class="w-full max-w-[240px] sm:max-w-sm md:max-w-xl lg:max-w-2xl h-auto mx-auto drop-shadow-[0_8px_40px_rgba(200,149,108,0.25)] transition-transform duration-700 hover:scale-[1.02]"
         width="480"
         height="480"
       />
@@ -58,8 +141,8 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
     {/* Decorative gold line */}
     <div
       data-hero="line"
-      class="w-14 sm:w-20 h-px mx-auto mb-5 sm:mb-8"
-      style="background: linear-gradient(90deg, transparent, var(--color-gold), transparent); transform-origin: center; opacity: 0.45;"
+      class="w-16 sm:w-24 h-px mx-auto mb-6 sm:mb-10"
+      style="background: linear-gradient(90deg, transparent, var(--color-gold), transparent); transform-origin: center; opacity: 0.6;"
     >
     </div>
 
@@ -68,7 +151,7 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
       subtitle && (
         <p
           data-hero="subtitle"
-          class="text-[0.9rem] sm:text-base lg:text-lg text-white/50 font-light max-w-[280px] sm:max-w-md lg:max-w-lg mx-auto tracking-wide leading-relaxed mb-8 sm:mb-12"
+          class="text-[0.95rem] sm:text-lg lg:text-xl text-white/70 font-light max-w-[300px] sm:max-w-lg lg:max-w-2xl mx-auto tracking-wide leading-relaxed mb-10 sm:mb-14"
         >
           {subtitle}
         </p>
@@ -79,16 +162,19 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
     <div data-hero="cta">
       <a
         href="#booking"
-        class="prismatic-border group inline-flex items-center justify-center gap-2.5
-               px-7 py-3.5 sm:px-8 sm:py-4 min-w-[200px] sm:min-w-[220px] rounded-2xl
-               bg-[var(--color-gold)] text-black font-semibold text-sm sm:text-base
-               transition-all duration-500 ease-out
-               hover:shadow-[0_8px_30px_rgba(200,149,108,0.3)]
-               hover:scale-[1.03] active:scale-[0.97]"
+        class="group relative inline-flex items-center justify-center gap-3
+               px-8 py-4 sm:px-10 sm:py-5 min-w-[220px] sm:min-w-[260px] rounded-2xl
+               bg-gradient-to-b from-[#DABA8F] to-[#C8956C] text-[#08080a] font-bold text-sm sm:text-base tracking-wide
+               transition-all duration-500 ease-out overflow-hidden
+               hover:shadow-[0_0_40px_rgba(200,149,108,0.4)] hover:scale-[1.04] active:scale-[0.98]"
       >
-        Book Your Consultation
+        <div
+          class="absolute inset-0 bg-white/20 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-700 ease-in-out"
+        >
+        </div>
+        <span class="relative z-10">Book Your Consultation</span>
         <svg
-          class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
+          class="relative z-10 w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -108,7 +194,10 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
     data-hero="scroll"
     class="scroll-indicator absolute bottom-6 sm:bottom-8 pb-[env(safe-area-inset-bottom,0px)] left-1/2 -translate-x-1/2 z-[5] flex flex-col items-center gap-1.5"
   >
-    <span class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/25 font-medium">Scroll</span>
+    <span
+      class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/25 font-medium"
+      >Scroll</span
+    >
     <svg
       class="w-4 h-4 sm:w-5 sm:h-5 text-white/25"
       fill="none"
@@ -116,7 +205,10 @@ const { id, backgroundImage, title, subtitle } = Astro.props;
       stroke="currentColor"
       stroke-width="1.5"
     >
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
     </svg>
   </div>
 </SectionWrapper>

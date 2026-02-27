@@ -21,6 +21,17 @@ export const $pageMode = atom<'home' | 'artist'>('home');
 /** Artist accent color for portfolio pages */
 export const $artistAccent = atom<string>('#C8956C');
 
+/** Current booking wizard step (persisted for recovery) */
+export const $bookingStep = atom<number>(0);
+
+/** Live price estimate shown throughout the wizard */
+export const $bookingPriceEstimate = atom<{
+  totalMin: number;
+  totalMax: number;
+  deposit: number;
+  duration: number;
+} | null>(null);
+
 /** Booking form draft — persisted to localStorage for recovery */
 const BOOKING_STORAGE_KEY = 'cuba_booking_draft';
 
@@ -30,13 +41,19 @@ interface BookingDraft {
   style: string;
   description: string;
   placement: string;
+  body_region: string;
   size_category: string;
+  size_inches: string;
+  is_cover_up: boolean;
+  is_touch_up: boolean;
+  reference_image_urls: string[];
   scheduled_date: string;
   scheduled_time: string;
   first_name: string;
   last_name: string;
   email: string;
   phone: string;
+  date_of_birth: string;
 }
 
 const getDefaultDraft = (): BookingDraft => ({
@@ -45,13 +62,19 @@ const getDefaultDraft = (): BookingDraft => ({
   style: '',
   description: '',
   placement: '',
+  body_region: '',
   size_category: 'medium',
+  size_inches: '',
+  is_cover_up: false,
+  is_touch_up: false,
+  reference_image_urls: [],
   scheduled_date: '',
   scheduled_time: '',
   first_name: '',
   last_name: '',
   email: '',
   phone: '',
+  date_of_birth: '',
 });
 
 const loadDraft = (): BookingDraft => {
