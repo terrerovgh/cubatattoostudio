@@ -167,6 +167,20 @@ interface ProfileSectionProps {
   onSaved: (updated: ProfileUser) => void;
 }
 
+function getSafeAvatarUrl(rawUrl: string): string {
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return '';
+  try {
+    const url = new URL(trimmed);
+    if (url.protocol === 'http:' || url.protocol === 'https:') {
+      return url.toString();
+    }
+  } catch {
+    // Invalid URL, fall through to return empty string
+  }
+  return '';
+}
+
 function ProfileSection({ profile, onSaved }: ProfileSectionProps) {
   const [displayName, setDisplayName] = useState(profile.display_name);
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url ?? '');
@@ -210,7 +224,7 @@ function ProfileSection({ profile, onSaved }: ProfileSectionProps) {
     }
   };
 
-  const showAvatar = avatarUrl && !imgError;
+  const showAvatar = !!getSafeAvatarUrl(avatarUrl) && !imgError;
 
   return (
     <Section
@@ -228,7 +242,7 @@ function ProfileSection({ profile, onSaved }: ProfileSectionProps) {
             <div className="w-16 h-16 rounded-2xl bg-[#C8956C]/15 flex items-center justify-center overflow-hidden border-2 border-[#C8956C]/20">
               {showAvatar ? (
                 <img
-                  src={avatarUrl}
+                  src={getSafeAvatarUrl(avatarUrl)}
                   alt={displayName}
                   className="w-full h-full object-cover"
                   onError={() => setImgError(true)}
