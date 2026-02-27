@@ -25,24 +25,24 @@ npm run test:coverage
 ## Test Structure
 
 ```
-src/
-├── __tests__/
-│   └── store.test.ts                 # Nanostores tests
+tests/
+├── setup.ts                              # Test environment setup
+├── unit/
+│   └── store.test.ts                     # Nanostores state management tests (32 tests)
 ├── components/
-│   ├── __tests__/
-│   │   └── FloatingDock.test.tsx     # Floating dock navigation tests
-│   └── chat/
-│       └── __tests__/
-│           └── ChatWidget.test.tsx   # Chat widget tests
-└── tests/
-    └── setup.ts                       # Test environment setup
+│   ├── FloatingDock.test.tsx             # Floating dock navigation tests (29 tests)
+│   ├── chat/
+│   │   └── ChatWidget.test.tsx          # Chat widget tests (19 tests)
+│   └── gallery/
+│       ├── PhotoGallery.test.tsx         # Unified masonry gallery tests (19 tests)
+│       └── PhotoLightbox.test.tsx        # Fullscreen lightbox tests (36 tests)
 ```
 
 ## Test Suites
 
-### 1. FloatingDock Component Tests (`60+ tests`)
+### 1. FloatingDock Component Tests (29 tests)
 
-**File:** `src/components/__tests__/FloatingDock.test.tsx`
+**File:** `tests/components/FloatingDock.test.tsx`
 
 **Coverage:**
 - ✅ Rendering - dock, nav items, action buttons
@@ -64,32 +64,84 @@ src/
 8. **Progress Bar** - Test progress calculation
 9. **Cleanup** - Test event listener cleanup
 
-### 2. ChatWidget Component Tests (`40+ tests`)
+### 2. ChatWidget Component Tests (19 tests)
 
-**File:** `src/components/chat/__tests__/ChatWidget.test.tsx`
+**File:** `tests/components/chat/ChatWidget.test.tsx`
 
 **Coverage:**
-- ✅ Loading and displaying messages
-- ✅ Sending messages with error handling
+- ✅ Loading and displaying messages (with WebSocket mock)
+- ✅ Sending messages with optimistic updates
 - ✅ Connection status indication
-- ✅ Message grouping by date
-- ✅ Accessibility and keyboard navigation
-- ✅ Error recovery with retry
-- ✅ Resource cleanup
+- ✅ Message grouping by date (Today/Yesterday labels)
+- ✅ Accessibility (ARIA labels, keyboard navigation)
+- ✅ Error recovery with retry button
+- ✅ Empty state display
+- ✅ Resource cleanup on unmount
 
 **Test Groups:**
-1. **Rendering** - Verify chat UI elements
-2. **Loading Messages** - Test fetch, display, and error handling
-3. **Sending Messages** - Test send functionality and input clearing
-4. **Connection Status** - Test connection indicators and typing indicators
-5. **Accessibility** - Test ARIA labels and keyboard navigation
-6. **Message Grouping** - Test date-based grouping
-7. **Error Recovery** - Test error display and retry
-8. **Cleanup** - Test resource cleanup
+1. **Rendering** - Loading state, messages area, input, send button
+2. **Loading Messages** - Fetch, display, error handling, server errors
+3. **Sending Messages** - Form submit with optimistic insert
+4. **Connection Status** - WebSocket status indicators
+5. **Accessibility** - ARIA labels, keyboard navigation
+6. **Message Grouping** - Date-based grouping
+7. **Error Recovery** - Retry button and re-fetch
+8. **Empty/Header State** - Empty conversation, header branding
+9. **Cleanup** - Resource cleanup
 
-### 3. Store Tests (`50+ tests`)
+### 3. PhotoGallery Component Tests (19 tests)
 
-**File:** `src/__tests__/store.test.ts`
+**File:** `tests/components/gallery/PhotoGallery.test.tsx`
+
+**Coverage:**
+- ✅ Masonry grid rendering with CSS columns
+- ✅ Filter tabs (show/hide, active state, custom labels)
+- ✅ Pagination with Load More button
+- ✅ Lightbox integration (open/close)
+- ✅ Instagram CTA link visibility
+- ✅ Accent color theming
+- ✅ Artist portfolio mode (single artist, no filters)
+
+**Test Groups:**
+1. **Rendering** - Grid container, photo buttons, alt text, placeholders
+2. **Filter Tabs** - Visibility, filtering, highlight, custom labels
+3. **Pagination** - Load More display, item loading
+4. **Lightbox Integration** - Open/close photo lightbox
+5. **Instagram CTA** - Conditional display, link attributes
+6. **Accent Color** - Custom and default accent colors
+7. **Artist Portfolio Mode** - Single-artist context
+
+### 4. PhotoLightbox Component Tests (36 tests)
+
+**File:** `tests/components/gallery/PhotoLightbox.test.tsx`
+
+**Coverage:**
+- ✅ Fullscreen overlay rendering
+- ✅ Image display (local + CachedImage for R2)
+- ✅ Navigation arrows and keyboard (ArrowLeft/Right, Escape)
+- ✅ Zoom controls (in/out, limits 100%-300%, reset on nav)
+- ✅ Item counter display
+- ✅ Body scroll lock/unlock
+- ✅ Close behavior (button, backdrop, Escape)
+- ✅ Artist profile card and sidebar content
+- ✅ Featured work metadata (title, style, description, tags)
+- ✅ CTAs (Book this Style, View Artist Profile)
+
+**Test Groups:**
+1. **Rendering** - Overlay, image, close button, arrows, counter
+2. **Zoom Controls** - Zoom in/out, limits, percentage display
+3. **Navigation** - Next/prev, wrap-around
+4. **Keyboard Navigation** - ArrowRight, ArrowLeft, Escape
+5. **Body Scroll Lock** - Lock on mount, restore on unmount
+6. **Close Behavior** - Button, backdrop click, content click prevention
+7. **Artist Profile** - Profile card, badge, View Profile link
+8. **Sidebar Content** - Caption, featured work, tags, Book CTA
+9. **Zoom Reset** - Reset on item change
+10. **Cleanup** - Event listener removal
+
+### 5. Store Tests (32 tests)
+
+**File:** `tests/unit/store.test.ts`
 
 **Coverage:**
 - ✅ All nanostores atoms and maps
@@ -115,7 +167,7 @@ src/
 ### Configuration Files
 
 **vitest.config.ts** - Vitest configuration with jsdom environment
-**src/tests/setup.ts** - Global test setup with mocks
+**tests/setup.ts** - Global test setup with mocks (jest-dom matchers, browser API mocks)
 
 ### Mocked APIs
 
@@ -138,6 +190,8 @@ npm test
 npm test -- FloatingDock
 npm test -- ChatWidget
 npm test -- store
+npm test -- PhotoGallery
+npm test -- PhotoLightbox
 ```
 
 ### Watch Mode

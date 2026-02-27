@@ -60,7 +60,8 @@ describe('Store (Nanostores)', () => {
 
       $activeSection.set('artists');
 
-      expect(listener).toHaveBeenCalledWith('artists');
+      expect(listener).toHaveBeenCalled();
+      expect(listener.mock.calls[0][0]).toBe('artists');
 
       unsubscribe();
     });
@@ -317,8 +318,10 @@ describe('Store (Nanostores)', () => {
 
       $activeSection.set('artists');
 
-      expect(listener1).toHaveBeenCalledWith('artists');
-      expect(listener2).toHaveBeenCalledWith('artists');
+      expect(listener1).toHaveBeenCalled();
+      expect(listener1.mock.calls[0][0]).toBe('artists');
+      expect(listener2).toHaveBeenCalled();
+      expect(listener2.mock.calls[0][0]).toBe('artists');
 
       unsub1();
       unsub2();

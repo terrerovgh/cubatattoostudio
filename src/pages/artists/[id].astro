@@ -4,6 +4,7 @@ import { getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArtistHero from "../../components/artist/ArtistHero.astro";
 import CalendarNav from "../../components/artist/CalendarNav";
+import PhotoGallery from "../../components/gallery/PhotoGallery";
 import NinaAlgorithmicBackground from "../../components/artist/NinaAlgorithmicBackground";
 import SplashCursor from "../../components/artist/SplashCursor";
 
@@ -51,43 +52,52 @@ const allGalleryImages = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/gallery/**/*.{jpg,jpeg,png,webp}",
 );
 
-// Build curated gallery from .md config
-const curatedGallery = await Promise.all(
+// Build curated gallery as PhotoGallery-compatible posts
+const galleryPosts = await Promise.all(
   artistData.gallery.map(async (item: any, index: number) => {
     const imagePath = `/src/assets/gallery/${artistId}/${item.image}`;
     const loader = allGalleryImages[imagePath];
 
-    if (!loader) {
-      // Fallback to public path
-      return {
-        id: `${artistId}-${index}`,
-        src: `/gallery/${artistId}/${item.image}`,
-        size: item.size || "normal",
-      };
+    let src = `/gallery/${artistId}/${item.image}`;
+    let srcSet = "";
+    let attributes: any = {};
+
+    if (loader) {
+      try {
+        const imageModule = await loader();
+        const optimized = await getImage({
+          src: imageModule.default,
+          format: "webp",
+          width: 800,
+          quality: 85,
+        });
+        src = optimized.src;
+        srcSet = optimized.srcSet?.attribute || "";
+        attributes = optimized.attributes || {};
+      } catch (e) {
+        // fallback to public path
+      }
     }
 
-    try {
-      const imageModule = await loader();
-      const optimized = await getImage({
-        src: imageModule.default,
-        format: "webp",
-        width: item.size === "wide" ? 1000 : 800,
-        quality: 85,
-      });
-      return {
-        id: `${artistId}-${index}`,
-        src: optimized.src,
-        size: item.size || "normal",
-      };
-    } catch (e) {
-      return {
-        id: `${artistId}-${index}`,
-        src: `/gallery/${artistId}/${item.image}`,
-        size: item.size || "normal",
-      };
-    }
+    return {
+      id: `${artistId}-${index}`,
+      imageUrl: src,
+      isLocal: true,
+      srcSet,
+      attributes,
+      artist: artistId,
+      caption: `Work by ${artistData.displayName}`,
+    };
   }),
 );
+
+// Artist profile for lightbox sidebar
+const galleryArtistProfile = {
+  name: artistData.displayName,
+  image: artistData.profileImage,
+  role: artistData.role,
+  id: artistId,
+};
 
 const pageTitle = `${artistData.displayName} — Cuba Tattoo Studio`;
 const pageDescription =
@@ -270,30 +280,19 @@ const pageDescription =
 
     {
       /* ═══════════════════════════════════════════════════════════
-        SECTION 4: Gallery — Bento Grid
+        SECTION 4: Gallery — Masonry
         ═══════════════════════════════════════════════════════════ */
     }
     {
-      curatedGallery.length > 0 && (
+      galleryPosts.length > 0 && (
         <section class="gallery-section" id="gallery" data-section="gallery">
-          <div class="bento-grid">
-            {curatedGallery.map((item: any) => (
-              <div
-                class:list={[
-                  "bento-item",
-                  item.size === "tall" && "bento-tall",
-                  item.size === "wide" && "bento-wide",
-                ]}
-              >
-                <img
-                  src={item.src}
-                  alt={`Work by ${artistData.displayName}`}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            ))}
-          </div>
+          <PhotoGallery
+            client:visible
+            posts={galleryPosts}
+            accentColor={config.accentColor || '#ffffff'}
+            artistProfile={galleryArtistProfile}
+            artistLabels={{ [artistId]: artistData.displayName }}
+          />
         </section>
       )
     }
@@ -496,64 +495,8 @@ const pageDescription =
     }
   }
 
-  /* ─── Bento Gallery Grid ──────────────────────────────── */
+  /* ─── Gallery Section ────────────────────────────────── */
   .gallery-section {
     width: 100%;
-  }
-
-  .bento-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    grid-auto-flow: dense;
-  }
-
-  @media (min-width: 640px) {
-    .bento-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-  }
-
-  .bento-item {
-    border-radius: 16px;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    transition: transform 0.3s ease;
-  }
-
-  .bento-item:hover {
-    transform: scale(1.02);
-  }
-
-  .bento-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* Normal items get a fixed aspect ratio */
-  .bento-item:not(.bento-tall):not(.bento-wide) {
-    aspect-ratio: 1 / 1;
-  }
-
-  /* Tall: spans 2 rows */
-  .bento-tall {
-    grid-row: span 2;
-    min-height: 300px;
-  }
-
-  @media (min-width: 640px) {
-    .bento-tall {
-      min-height: 400px;
-    }
-  }
-
-  /* Wide: spans 2 columns */
-  .bento-wide {
-    grid-column: span 2;
-    aspect-ratio: 2 / 1;
   }
 </style>

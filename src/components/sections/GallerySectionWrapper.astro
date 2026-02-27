@@ -3,7 +3,7 @@ import { getImage } from "astro:assets";
 import instagramData from "../../data/instagram";
 import SectionWrapper from "../SectionWrapper.astro";
 import GlassCard from "../GlassCard.astro";
-import GallerySection from "./GallerySection";
+import PhotoGallery from "../gallery/PhotoGallery";
 
 interface Props {
   id: string;
@@ -71,8 +71,6 @@ if (instagramData.artists) {
         ...artist.profile,
         localProfilePic: profilePic,
       },
-      // We don't strictly need to pass the full posts array here if filtering is done on the main list
-      // But preserving structure is safer
       posts: artist.posts.map(
         (p) => optimizedPosts.find((op) => op.id === p.id) || p,
       ),
@@ -94,10 +92,10 @@ if (instagramData.artists) {
       }
     </div>
     <div class="space-y-6 sm:space-y-8" data-animate>
-      <GallerySection
+      <PhotoGallery
         client:visible
-        initialPosts={optimizedPosts as any}
-        initialArtists={optimizedArtists as any}
+        posts={optimizedPosts as any}
+        artists={optimizedArtists as any}
         services={services}
       />
     </div>

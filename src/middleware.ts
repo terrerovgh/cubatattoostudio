@@ -25,8 +25,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
-  // Artist dashboard pages (not login)
-  if (pathname.startsWith('/artist') && pathname !== '/artist/login') {
+  // Artist dashboard pages (not login) — must not match /artists/* (public profiles)
+  if ((pathname === '/artist' || pathname.startsWith('/artist/')) && pathname !== '/artist/login') {
     if (!locals.session || locals.session.role !== 'artist') {
       return context.redirect('/artist/login');
     }
