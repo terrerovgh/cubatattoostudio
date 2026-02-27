@@ -1,51 +1,46 @@
-import { useState, useCallback, useRef } from 'react';
-import type { BookingFormData, SizeCategory, PriceEstimate } from '../../types/booking';
-import { StepServiceSelect } from './StepServiceSelect';
-import { StepDetailsSchedule } from './StepDetailsSchedule';
-import { StepPayment } from './StepPayment';
-import { StepConfirmation } from './StepConfirmation';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { useStore } from '@nanostores/react';
+import { $bookingDraft, $bookingPriceEstimate, $bookingStep } from '../../store';
 import { calculatePriceEstimate } from '../../lib/pricing';
+import type { BookingFormData } from '../../types/booking';
+
+// Step Components
+import { StepArtistStyle } from './StepArtistStyle';
+import { StepVision } from './StepVision';
+import { StepSchedule } from './StepSchedule';
+import { StepClientInfo } from './StepClientInfo';
+import { StepReviewPay } from './StepReviewPay';
+import { PriceCalculator } from './PriceCalculator';
 
 const STEPS = [
-  { id: 'service', label: 'Artist & Service', shortLabel: 'Artist' },
-  { id: 'details', label: 'Details & Schedule', shortLabel: 'Details' },
-  { id: 'payment', label: 'Payment', shortLabel: 'Pay' },
-  { id: 'confirm', label: 'Confirmed', shortLabel: 'Done' },
+  { id: 'artist', label: 'Artist & Style', shortLabel: 'Artist' },
+  { id: 'vision', label: 'Your Vision', shortLabel: 'Vision' },
+  { id: 'schedule', label: 'Schedule', shortLabel: 'Time' },
+  { id: 'info', label: 'Your Info', shortLabel: 'Info' },
+  { id: 'review', label: 'Review & Pay', shortLabel: 'Pay' },
 ];
 
-const INITIAL_FORM: BookingFormData = {
-  artist_id: '',
-  service_type: '',
-  style: '',
-  description: '',
-  placement: '',
-  size_category: 'medium' as SizeCategory,
-  size_inches: '',
-  is_cover_up: false,
-  is_touch_up: false,
-  reference_images: [],
-  scheduled_date: '',
-  scheduled_time: '',
-  estimated_duration: 120,
-  deposit_amount: 0,
-  payment_method: 'card',
-  first_name: '',
-  last_name: '',
-  email: '',
-  phone: '',
-  date_of_birth: '',
-};
-
 export function BookingWizard() {
-  const [step, setStep] = useState(0);
-  const [form, setForm] = useState<BookingFormData>(INITIAL_FORM);
-  const [priceEstimate, setPriceEstimate] = useState<PriceEstimate | null>(null);
-  const [bookingId, setBookingId] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [direction, setDirection] = useState<'forward' | 'back'>('forward');
+  // Sync state with Nano Stores
+  const draft = useStore($bookingDraft);
+  const currentStepIndex = useStore($bookingStep);
+  const priceEstimateInfo = useStore($bookingPriceEstimate);
+
+  const [form, setForm] = useState<BookingFormData>(draft as unknown as BookingFormData);
+  const [estimate, setEstimate] = useState<any>(null); // Full estimate object for components
   const [animating, setAnimating] = useState(false);
+  const [direction, setDirection] = useState<'forward' | 'back'>('forward');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingId, setBookingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Sync component form state with nanostores draft on change
+  useEffect(() => {
+    // We only update the store when form changes
+    $bookingDraft.set(form as any);
+  }, [form]);
 
   const updateForm = useCallback((updates: Partial<BookingFormData>) => {
     setForm((prev) => {
@@ -54,49 +49,66 @@ export function BookingWizard() {
       if (
         updates.size_category !== undefined ||
         updates.style !== undefined ||
+        updates.service_type !== undefined ||
         updates.is_cover_up !== undefined ||
         updates.is_touch_up !== undefined ||
         updates.scheduled_date !== undefined ||
         updates.scheduled_time !== undefined
       ) {
-        const estimate = calculatePriceEstimate({
-          size: next.size_category,
-          style: next.style || next.service_type,
-          isCoverUp: next.is_cover_up,
-          isTouchUp: next.is_touch_up,
+        const calculated = calculatePriceEstimate({
+          size: next.size_category || 'medium',
+          style: next.style || next.service_type || '',
+          isCoverUp: next.is_cover_up || false,
+          isTouchUp: next.is_touch_up || false,
           date: next.scheduled_date || undefined,
           time: next.scheduled_time || undefined,
         });
-        setPriceEstimate(estimate);
-        next.deposit_amount = estimate.deposit_required;
-        next.estimated_duration = estimate.total_min > 500 ? 480 : estimate.total_min > 250 ? 240 : 120;
+
+        setEstimate(calculated);
+        next.deposit_amount = calculated.deposit_required;
+        next.estimated_duration = calculated.estimated_duration;
+
+        // Update nanostore for live pricing
+        $bookingPriceEstimate.set({
+          totalMin: calculated.total_min,
+          totalMax: calculated.total_max,
+          deposit: calculated.deposit_required,
+          duration: calculated.estimated_duration,
+        });
       }
 
       return next;
     });
   }, []);
 
+  // Calculate pricing on initial load if form has data
+  useEffect(() => {
+    if (form.size_category) {
+      updateForm({}); // Triggers recalculation
+    }
+  }, []);
+
   const animateStep = useCallback((newStep: number, dir: 'forward' | 'back') => {
     setDirection(dir);
     setAnimating(true);
-    // Short timeout for exit animation
     setTimeout(() => {
-      setStep(newStep);
+      $bookingStep.set(newStep);
       setAnimating(false);
-      // Scroll to top of wizard
-      contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 200);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 300);
   }, []);
 
   const handleNext = useCallback(() => {
     setError(null);
-    animateStep(Math.min(step + 1, STEPS.length - 1), 'forward');
-  }, [step, animateStep]);
+    animateStep(Math.min(currentStepIndex + 1, STEPS.length - 1), 'forward');
+  }, [currentStepIndex, animateStep]);
 
   const handleBack = useCallback(() => {
     setError(null);
-    animateStep(Math.max(step - 1, 0), 'back');
-  }, [step, animateStep]);
+    animateStep(Math.max(currentStepIndex - 1, 0), 'back');
+  }, [currentStepIndex, animateStep]);
 
   const handleSubmit = useCallback(async (paymentMethodId?: string) => {
     setIsSubmitting(true);
@@ -118,108 +130,107 @@ export function BookingWizard() {
         throw new Error(data.error || 'Failed to create booking');
       }
 
-      setBookingId(data.data.booking.id);
-      animateStep(3, 'forward');
+      setBookingId(data.data?.booking?.id || 'BOOKING-1234');
+
+      // On success, we can show a confirmation step or redirect
+      // For now, we'll just handle it internally
+      alert(`Booking Successful! ID: ${data.data?.booking?.id}`);
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setIsSubmitting(false);
     }
-  }, [form, animateStep]);
+  }, [form]);
+
+  // Derive artist accent and image for PriceCalculator
+  const ARTISTS: Record<string, any> = {
+    david: { name: 'David', image: '/artists/david.jpg', accent: '#E8793A' },
+    nina: { name: 'Nina', image: '/artists/nina.jpg', accent: '#feb4b4' },
+    karli: { name: 'Karli', image: '/artists/karli.jpg', accent: '#4A9EBF' },
+  };
+  const selectedArtist = form.artist_id ? ARTISTS[form.artist_id] : null;
 
   return (
-    <div className="w-full max-w-4xl mx-auto" ref={contentRef}>
-      {/* Progress Bar — segmented, modern */}
-      <div className="mb-10 sm:mb-12 px-2">
-        {/* Step labels */}
-        <div className="flex justify-between mb-3">
-          {STEPS.map((s, i) => (
-            <div key={s.id} className="flex flex-col items-center flex-1">
-              <span
-                className={`
-                  text-[10px] sm:text-xs font-medium transition-colors duration-300
-                  ${i <= step ? 'text-[#C8956C]' : 'text-white/25'}
-                `}
-              >
-                <span className="sm:hidden">{s.shortLabel}</span>
-                <span className="hidden sm:inline">{s.label}</span>
-              </span>
-            </div>
-          ))}
+    <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-start relative pb-32 lg:pb-0" ref={contentRef}>
+
+      {/* Left Column: Wizard Steps */}
+      <div className="flex-1 w-full max-w-3xl">
+        {/* Progress Bar */}
+        <div className="mb-8 px-2">
+          <div className="flex justify-between mb-3">
+            {STEPS.map((s, i) => (
+              <div key={s.id} className="flex flex-col items-center flex-1">
+                <span className={`text-[10px] sm:text-xs font-medium transition-colors duration-300 ${i <= currentStepIndex ? 'text-cuba-gold' : 'text-white/25'}`}>
+                  <span className="sm:hidden">{s.shortLabel}</span>
+                  <span className="hidden sm:inline">{s.label}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-1.5 h-1.5 rounded-full overflow-hidden bg-white/5">
+            {STEPS.map((s, i) => (
+              <div
+                key={s.id}
+                className="flex-1 transition-all duration-500 rounded-full"
+                style={{
+                  background: i < currentStepIndex ? '#C8956C' : i === currentStepIndex ? 'linear-gradient(90deg, #C8956C, transparent)' : 'transparent',
+                }}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Segmented progress bar */}
-        <div className="flex gap-1.5">
-          {STEPS.map((s, i) => (
-            <div
-              key={s.id}
-              className="progress-segment flex-1"
-              style={{
-                '--progress': i < step ? '1' : i === step ? '0.5' : '0',
-              } as React.CSSProperties}
-            />
-          ))}
+        {/* Error Banner */}
+        {error && (
+          <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-start gap-3">
+            <span>{error}</span>
+          </div>
+        )}
+
+        {/* Step Container */}
+        <div className="liquid-glass rounded-[24px] overflow-hidden">
+          <div
+            className={`transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] p-5 sm:p-8 lg:p-10 ${animating ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+            style={{
+              transform: animating ? (direction === 'forward' ? 'translateX(20px)' : 'translateX(-20px)') : 'translateX(0)',
+            }}
+          >
+            {currentStepIndex === 0 && (
+              <StepArtistStyle form={form} updateForm={updateForm} onNext={handleNext} />
+            )}
+            {currentStepIndex === 1 && (
+              <StepVision form={form} updateForm={updateForm} onNext={handleNext} onBack={handleBack} />
+            )}
+            {currentStepIndex === 2 && (
+              <StepSchedule form={form} updateForm={updateForm} onNext={handleNext} onBack={handleBack} />
+            )}
+            {currentStepIndex === 3 && (
+              <StepClientInfo form={form} updateForm={updateForm} onNext={handleNext} onBack={handleBack} />
+            )}
+            {currentStepIndex === 4 && (
+              <StepReviewPay
+                form={form}
+                updateForm={updateForm}
+                priceEstimate={estimate}
+                isSubmitting={isSubmitting}
+                onSubmit={handleSubmit}
+                onBack={handleBack}
+              />
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Error Banner */}
-      {error && (
-        <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-start gap-3">
-          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-          </svg>
-          {error}
-        </div>
-      )}
+      {/* Right Column: Live Pricing Widget (Sticky Desktop / Floating Mobile) */}
+      <PriceCalculator
+        estimate={estimate}
+        artistName={selectedArtist?.name}
+        artistImage={selectedArtist?.image}
+        artistAccent={selectedArtist?.accent}
+        className="w-full lg:w-[320px] lg:sticky lg:top-24 z-40 transition-all duration-300"
+      />
 
-      {/* Step Content — card container with glass effect */}
-      <div className="liquid-glass rounded-[24px] sm:rounded-[28px] p-5 sm:p-8 lg:p-10 overflow-hidden">
-        <div
-          className={`
-            min-h-[400px] sm:min-h-[500px] transition-all duration-200 ease-out
-            ${animating ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}
-          `}
-          style={{
-            transform: animating
-              ? direction === 'forward' ? 'translateX(20px)' : 'translateX(-20px)'
-              : 'translateX(0)',
-          }}
-        >
-          {step === 0 && (
-            <StepServiceSelect
-              form={form}
-              updateForm={updateForm}
-              onNext={handleNext}
-            />
-          )}
-          {step === 1 && (
-            <StepDetailsSchedule
-              form={form}
-              updateForm={updateForm}
-              priceEstimate={priceEstimate}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          {step === 2 && (
-            <StepPayment
-              form={form}
-              updateForm={updateForm}
-              priceEstimate={priceEstimate}
-              isSubmitting={isSubmitting}
-              onSubmit={handleSubmit}
-              onBack={handleBack}
-            />
-          )}
-          {step === 3 && (
-            <StepConfirmation
-              form={form}
-              bookingId={bookingId}
-              priceEstimate={priceEstimate}
-            />
-          )}
-        </div>
-      </div>
     </div>
   );
 }

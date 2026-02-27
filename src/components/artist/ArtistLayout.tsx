@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import {
-  LayoutDashboard, CalendarDays, Briefcase, Zap, Image,
-  MessageCircle, Tag, Settings, LogOut, Menu, X, ChevronRight
+  LayoutDashboard, CalendarDays, Zap, Image,
+  MessageCircle, Tag, Settings, LogOut, Menu, X, ChevronRight, User
 } from 'lucide-react';
 
 export type ArtistTab =
@@ -41,33 +41,42 @@ export function ArtistLayout({ children, activeTab, onTabChange, session }: Arti
   };
 
   return (
-    <div className="flex h-screen bg-[#f8f9fa]">
+    <div className="flex h-screen bg-[#0a0a0c] text-white font-sans overflow-hidden">
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#C8956C]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/4 w-[30rem] h-[30rem] bg-indigo-500/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 pointer-events-none mix-blend-overlay" />
+
+      {/* Mobile overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/30 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
+      {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-60 bg-white border-r border-gray-200 flex flex-col
-        transition-transform duration-200 ease-in-out
+        fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0a0c]/80 backdrop-blur-xl border-r border-white/10 flex flex-col
+        transition-transform duration-300 ease-in-out
         lg:relative lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        <div className="h-16 flex items-center px-5 border-b border-gray-100">
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#C8956C] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">CT</span>
+        {/* Logo */}
+        <div className="h-16 flex items-center px-6 border-b border-white/10 shrink-0">
+          <a href="/" className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shadow-lg">
+              <span className="text-[#C8956C] font-black text-xs tracking-tighter">CT</span>
             </div>
             <div>
-              <p className="text-sm font-semibold text-[#1a1a2e]">Cuba Tattoo</p>
-              <p className="text-[10px] text-gray-400 -mt-0.5">Artist Portal</p>
+              <p className="text-sm font-bold text-white tracking-wide">Cuba Tattoo</p>
+              <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mt-0.5">Artist Portal</p>
             </div>
           </a>
-          <button onClick={() => setSidebarOpen(false)} className="ml-auto lg:hidden text-gray-400">
+          <button onClick={() => setSidebarOpen(false)} className="ml-auto lg:hidden text-gray-400 hover:text-white transition-colors">
             <X size={20} />
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto py-4 px-3">
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -76,36 +85,37 @@ export function ArtistLayout({ children, activeTab, onTabChange, session }: Arti
                 key={item.id}
                 onClick={() => { onTabChange(item.id); setSidebarOpen(false); }}
                 className={`
-                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-0.5
-                  transition-colors duration-150
+                  w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-semibold
+                  transition-all duration-200
                   ${isActive
-                    ? 'bg-[#C8956C]/10 text-[#C8956C]'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
+                    ? 'bg-white/10 text-white shadow-sm shadow-white/5'
+                    : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}
                 `}
               >
-                <Icon size={18} strokeWidth={isActive ? 2 : 1.5} />
-                <span>{item.label}</span>
-                {isActive && <ChevronRight size={14} className="ml-auto" />}
+                <Icon size={18} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-white' : 'text-gray-500'} />
+                <span className="tracking-wide">{item.label}</span>
+                {isActive && <ChevronRight size={14} className="ml-auto opacity-70" />}
               </button>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-gray-100">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-[#C8956C]/20 flex items-center justify-center">
-              <span className="text-[#C8956C] font-semibold text-sm">
+        {/* User section */}
+        <div className="p-4 border-t border-white/10 shrink-0">
+          <div className="flex items-center gap-3 mb-4 px-2">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1a1a2e] to-black border border-white/10 flex items-center justify-center shrink-0">
+              <span className="text-gray-300 font-bold text-sm">
                 {session.display_name.charAt(0).toUpperCase()}
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-[#1a1a2e] truncate">{session.display_name}</p>
-              <p className="text-xs text-gray-400 truncate capitalize">{session.artist_id || 'Artist'}</p>
+              <p className="text-sm font-semibold text-gray-200 truncate">{session.display_name}</p>
+              <p className="text-[11px] text-[#C8956C] uppercase font-semibold tracking-wider truncate">{session.artist_id || 'Artist'}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-white/5 text-[13px] font-semibold text-gray-400 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all duration-200"
           >
             <LogOut size={16} />
             <span>Sign Out</span>
@@ -113,23 +123,29 @@ export function ArtistLayout({ children, activeTab, onTabChange, session }: Arti
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 lg:px-8 shrink-0">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden mr-4 text-gray-500">
+      {/* Main content */}
+      <div className="relative flex-1 flex flex-col min-w-0 z-10">
+        {/* Header */}
+        <header className="h-16 bg-[#0a0a0c]/80 backdrop-blur-md border-b border-white/10 flex items-center px-6 lg:px-8 shrink-0">
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden mr-4 text-gray-400 hover:text-white transition-colors">
             <Menu size={22} />
           </button>
-          <h1 className="text-lg font-semibold text-[#1a1a2e] capitalize">
+          <h1 className="text-lg font-bold text-white capitalize tracking-wide">
             {navItems.find(n => n.id === activeTab)?.label || 'Dashboard'}
           </h1>
           <div className="ml-auto flex items-center gap-4">
-            <a href={`/artists/${session.artist_id || ''}`} className="text-sm text-gray-500 hover:text-[#C8956C] transition-colors">
+            <a href={`/artists/${session.artist_id || ''}`} target="_blank" className="text-[13px] font-semibold text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+              <User size={14} />
               View Profile
             </a>
           </div>
         </header>
 
+        {/* Content */}
         <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          {children}
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     </div>

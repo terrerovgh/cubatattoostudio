@@ -1,6 +1,37 @@
 -- Cuba Tattoo Studio — D1 Database Schema
 -- Run with: wrangler d1 execute cubatattoostudio-db --file=src/lib/db/schema.sql
 
+-- ─── Users (Auth) ───────────────────────────────────────
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  password_salt TEXT NOT NULL,
+  role TEXT DEFAULT 'client' CHECK (role IN ('admin', 'artist', 'client')),
+  display_name TEXT NOT NULL,
+  avatar_url TEXT,
+  artist_id TEXT,
+  client_id TEXT,
+  is_active INTEGER DEFAULT 1,
+  last_login_at TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  updated_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+
+-- ─── Chat Tokens ────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS chat_tokens (
+  token TEXT PRIMARY KEY,
+  room_id TEXT NOT NULL,
+  client_id TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_chat_tokens_expires ON chat_tokens(expires_at);
+
 -- ─── Clients ──────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS clients (
   id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),

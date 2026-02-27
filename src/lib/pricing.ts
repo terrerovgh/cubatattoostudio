@@ -3,37 +3,37 @@ import type { SizeCategory, PriceEstimate } from '../types/booking';
 // ─── Base Prices by Size ──────────────────────────────
 
 const BASE_PRICES: Record<SizeCategory, { min: number; max: number }> = {
-  tiny:   { min: 50,   max: 100 },   // < 2"
-  small:  { min: 100,  max: 250 },   // 2-4"
-  medium: { min: 250,  max: 500 },   // 4-6"
-  large:  { min: 500,  max: 1200 },  // 6-10"
+  tiny: { min: 50, max: 100 },   // < 2"
+  small: { min: 100, max: 250 },   // 2-4"
+  medium: { min: 250, max: 500 },   // 4-6"
+  large: { min: 500, max: 1200 },  // 6-10"
   xlarge: { min: 1200, max: 3000 },  // 10"+
-  custom: { min: 200,  max: 5000 },
+  custom: { min: 200, max: 5000 },
 };
 
 // ─── Style Multipliers ────────────────────────────────
 
 const STYLE_MULTIPLIERS: Record<string, number> = {
-  'Color Realism':        1.3,
+  'Color Realism': 1.3,
   'Black & Grey Realism': 1.2,
-  'Fine Line & Dotwork':  1.0,
-  'Neo-Traditional':      1.15,
-  'Cover-ups':            1.4,
-  'Floral & Botanical':   1.0,
-  'Pet Tattoos':          1.1,
-  'Custom Tattoos':       1.15,
-  'Flash':                0.85,
+  'Fine Line & Dotwork': 1.0,
+  'Neo-Traditional': 1.15,
+  'Cover-ups': 1.4,
+  'Floral & Botanical': 1.0,
+  'Pet Tattoos': 1.1,
+  'Custom Tattoos': 1.15,
+  'Flash': 0.85,
 };
 
 // ─── Duration Estimates (minutes) ─────────────────────
 
 const DURATION_ESTIMATES: Record<SizeCategory, { min: number; max: number }> = {
-  tiny:   { min: 30,  max: 60 },
-  small:  { min: 60,  max: 120 },
+  tiny: { min: 30, max: 60 },
+  small: { min: 60, max: 120 },
   medium: { min: 120, max: 240 },
-  large:  { min: 240, max: 480 },
+  large: { min: 240, max: 480 },
   xlarge: { min: 480, max: 960 },
-  custom: { min: 60,  max: 480 },
+  custom: { min: 60, max: 480 },
 };
 
 // ─── Schedule Modifiers ───────────────────────────────
@@ -148,6 +148,7 @@ export function calculatePriceEstimate(params: {
     deposit_required: deposit,
     total_min: Math.max(priceMin, 50),
     total_max: Math.max(priceMax, 100),
+    estimated_duration: duration,
     breakdown,
   };
 }
