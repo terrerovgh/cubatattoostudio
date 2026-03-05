@@ -11,6 +11,7 @@ import {
   Filter,
 } from 'lucide-react';
 import type { BookingStatus } from '../../../types/booking';
+import { Badge, Button } from '@cloudflare/kumo';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -91,9 +92,9 @@ function StatusBadge({ status }: { status: string }) {
   };
   const cls = colors[status] ?? 'bg-gray-50 text-gray-600 ring-1 ring-gray-200';
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${cls}`}>
+    <Badge className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${cls}`}>
       {capitalize(status)}
-    </span>
+    </Badge>
   );
 }
 
@@ -114,9 +115,10 @@ function ActionButton({ label, onClick, disabled, variant }: ActionButtonProps) 
   }[variant];
 
   return (
-    <button
+    <Button
       onClick={onClick}
       disabled={disabled}
+      variant="outline"
       className={`
         inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium border transition-colors
         disabled:opacity-40 disabled:cursor-not-allowed
@@ -124,7 +126,7 @@ function ActionButton({ label, onClick, disabled, variant }: ActionButtonProps) 
       `}
     >
       {label}
-    </button>
+    </Button>
   );
 }
 
@@ -181,7 +183,7 @@ export function BookingsTab() {
 
   useEffect(() => {
     void fetchBookings();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, statusFilter, artistFilter]);
 
   // ── Status Update ──────────────────────────────────────────────────────────
@@ -293,18 +295,19 @@ export function BookingsTab() {
           </select>
 
           {/* Refresh */}
-          <button
+          <Button
             onClick={handleRefresh}
             disabled={loading}
+            variant="outline"
             className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#C8956C] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
             Refresh
-          </button>
+          </Button>
         </div>
       </div>
 
-      {/* Table Card */}
+      {/* Table */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
 
         {/* Loading overlay */}
@@ -328,13 +331,13 @@ export function BookingsTab() {
                 <p className="text-sm font-semibold text-[#1a1a2e]">Could not load bookings</p>
                 <p className="text-xs text-gray-500 mt-1">{error}</p>
               </div>
-              <button
+              <Button
                 onClick={handleRefresh}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a2e] text-white text-sm font-medium hover:bg-[#2a2a4e] transition-colors"
               >
                 <RefreshCw size={14} />
                 Retry
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -526,22 +529,24 @@ export function BookingsTab() {
             <span className="text-gray-400 ml-2">({pagination.total} total)</span>
           </p>
           <div className="flex items-center gap-2">
-            <button
+            <Button
               onClick={goToPrevPage}
               disabled={page <= 1}
+              variant="outline"
               className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#C8956C] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <ChevronLeft size={15} />
               Previous
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={goToNextPage}
               disabled={page >= totalPages}
+              variant="outline"
               className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#C8956C] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Next
               <ChevronRight size={15} />
-            </button>
+            </Button>
           </div>
         </div>
       )}

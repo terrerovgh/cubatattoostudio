@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { RefreshCw } from 'lucide-react';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 const statusColors: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-700',
@@ -62,16 +63,16 @@ export function ArtistBookingsTab() {
       <div className="flex flex-wrap gap-3 items-center">
         <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1); }} className="px-3 py-2 rounded-lg border border-gray-300 text-sm bg-white">
           <option value="">All Statuses</option>
-          {['pending','confirmed','deposit_paid','in_progress','completed','cancelled','no_show'].map(s => (
+          {['pending', 'confirmed', 'deposit_paid', 'in_progress', 'completed', 'cancelled', 'no_show'].map(s => (
             <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>
           ))}
         </select>
-        <button onClick={fetchBookings} className="px-3 py-2 rounded-lg bg-[#C8956C]/10 text-[#C8956C] text-sm font-medium hover:bg-[#C8956C]/20">
+        <Button onClick={fetchBookings} variant="outline" className="px-3 py-2 rounded-lg bg-[#C8956C]/10 border-0 text-[#C8956C] text-sm font-medium hover:bg-[#C8956C]/20 h-auto">
           <RefreshCw size={16} />
-        </button>
+        </Button>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
+      <div className="overflow-x-auto p-0">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-5 h-5 border-2 border-[#C8956C]/30 border-t-[#C8956C] rounded-full animate-spin" /></div>
         ) : bookings.length === 0 ? (
@@ -99,26 +100,27 @@ export function ArtistBookingsTab() {
                   <td className="px-4 py-3 text-gray-600">{b.scheduled_date}</td>
                   <td className="px-4 py-3 text-gray-600">{b.scheduled_time}</td>
                   <td className="px-4 py-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[b.status] || 'bg-gray-100 text-gray-600'}`}>
+                    <Badge className={`px-2 py-1 flex items-center justify-center w-fit rounded-full border-0 text-[10px] font-medium ${statusColors[b.status] || 'bg-gray-100 text-gray-600'}`}>
                       {b.status?.replace(/_/g, ' ')}
-                    </span>
+                    </Badge>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1 flex-wrap">
-                      {b.status === 'pending' && <button onClick={() => updateStatus(b.id, 'confirmed')} className="px-2 py-1 rounded text-xs bg-green-50 text-green-600 hover:bg-green-100">Confirm</button>}
+                      {b.status === 'pending' && <Button onClick={() => updateStatus(b.id, 'confirmed')} variant="ghost" className="px-2 py-1 rounded border-0 h-auto text-[10px] font-semibold bg-green-50 text-green-600 hover:bg-green-100">Confirm</Button>}
                       {(b.status === 'confirmed' || b.status === 'deposit_paid') && (
                         <>
-                          <button onClick={() => updateStatus(b.id, 'in_progress')} className="px-2 py-1 rounded text-xs bg-blue-50 text-blue-600 hover:bg-blue-100">Start</button>
-                          <button onClick={() => updateStatus(b.id, 'no_show')} className="px-2 py-1 rounded text-xs bg-red-50 text-red-600 hover:bg-red-100">No-show</button>
+                          <Button onClick={() => updateStatus(b.id, 'in_progress')} variant="ghost" className="px-2 py-1 border-0 h-auto rounded text-[10px] font-semibold bg-blue-50 text-blue-600 hover:bg-blue-100">Start</Button>
+                          <Button onClick={() => updateStatus(b.id, 'no_show')} variant="ghost" className="px-2 py-1 border-0 h-auto rounded text-[10px] font-semibold bg-red-50 text-red-600 hover:bg-red-100">No-show</Button>
                         </>
                       )}
-                      {b.status === 'in_progress' && <button onClick={() => updateStatus(b.id, 'completed')} className="px-2 py-1 rounded text-xs bg-green-50 text-green-600 hover:bg-green-100">Complete</button>}
-                      <button onClick={() => { setEditingNotes(editingNotes === b.id ? null : b.id); setNotesValue(b.artist_notes || ''); }} className="px-2 py-1 rounded text-xs bg-gray-50 text-gray-600 hover:bg-gray-100">Notes</button>
+                      {b.status === 'in_progress' && <Button onClick={() => updateStatus(b.id, 'completed')} variant="ghost" className="px-2 py-1 border-0 h-auto rounded text-[10px] font-semibold bg-green-50 text-green-600 hover:bg-green-100">Complete</Button>}
+                      <Button onClick={() => { setEditingNotes(editingNotes === b.id ? null : b.id); setNotesValue(b.artist_notes || ''); }} variant="ghost" className="px-2 py-1 border-0 h-auto rounded text-[10px] font-semibold bg-gray-50 text-gray-600 hover:bg-gray-100">Notes</Button>
                     </div>
                     {editingNotes === b.id && (
                       <div className="mt-2 flex gap-2">
-                        <input value={notesValue} onChange={e => setNotesValue(e.target.value)} className="flex-1 px-2 py-1 rounded border border-gray-300 text-xs" placeholder="Artist notes..." />
-                        <button onClick={() => saveNotes(b.id)} className="px-2 py-1 rounded text-xs bg-[#C8956C] text-white">Save</button>
+                        {/* @ts-ignore */}
+                        <Input value={notesValue} onChange={e => setNotesValue(e.target.value)} className="flex-1 px-2 py-1 rounded border border-gray-300 text-xs" placeholder="Artist notes..." />
+                        <Button onClick={() => saveNotes(b.id)} className="px-2 py-1 h-auto rounded text-xs bg-[#C8956C] border-0 text-white">Save</Button>
                       </div>
                     )}
                   </td>
@@ -131,9 +133,9 @@ export function ArtistBookingsTab() {
 
       {totalPages > 1 && (
         <div className="flex justify-between items-center">
-          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} className="px-3 py-1.5 rounded-lg border border-gray-300 text-sm disabled:opacity-40">Previous</button>
+          <Button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} variant="outline" className="px-3 border-gray-200 h-auto py-1.5 rounded-lg text-sm disabled:opacity-40">Previous</Button>
           <span className="text-sm text-gray-500">Page {page} of {totalPages}</span>
-          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages} className="px-3 py-1.5 rounded-lg border border-gray-300 text-sm disabled:opacity-40">Next</button>
+          <Button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages} variant="outline" className="px-3 border-gray-200 h-auto py-1.5 rounded-lg text-sm disabled:opacity-40">Next</Button>
         </div>
       )}
     </div>

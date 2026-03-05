@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import type { BookingFormData, SizeCategory } from '../../types/booking';
 import { BodyMapSVG } from './BodyMapSVG';
+import { Button, Input } from '@cloudflare/kumo';
 
 interface Props {
   form: BookingFormData;
@@ -104,11 +105,10 @@ export function StepVision({ form, updateForm, onNext, onBack, accentColor = '#C
         </label>
 
         <div
-          className={`relative border-2 border-dashed rounded-2xl p-6 text-center transition-all ${
-            dragActive
-              ? 'border-opacity-60 bg-opacity-10'
-              : 'border-white/10 hover:border-white/20'
-          }`}
+          className={`relative border-2 border-dashed rounded-2xl p-6 text-center transition-all ${dragActive
+            ? 'border-opacity-60 bg-opacity-10'
+            : 'border-white/10 hover:border-white/20'
+            }`}
           style={dragActive ? {
             borderColor: accentColor,
             background: `${accentColor}08`,
@@ -190,11 +190,10 @@ export function StepVision({ form, updateForm, onNext, onBack, accentColor = '#C
               <button
                 key={size.id}
                 onClick={() => updateForm({ size_category: size.id as SizeCategory })}
-                className={`p-3 rounded-xl text-center transition-all duration-200 ${
-                  isSelected
-                    ? 'border'
-                    : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
-                }`}
+                className={`p-3 rounded-xl text-center transition-all duration-200 ${isSelected
+                  ? 'border'
+                  : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
+                  }`}
                 style={isSelected ? {
                   background: `${accentColor}12`,
                   borderColor: `${accentColor}40`,
@@ -218,10 +217,10 @@ export function StepVision({ form, updateForm, onNext, onBack, accentColor = '#C
         {/* Custom size input */}
         {form.size_category === 'custom' && (
           <div className="mt-3">
-            <input
+            <Input
               type="text"
               value={form.size_inches}
-              onChange={(e) => updateForm({ size_inches: e.target.value })}
+              onChange={(e: any) => updateForm({ size_inches: e.target.value })}
               placeholder="e.g., 8 x 5 inches"
               className="input-premium text-sm max-w-xs"
             />
@@ -231,24 +230,23 @@ export function StepVision({ form, updateForm, onNext, onBack, accentColor = '#C
 
       {/* Navigation */}
       <div className="flex justify-between pt-2">
-        <button
+        <Button
           onClick={onBack}
           className="px-6 py-3.5 rounded-xl text-sm font-medium text-white/50 hover:text-white/80 hover:bg-white/5 transition-all"
         >
           ← Back
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={onNext}
           disabled={!canProceed}
-          className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${
-            canProceed
+          className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${canProceed
               ? 'text-black hover:brightness-110 active:scale-[0.98]'
               : 'bg-white/5 text-white/30 cursor-not-allowed'
-          }`}
+            }`}
           style={canProceed ? { background: accentColor } : undefined}
         >
           Choose Date & Time →
-        </button>
+        </Button>
       </div>
     </div>
   );

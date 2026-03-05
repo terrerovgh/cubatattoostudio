@@ -1,9 +1,9 @@
 import { useStore } from '@nanostores/react';
 import { $activeSection } from '@/store';
 import {
-  Home, Megaphone, Users, LayoutGrid, CalendarDays,
-  Phone, Instagram, ChevronUp,
-} from 'lucide-react';
+  House as Home, Megaphone, Users, SquaresFour as LayoutGrid, CalendarBlank as CalendarDays,
+  Phone, InstagramLogo as Instagram, CaretUp as ChevronUp,
+} from '@phosphor-icons/react';
 import { useState, useEffect, useRef, useCallback, type ElementType } from 'react';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -23,11 +23,11 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'hero',       icon: Home,         label: 'Home'    },
-  { id: 'promotions', icon: Megaphone,    label: 'Promos'  },
-  { id: 'artists',    icon: Users,        label: 'Artists'  },
-  { id: 'gallery',    icon: LayoutGrid,   label: 'Gallery'  },
-  { id: 'booking',    icon: CalendarDays, label: 'Book'     },
+  { id: 'hero', icon: Home, label: 'Home' },
+  { id: 'promotions', icon: Megaphone, label: 'Promos' },
+  { id: 'artists', icon: Users, label: 'Artists' },
+  { id: 'gallery', icon: LayoutGrid, label: 'Gallery' },
+  { id: 'booking', icon: CalendarDays, label: 'Book' },
 ];
 
 // ─── Magnification helpers ───────────────────────────────────────────────────

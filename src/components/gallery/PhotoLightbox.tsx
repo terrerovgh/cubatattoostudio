@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import CachedImage from '@/components/CachedImage';
+import { Button } from '@cloudflare/kumo';
+import { CaretLeft, CaretRight, Minus, Plus, X } from '@phosphor-icons/react';
 
 export interface LightboxItem {
   id: string;
@@ -149,9 +151,7 @@ export default function PhotoLightbox({
                            transition-all duration-200 active:scale-95"
                 aria-label="Previous image"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
+                <CaretLeft weight="bold" className="w-5 h-5" />
               </button>
               <button
                 onClick={handleNext}
@@ -161,9 +161,7 @@ export default function PhotoLightbox({
                            transition-all duration-200 active:scale-95"
                 aria-label="Next image"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <CaretRight weight="bold" className="w-5 h-5" />
               </button>
             </>
           )}
@@ -178,9 +176,7 @@ export default function PhotoLightbox({
                          backdrop-blur-md border border-white/10 transition-all"
               aria-label="Zoom out"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-              </svg>
+              <Minus weight="bold" className="w-4 h-4" />
             </button>
             <div className="px-2.5 py-1.5 rounded-full bg-black/50 border border-white/10 text-white/80 text-xs font-medium backdrop-blur-md min-w-[52px] text-center">
               {Math.round(zoomLevel * 100)}%
@@ -193,9 +189,7 @@ export default function PhotoLightbox({
                          backdrop-blur-md border border-white/10 transition-all"
               aria-label="Zoom in"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
+              <Plus weight="bold" className="w-4 h-4" />
             </button>
           </div>
 
@@ -222,13 +216,11 @@ export default function PhotoLightbox({
                        flex items-center justify-center"
             aria-label="Close"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X weight="bold" className="w-4 h-4" />
           </button>
 
           <div className="flex-1 space-y-5 mt-1 md:mt-2">
-            {/* Artist Profile Card */}
+            {/* Artist Profile */}
             {artistProfile && (
               <div className="flex items-center gap-3 pb-4 border-b border-white/[0.06]">
                 <img
@@ -328,8 +320,8 @@ export default function PhotoLightbox({
           <div className="pt-4 border-t border-white/[0.06] mt-auto space-y-2.5">
             <a
               href="/booking"
-              className="block w-full py-3 rounded-xl text-center text-sm font-semibold text-black
-                         transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full py-3 rounded-xl text-center text-sm font-semibold text-black
+                         transition-all hover:scale-[1.02] active:scale-[0.98] block"
               style={{ background: accentColor }}
             >
               Book this Style
@@ -337,9 +329,9 @@ export default function PhotoLightbox({
             {artistProfile && (
               <a
                 href={`/artists/${artistProfile.id}`}
-                className="block w-full py-3 rounded-xl text-center text-sm font-medium
+                className="w-full py-3 rounded-xl text-center text-sm font-medium
                            text-white/60 hover:text-white bg-white/[0.04] border border-white/[0.06]
-                           hover:bg-white/[0.08] transition-all"
+                           hover:bg-white/[0.08] transition-all block"
               >
                 View Artist Profile
               </a>

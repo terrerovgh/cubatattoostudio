@@ -261,19 +261,85 @@ export default function ScrollObserver() {
         }
       });
 
-      // ─── 9. Parallax ─────────────────────────────────────────
+      // ─── 9. Advanced Parallax ────────────────────────────────
+      // Simple Y translation parallax
       const parallaxEls = document.querySelectorAll<HTMLElement>('[data-parallax]');
       parallaxEls.forEach((el) => {
-        const speed = parseFloat(el.dataset.parallax || '0.2');
-        gsap.to(el, {
-          y: () => speed * ScrollTrigger.maxScroll(window) * -0.1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.5,
-          },
+        const speed = parseFloat(el.dataset.parallax || '0.15');
+        gsap.fromTo(el,
+          { y: () => -100 * speed },
+          {
+            y: () => 100 * speed,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: el.parentElement || el,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1, // Smooth scrubbing
+            },
+          }
+        );
+      });
+
+      // Scale parallax (e.g., subtle zoom on scroll down)
+      const parallaxScaleEls = document.querySelectorAll<HTMLElement>('[data-parallax-scale]');
+      parallaxScaleEls.forEach((el) => {
+        const scaleAmount = parseFloat(el.dataset.parallaxScale || '1.1');
+        gsap.fromTo(el,
+          { scale: 1 },
+          {
+            scale: scaleAmount,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: el.parentElement || el,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
+        );
+      });
+
+      // Rotation / Tilt parallax
+      const parallaxRotateEls = document.querySelectorAll<HTMLElement>('[data-parallax-rotate]');
+      parallaxRotateEls.forEach((el) => {
+        const rotateAmount = parseFloat(el.dataset.parallaxRotate || '5');
+        gsap.fromTo(el,
+          { rotation: -rotateAmount },
+          {
+            rotation: rotateAmount,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: el.parentElement || el,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            },
+          }
+        );
+      });
+
+      // ─── 10. Magnetic Buttons Hover Effect ─────────────────────
+      const magneticBtns = document.querySelectorAll<HTMLElement>('[data-magnetic]');
+      magneticBtns.forEach((btn) => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          gsap.to(btn, {
+            x: x * 0.3,
+            y: y * 0.3,
+            duration: 0.8,
+            ease: 'back.out(1.5)',
+          });
+        });
+        btn.addEventListener('mouseleave', () => {
+          gsap.to(btn, {
+            x: 0,
+            y: 0,
+            duration: 0.8,
+            ease: 'elastic.out(1, 0.3)',
+          });
         });
       });
     });

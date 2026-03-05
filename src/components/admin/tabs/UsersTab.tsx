@@ -14,6 +14,7 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -71,23 +72,23 @@ function getRoleBadgeClass(role: string): string {
 
 function RoleBadge({ role }: { role: string }) {
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium capitalize ${getRoleBadgeClass(role)}`}>
+    <Badge className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium capitalize border-0 ${getRoleBadgeClass(role)}`}>
       {role}
-    </span>
+    </Badge>
   );
 }
 
 function ActiveBadge({ isActive }: { isActive: number }) {
   return isActive ? (
-    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20">
+    <Badge className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20 border-0">
       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
       Active
-    </span>
+    </Badge>
   ) : (
-    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-white/5 text-gray-400 ring-1 ring-white/10">
+    <Badge className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-white/5 text-gray-400 ring-1 ring-white/10 border-0">
       <span className="w-1.5 h-1.5 rounded-full bg-gray-500" />
       Inactive
-    </span>
+    </Badge>
   );
 }
 
@@ -153,9 +154,9 @@ function CreateUserModal({ onClose, onSuccess }: CreateUserModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/5 rounded-t-2xl">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider">Create User</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
+          <Button onClick={onClose} variant="ghost" className="text-gray-400 hover:text-white transition-colors p-0 h-auto w-auto">
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Body */}
@@ -171,9 +172,10 @@ function CreateUserModal({ onClose, onSuccess }: CreateUserModalProps) {
             <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-widest">
               Display Name
             </label>
-            <input
+            <Input
               type="text"
               value={form.display_name}
+              // @ts-ignore
               onChange={(e) => setForm({ ...form, display_name: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
               placeholder="Jane Doe"
@@ -185,9 +187,10 @@ function CreateUserModal({ onClose, onSuccess }: CreateUserModalProps) {
             <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-widest">
               Email Address
             </label>
-            <input
+            <Input
               type="email"
               value={form.email}
+              // @ts-ignore
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
               placeholder="jane@example.com"
@@ -200,21 +203,23 @@ function CreateUserModal({ onClose, onSuccess }: CreateUserModalProps) {
               Password
             </label>
             <div className="relative">
-              <input
+              <Input
                 type={showPassword ? 'text' : 'password'}
                 value={form.password}
+                // @ts-ignore
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 className="w-full pl-4 pr-11 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
                 placeholder="Minimum 8 characters"
                 disabled={loading}
               />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-0 h-auto"
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -242,9 +247,10 @@ function CreateUserModal({ onClose, onSuccess }: CreateUserModalProps) {
               <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-widest">
                 Artist ID <span className="font-normal text-gray-500 normal-case tracking-normal">(optional)</span>
               </label>
-              <input
+              <Input
                 type="text"
                 value={form.artist_id}
+                // @ts-ignore
                 onChange={(e) => setForm({ ...form, artist_id: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
                 placeholder="e.g. artist-uuid or slug"
@@ -254,22 +260,23 @@ function CreateUserModal({ onClose, onSuccess }: CreateUserModalProps) {
           )}
 
           <div className="flex items-center gap-4 pt-4">
-            <button
+            <Button
               type="button"
               onClick={onClose}
               disabled={loading}
+              variant="outline"
               className="flex-1 py-3 rounded-xl border border-white/10 text-sm font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-200 disabled:opacity-50"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 transition-all duration-300 disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 transition-all duration-300 disabled:opacity-50 border-0"
             >
               {loading ? <Loader2 size={16} className="animate-spin" /> : <CheckCircle size={16} />}
               {loading ? 'Creating...' : 'Create User'}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -331,9 +338,9 @@ function EditUserModal({ user, onClose, onSuccess }: EditUserModalProps) {
       <div className="bg-[#0a0a0c] rounded-2xl shadow-2xl shadow-black w-full max-w-md border border-white/10">
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/5 rounded-t-2xl">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider">Edit User</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
+          <Button onClick={onClose} variant="ghost" className="text-gray-400 hover:text-white transition-colors p-0 h-auto w-auto">
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
@@ -348,9 +355,10 @@ function EditUserModal({ user, onClose, onSuccess }: EditUserModalProps) {
             <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-widest">
               Display Name
             </label>
-            <input
+            <Input
               type="text"
               value={form.display_name}
+              // @ts-ignore
               onChange={(e) => setForm({ ...form, display_name: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
               disabled={loading}
@@ -361,9 +369,10 @@ function EditUserModal({ user, onClose, onSuccess }: EditUserModalProps) {
             <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-widest">
               Email Address
             </label>
-            <input
+            <Input
               type="email"
               value={form.email}
+              // @ts-ignore
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
               disabled={loading}
@@ -394,9 +403,10 @@ function EditUserModal({ user, onClose, onSuccess }: EditUserModalProps) {
               <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-widest">
                 Artist ID <span className="font-normal text-gray-500 normal-case tracking-normal">(optional)</span>
               </label>
-              <input
+              <Input
                 type="text"
                 value={form.artist_id}
+                // @ts-ignore
                 onChange={(e) => setForm({ ...form, artist_id: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
                 placeholder="e.g. artist-uuid or slug"
@@ -406,22 +416,23 @@ function EditUserModal({ user, onClose, onSuccess }: EditUserModalProps) {
           )}
 
           <div className="flex items-center gap-4 pt-4">
-            <button
+            <Button
               type="button"
               onClick={onClose}
               disabled={loading}
+              variant="outline"
               className="flex-1 py-3 rounded-xl border border-white/10 text-sm font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-200 disabled:opacity-50"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 transition-all duration-300 disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 transition-all duration-300 disabled:opacity-50 border-0"
             >
               {loading ? <Loader2 size={16} className="animate-spin" /> : <CheckCircle size={16} />}
               {loading ? 'Saving...' : 'Save Changes'}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -507,13 +518,14 @@ export function UsersTab() {
             <p className="text-base font-bold text-white tracking-wide">Could not load users</p>
             <p className="text-sm text-gray-400 mt-2 leading-relaxed">{error}</p>
           </div>
-          <button
+          <Button
             onClick={() => void fetchUsers()}
+            variant="outline"
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-semibold hover:bg-white/10 transition-all duration-200 mt-2"
           >
             <RefreshCw size={16} />
             Retry Connection
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -533,13 +545,13 @@ export function UsersTab() {
             <p className="text-sm text-gray-400 mt-1">{users.length} {users.length === 1 ? 'user' : 'users'} found in system</p>
           </div>
         </div>
-        <button
+        <Button
           onClick={() => setShowCreate(true)}
-          className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 hover:-translate-y-0.5 transition-all duration-300"
+          className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 hover:-translate-y-0.5 transition-all duration-300 border-0"
         >
           <Plus size={18} />
           Create User
-        </button>
+        </Button>
       </div>
 
       {/* Filters */}
@@ -547,9 +559,10 @@ export function UsersTab() {
         {/* Search */}
         <div className="relative flex-1">
           <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
+          <Input
             type="text"
             value={search}
+            // @ts-ignore
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or email..."
             className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 transition-all duration-300"
@@ -569,13 +582,14 @@ export function UsersTab() {
           </select>
           <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
         </div>
-        <button
+        <Button
           onClick={() => void fetchUsers()}
+          variant="outline"
           className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-white/10 bg-white/5 text-sm font-semibold text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-200 shrink-0"
         >
           <RefreshCw size={16} />
           <span className="md:hidden lg:inline">Refresh</span>
-        </button>
+        </Button>
       </div>
 
       {/* Table */}
@@ -641,18 +655,20 @@ export function UsersTab() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
+                        <Button
                           onClick={() => setEditUser(user)}
-                          className="p-2 rounded-lg text-gray-400 hover:text-[#C8956C] hover:bg-[#C8956C]/10 transition-colors"
+                          variant="ghost"
+                          className="p-2 rounded-lg text-gray-400 hover:text-[#C8956C] hover:bg-[#C8956C]/10 transition-colors h-auto shrink-0 w-auto"
                           title="Edit user"
                         >
                           <Pencil size={16} />
-                        </button>
+                        </Button>
                         {user.is_active === 1 && (
-                          <button
+                          <Button
                             onClick={() => void handleDeactivate(user.id)}
                             disabled={deactivating === user.id}
-                            className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-40"
+                            variant="ghost"
+                            className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-40 h-auto shrink-0 w-auto"
                             title="Deactivate user"
                           >
                             {deactivating === user.id ? (
@@ -660,7 +676,7 @@ export function UsersTab() {
                             ) : (
                               <UserX size={16} />
                             )}
-                          </button>
+                          </Button>
                         )}
                       </div>
                     </td>

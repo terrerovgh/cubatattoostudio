@@ -9,6 +9,7 @@ import {
   AlertCircle,
   Clock,
 } from 'lucide-react';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -123,10 +124,11 @@ function RoomItem({ room, isSelected, onClick }: RoomItemProps) {
   const hasUnread = room.unread_count > 0;
 
   return (
-    <button
+    <Button
       onClick={onClick}
+      variant="ghost"
       className={`
-        w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors duration-100 border-b border-gray-100 last:border-0
+        w-full flex items-center h-auto gap-3 px-4 py-3.5 text-left transition-colors duration-100 border-b border-gray-100 last:border-0 rounded-none shadow-none
         ${isSelected
           ? 'bg-[#C8956C]/8 border-l-2 border-l-[#C8956C]'
           : 'hover:bg-gray-50 border-l-2 border-l-transparent'}
@@ -155,9 +157,9 @@ function RoomItem({ room, isSelected, onClick }: RoomItemProps) {
               </span>
             )}
             {hasUnread && (
-              <span className="min-w-[18px] h-[18px] px-1 rounded-full bg-[#C8956C] text-white text-[10px] font-bold flex items-center justify-center">
+              <Badge className="min-w-[18px] h-[18px] px-1 border-0 rounded-full bg-[#C8956C] text-white text-[10px] font-bold flex items-center justify-center">
                 {room.unread_count > 99 ? '99+' : room.unread_count}
-              </span>
+              </Badge>
             )}
           </div>
         </div>
@@ -172,7 +174,7 @@ function RoomItem({ room, isSelected, onClick }: RoomItemProps) {
           <p className="text-xs text-gray-300 italic">No messages yet</p>
         )}
       </div>
-    </button>
+    </Button>
   );
 }
 
@@ -341,12 +343,12 @@ export function ArtistChatTab() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="flex h-[calc(100vh-8rem)] min-h-[500px] rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm">
+    <div className="flex p-0 h-[calc(100vh-8rem)] min-h-[500px] rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm">
 
       {/* ── Left panel: Room list ──────────────────────────────────────────── */}
       <div className={`
         flex flex-col border-r border-gray-200 bg-white
-        w-full md:w-72 lg:w-80 shrink-0
+        w-full md:w-72 md:border-r lg:w-80 shrink-0
         ${mobileView === 'messages' ? 'hidden md:flex' : 'flex'}
       `}>
         {/* Header */}
@@ -355,18 +357,19 @@ export function ArtistChatTab() {
             <MessageCircle size={16} className="text-[#C8956C]" />
             <h2 className="font-semibold text-[#1a1a2e] text-sm">Conversations</h2>
             {rooms.length > 0 && (
-              <span className="px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 text-[10px] font-medium">
+              <Badge className="px-1.5 py-0.5 rounded-full bg-gray-100 border-0 text-gray-500 text-[10px] font-medium">
                 {rooms.length}
-              </span>
+              </Badge>
             )}
           </div>
-          <button
+          <Button
             onClick={() => void fetchRooms(false)}
-            className="p-1.5 rounded-lg text-gray-400 hover:text-[#C8956C] hover:bg-[#C8956C]/8 transition-colors"
+            variant="ghost"
+            className="p-1.5 rounded-lg w-auto h-auto text-gray-400 hover:text-[#C8956C] hover:bg-[#C8956C]/8 transition-colors"
             aria-label="Refresh conversations"
           >
             <RefreshCw size={13} />
-          </button>
+          </Button>
         </div>
 
         {/* Room list body */}
@@ -380,12 +383,13 @@ export function ArtistChatTab() {
             <div className="flex flex-col items-center justify-center h-full gap-2 px-6 text-center">
               <AlertCircle size={20} className="text-red-400" />
               <p className="text-xs text-red-500">{roomsError}</p>
-              <button
+              <Button
                 onClick={() => void fetchRooms(true)}
-                className="mt-1 px-3 py-1.5 rounded-lg text-xs bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                variant="ghost"
+                className="mt-1 px-3 py-1.5 h-auto rounded-lg text-xs bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
               >
                 Retry
-              </button>
+              </Button>
             </div>
           ) : rooms.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 px-6 text-center">
@@ -433,13 +437,14 @@ export function ArtistChatTab() {
             {/* Thread header */}
             <div className="h-14 px-4 flex items-center gap-3 border-b border-gray-100 bg-white shrink-0">
               {/* Mobile back button */}
-              <button
+              <Button
                 onClick={handleBack}
-                className="md:hidden p-1.5 -ml-1 rounded-lg text-gray-400 hover:text-[#1a1a2e] hover:bg-gray-100 transition-colors"
+                variant="ghost"
+                className="md:hidden p-1.5 -ml-1 h-auto rounded-lg text-gray-400 hover:text-[#1a1a2e] hover:bg-gray-100 transition-colors"
                 aria-label="Back to conversations"
               >
                 <ArrowLeft size={18} />
-              </button>
+              </Button>
 
               {/* Client avatar */}
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#C8956C]/20 to-[#C8956C]/10 flex items-center justify-center shrink-0">
@@ -459,16 +464,16 @@ export function ArtistChatTab() {
               </div>
 
               {/* Status badge */}
-              <span className={`
-                shrink-0 px-2 py-1 rounded-full text-[10px] font-medium capitalize
+              <Badge className={`
+                shrink-0 px-2 py-1 rounded-full text-[10px] border-0 font-medium capitalize
                 ${selectedRoom.status === 'active'
                   ? 'bg-green-100 text-green-600'
                   : selectedRoom.status === 'archived'
-                  ? 'bg-gray-100 text-gray-500'
-                  : 'bg-red-100 text-red-500'}
+                    ? 'bg-gray-100 text-gray-500'
+                    : 'bg-red-100 text-red-500'}
               `}>
                 {selectedRoom.status}
-              </span>
+              </Badge>
             </div>
 
             {/* Messages area */}
@@ -482,12 +487,13 @@ export function ArtistChatTab() {
                 <div className="flex flex-col items-center justify-center h-full gap-2 text-center">
                   <AlertCircle size={18} className="text-red-400" />
                   <p className="text-xs text-red-500">{messagesError}</p>
-                  <button
+                  <Button
                     onClick={() => void fetchMessages(selectedRoom.id, true)}
-                    className="px-3 py-1.5 rounded-lg text-xs bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                    variant="ghost"
+                    className="px-3 py-1.5 h-auto rounded-lg text-xs bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
                   >
                     Retry
-                  </button>
+                  </Button>
                 </div>
               ) : messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
@@ -506,9 +512,9 @@ export function ArtistChatTab() {
                       {/* Date divider */}
                       <div className="flex items-center gap-3 my-4">
                         <div className="flex-1 h-px bg-gray-200" />
-                        <span className="text-[10px] text-gray-400 font-medium px-2 py-0.5 rounded-full bg-white border border-gray-200">
+                        <Badge variant="outline" className="text-[10px] text-gray-400 font-medium px-2 py-0.5 border-gray-200 rounded-full bg-white">
                           {fmtMessageDate(group.messages[0].created_at)}
-                        </span>
+                        </Badge>
                         <div className="flex-1 h-px bg-gray-200" />
                       </div>
 
@@ -589,9 +595,9 @@ export function ArtistChatTab() {
               <div className="px-4 py-2 bg-red-50 border-t border-red-100 flex items-center gap-2 shrink-0">
                 <AlertCircle size={13} className="text-red-400 shrink-0" />
                 <p className="text-xs text-red-600 flex-1">{sendError}</p>
-                <button onClick={() => setSendError(null)} className="text-xs text-red-400 hover:text-red-600">
+                <Button onClick={() => setSendError(null)} variant="link" className="text-xs w-auto h-auto p-0 text-red-400 hover:text-red-600">
                   Dismiss
-                </button>
+                </Button>
               </div>
             )}
 
@@ -627,11 +633,11 @@ export function ArtistChatTab() {
                     style={{ height: '42px' }}
                   />
                 </div>
-                <button
+                <Button
                   onClick={() => void handleSend()}
                   disabled={!newMessage.trim() || sending || selectedRoom.status !== 'active'}
                   className="
-                    h-[42px] w-[42px] rounded-xl bg-[#C8956C] text-white flex items-center justify-center shrink-0
+                    h-[42px] w-[42px] p-0 rounded-xl bg-[#C8956C] border-0 text-white flex items-center justify-center shrink-0
                     hover:bg-[#b8845c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed
                     shadow-sm
                   "
@@ -640,7 +646,7 @@ export function ArtistChatTab() {
                   {sending
                     ? <Loader2 size={16} className="animate-spin" />
                     : <Send size={16} />}
-                </button>
+                </Button>
               </div>
               <p className="mt-1.5 text-[10px] text-gray-300 text-right">
                 Press Enter to send, Shift+Enter for newline
@@ -660,12 +666,12 @@ export function ArtistChatTab() {
               </p>
             </div>
             {/* Mobile CTA */}
-            <button
+            <Button
               onClick={() => setMobileView('rooms')}
-              className="md:hidden mt-2 px-5 py-2.5 rounded-xl bg-[#C8956C] text-white text-sm font-medium hover:bg-[#b8845c] transition-colors"
+              className="md:hidden mt-2 px-5 py-2.5 h-auto rounded-xl bg-[#C8956C] border-0 text-white text-sm font-medium hover:bg-[#b8845c] transition-colors"
             >
               View Conversations
-            </button>
+            </Button>
           </div>
         )}
       </div>

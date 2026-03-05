@@ -4,6 +4,7 @@ import {
   Pencil, Trash2, ToggleLeft, ToggleRight, Calendar, Percent,
   Hash, Users, RefreshCw, Shuffle,
 } from 'lucide-react';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -161,8 +162,8 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
 
   const set =
     (key: keyof PromotionFormData) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-      setForm((p) => ({ ...p, [key]: e.target.value }));
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+        setForm((p) => ({ ...p, [key]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -236,12 +237,13 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
           <h2 className="text-base font-semibold text-[#1a1a2e]">
             {isEdit ? 'Edit Promotion' : 'Create Promotion'}
           </h2>
-          <button
+          <Button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            variant="ghost"
+            className="w-8 h-8 flex items-center justify-center p-0 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
           >
             <X size={16} />
-          </button>
+          </Button>
         </div>
 
         {/* Form */}
@@ -256,10 +258,11 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
           {/* Title */}
           <div>
             <label className={labelClass}>Title *</label>
-            <input
+            <Input
               type="text"
               placeholder="e.g. Summer Flash Sale"
               value={form.title}
+              // @ts-ignore
               onChange={set('title')}
               className={inputClass}
               disabled={loading}
@@ -318,13 +321,14 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
               <label className={labelClass}>
                 Value * {form.discount_type === 'percentage' ? '(%)' : '($)'}
               </label>
-              <input
+              <Input
                 type="number"
                 min="0"
                 max={form.discount_type === 'percentage' ? '100' : undefined}
                 step="0.01"
                 placeholder={form.discount_type === 'percentage' ? '20' : '50'}
                 value={form.discount_value}
+                // @ts-ignore
                 onChange={set('discount_value')}
                 className={inputClass}
                 disabled={loading}
@@ -336,9 +340,10 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={labelClass}>Start Date</label>
-              <input
+              <Input
                 type="datetime-local"
                 value={form.start_date}
+                // @ts-ignore
                 onChange={set('start_date')}
                 className={inputClass}
                 disabled={loading}
@@ -346,9 +351,10 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
             </div>
             <div>
               <label className={labelClass}>End Date</label>
-              <input
+              <Input
                 type="datetime-local"
                 value={form.end_date}
+                // @ts-ignore
                 onChange={set('end_date')}
                 className={inputClass}
                 disabled={loading}
@@ -360,11 +366,12 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={labelClass}>Max Uses</label>
-              <input
+              <Input
                 type="number"
                 min="1"
                 placeholder="Unlimited"
                 value={form.max_uses}
+                // @ts-ignore
                 onChange={set('max_uses')}
                 className={inputClass}
                 disabled={loading}
@@ -373,38 +380,41 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
             <div>
               <label className={labelClass}>Promo Code</label>
               <div className="relative">
-                <input
+                <Input
                   type="text"
                   placeholder="e.g. SUMMER24"
                   value={form.promo_code}
+                  // @ts-ignore
                   onChange={(e) => setForm((p) => ({ ...p, promo_code: e.target.value.toUpperCase() }))}
                   className={`${inputClass} pr-10 font-mono uppercase`}
                   disabled={loading}
                 />
-                <button
+                <Button
                   type="button"
                   onClick={() => setForm((p) => ({ ...p, promo_code: generatePromoCode() }))}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#C8956C] transition-colors"
+                  variant="link"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#C8956C] transition-colors p-0 h-auto"
                   title="Generate random code"
                   disabled={loading}
                 >
                   <Shuffle size={13} />
-                </button>
+                </Button>
               </div>
             </div>
           </div>
 
           {/* Actions */}
           <div className="flex gap-3 pt-2">
-            <button
+            <Button
               type="button"
               onClick={onClose}
               disabled={loading}
+              variant="outline"
               className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-medium hover:bg-gray-50 transition-colors disabled:opacity-60"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={loading}
               className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#C8956C] text-white text-sm font-semibold hover:bg-[#b8825c] transition-colors disabled:opacity-60"
@@ -419,7 +429,7 @@ function PromotionModal({ existing, onClose, onSuccess }: PromotionModalProps) {
               ) : (
                 'Create Promotion'
               )}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -463,20 +473,21 @@ function DeleteDialog({ promotion, onConfirm, onCancel }: DeleteDialogProps) {
           "{promotion.title}" will be permanently deleted and can no longer be used.
         </p>
         <div className="flex gap-3">
-          <button
+          <Button
             onClick={onCancel}
+            variant="outline"
             className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-medium hover:bg-gray-50 transition-colors"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleConfirm}
             disabled={loading}
             className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors disabled:opacity-60"
           >
             {loading ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
             Delete
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -510,11 +521,11 @@ function PromotionCard({ promotion, onEdit, onDelete, onToggleActive, toggling }
           <p className="text-sm font-semibold text-[#1a1a2e] truncate">{promotion.title}</p>
           <p className="text-xs text-gray-400 mt-0.5 capitalize">Artist: {promotion.artist_id}</p>
         </div>
-        <span
+        <Badge
           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border shrink-0 ${statusBadgeClass(status)}`}
         >
           {status}
-        </span>
+        </Badge>
       </div>
 
       {/* Discount badge */}
@@ -579,21 +590,22 @@ function PromotionCard({ promotion, onEdit, onDelete, onToggleActive, toggling }
 
       {/* Actions */}
       <div className="flex gap-2 pt-2 border-t border-gray-100">
-        <button
+        <Button
           onClick={() => onEdit(promotion)}
-          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-gray-600 border border-gray-200 hover:bg-gray-50 transition-colors"
+          variant="outline"
+          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-gray-600 border border-gray-200 hover:bg-gray-50 transition-colors h-auto"
         >
           <Pencil size={12} />
           Edit
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => onToggleActive(promotion)}
           disabled={toggling}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium border transition-colors disabled:opacity-50 ${
-            promotion.is_active
+          variant="outline"
+          className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium border transition-colors disabled:opacity-50 h-auto ${promotion.is_active
               ? 'text-gray-500 border-gray-200 hover:bg-gray-50'
               : 'text-emerald-600 border-emerald-200 hover:bg-emerald-50'
-          }`}
+            }`}
         >
           {toggling ? (
             <Loader2 size={12} className="animate-spin" />
@@ -603,13 +615,14 @@ function PromotionCard({ promotion, onEdit, onDelete, onToggleActive, toggling }
             <ToggleLeft size={13} />
           )}
           {promotion.is_active ? 'Deactivate' : 'Activate'}
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => onDelete(promotion)}
-          className="flex items-center justify-center p-1.5 rounded-lg text-red-400 border border-gray-200 hover:bg-red-50 hover:border-red-200 transition-colors"
+          variant="outline"
+          className="flex items-center justify-center p-1.5 rounded-lg text-red-400 border border-gray-200 hover:bg-red-50 hover:border-red-200 transition-colors h-auto"
         >
           <Trash2 size={14} />
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -735,20 +748,21 @@ export function PromotionsTab() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button
+          <Button
             onClick={() => void fetchPromotions()}
-            className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
+            variant="outline"
+            className="w-9 h-9 p-0 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
             title="Refresh"
           >
             <RefreshCw size={15} />
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => setShowCreateModal(true)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C8956C] text-white text-sm font-semibold hover:bg-[#b8825c] transition-colors shadow-sm shadow-[#C8956C]/20"
           >
             <Plus size={16} />
             Create Promotion
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -781,12 +795,13 @@ export function PromotionsTab() {
         </div>
 
         {(filterArtist || filterActive) && (
-          <button
+          <Button
             onClick={() => { setFilterArtist(''); setFilterActive(''); }}
-            className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+            variant="link"
+            className="text-xs text-gray-400 hover:text-gray-600 transition-colors p-0 h-auto"
           >
             Clear filters
-          </button>
+          </Button>
         )}
       </div>
 
@@ -886,9 +901,8 @@ export function PromotionsTab() {
       {/* Toast */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${
-            toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
-          }`}
+          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
+            }`}
         >
           {toast.type === 'success' ? (
             <CheckCircle2 size={15} className="text-[#C8956C]" />

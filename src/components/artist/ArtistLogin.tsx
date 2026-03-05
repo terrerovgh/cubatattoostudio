@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react';
+import { Input, Button } from '@cloudflare/kumo';
 
 export function ArtistLogin() {
   const [email, setEmail] = useState('');
@@ -69,10 +70,10 @@ export function ArtistLogin() {
               <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-widest">Email</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-[#C8956C] transition-colors" />
-                <input
+                <Input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                   required
                   className="w-full pl-11 pr-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
                   placeholder="your@email.com"
@@ -84,10 +85,10 @@ export function ArtistLogin() {
               <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-widest">Password</label>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-[#C8956C] transition-colors" />
-                <input
+                <Input
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                   required
                   className="w-full pl-11 pr-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
                   placeholder="Enter your password"
@@ -95,10 +96,10 @@ export function ArtistLogin() {
               </div>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 mt-4 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              className="w-full flex items-center justify-center gap-2 py-3 mt-4 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0"
             >
               {loading ? (
                 <>
@@ -108,7 +109,7 @@ export function ArtistLogin() {
               ) : (
                 'Sign In'
               )}
-            </button>
+            </Button>
           </form>
         </div>
 

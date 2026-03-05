@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { BookingFormData, PriceEstimate } from '../../types/booking';
+import { Button, Input } from '@cloudflare/kumo';
 
 interface Props {
   form: BookingFormData;
@@ -144,19 +145,22 @@ export function StepReviewPay({
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-          <a
+          <Button
+            as="a"
             href="/"
+            variant="ghost"
             className="px-6 py-3 rounded-xl text-sm font-medium text-white/50 border border-white/10 hover:bg-white/5 transition-all text-center"
           >
             Return Home
-          </a>
-          <a
+          </Button>
+          <Button
+            as="a"
             href="/gallery"
             className="px-6 py-3 rounded-xl text-sm font-medium text-black text-center hover:brightness-110 transition-all"
             style={{ background: accentColor }}
           >
             Browse Gallery
-          </a>
+          </Button>
         </div>
       </div>
     );
@@ -165,7 +169,7 @@ export function StepReviewPay({
   // ─── Review & Payment state ────────────────
   const canSubmit = agreedToTerms && !isSubmitting;
 
-  const formatCard = (val: string) => {
+  const format= (val: string) => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     return digits.replace(/(\d{4})/g, '$1 ').trim();
   };
@@ -323,19 +327,19 @@ export function StepReviewPay({
         </div>
       )}
 
-      {/* Gift Card / Promo */}
+      {/* Gift / Promo */}
       <div>
-        <label className="block text-xs text-white/40 mb-2">Gift Card or Promo Code</label>
+        <label className="block text-xs text-white/40 mb-2">Gift or Promo Code</label>
         <div className="flex gap-2">
-          <input
+          <Input
             type="text"
             value={giftCardCode}
-            onChange={(e) => setGiftCardCode(e.target.value.toUpperCase())}
+            onChange={(e: any) => setGiftCardCode(e.target.value.toUpperCase())}
             placeholder="Enter code"
             className="input-premium text-sm flex-1"
             disabled={giftCardApplied}
           />
-          <button
+          <Button
             onClick={() => {
               if (giftCardCode) {
                 updateForm({ gift_card_code: giftCardCode });
@@ -343,14 +347,14 @@ export function StepReviewPay({
               }
             }}
             disabled={!giftCardCode || giftCardApplied}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-              giftCardApplied
+            variant={giftCardApplied ? "secondary" : "primary"}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${giftCardApplied
                 ? 'bg-green-500/10 text-green-400'
                 : 'bg-white/5 text-white/50 hover:bg-white/10'
-            }`}
+              }`}
           >
             {giftCardApplied ? 'Applied ✓' : 'Apply'}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -359,11 +363,11 @@ export function StepReviewPay({
         <h3 className="text-sm font-medium text-white/60 uppercase tracking-wider">Payment Details</h3>
 
         <div>
-          <label className="block text-xs text-white/40 mb-2">Card Number</label>
-          <input
+          <label className="block text-xs text-white/40 mb-2">Number</label>
+          <Input
             type="text"
             value={cardNumber}
-            onChange={(e) => setCardNumber(formatCard(e.target.value))}
+            onChange={(e: any) => setCardNumber(formatCard(e.target.value))}
             placeholder="4242 4242 4242 4242"
             className="input-premium text-sm font-mono"
             maxLength={19}
@@ -373,10 +377,10 @@ export function StepReviewPay({
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-xs text-white/40 mb-2">Expiry</label>
-            <input
+            <Input
               type="text"
               value={cardExpiry}
-              onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
+              onChange={(e: any) => setCardExpiry(formatExpiry(e.target.value))}
               placeholder="MM/YY"
               className="input-premium text-sm font-mono"
               maxLength={5}
@@ -384,10 +388,10 @@ export function StepReviewPay({
           </div>
           <div>
             <label className="block text-xs text-white/40 mb-2">CVC</label>
-            <input
+            <Input
               type="text"
               value={cardCvc}
-              onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
+              onChange={(e: any) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
               placeholder="123"
               className="input-premium text-sm font-mono"
               maxLength={4}
@@ -423,20 +427,20 @@ export function StepReviewPay({
 
       {/* Navigation */}
       <div className="flex justify-between pt-2">
-        <button
+        <Button
           onClick={onBack}
+          variant="ghost"
           className="px-6 py-3.5 rounded-xl text-sm font-medium text-white/50 hover:text-white/80 hover:bg-white/5 transition-all"
         >
           ← Back
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => onSubmit(`pm_simulated_${Date.now()}`)}
           disabled={!canSubmit}
-          className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 ${
-            canSubmit
+          className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 ${canSubmit
               ? 'text-black hover:brightness-110 active:scale-[0.98]'
               : 'bg-white/5 text-white/30 cursor-not-allowed'
-          }`}
+            }`}
           style={canSubmit ? { background: accentColor } : undefined}
         >
           {isSubmitting ? (
@@ -447,7 +451,7 @@ export function StepReviewPay({
           ) : (
             <>Pay ${priceEstimate?.deposit_required || 0} Deposit & Confirm</>
           )}
-        </button>
+        </Button>
       </div>
     </div>
   );

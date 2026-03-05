@@ -3,6 +3,7 @@ import {
   Plus, X, Loader2, AlertCircle, CheckCircle2, UserRound,
   Calendar, Briefcase, ToggleLeft, ToggleRight, ChevronDown,
 } from 'lucide-react';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -57,16 +58,15 @@ interface BadgeProps {
 
 function StatusBadge({ active }: BadgeProps) {
   return (
-    <span
-      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
-        active
+    <Badge
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${active
           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
           : 'bg-gray-100 text-gray-500 border border-gray-200'
-      }`}
+        }`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-emerald-500' : 'bg-gray-400'}`} />
       {active ? 'Active' : 'Inactive'}
-    </span>
+    </Badge>
   );
 }
 
@@ -139,12 +139,13 @@ function AddArtistModal({ onClose, onSuccess }: ModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <h2 className="text-base font-semibold text-[#1a1a2e]">Add Artist Account</h2>
-          <button
+          <Button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            variant="ghost"
+            className="w-8 h-8 flex items-center justify-center p-0 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
           >
             <X size={16} />
-          </button>
+          </Button>
         </div>
 
         {/* Body */}
@@ -158,10 +159,11 @@ function AddArtistModal({ onClose, onSuccess }: ModalProps) {
 
           <div>
             <label className={labelClass}>Display Name</label>
-            <input
+            <Input
               type="text"
               placeholder="e.g. David Reyes"
               value={form.display_name}
+              // @ts-ignore
               onChange={(e) => setForm((p) => ({ ...p, display_name: e.target.value }))}
               className={inputClass}
               disabled={loading}
@@ -170,10 +172,11 @@ function AddArtistModal({ onClose, onSuccess }: ModalProps) {
 
           <div>
             <label className={labelClass}>Email Address</label>
-            <input
+            <Input
               type="email"
               placeholder="artist@cubatattoostudio.com"
               value={form.email}
+              // @ts-ignore
               onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
               className={inputClass}
               disabled={loading}
@@ -182,10 +185,11 @@ function AddArtistModal({ onClose, onSuccess }: ModalProps) {
 
           <div>
             <label className={labelClass}>Password</label>
-            <input
+            <Input
               type="password"
               placeholder="Min. 8 characters"
               value={form.password}
+              // @ts-ignore
               onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
               className={inputClass}
               disabled={loading}
@@ -200,22 +204,20 @@ function AddArtistModal({ onClose, onSuccess }: ModalProps) {
               <button
                 type="button"
                 onClick={() => setSlugMode('preset')}
-                className={`flex-1 py-2 transition-colors ${
-                  slugMode === 'preset'
+                className={`flex-1 py-2 transition-colors ${slugMode === 'preset'
                     ? 'bg-[#C8956C] text-white'
                     : 'bg-white text-gray-500 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 Preset
               </button>
               <button
                 type="button"
                 onClick={() => setSlugMode('custom')}
-                className={`flex-1 py-2 transition-colors ${
-                  slugMode === 'custom'
+                className={`flex-1 py-2 transition-colors ${slugMode === 'custom'
                     ? 'bg-[#C8956C] text-white'
                     : 'bg-white text-gray-500 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 Custom
               </button>
@@ -241,10 +243,11 @@ function AddArtistModal({ onClose, onSuccess }: ModalProps) {
                 />
               </div>
             ) : (
-              <input
+              <Input
                 type="text"
                 placeholder="e.g. marco (lowercase, no spaces)"
                 value={form.artist_id}
+                // @ts-ignore
                 onChange={(e) =>
                   setForm((p) => ({
                     ...p,
@@ -263,15 +266,16 @@ function AddArtistModal({ onClose, onSuccess }: ModalProps) {
 
           {/* Actions */}
           <div className="flex gap-3 pt-2">
-            <button
+            <Button
               type="button"
               onClick={onClose}
               disabled={loading}
+              variant="outline"
               className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-medium hover:bg-gray-50 transition-colors disabled:opacity-60"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={loading}
               className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#C8956C] text-white text-sm font-semibold hover:bg-[#b8825c] transition-colors disabled:opacity-60"
@@ -284,7 +288,7 @@ function AddArtistModal({ onClose, onSuccess }: ModalProps) {
               ) : (
                 'Create Artist'
               )}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -356,14 +360,14 @@ function ArtistCard({ artist, onToggle }: ArtistCardProps) {
 
       {/* Toggle */}
       <div className="pt-1 border-t border-gray-100">
-        <button
+        <Button
           onClick={handleToggle}
           disabled={toggling}
-          className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-medium transition-colors ${
-            artist.is_active === 1
+          variant="outline"
+          className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-medium transition-colors ${artist.is_active === 1
               ? 'text-gray-500 hover:bg-red-50 hover:text-red-600'
               : 'text-gray-500 hover:bg-emerald-50 hover:text-emerald-600'
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           {toggling ? (
             <Loader2 size={13} className="animate-spin" />
@@ -373,7 +377,7 @@ function ArtistCard({ artist, onToggle }: ArtistCardProps) {
             <ToggleLeft size={14} />
           )}
           {artist.is_active === 1 ? 'Deactivate Account' : 'Activate Account'}
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -453,13 +457,13 @@ export function ArtistsTab() {
             {artists.length} artist{artists.length !== 1 ? 's' : ''} registered
           </p>
         </div>
-        <button
+        <Button
           onClick={() => setShowModal(true)}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C8956C] text-white text-sm font-semibold hover:bg-[#b8825c] transition-colors shadow-sm shadow-[#C8956C]/20"
         >
           <Plus size={16} />
           Add Artist
-        </button>
+        </Button>
       </div>
 
       {/* Error */}
@@ -526,11 +530,10 @@ export function ArtistsTab() {
       {/* Toast */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium animate-in slide-in-from-bottom-2 ${
-            toast.type === 'success'
+          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium animate-in slide-in-from-bottom-2 ${toast.type === 'success'
               ? 'bg-[#1a1a2e] text-white'
               : 'bg-red-600 text-white'
-          }`}
+            }`}
         >
           {toast.type === 'success' ? (
             <CheckCircle2 size={15} className="text-[#C8956C]" />

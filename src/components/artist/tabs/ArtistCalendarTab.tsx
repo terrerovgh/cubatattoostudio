@@ -13,6 +13,7 @@ import {
   X,
   AlertCircle,
 } from 'lucide-react';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -130,10 +131,10 @@ interface BookingPillProps {
 function BookingPill({ booking }: BookingPillProps) {
   const dotColor = STATUS_DOT_COLORS[booking.status] ?? 'bg-gray-400';
   return (
-    <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-[#C8956C]/10 text-[#C8956C] text-[10px] font-medium leading-tight truncate">
+    <Badge className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-[#C8956C]/10 border-0 text-[#C8956C] text-[10px] font-medium leading-tight truncate">
       <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${dotColor}`} />
       <span className="truncate">{booking.first_name}</span>
-    </div>
+    </Badge>
   );
 }
 
@@ -201,12 +202,13 @@ function DayDetailPanel({
               {bookings.length} booking{bookings.length !== 1 ? 's' : ''} &bull; {overrides.length} override{overrides.length !== 1 ? 's' : ''}
             </p>
           </div>
-          <button
+          <Button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            variant="ghost"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 p-0 hover:text-gray-600 transition-colors"
           >
             <X size={18} />
-          </button>
+          </Button>
         </div>
 
         <div className="p-5 space-y-5">
@@ -228,13 +230,12 @@ function DayDetailPanel({
                           {b.first_name} {b.last_name}
                         </p>
                       </div>
-                      <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                          STATUS_COLORS[b.status] ?? 'bg-gray-100 text-gray-600'
-                        }`}
+                      <Badge
+                        className={`px-2 py-0.5 rounded-full border-0 text-[10px] font-medium ${STATUS_COLORS[b.status] ?? 'bg-gray-100 text-gray-600'
+                          }`}
                       >
                         {b.status?.replace(/_/g, ' ')}
-                      </span>
+                      </Badge>
                     </div>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 pl-9">
                       <span className="flex items-center gap-1">
@@ -268,13 +269,14 @@ function DayDetailPanel({
                 Schedule Overrides
               </h4>
               {!showForm && (
-                <button
+                <Button
                   onClick={() => setShowForm(true)}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-[#C8956C]/10 text-[#C8956C] hover:bg-[#C8956C]/20 transition-colors"
+                  variant="ghost"
+                  className="flex items-center gap-1 px-2.5 h-auto py-1 rounded-lg text-xs font-medium bg-[#C8956C]/10 text-[#C8956C] hover:bg-[#C8956C]/20 transition-colors"
                 >
                   <Plus size={12} />
                   Add Override
-                </button>
+                </Button>
               )}
             </div>
 
@@ -285,11 +287,10 @@ function DayDetailPanel({
                   return (
                     <div
                       key={ov.id}
-                      className={`flex items-center justify-between rounded-xl border p-3 ${
-                        isAvail
-                          ? 'border-green-200 bg-green-50/60'
-                          : 'border-red-200 bg-red-50/60'
-                      }`}
+                      className={`flex items-center justify-between rounded-xl border p-3 ${isAvail
+                        ? 'border-green-200 bg-green-50/60'
+                        : 'border-red-200 bg-red-50/60'
+                        }`}
                     >
                       <div className="flex items-center gap-2 min-w-0">
                         {isAvail ? (
@@ -311,14 +312,15 @@ function DayDetailPanel({
                           )}
                         </div>
                       </div>
-                      <button
+                      <Button
                         onClick={() => onDeleteOverride(ov.id)}
                         disabled={submitting}
-                        className="ml-2 w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-red-100 hover:text-red-500 transition-colors flex-shrink-0 disabled:opacity-40"
+                        variant="ghost"
+                        className="ml-2 w-7 h-7 rounded-lg p-0 flex items-center justify-center text-gray-400 hover:bg-red-100 hover:text-red-500 transition-colors flex-shrink-0 disabled:opacity-40"
                         aria-label="Delete override"
                       >
                         <Trash2 size={14} />
-                      </button>
+                      </Button>
                     </div>
                   );
                 })}
@@ -335,46 +337,48 @@ function DayDetailPanel({
                 <p className="text-xs font-semibold text-gray-600">New Override</p>
 
                 <div className="flex gap-2">
-                  <button
+                  <Button
                     onClick={() => setForm((f) => ({ ...f, is_available: false }))}
-                    className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium border transition-colors ${
-                      !form.is_available
-                        ? 'bg-red-50 border-red-300 text-red-600'
-                        : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
-                    }`}
+                    variant="outline"
+                    className={`flex-1 flex items-center justify-center gap-1.5 py-2 h-auto rounded-lg text-xs font-medium border transition-colors border-0 ${!form.is_available
+                      ? 'bg-red-50 border-red-300 text-red-600'
+                      : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
+                      }`}
                   >
                     <Ban size={12} />
                     Block Off
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => setForm((f) => ({ ...f, is_available: true }))}
-                    className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium border transition-colors ${
-                      form.is_available
-                        ? 'bg-green-50 border-green-300 text-green-600'
-                        : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
-                    }`}
+                    variant="outline"
+                    className={`flex-1 flex items-center justify-center gap-1.5 py-2 h-auto border-0 rounded-lg text-xs font-medium border transition-colors ${form.is_available
+                      ? 'bg-green-50 border-green-300 text-green-600'
+                      : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
+                      }`}
                   >
                     <CheckCircle2 size={12} />
                     Mark Available
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <label className="block text-[11px] text-gray-500 mb-1">Start time (optional)</label>
-                    <input
+                    {/* @ts-ignore */}
+                    <Input
                       type="time"
                       value={form.start_time}
-                      onChange={(e) => setForm((f) => ({ ...f, start_time: e.target.value }))}
+                      onChange={(e: any) => setForm((f) => ({ ...f, start_time: e.target.value }))}
                       className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-[#C8956C]/50 focus:border-[#C8956C]"
                     />
                   </div>
                   <div>
                     <label className="block text-[11px] text-gray-500 mb-1">End time (optional)</label>
-                    <input
+                    {/* @ts-ignore */}
+                    <Input
                       type="time"
                       value={form.end_time}
-                      onChange={(e) => setForm((f) => ({ ...f, end_time: e.target.value }))}
+                      onChange={(e: any) => setForm((f) => ({ ...f, end_time: e.target.value }))}
                       className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-[#C8956C]/50 focus:border-[#C8956C]"
                     />
                   </div>
@@ -382,11 +386,12 @@ function DayDetailPanel({
 
                 <div>
                   <label className="block text-[11px] text-gray-500 mb-1">Reason (optional)</label>
-                  <input
+                  {/* @ts-ignore */}
+                  <Input
                     type="text"
                     placeholder="e.g. Personal appointment, Travel..."
                     value={form.reason}
-                    onChange={(e) => setForm((f) => ({ ...f, reason: e.target.value }))}
+                    onChange={(e: any) => setForm((f) => ({ ...f, reason: e.target.value }))}
                     className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-[#C8956C]/50 focus:border-[#C8956C]"
                   />
                 </div>
@@ -399,23 +404,24 @@ function DayDetailPanel({
                 )}
 
                 <div className="flex gap-2 pt-1">
-                  <button
+                  <Button
                     onClick={handleSubmit}
                     disabled={submitting}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium bg-[#C8956C] text-white hover:bg-[#b8845c] transition-colors disabled:opacity-50"
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2 h-auto rounded-lg text-xs font-medium bg-[#C8956C] border-0 text-white hover:bg-[#b8845c] transition-colors disabled:opacity-50"
                   >
                     {submitting ? <Spinner /> : 'Save Override'}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => {
                       setShowForm(false);
                       setFormError('');
                     }}
                     disabled={submitting}
-                    className="px-4 py-2 rounded-lg text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-50"
+                    variant="outline"
+                    className="px-4 py-2 rounded-lg text-xs font-medium border h-auto border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-50"
                   >
                     Cancel
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -580,46 +586,50 @@ export function ArtistCalendarTab() {
   return (
     <div className="space-y-4">
       {/* Calendar card */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      <div className="overflow-hidden p-0">
         {/* Calendar header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
-            <button
+            <Button
               onClick={goToPrevMonth}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+              variant="ghost"
+              className="w-8 h-8 rounded-lg p-0 flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
               aria-label="Previous month"
             >
               <ChevronLeft size={18} />
-            </button>
+            </Button>
             <h2 className="text-base font-semibold text-[#1a1a2e] min-w-[160px] text-center">
               {MONTH_NAMES[currentMonth]} {currentYear}
             </h2>
-            <button
+            <Button
               onClick={goToNextMonth}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+              variant="ghost"
+              className="w-8 h-8 rounded-lg p-0 flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
               aria-label="Next month"
             >
               <ChevronRight size={18} />
-            </button>
+            </Button>
           </div>
 
           <div className="flex items-center gap-2">
             {!isCurrentMonthView && (
-              <button
+              <Button
                 onClick={goToToday}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                variant="outline"
+                className="px-3 py-1.5 h-auto rounded-lg text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
               >
                 Today
-              </button>
+              </Button>
             )}
-            <button
+            <Button
               onClick={fetchCalendar}
               disabled={loading}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-[#C8956C]/10 hover:text-[#C8956C] transition-colors disabled:opacity-40"
+              variant="ghost"
+              className="w-8 h-8 rounded-lg p-0 flex items-center justify-center text-gray-400 hover:bg-[#C8956C]/10 hover:text-[#C8956C] transition-colors disabled:opacity-40"
               aria-label="Refresh calendar"
             >
               <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -778,7 +788,7 @@ export function ArtistCalendarTab() {
 
       {/* Upcoming bookings strip */}
       {!loading && calendarData.bookings.length > 0 && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-5">
+        <div className="p-5">
           <h3 className="text-sm font-semibold text-[#1a1a2e] mb-3">
             This Month — {calendarData.bookings.length} Appointment{calendarData.bookings.length !== 1 ? 's' : ''}
           </h3>
@@ -791,10 +801,11 @@ export function ArtistCalendarTab() {
                 return (a.scheduled_time ?? '').localeCompare(b.scheduled_time ?? '');
               })
               .map((b) => (
-                <button
+                <Button
                   key={b.id}
+                  variant="ghost"
                   onClick={() => setSelectedDate(b.scheduled_date)}
-                  className="w-full flex items-center justify-between py-2.5 px-3 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-[#C8956C]/5 hover:border-[#C8956C]/20 transition-colors text-left"
+                  className="w-full flex h-auto items-center justify-between py-2.5 px-3 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-[#C8956C]/5 hover:border-[#C8956C]/20 transition-colors text-left"
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-8 h-8 rounded-full bg-[#C8956C]/10 flex items-center justify-center flex-shrink-0">
@@ -814,15 +825,14 @@ export function ArtistCalendarTab() {
                       <p className="text-xs font-medium text-[#1a1a2e]">{b.scheduled_date}</p>
                       <p className="text-xs text-gray-400">{formatTime(b.scheduled_time)}</p>
                     </div>
-                    <span
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-medium hidden sm:inline-flex ${
-                        STATUS_COLORS[b.status] ?? 'bg-gray-100 text-gray-600'
-                      }`}
+                    <Badge
+                      className={`px-2 py-0.5 rounded-full border-0 text-[10px] font-medium hidden sm:inline-flex ${STATUS_COLORS[b.status] ?? 'bg-gray-100 text-gray-600'
+                        }`}
                     >
                       {b.status?.replace(/_/g, ' ')}
-                    </span>
+                    </Badge>
                   </div>
-                </button>
+                </Button>
               ))}
           </div>
         </div>

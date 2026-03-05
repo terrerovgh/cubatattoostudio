@@ -3,6 +3,7 @@ import {
   LayoutDashboard, CalendarDays, Zap, Image,
   MessageCircle, Tag, Settings, LogOut, Menu, X, ChevronRight, User
 } from 'lucide-react';
+import { Button } from '@cloudflare/kumo';
 
 export type ArtistTab =
   | 'overview' | 'bookings' | 'calendar' | 'portfolio'
@@ -70,9 +71,9 @@ export function ArtistLayout({ children, activeTab, onTabChange, session }: Arti
               <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mt-0.5">Artist Portal</p>
             </div>
           </a>
-          <button onClick={() => setSidebarOpen(false)} className="ml-auto lg:hidden text-gray-400 hover:text-white transition-colors">
+          <Button onClick={() => setSidebarOpen(false)} variant="ghost" className="ml-auto lg:hidden text-gray-400 hover:text-white transition-colors p-0 h-auto w-auto">
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Navigation */}
@@ -81,12 +82,13 @@ export function ArtistLayout({ children, activeTab, onTabChange, session }: Arti
             const Icon = item.icon;
             const isActive = activeTab === item.id;
             return (
-              <button
+              <Button
                 key={item.id}
                 onClick={() => { onTabChange(item.id); setSidebarOpen(false); }}
+                variant="ghost"
                 className={`
-                  w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-semibold
-                  transition-all duration-200
+                  w-full flex items-center justify-start gap-3 px-4 py-3 rounded-xl text-[13px] font-semibold
+                  transition-all duration-200 h-auto
                   ${isActive
                     ? 'bg-white/10 text-white shadow-sm shadow-white/5'
                     : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}
@@ -95,7 +97,7 @@ export function ArtistLayout({ children, activeTab, onTabChange, session }: Arti
                 <Icon size={18} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-white' : 'text-gray-500'} />
                 <span className="tracking-wide">{item.label}</span>
                 {isActive && <ChevronRight size={14} className="ml-auto opacity-70" />}
-              </button>
+              </Button>
             );
           })}
         </nav>
@@ -113,13 +115,14 @@ export function ArtistLayout({ children, activeTab, onTabChange, session }: Arti
               <p className="text-[11px] text-[#C8956C] uppercase font-semibold tracking-wider truncate">{session.artist_id || 'Artist'}</p>
             </div>
           </div>
-          <button
+          <Button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-white/5 text-[13px] font-semibold text-gray-400 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all duration-200"
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-white/5 text-[13px] font-semibold text-gray-400 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all duration-200"
           >
             <LogOut size={16} />
             <span>Sign Out</span>
-          </button>
+          </Button>
         </div>
       </aside>
 
@@ -127,9 +130,9 @@ export function ArtistLayout({ children, activeTab, onTabChange, session }: Arti
       <div className="relative flex-1 flex flex-col min-w-0 z-10">
         {/* Header */}
         <header className="h-16 bg-[#0a0a0c]/80 backdrop-blur-md border-b border-white/10 flex items-center px-6 lg:px-8 shrink-0">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden mr-4 text-gray-400 hover:text-white transition-colors">
+          <Button onClick={() => setSidebarOpen(true)} variant="ghost" className="lg:hidden mr-4 text-gray-400 hover:text-white transition-colors p-0 h-auto w-auto">
             <Menu size={22} />
-          </button>
+          </Button>
           <h1 className="text-lg font-bold text-white capitalize tracking-wide">
             {navItems.find(n => n.id === activeTab)?.label || 'Dashboard'}
           </h1>

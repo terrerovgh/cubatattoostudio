@@ -4,6 +4,7 @@ import {
   CheckCircle2, Search, X, FolderOpen, ChevronRight, ImageOff,
   RefreshCw, HardDrive,
 } from 'lucide-react';
+import { Button, Input } from '@cloudflare/kumo';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -108,20 +109,21 @@ function DeleteDialog({ objectKey, onConfirm, onCancel }: DeleteDialogProps) {
           {objectKey}
         </p>
         <div className="flex gap-3">
-          <button
+          <Button
             onClick={onCancel}
+            variant="outline"
             className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-medium hover:bg-gray-50 transition-colors"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleConfirm}
             disabled={loading}
             className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors disabled:opacity-60"
           >
             {loading ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
             Delete
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -163,12 +165,13 @@ function PreviewModal({ object, onClose, onDelete }: PreviewModalProps) {
           <p className="text-sm font-semibold text-[#1a1a2e] truncate max-w-xs">
             {fileNameFromKey(object.key)}
           </p>
-          <button
+          <Button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            variant="ghost"
+            className="w-8 h-8 flex items-center justify-center p-0 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
           >
             <X size={16} />
-          </button>
+          </Button>
         </div>
 
         {/* Image */}
@@ -208,20 +211,22 @@ function PreviewModal({ object, onClose, onDelete }: PreviewModalProps) {
           </div>
 
           <div className="flex gap-2">
-            <button
+            <Button
               onClick={handleCopy}
+              variant="outline"
               className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-medium hover:bg-gray-50 transition-colors"
             >
               {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
               {copied ? 'Copied!' : 'Copy URL'}
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => onDelete(object)}
+              variant="outline"
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-red-200 text-sm text-red-600 font-medium hover:bg-red-50 transition-colors"
             >
               <Trash2 size={14} />
               Delete
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -301,11 +306,10 @@ function UploadArea({ prefix, onUploaded, onError }: UploadAreaProps) {
       onDragLeave={() => setDragging(false)}
       onDrop={handleDrop}
       onClick={() => !uploading && inputRef.current?.click()}
-      className={`relative flex flex-col items-center justify-center gap-3 px-6 py-10 rounded-xl border-2 border-dashed transition-colors cursor-pointer ${
-        dragging
+      className={`relative flex flex-col items-center justify-center gap-3 px-6 py-10 rounded-xl border-2 border-dashed transition-colors cursor-pointer ${dragging
           ? 'border-[#C8956C] bg-[#C8956C]/5'
           : 'border-gray-200 hover:border-[#C8956C]/50 hover:bg-gray-50'
-      } ${uploading ? 'pointer-events-none opacity-70' : ''}`}
+        } ${uploading ? 'pointer-events-none opacity-70' : ''}`}
     >
       <input
         ref={inputRef}
@@ -371,7 +375,7 @@ function GalleryCard({ object, onPreview, onDelete }: GalleryCardProps) {
   };
 
   return (
-    <div className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-sm transition-shadow flex flex-col">
+    <div className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-sm transition-shadow flex flex-col p-0">
       {/* Thumbnail */}
       <button
         className="relative aspect-square bg-gray-50 overflow-hidden w-full"
@@ -406,19 +410,21 @@ function GalleryCard({ object, onPreview, onDelete }: GalleryCardProps) {
           <span>{formatDate(object.uploaded)}</span>
         </div>
         <div className="flex gap-1.5 pt-1 border-t border-gray-100">
-          <button
+          <Button
             onClick={handleCopy}
+            variant="outline"
             className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-medium text-gray-500 hover:bg-gray-50 border border-gray-200 transition-colors"
           >
             {copied ? <Check size={10} className="text-emerald-500" /> : <Copy size={10} />}
             {copied ? 'Copied' : 'Copy URL'}
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={(e) => { e.stopPropagation(); onDelete(object); }}
+            variant="outline"
             className="flex items-center justify-center p-1.5 rounded-lg text-red-400 hover:bg-red-50 border border-gray-200 hover:border-red-200 transition-colors"
           >
             <Trash2 size={12} />
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -540,20 +546,21 @@ export function GalleryTab() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button
+          <Button
             onClick={() => { setObjects([]); setCursor(undefined); void fetchObjects(); }}
-            className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
+            variant="outline"
+            className="w-9 h-9 flex items-center justify-center p-0 rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
             title="Refresh"
           >
             <RefreshCw size={15} />
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => setShowUpload((v) => !v)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C8956C] text-white text-sm font-semibold hover:bg-[#b8825c] transition-colors shadow-sm shadow-[#C8956C]/20"
           >
             <Upload size={16} />
             Upload
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -587,20 +594,22 @@ export function GalleryTab() {
         {/* Search */}
         <div className="relative flex-1 min-w-48 max-w-xs">
           <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-          <input
+          <Input
             type="text"
             placeholder="Search by filename..."
             value={search}
+            // @ts-ignore
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-200 bg-white text-sm text-[#1a1a2e] placeholder-gray-400 focus:outline-none focus:border-[#C8956C] transition-colors"
           />
           {search && (
-            <button
+            <Button
               onClick={() => setSearch('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              variant="ghost"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0 h-auto text-gray-400 hover:text-gray-600 hover:bg-transparent"
             >
               <X size={12} />
-            </button>
+            </Button>
           )}
         </div>
 
@@ -609,12 +618,13 @@ export function GalleryTab() {
           <div className="flex items-center gap-1.5 text-xs text-gray-500">
             <FolderOpen size={13} className="text-[#C8956C]" />
             <span className="font-mono">{prefix}</span>
-            <button
+            <Button
               onClick={() => setPrefix('')}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              variant="ghost"
+              className="p-0 h-auto text-gray-400 hover:text-gray-600 transition-colors hover:bg-transparent"
             >
               <X size={11} />
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -631,7 +641,7 @@ export function GalleryTab() {
       {loading && objects.length === 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 overflow-hidden animate-pulse">
+            <div key={i} className="bg-white rounded-xl border border-gray-200 overflow-hidden animate-pulse p-0">
               <div className="aspect-square bg-gray-100" />
               <div className="p-3 space-y-2">
                 <div className="h-3 bg-gray-200 rounded w-3/4" />
@@ -674,13 +684,14 @@ export function GalleryTab() {
       {/* Load more */}
       {truncated && !loading && (
         <div className="flex justify-center">
-          <button
+          <Button
             onClick={() => void fetchObjects(cursor)}
+            variant="outline"
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600 font-medium hover:bg-gray-50 transition-colors"
           >
             <RefreshCw size={14} />
             Load more
-          </button>
+          </Button>
         </div>
       )}
 
@@ -708,9 +719,8 @@ export function GalleryTab() {
       {/* Toast */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${
-            toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
-          }`}
+          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
+            }`}
         >
           {toast.type === 'success' ? (
             <CheckCircle2 size={15} className="text-[#C8956C]" />

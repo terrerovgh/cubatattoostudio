@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CalendarDays, DollarSign, Clock, MessageCircle, TrendingUp, CheckCircle } from 'lucide-react';
+import { } from '@cloudflare/kumo';
 
 export function ArtistOverviewTab() {
   const [stats, setStats] = useState<any>(null);
@@ -9,7 +10,7 @@ export function ArtistOverviewTab() {
     fetch('/api/artist/stats')
       .then(r => r.json())
       .then((data: any) => { if (data.success) setStats(data.data); })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, []);
 
@@ -32,7 +33,7 @@ export function ArtistOverviewTab() {
         {statCards.map((s) => {
           const Icon = s.icon;
           return (
-            <div key={s.label} className="bg-white rounded-xl border border-gray-200 p-4">
+            <div key={s.label} className="p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
               <div className="flex items-center gap-2 mb-2">
                 <Icon size={16} className="text-gray-400" />
                 <span className="text-xs text-gray-500">{s.label}</span>
@@ -44,7 +45,7 @@ export function ArtistOverviewTab() {
       </div>
 
       {stats.upcoming_bookings?.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="p-6 bg-white rounded-xl border border-gray-100 shadow-sm">
           <h3 className="font-semibold text-[#1a1a2e] mb-4">Upcoming Appointments</h3>
           <div className="space-y-3">
             {stats.upcoming_bookings.map((b: any) => (

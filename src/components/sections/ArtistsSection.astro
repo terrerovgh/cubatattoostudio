@@ -1,5 +1,20 @@
 ---
+import { getImage } from "astro:assets";
 import SectionWrapper from "../SectionWrapper.astro";
+import { Button } from "@cloudflare/kumo";
+
+// Import local images for optimization
+import davidImg from "../../assets/artists/david.jpg";
+import ninaImg from "../../assets/artists/nina.jpg";
+import karliImg from "../../assets/artists/karli.jpg";
+import studioImg from "../../assets/artists/studio.jpg";
+
+const localImages: Record<string, any> = {
+  david: davidImg,
+  nina: ninaImg,
+  karli: karliImg,
+  studio: studioImg,
+};
 
 interface Artist {
   name: string;
@@ -19,142 +34,148 @@ interface Props {
 const { id, backgroundImage, title, artists = [] } = Astro.props;
 
 /**
- * Resolve artist profile image — prefer .jpg over .svg placeholder.
+ * Resolve and optimize artist image
  */
-function resolveArtistImage(artist: Artist): string {
-  const match = artist.image.match(/\/artists\/(\w+)\./);
-  if (match) {
-    const name = match[1];
-    return `/artists/${name}.jpg`;
-  }
-  return artist.image;
-}
+const optimizedArtists = await Promise.all(
+  artists.map(async (artist) => {
+    const artistKey = artist.image.match(/\/artists\/(\w+)\./)?.[1] || "";
+    const localImg = localImages[artistKey];
+    
+    let optimizedSrc = artist.image;
+    if (localImg) {
+      const optimized = await getImage({
+        src: localImg,
+        format: "webp",
+        width: 800,
+        quality: 85,
+      });
+      optimizedSrc = optimized.src;
+    }
+
+    return {
+      ...artist,
+      optimizedSrc,
+      artistId: artistKey,
+    };
+  })
+);
 ---
 
 <SectionWrapper id={id} backgroundImage={backgroundImage}>
-  <div class="container-standard space-y-10 sm:space-y-12">
-    {
-      title && (
-        <h2
-          class="text-gradient-white text-2xl sm:text-3xl lg:text-4xl font-bold text-center"
-          data-animate-heading
-        >
-          {title}
-        </h2>
-      )
-    }
-
-    <div class="space-y-14 sm:space-y-20 lg:space-y-24">
+  <div class="container-wide space-y-12 sm:space-y-16">
+    {/* Section Header */}
+    <div class="text-center space-y-4 max-w-3xl mx-auto" data-animate-heading>
       {
-        artists.map((artist, index) => {
-          const imageSrc = resolveArtistImage(artist);
-          const isEven = index % 2 === 0;
-          const artistId = artist.image.match(/\/artists\/(\w+)\./)?.[1];
+        title && (
+          <h2
+            class="text-fluid-lg font-light tracking-tight text-transparent bg-clip-text"
+            style="background-image: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.7) 100%);"
+          >
+            {title}
+          </h2>
+        )
+      }
+      <div
+        class="w-12 h-[1px] mx-auto bg-gradient-to-r from-transparent via-[var(--color-gold)] to-transparent opacity-60"
+      >
+      </div>
+      <p class="text-white/50 font-light tracking-wide text-sm sm:text-base">
+        Meet the visionaries behind the ink.
+      </p>
+    </div>
 
+    {/* Bento Grid */}
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 auto-rows-fr"
+      data-stagger-wave
+    >
+      {
+        optimizedArtists.map((artist, index) => {
           return (
-            <>
-              {/* Decorative divider between artists */}
-              {index > 0 && (
-                <div
-                  class="section-divider-ornament mx-auto"
-                  data-animate-scale
+            <div
+              class="group relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] card-hover-lift liquid-glass-elevated flex flex-col justify-end min-h-[420px] sm:min-h-[480px]"
+              data-wave-item
+            >
+              {/* Background Image with Parallax effect */}
+              <div class="absolute inset-0 z-0 overflow-hidden" data-parallax-scale="1.15">
+                <img
+                  src={artist.optimizedSrc}
+                  alt={artist.name}
+                  class="w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+                  loading="lazy"
                 />
-              )}
-              <div
-                class={`grid grid-cols-1 md:grid-cols-2 items-center gap-6 sm:gap-8 md:gap-16 lg:gap-24`}
-              >
-                {/* Image Side */}
-                <div
-                  class={`flex justify-center ${!isEven ? "md:order-2" : ""}`}
-                  data-parallax="0.08"
-                >
-                  <a
-                    href={artistId ? `/artists/${artistId}` : "#"}
-                    class="relative w-44 h-44 sm:w-56 sm:h-56 lg:w-72 lg:h-72 group ambient-glow block"
-                    data-animate-clip
-                  >
-                    <div class="absolute inset-0 rounded-[1.5rem] sm:rounded-[2rem] rotate-3 bg-white/[0.03] border border-white/[0.05] transition-transform duration-500 group-hover:rotate-6" />
-                    <div class="absolute inset-0 rounded-[1.5rem] sm:rounded-[2rem] -rotate-2 bg-white/[0.03] border border-white/[0.05] transition-transform duration-500 group-hover:-rotate-4" />
-                    <div class="relative w-full h-full rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden transition-all duration-700">
-                      <img
-                        src={imageSrc}
-                        alt={artist.name}
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        loading="lazy"
-                        width="320"
-                        height="320"
-                      />
-                      <div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[1.5rem] sm:rounded-[2rem]" />
-                    </div>
-                  </a>
+              </div>
+
+              {/* Gradient Overlay for Text Readability */}
+              <div class="absolute inset-x-0 bottom-0 h-3/4 z-10 bg-gradient-to-t from-[#08080a] via-[#08080a]/80 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
+
+              {/* Top Accent Glow on Hover */}
+              <div class="absolute -top-24 -right-24 w-48 h-48 bg-[var(--color-gold)] opacity-0 group-hover:opacity-20 blur-[60px] rounded-full transition-opacity duration-700 z-10 mix-blend-screen" />
+
+              {/* Content Box */}
+              <div class="relative z-20 p-6 sm:p-8 flex flex-col gap-4 transform transition-transform duration-500 ease-out group-hover:-translate-y-2">
+                <div>
+                  <h3 class="text-2xl sm:text-3xl font-medium tracking-tight text-white mb-2">
+                    {artist.name}
+                  </h3>
+                  <p class="text-[var(--color-gold)] text-[10px] sm:text-xs uppercase tracking-[0.2em] font-semibold opacity-90 leading-relaxed drop-shadow-md">
+                    {artist.role}
+                  </p>
                 </div>
 
-                {/* Content Side */}
-                <div
-                  class={`text-center ${isEven ? "md:text-left" : "md:text-right"} space-y-3 sm:space-y-5 ${!isEven ? "md:order-1" : ""}`}
-                  data-animate-left={isEven ? "" : undefined}
-                  data-animate-right={!isEven ? "" : undefined}
-                >
-                  <div>
-                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight mb-1.5 sm:mb-2">
-                      {artist.name}
-                    </h3>
-                    <p class="text-[var(--color-gold)] text-[11px] sm:text-xs lg:text-sm uppercase tracking-widest font-medium opacity-80 leading-relaxed max-w-sm mx-auto md:mx-0">
-                      {artist.role}
-                    </p>
-                  </div>
-
-                  {/* Actions */}
-                  <div class={`flex flex-col gap-3 items-center ${isEven ? "md:items-start" : "md:items-end"} pt-1`}>
-                    {/* Portfolio CTA */}
-                    {artistId && (
-                      <a
-                        href={`/artists/${artistId}`}
-                        class="card-hover-lift inline-flex items-center gap-2.5 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl
-                               bg-white/[0.04] border border-white/[0.08]
-                               hover:border-[var(--color-gold)]/30 hover:bg-[var(--color-gold)]/5
-                               text-white/70 hover:text-[var(--color-gold)]
-                               transition-all duration-300 text-xs sm:text-sm font-medium group/cta"
+                {/* Actions */}
+                <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-white/10">
+                  {/* Portfolio CTA */}
+                  {artist.artistId && (
+                    <Button
+                      client:load
+                      as="a"
+                      href={`/artists/${artist.artistId}`}
+                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl
+                             bg-white/10 backdrop-blur-md border border-white/20
+                             hover:bg-[var(--color-gold)] hover:border-[var(--color-gold)] hover:text-[#08080a]
+                             text-white transition-all duration-300 text-xs sm:text-sm font-semibold flex-1 sm:flex-none text-center"
+                    >
+                      Portfolio
+                      <svg
+                        class="w-3.5 h-3.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
                       >
-                        View Portfolio
-                        <svg
-                          class="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/cta:translate-x-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          stroke-width="2"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                          />
-                        </svg>
-                      </a>
-                    )}
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </Button>
+                  )}
 
-                    {/* Instagram */}
-                    {artist.instagram && (
-                      <a
-                        href={`https://instagram.com/${artist.instagram.replace("@", "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-1.5 text-white/30 hover:text-[var(--color-gold)] transition-colors duration-300 text-[11px] sm:text-xs tracking-wide"
+                  {/* Instagram */}
+                  {artist.instagram && (
+                    <Button
+                      client:load
+                      as="a"
+                      href={`https://instagram.com/${artist.instagram.replace("@", "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300"
+                      aria-label={`${artist.name}'s Instagram`}
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
                       >
-                        <svg
-                          class="w-3 h-3 sm:w-3.5 sm:h-3.5"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                        </svg>
-                        <span>{artist.instagram}</span>
-                      </a>
-                    )}
-                  </div>
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                      </svg>
+                    </Button>
+                  )}
                 </div>
               </div>
-            </>
+            </div>
           );
         })
       }

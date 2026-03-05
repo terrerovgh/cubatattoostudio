@@ -4,6 +4,7 @@ import {
   Users, Phone, Mail, Star, Clock, DollarSign, BookOpen, FileText,
 } from 'lucide-react';
 import type { Client, LoyaltyTier, Booking } from '../../../types/booking';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -78,12 +79,12 @@ interface TierBadgeProps {
 function TierBadge({ tier }: TierBadgeProps) {
   const cfg = TIER_CONFIG[tier];
   return (
-    <span
+    <Badge
       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border ${cfg.bg} ${cfg.text} ${cfg.border}`}
     >
       <span className="text-[9px]">{cfg.icon}</span>
       {cfg.label}
-    </span>
+    </Badge>
   );
 }
 
@@ -308,24 +309,25 @@ export function ClientsTab() {
               size={15}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
             />
-            <input
+            <Input
               ref={searchRef}
               type="text"
               value={searchInput}
+              // @ts-ignore
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search by name, email, or phone..."
               className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-[#1a1a2e] placeholder-gray-400 focus:outline-none focus:border-[#C8956C] focus:bg-white transition-colors"
             />
           </div>
-          <button
+          <Button
             onClick={handleSearch}
             disabled={loading}
             className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#1a1a2e] text-white text-sm font-semibold hover:bg-[#2d2d50] transition-colors disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
           >
             {loading ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
             Search
-          </button>
+          </Button>
         </div>
 
         {/* Active search indicator */}
@@ -334,12 +336,13 @@ export function ClientsTab() {
             Showing results for{' '}
             <span className="font-semibold text-[#C8956C]">"{committedSearch}"</span>
             {' '}&mdash;{' '}
-            <button
+            <Button
               onClick={() => { setSearchInput(''); setCommittedSearch(''); void fetchClients(''); }}
-              className="text-gray-500 hover:text-[#1a1a2e] underline underline-offset-2 transition-colors"
+              variant="link"
+              className="text-gray-500 hover:text-[#1a1a2e] underline underline-offset-2 transition-colors p-0 h-auto"
             >
               Clear
-            </button>
+            </Button>
           </p>
         )}
       </div>

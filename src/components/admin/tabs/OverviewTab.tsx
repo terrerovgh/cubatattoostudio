@@ -11,6 +11,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import type { DashboardStats } from '../../../types/booking';
+import { Badge, Button } from '@cloudflare/kumo';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -82,13 +83,13 @@ function StatusBadge({ status }: { status: string }) {
   };
   const cls = colors[status] ?? 'bg-gray-50 text-gray-600 ring-1 ring-gray-200';
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${cls}`}>
+    <Badge className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${cls}`}>
       {capitalize(status)}
-    </span>
+    </Badge>
   );
 }
 
-// ─── Stat Card ────────────────────────────────────────────────────────────────
+// ─── Stat ────────────────────────────────────────────────────────────────
 
 interface StatCardProps {
   label: string;
@@ -198,13 +199,13 @@ export function OverviewTab() {
             <p className="text-sm font-semibold text-[#1a1a2e]">Could not load analytics</p>
             <p className="text-xs text-gray-500 mt-1">{error ?? 'Unknown error'}</p>
           </div>
-          <button
+          <Button
             onClick={() => void fetchData()}
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a2e] text-white text-sm font-medium hover:bg-[#2a2a4e] transition-colors"
           >
             <RefreshCw size={14} />
             Retry
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -225,13 +226,14 @@ export function OverviewTab() {
             Stats and activity as of {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
           </p>
         </div>
-        <button
+        <Button
+          variant="outline"
           onClick={() => void fetchData()}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#C8956C] transition-colors"
         >
           <RefreshCw size={14} />
           Refresh
-        </button>
+        </Button>
       </div>
 
       {/* Stats Grid */}

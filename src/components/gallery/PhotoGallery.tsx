@@ -3,8 +3,10 @@ import { cleanExpired } from '@/lib/imageCache';
 import CachedImage from '@/components/CachedImage';
 import PhotoLightbox from './PhotoLightbox';
 import type { LightboxItem, ArtistProfile } from './PhotoLightbox';
-import ServiceCarouselCard, { type Service } from '../services/ServiceCarouselCard';
 import ServiceModal from '../services/ServiceModal';
+import type { Service } from '../services/ServiceCarouselCard';
+import { Button } from '@cloudflare/kumo';
+import { Image as ImageIcon, ArrowRight } from '@phosphor-icons/react';
 
 // ─── Types ───────────────────────────────────────────────────────
 
@@ -47,19 +49,12 @@ type GalleryItem =
 // ─── Props ───────────────────────────────────────────────────────
 
 interface PhotoGalleryProps {
-  /** Posts to display */
   posts: GalleryPost[];
-  /** Artist data keyed by artist ID — enables filter tabs */
   artists?: Record<string, GalleryArtistData>;
-  /** Services to interleave (main gallery only) */
   services?: Service[];
-  /** Accent color for active states and lightbox */
   accentColor?: string;
-  /** Artist profile to show in lightbox sidebar */
   artistProfile?: ArtistProfile;
-  /** Map of artist keys to display labels */
   artistLabels?: Record<string, string>;
-  /** Number of items per page */
   itemsPerPage?: number;
 }
 
@@ -87,23 +82,20 @@ export default function PhotoGallery({
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Clean expired cache on mount
   useEffect(() => {
-    cleanExpired().catch(() => {});
+    cleanExpired().catch(() => { });
   }, []);
 
-  // Loading state
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 400);
+    const timer = setTimeout(() => setIsLoading(false), 300);
     return () => clearTimeout(timer);
   }, []);
 
-  // Reset page on filter change
   useEffect(() => {
     setPage(1);
   }, [activeFilter]);
 
-  // ── Build filter list ────────────────────────────────────────
+  // Filters
   const availableFilters = ['all'];
   if (posts.some(p => p.artist === 'studio')) availableFilters.push('studio');
   if (artists) {
@@ -113,35 +105,29 @@ export default function PhotoGallery({
   }
   const showFilters = availableFilters.length > 2;
 
-  // ── Build items list ─────────────────────────────────────────
-  const normalizedServices: GalleryItem[] = services.map((s, i) => ({
+  // Normalized
+  const normalizedServices: GalleryServiceItem[] = services.map((s, i) => ({
     ...s,
-    type: 'service' as const,
+    type: 'service',
     id: s.id || `service-${i}`,
     imageUrl: s.galleryImages?.[0] || '',
   }));
 
-  const normalizedPosts: GalleryItem[] = posts.map(p => ({
+  const normalizedPosts: (GalleryPost & { type: 'post' })[] = posts.map(p => ({
     ...p,
-    type: 'post' as const,
+    type: 'post',
   }));
 
-  const filteredItems = (
-    activeFilter === 'all'
-      ? [...normalizedServices, ...normalizedPosts]
-      : normalizedPosts
-  ).filter(item => {
+  const filteredPosts = normalizedPosts.filter(item => {
     if (activeFilter === 'all') return true;
-    if (item.type === 'service') return false;
     return item.artist === activeFilter;
   });
 
-  const displayedItems = filteredItems.slice(0, page * itemsPerPage);
-  const hasMore = displayedItems.length < filteredItems.length;
+  const displayedPosts = filteredPosts.slice(0, page * itemsPerPage);
+  const hasMore = displayedPosts.length < filteredPosts.length;
 
-  // For lightbox: only photo items (not services)
-  const photoItems: LightboxItem[] = displayedItems
-    .filter((i): i is GalleryPost & { type: 'post' } => i.type === 'post' && !!i.imageUrl)
+  const photoItems: LightboxItem[] = filteredPosts
+    .filter(i => !!i.imageUrl)
     .map(i => ({
       id: i.id,
       imageUrl: i.imageUrl,
@@ -153,167 +139,181 @@ export default function PhotoGallery({
       featuredWork: i.featuredWork,
     }));
 
-  // Placeholders for empty state
-  const placeholders: GalleryItem[] = Array.from({ length: 6 }, (_, i) => ({
-    id: `placeholder-${i}`,
-    imageUrl: '',
-    type: 'post' as const,
-  }));
-
-  const items = displayedItems.length > 0 ? displayedItems : (isLoading ? [] : placeholders);
+  const displayServices = activeFilter === 'all' ? normalizedServices.slice(0, 6) : [];
 
   return (
-    <>
-      {/* ── Filter Tabs ──────────────────────────────────── */}
+    <div className="flex flex-col gap-10 sm:gap-16">
+
+      {/* ── Filter Tabs ── */}
       {showFilters && (
-        <div
-          className="flex gap-2 mb-5 sm:mb-6 overflow-x-auto pb-1 sm:justify-center sm:flex-wrap"
-          style={{
-            WebkitOverflowScrolling: 'touch',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
-        >
-          {availableFilters.map(filter => (
+        <div className="flex justify-center -mb-4 sm:-mb-6 relative z-20">
+          <div className="inline-flex items-center gap-1.5 p-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md overflow-x-auto scrollbar-hide max-w-full">
+            {availableFilters.map(filter => {
+              const isActive = activeFilter === filter;
+              return (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-500 whitespace-nowrap shrink-0 border-0 cursor-pointer outline-none`}
+                  style={{
+                    background: isActive ? `${accentColor}20` : 'transparent',
+                    color: isActive ? accentColor : 'rgba(255, 255, 255, 0.6)',
+                    boxShadow: isActive ? `0 4px 15px ${accentColor}10` : 'none',
+                  }}
+                >
+                  {artistLabels[filter] || filter}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ── Services Interactive Accordion (Editorial Layout) ── */}
+      {displayServices.length > 0 && !isLoading && (
+        <div className="w-full flex flex-col md:flex-row gap-3 h-[600px] md:h-[500px] lg:h-[600px] rounded-[2rem] overflow-hidden">
+          {displayServices.map((service, idx) => (
             <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 whitespace-nowrap shrink-0"
-              style={{
-                background: activeFilter === filter
-                  ? `${accentColor}18`
-                  : 'rgba(255, 255, 255, 0.04)',
-                border: `1px solid ${activeFilter === filter
-                  ? `${accentColor}40`
-                  : 'rgba(255, 255, 255, 0.06)'
-                }`,
-                color: activeFilter === filter
-                  ? accentColor
-                  : 'rgba(255, 255, 255, 0.45)',
-              }}
+              key={service.id}
+              onClick={() => setSelectedItem(service)}
+              className="group relative flex-1 md:hover:flex-[4] h-full overflow-hidden transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer bg-white/5 border border-white/10 rounded-2xl md:rounded-[2rem] min-h-[80px] p-0 text-left outline-none"
             >
-              {artistLabels[filter] || filter}
+              {service.imageUrl && (
+                <img
+                  src={service.imageUrl}
+                  alt={service.name}
+                  className="absolute inset-0 w-full h-full object-cover opacity-60 md:opacity-40 group-hover:opacity-100 transition-opacity duration-700 ease-out"
+                />
+              )}
+              {/* Gradient Scrims */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700"></div>
+
+              {/* Vertical Title (Hidden on Hover Desktop) */}
+              <div className="absolute inset-y-0 left-0 flex items-center justify-center w-full px-4 md:opacity-100 md:group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
+                <h3 className="text-white/90 font-bold text-sm sm:text-lg tracking-widest uppercase md:-rotate-90 whitespace-nowrap drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+                  {service.name}
+                </h3>
+              </div>
+
+              {/* Expanded Content Box (Visible on Hover Desktop) */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:opacity-0 md:group-hover:opacity-100 transition-all duration-700 md:translate-y-8 md:group-hover:translate-y-0">
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight drop-shadow-md">
+                  {service.name}
+                </h3>
+                <div className="w-8 h-1 bg-[var(--color-gold)] mb-4 rounded-full"></div>
+                <p className="text-white/70 text-sm hidden md:line-clamp-3 leading-relaxed max-w-sm drop-shadow-lg">
+                  {service.description}
+                </p>
+                <div className="mt-4 flex items-center text-[10px] sm:text-xs text-[var(--color-gold)] uppercase tracking-[0.2em] font-semibold">
+                  <span>Explore this style</span>
+                  <ArrowRight weight="bold" className="w-4 h-4 ml-2" />
+                </div>
+              </div>
             </button>
           ))}
         </div>
       )}
 
-      {/* ── Masonry Grid ─────────────────────────────────── */}
-      <div className="columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-3.5" data-stagger-wave>
-        {items.map((item, index) => (
-          item.type === 'service' ? (
-            <ServiceCarouselCard
-              key={item.id}
-              item={item}
-              onClick={() => setSelectedItem(item)}
-            />
-          ) : (
+      {/* ── Masonry Grid for Posts ── */}
+      {displayedPosts.length > 0 ? (
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-4 sm:gap-6 mt-4" data-stagger-wave>
+          {displayedPosts.map((post, index) => (
             <button
-              key={item.id}
-              onClick={() => item.imageUrl && setSelectedItem(item)}
-              className="w-full break-inside-avoid mb-3 sm:mb-3.5 rounded-2xl overflow-hidden
-                         bg-white/[0.03] border border-white/[0.05]
-                         transition-all duration-500 ease-out
-                         hover:border-white/[0.12] hover:shadow-[0_8px_32px_rgba(0,0,0,0.35)]
-                         hover:scale-[1.025]
-                         group relative block text-left"
-              data-wave-item
+              key={post.id}
+              className="w-full break-inside-avoid mb-4 sm:mb-6 rounded-2xl sm:rounded-[2rem] overflow-hidden
+                         bg-white/[0.02] border border-white/[0.04] p-1.5 sm:p-2
+                         transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
+                         hover:border-white/[0.15] hover:bg-white/[0.04]
+                         group relative outline outline-1 outline-transparent hover:outline-white/10 outline-offset-[-1px] card-hover-lift cursor-pointer block text-left outline-none"
+              onClick={() => post.imageUrl && setSelectedItem(post)}
             >
-              {item.imageUrl ? (
-                item.isLocal ? (
-                  <img
-                    src={item.imageUrl}
-                    srcSet={item.srcSet}
-                    alt={item.featuredWork?.title || item.caption || `Tattoo artwork by ${item.artist ? artistLabels[item.artist] || item.artist : 'Cuba Tattoo Studio'}`}
-                    className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-                    loading={index < 4 ? 'eager' : 'lazy'}
-                    {...item.attributes}
-                  />
+              <div className="relative w-full rounded-xl sm:rounded-[1.5rem] overflow-hidden bg-black/50 aspect-auto">
+                {post.imageUrl ? (
+                  post.isLocal ? (
+                    <img
+                      src={post.imageUrl}
+                      srcSet={post.srcSet}
+                      alt={post.caption || `Tattoo ${index} by ${post.artist || 'studio'}`}
+                      className="w-full h-auto object-cover transition-transform duration-[1200ms] group-hover:scale-[1.05]"
+                      loading={index < 6 ? 'eager' : 'lazy'}
+                      {...post.attributes}
+                    />
+                  ) : (
+                    <CachedImage
+                      imageId={post.id}
+                      src={post.imageUrl}
+                      alt={post.caption || `Tattoo ${index} by ${post.artist || 'studio'}`}
+                      artist={post.artist}
+                      className="w-full h-auto object-cover transition-transform duration-[1200ms] group-hover:scale-[1.05]"
+                      loading={index < 6 ? 'eager' : 'lazy'}
+                    />
+                  )
                 ) : (
-                  <CachedImage
-                    imageId={item.id}
-                    src={item.imageUrl}
-                    alt={item.featuredWork?.title || item.caption || 'Custom tattoo design'}
-                    artist={item.artist}
-                    className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-                    loading={index < 4 ? 'eager' : 'lazy'}
-                  />
-                )
-              ) : (
-                <div className="w-full aspect-square flex items-center justify-center text-white/10">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-              )}
+                  <div className="w-full aspect-square bg-white/5 flex items-center justify-center">
+                    <ImageIcon className="w-8 h-8 text-white/10" weight="thin" />
+                  </div>
+                )}
 
-              {/* Hover overlay with artist badge */}
-              {item.imageUrl && (
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500 flex items-end pointer-events-none">
-                  {(item.artist || item.featuredWork?.style) && (
-                    <span
-                      className="m-2 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-[10px] font-medium
-                                 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0
-                                 transition-all duration-300"
-                      style={{
-                        background: 'rgba(0, 0, 0, 0.55)',
-                        backdropFilter: 'blur(8px)',
-                        WebkitBackdropFilter: 'blur(8px)',
-                        color: 'rgba(255, 255, 255, 0.75)',
-                      }}
-                    >
-                      {item.featuredWork?.style || (item.artist && (artistLabels[item.artist] || item.artist))}
-                    </span>
+                {/* Elegant Hover State */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out flex flex-col justify-end p-4 sm:p-5 pointer-events-none">
+                  {(post.artist || post.featuredWork?.style) && (
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                      <span className="inline-block px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold tracking-widest bg-white/10 backdrop-blur-md text-white/90 uppercase">
+                        {post.featuredWork?.style || (post.artist && (artistLabels[post.artist] || post.artist))}
+                      </span>
+                    </div>
+                  )}
+                  {post.caption && (
+                    <p className="mt-3 text-white/70 text-sm line-clamp-2 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-[600ms] ease-out">
+                      {post.featuredWork?.title || post.caption}
+                    </p>
                   )}
                 </div>
-              )}
+              </div>
             </button>
-          )
-        ))}
-      </div>
-
-      {/* ── Load More ────────────────────────────────────── */}
-      {hasMore && items.length > 0 && items[0].id !== 'placeholder-0' && (
-        <div className="flex justify-center mt-7 sm:mt-9">
-          <button
-            onClick={() => setPage(prev => prev + 1)}
-            className="px-6 py-2.5 rounded-full border bg-white/[0.04] hover:bg-white/[0.08]
-                       transition-all text-sm font-medium active:scale-[0.97]"
-            style={{
-              borderColor: `${accentColor}30`,
-              color: accentColor,
-            }}
-          >
-            Load More
-          </button>
+          ))}
         </div>
+      ) : (
+        !isLoading && activeFilter !== 'all' && (
+          <div className="text-center py-20 text-white/40">No work available for this filter yet.</div>
+        )
       )}
 
-      {/* ── Instagram CTA (only on main gallery) ─────────── */}
+      {/* ── Instagram CTA ── */}
       {showFilters && (
-        <div className="text-center mt-8 sm:mt-10">
+        <div className="flex justify-center -mt-2 mb-4">
           <a
             href="https://instagram.com/cubatattoostudio"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 transition-all duration-300 font-medium text-xs sm:text-sm"
-            style={{ color: accentColor }}
+            className="flex items-center gap-2 text-[10px] sm:text-xs font-bold tracking-[0.2em] text-white/30 hover:text-white transition-colors uppercase group"
           >
-            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-            </svg>
+            <span className="w-8 h-[1px] bg-white/10 group-hover:bg-white/30 transition-colors"></span>
             Follow @cubatattoostudio
+            <span className="w-8 h-[1px] bg-white/10 group-hover:bg-white/30 transition-colors"></span>
           </a>
         </div>
       )}
 
-      {/* ── Lightbox / Service Modal ─────────────────────── */}
+      {/* ── Load More ── */}
+      {hasMore && (
+        <div className="flex justify-center mt-4">
+          <Button
+            onClick={() => setPage(prev => prev + 1)}
+            variant="outline"
+            className="px-8 py-3 sm:py-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20
+                       transition-all duration-300 text-xs sm:text-sm font-semibold tracking-widest uppercase active:scale-[0.98]"
+            style={{ color: accentColor }}
+          >
+            Load More
+          </Button>
+        </div>
+      )}
+
+      {/* ── Lightbox / Service Modal ── */}
       {selectedItem && (
         selectedItem.type === 'service' ? (
-          <ServiceModal
-            item={selectedItem}
-            onClose={() => setSelectedItem(null)}
-          />
+          <ServiceModal item={selectedItem} onClose={() => setSelectedItem(null)} />
         ) : selectedItem.imageUrl ? (
           <PhotoLightbox
             item={{
@@ -329,7 +329,7 @@ export default function PhotoGallery({
             items={photoItems}
             onClose={() => setSelectedItem(null)}
             onNavigate={(next) => {
-              const found = displayedItems.find(i => i.id === next.id);
+              const found = filteredPosts.find(i => i.id === next.id);
               if (found) setSelectedItem(found);
             }}
             accentColor={accentColor}
@@ -338,6 +338,6 @@ export default function PhotoGallery({
           />
         ) : null
       )}
-    </>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 ---
+import "@cloudflare/kumo/styles";
 import "../styles/global.css";
 import BackgroundManager from "../components/BackgroundManager";
 import ScrollObserver from "../components/ScrollObserver";
@@ -54,48 +55,51 @@ const {
     <meta name="color-scheme" content="dark" />
 
     <!-- Schema.org LocalBusiness -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "TattooParlor",
-      "name": "Cuba Tattoo Studio",
-      "description": description,
-      "url": "https://cubatattoostudio.com",
-      "telephone": "+1-505-492-9806",
-      "email": "info@cubatattoostudio.com",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "1311 San Mateo Blvd NE",
-        "addressLocality": "Albuquerque",
-        "addressRegion": "NM",
-        "postalCode": "87109",
-        "addressCountry": "US"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "35.1058",
-        "longitude": "-106.5856"
-      },
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday"],
-          "opens": "11:00",
-          "closes": "19:00"
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "TattooParlor",
+        name: "Cuba Tattoo Studio",
+        description: description,
+        url: "https://cubatattoostudio.com",
+        telephone: "+1-505-492-9806",
+        email: "info@cubatattoostudio.com",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "1311 San Mateo Blvd NE",
+          addressLocality: "Albuquerque",
+          addressRegion: "NM",
+          postalCode: "87109",
+          addressCountry: "US",
         },
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": "Saturday",
-          "opens": "11:00",
-          "closes": "17:00"
-        }
-      ],
-      "priceRange": "$$",
-      "image": "https://cubatattoostudio.com/logo.svg",
-      "sameAs": [
-        "https://instagram.com/cubatattoostudio",
-        "https://facebook.com/cubatattoostudio"
-      ]
-    })} />
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: "35.1058",
+          longitude: "-106.5856",
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Tuesday", "Wednesday", "Thursday", "Friday"],
+            opens: "11:00",
+            closes: "19:00",
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: "Saturday",
+            opens: "11:00",
+            closes: "17:00",
+          },
+        ],
+        priceRange: "$$",
+        image: "https://cubatattoostudio.com/logo.svg",
+        sameAs: [
+          "https://instagram.com/cubatattoostudio",
+          "https://facebook.com/cubatattoostudio",
+        ],
+      })}
+    />
   </head>
   <body
     class="bg-[var(--color-surface-primary)] text-white font-sans overflow-x-hidden"
@@ -107,24 +111,37 @@ const {
     </main>
 
     {/* Footer — studio info & bottom dock spacing */}
-    {mode === "home" && (
-      <footer class="relative z-10 footer-glass pb-24 sm:pb-20 pt-8 sm:pt-10">
-        <div class="container-standard">
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-              <img src="/logo.svg" alt="Cuba Tattoo Studio" class="w-8 h-8 opacity-40" width="32" height="32" />
-              <div class="text-[11px] sm:text-xs text-white/25 leading-relaxed">
-                <p>Tue-Fri 11am-7pm &middot; Sat 11am-5pm &middot; Sun-Mon Closed</p>
-                <p class="mt-0.5">1311 San Mateo Blvd NE, Albuquerque, NM 87109</p>
+    {
+      mode === "home" && (
+        <footer class="relative z-10 footer-glass pb-24 sm:pb-20 pt-8 sm:pt-10">
+          <div class="container-standard">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+              <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+                <img
+                  src="/logo.svg"
+                  alt="Cuba Tattoo Studio"
+                  class="w-8 h-8 opacity-40"
+                  width="32"
+                  height="32"
+                />
+                <div class="text-[11px] sm:text-xs text-white/25 leading-relaxed">
+                  <p>
+                    Tue-Fri 11am-7pm &middot; Sat 11am-5pm &middot; Sun-Mon
+                    Closed
+                  </p>
+                  <p class="mt-0.5">
+                    1311 San Mateo Blvd NE, Albuquerque, NM 87109
+                  </p>
+                </div>
               </div>
+              <p class="text-[10px] sm:text-[11px] text-white/15">
+                &copy; {new Date().getFullYear()} Cuba Tattoo Studio
+              </p>
             </div>
-            <p class="text-[10px] sm:text-[11px] text-white/15">
-              &copy; {new Date().getFullYear()} Cuba Tattoo Studio
-            </p>
           </div>
-        </div>
-      </footer>
-    )}
+        </footer>
+      )
+    }
 
     <ScrollObserver client:only="react" />
     {mode !== "artist" && <FloatingDock client:only="react" />}

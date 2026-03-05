@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react';
+import { Input, Button } from '@cloudflare/kumo';
 
 export function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -51,7 +52,7 @@ export function AdminLogin() {
           <p className="text-sm text-gray-400 mt-2 font-medium tracking-wide">Admin Portal</p>
         </div>
 
-        {/* Card */}
+        {/* */}
         <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl">
           <h2 className="text-lg font-semibold text-white mb-6">Sign in to your account</h2>
 
@@ -69,12 +70,12 @@ export function AdminLogin() {
               </label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-[#C8956C] transition-colors" />
-                <input
+                <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
                   placeholder="admin@cubatattoostudio.com"
                   autoComplete="email"
                   disabled={loading}
@@ -88,12 +89,12 @@ export function AdminLogin() {
               </label>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-[#C8956C] transition-colors" />
-                <input
+                <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border-white/10 bg-white/5 text-white text-sm placeholder-gray-500 focus:border-[#C8956C]/50 focus:bg-white/10 transition-all duration-300"
                   placeholder="••••••••"
                   autoComplete="current-password"
                   disabled={loading}
@@ -101,10 +102,11 @@ export function AdminLogin() {
               </div>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 mt-4 rounded-xl bg-gradient-to-r from-[#C8956C] to-[#b8855c] text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              className="w-full flex items-center justify-center gap-2 py-3 mt-4 rounded-xl text-white text-sm font-bold shadow-lg shadow-[#C8956C]/20 hover:shadow-[#C8956C]/40 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              style={{ background: 'linear-gradient(to right, #C8956C, #b8855c)' }}
             >
               {loading ? (
                 <>
@@ -114,7 +116,7 @@ export function AdminLogin() {
               ) : (
                 'Sign In'
               )}
-            </button>
+            </Button>
           </form>
         </div>
 

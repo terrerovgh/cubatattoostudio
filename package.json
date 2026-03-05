@@ -16,10 +16,10 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/react": "^4.4.2",
+    "@cloudflare/kumo": "^1.9.0",
     "@nanostores/react": "^1.0.0",
+    "@phosphor-icons/react": "^2.1.7",
     "@stripe/stripe-js": "^8.7.0",
     "astro": "^5.17.1",
     "gsap": "^3.14.2",
@@ -33,8 +33,11 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/cloudflare": "^12.6.12",
     "@cloudflare/workers-types": "^4.20260212.0",
     "@tailwindcss/vite": "^4.1.18",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.5.2",
@@ -47,6 +50,7 @@
     "@vitest/ui": "^3.0.0",
     "jsdom": "^26.0.0",
     "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
     "vitest": "^3.0.0",
     "wrangler": "^4.65.0"
   }

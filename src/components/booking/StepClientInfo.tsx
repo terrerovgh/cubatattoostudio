@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import type { BookingFormData } from '../../types/booking';
+import { Button, Input } from '@cloudflare/kumo';
 
 interface Props {
   form: BookingFormData;
@@ -146,10 +147,10 @@ export function StepClientInfo({ form, updateForm, onNext, onBack, accentColor =
           Email Address <span className="text-red-400">*</span>
         </label>
         <div className="relative">
-          <input
+          <Input
             type="email"
             value={form.email}
-            onChange={(e) => handleEmailChange(e.target.value)}
+            onChange={(e: any) => handleEmailChange(e.target.value)}
             placeholder="your@email.com"
             className={`input-premium text-sm ${errors.email ? 'border-red-400/50' : ''}`}
           />
@@ -180,10 +181,10 @@ export function StepClientInfo({ form, updateForm, onNext, onBack, accentColor =
           <label className="block text-sm font-medium text-white/60 mb-2">
             First Name <span className="text-red-400">*</span>
           </label>
-          <input
+          <Input
             type="text"
             value={form.first_name}
-            onChange={(e) => updateForm({ first_name: e.target.value })}
+            onChange={(e: any) => updateForm({ first_name: e.target.value })}
             placeholder="First name"
             className={`input-premium text-sm ${errors.first_name ? 'border-red-400/50' : ''}`}
           />
@@ -193,10 +194,10 @@ export function StepClientInfo({ form, updateForm, onNext, onBack, accentColor =
           <label className="block text-sm font-medium text-white/60 mb-2">
             Last Name <span className="text-red-400">*</span>
           </label>
-          <input
+          <Input
             type="text"
             value={form.last_name}
-            onChange={(e) => updateForm({ last_name: e.target.value })}
+            onChange={(e: any) => updateForm({ last_name: e.target.value })}
             placeholder="Last name"
             className={`input-premium text-sm ${errors.last_name ? 'border-red-400/50' : ''}`}
           />
@@ -209,10 +210,10 @@ export function StepClientInfo({ form, updateForm, onNext, onBack, accentColor =
         <label className="block text-sm font-medium text-white/60 mb-2">
           Phone Number <span className="text-red-400">*</span>
         </label>
-        <input
+        <Input
           type="tel"
           value={form.phone}
-          onChange={(e) => updateForm({ phone: formatPhone(e.target.value) })}
+          onChange={(e: any) => updateForm({ phone: formatPhone(e.target.value) })}
           placeholder="(505) 555-0123"
           className={`input-premium text-sm ${errors.phone ? 'border-red-400/50' : ''}`}
         />
@@ -224,10 +225,10 @@ export function StepClientInfo({ form, updateForm, onNext, onBack, accentColor =
         <label className="block text-sm font-medium text-white/60 mb-2">
           Date of Birth <span className="text-white/25 font-normal">(optional — for birthday discounts!)</span>
         </label>
-        <input
+        <Input
           type="date"
           value={form.date_of_birth}
-          onChange={(e) => updateForm({ date_of_birth: e.target.value })}
+          onChange={(e: any) => updateForm({ date_of_birth: e.target.value })}
           className="input-premium text-sm max-w-xs"
           max={new Date().toISOString().split('T')[0]}
         />
@@ -252,24 +253,24 @@ export function StepClientInfo({ form, updateForm, onNext, onBack, accentColor =
 
       {/* Navigation */}
       <div className="flex justify-between pt-2">
-        <button
+        <Button
           onClick={onBack}
+          variant="ghost"
           className="px-6 py-3.5 rounded-xl text-sm font-medium text-white/50 hover:text-white/80 hover:bg-white/5 transition-all"
         >
           ← Back
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={handleNext}
           disabled={!canProceed}
-          className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${
-            canProceed
+          className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${canProceed
               ? 'text-black hover:brightness-110 active:scale-[0.98]'
               : 'bg-white/5 text-white/30 cursor-not-allowed'
-          }`}
+            }`}
           style={canProceed ? { background: accentColor } : undefined}
         >
           Review & Pay →
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Loader2, AlertCircle, CalendarDays } from 'lucide-react';
+import { Button } from '@cloudflare/kumo';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -166,11 +167,12 @@ function ArtistToggle({ value, onChange }: ArtistToggleProps) {
       {filters.map((f) => {
         const active = value === f.id;
         return (
-          <button
+          <Button
             key={f.id}
             onClick={() => onChange(f.id)}
+            variant="outline"
             className={`
-              px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-150
+              px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150
               ${active
                 ? 'border-transparent text-white shadow-sm'
                 : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700'
@@ -179,7 +181,7 @@ function ArtistToggle({ value, onChange }: ArtistToggleProps) {
             style={active ? { backgroundColor: f.accent ?? '#1a1a2e' } : undefined}
           >
             {f.label}
-          </button>
+          </Button>
         );
       })}
     </div>
@@ -231,7 +233,7 @@ export function CalendarTab() {
     } finally {
       setLoading(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year, month, filter]);
 
   useEffect(() => {
@@ -268,23 +270,25 @@ export function CalendarTab() {
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           {/* Month nav */}
           <div className="flex items-center gap-3">
-            <button
+            <Button
               onClick={prevMonth}
               aria-label="Previous month"
-              className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-700 transition-colors"
+              variant="outline"
+              className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-700 transition-colors p-0"
             >
               <ChevronLeft size={16} />
-            </button>
+            </Button>
             <h2 className="text-lg font-semibold text-[#1a1a2e] min-w-[160px] text-center">
               {MONTH_NAMES[month]} {year}
             </h2>
-            <button
+            <Button
               onClick={nextMonth}
               aria-label="Next month"
-              className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-700 transition-colors"
+              variant="outline"
+              className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-700 transition-colors p-0"
             >
               <ChevronRight size={16} />
-            </button>
+            </Button>
             {loading && <Loader2 size={15} className="text-[#C8956C] animate-spin ml-1" />}
           </div>
 
@@ -387,12 +391,13 @@ export function CalendarTab() {
                 {selectedBookings.length} {selectedBookings.length === 1 ? 'booking' : 'bookings'}
               </span>
             </div>
-            <button
+            <Button
               onClick={() => setSelectedDate(null)}
+              variant="ghost"
               className="text-xs text-gray-400 hover:text-gray-600 transition-colors px-2 py-1"
             >
               Close
-            </button>
+            </Button>
           </div>
 
           {selectedBookings.length === 0 ? (

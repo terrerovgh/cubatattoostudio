@@ -1,0 +1,376 @@
+{
+    "name": "Cuba Tattoo Studio Design Tokens",
+    "version": "1.0.0",
+    "colors": {
+        "primary": {
+            "gold": {
+                "value": "#C8956C",
+                "type": "color"
+            },
+            "goldLight": {
+                "value": "#DABA8F",
+                "type": "color"
+            },
+            "goldDark": {
+                "value": "#9E7048",
+                "type": "color"
+            },
+            "goldMuted": {
+                "value": "rgba(200, 149, 108, 0.2)",
+                "type": "color"
+            }
+        },
+        "surface": {
+            "primary": {
+                "value": "#08080a",
+                "type": "color"
+            },
+            "elevated": {
+                "value": "#111113",
+                "type": "color"
+            },
+            "overlay": {
+                "value": "rgba(0, 0, 0, 0.85)",
+                "type": "color"
+            }
+        },
+        "glass": {
+            "bg": {
+                "value": "rgba(18, 18, 20, 0.55)",
+                "type": "color"
+            },
+            "bgElevated": {
+                "value": "rgba(28, 28, 32, 0.6)",
+                "type": "color"
+            },
+            "border": {
+                "value": "rgba(255, 255, 255, 0.08)",
+                "type": "color"
+            },
+            "borderHover": {
+                "value": "rgba(255, 255, 255, 0.14)",
+                "type": "color"
+            },
+            "borderActive": {
+                "value": "rgba(255, 255, 255, 0.2)",
+                "type": "color"
+            },
+            "shimmer": {
+                "value": "rgba(255, 255, 255, 0.04)",
+                "type": "color"
+            }
+        },
+        "text": {
+            "primary": {
+                "value": "rgba(250, 248, 245, 0.94)",
+                "type": "color"
+            },
+            "secondary": {
+                "value": "rgba(250, 248, 245, 0.52)",
+                "type": "color"
+            },
+            "tertiary": {
+                "value": "rgba(250, 248, 245, 0.3)",
+                "type": "color"
+            },
+            "inverse": {
+                "value": "#111113",
+                "type": "color"
+            }
+        },
+        "semantic": {
+            "success": {
+                "value": "#4ADE80",
+                "type": "color"
+            },
+            "error": {
+                "value": "#F87171",
+                "type": "color"
+            },
+            "warning": {
+                "value": "#FBBF24",
+                "type": "color"
+            },
+            "info": {
+                "value": "#60A5FA",
+                "type": "color"
+            }
+        }
+    },
+    "typography": {
+        "fontFamilies": {
+            "sans": {
+                "value": "\"Inter\", \"SF Pro Display\", \"SF Pro Text\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+                "type": "typography"
+            },
+            "mono": {
+                "value": "\"SF Mono\", ui-monospace, SFMono-Regular, \"Cascadia Code\", monospace",
+                "type": "typography"
+            }
+        },
+        "fontSizes": {
+            "displayXl": {
+                "value": "clamp(3rem, 7vw + 1rem, 5rem)",
+                "type": "typography"
+            },
+            "displayLg": {
+                "value": "clamp(2rem, 5vw + 1rem, 4rem)",
+                "type": "typography"
+            },
+            "displayMd": {
+                "value": "clamp(1.5rem, 3.5vw + 0.75rem, 3rem)",
+                "type": "typography"
+            },
+            "headingLg": {
+                "value": "clamp(1.125rem, 2vw + 0.5rem, 1.75rem)",
+                "type": "typography"
+            },
+            "headingMd": {
+                "value": "1.5rem",
+                "type": "typography"
+            },
+            "headingSm": {
+                "value": "1.25rem",
+                "type": "typography"
+            },
+            "bodyLg": {
+                "value": "clamp(0.9rem, 1.2vw + 0.5rem, 1.25rem)",
+                "type": "typography"
+            },
+            "bodyMd": {
+                "value": "1rem",
+                "type": "typography"
+            },
+            "bodySm": {
+                "value": "0.875rem",
+                "type": "typography"
+            },
+            "label": {
+                "value": "0.75rem",
+                "type": "typography"
+            }
+        },
+        "lineHeights": {
+            "tight": {
+                "value": "1.1",
+                "type": "typography"
+            },
+            "snug": {
+                "value": "1.25",
+                "type": "typography"
+            },
+            "normal": {
+                "value": "1.5",
+                "type": "typography"
+            },
+            "relaxed": {
+                "value": "1.6",
+                "type": "typography"
+            }
+        },
+        "letterSpacings": {
+            "tighter": {
+                "value": "-0.04em",
+                "type": "typography"
+            },
+            "tight": {
+                "value": "-0.02em",
+                "type": "typography"
+            },
+            "normal": {
+                "value": "0",
+                "type": "typography"
+            },
+            "wide": {
+                "value": "0.02em",
+                "type": "typography"
+            },
+            "wider": {
+                "value": "0.05em",
+                "type": "typography"
+            },
+            "widest": {
+                "value": "0.1em",
+                "type": "typography"
+            }
+        }
+    },
+    "spacing": {
+        "0": {
+            "value": "0",
+            "type": "spacing"
+        },
+        "1": {
+            "value": "4px",
+            "type": "spacing"
+        },
+        "2": {
+            "value": "8px",
+            "type": "spacing"
+        },
+        "3": {
+            "value": "12px",
+            "type": "spacing"
+        },
+        "4": {
+            "value": "16px",
+            "type": "spacing"
+        },
+        "5": {
+            "value": "20px",
+            "type": "spacing"
+        },
+        "6": {
+            "value": "24px",
+            "type": "spacing"
+        },
+        "8": {
+            "value": "32px",
+            "type": "spacing"
+        },
+        "10": {
+            "value": "40px",
+            "type": "spacing"
+        },
+        "12": {
+            "value": "48px",
+            "type": "spacing"
+        },
+        "16": {
+            "value": "64px",
+            "type": "spacing"
+        },
+        "20": {
+            "value": "80px",
+            "type": "spacing"
+        },
+        "24": {
+            "value": "96px",
+            "type": "spacing"
+        },
+        "32": {
+            "value": "128px",
+            "type": "spacing"
+        },
+        "px": {
+            "value": "1px",
+            "type": "spacing"
+        }
+    },
+    "radii": {
+        "none": {
+            "value": "0",
+            "type": "borderRadius"
+        },
+        "sm": {
+            "value": "4px",
+            "type": "borderRadius"
+        },
+        "md": {
+            "value": "8px",
+            "type": "borderRadius"
+        },
+        "lg": {
+            "value": "12px",
+            "type": "borderRadius"
+        },
+        "xl": {
+            "value": "16px",
+            "type": "borderRadius"
+        },
+        "2xl": {
+            "value": "24px",
+            "type": "borderRadius"
+        },
+        "3xl": {
+            "value": "32px",
+            "type": "borderRadius"
+        },
+        "full": {
+            "value": "9999px",
+            "type": "borderRadius"
+        }
+    },
+    "shadows": {
+        "innerGlass": {
+            "value": "inset 0 1px 0 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 0 rgba(0, 0, 0, 0.1)",
+            "type": "boxShadow"
+        },
+        "glassMd": {
+            "value": "0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2)",
+            "type": "boxShadow"
+        },
+        "glassLg": {
+            "value": "0 16px 48px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.25)",
+            "type": "boxShadow"
+        },
+        "hoverLift": {
+            "value": "0 20px 60px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2)",
+            "type": "boxShadow"
+        },
+        "focusRing": {
+            "value": "0 0 0 3px rgba(200, 149, 108, 0.1)",
+            "type": "boxShadow"
+        }
+    },
+    "breakpoints": {
+        "sm": {
+            "value": "640px",
+            "type": "sizing"
+        },
+        "md": {
+            "value": "768px",
+            "type": "sizing"
+        },
+        "lg": {
+            "value": "1024px",
+            "type": "sizing"
+        },
+        "xl": {
+            "value": "1280px",
+            "type": "sizing"
+        },
+        "2xl": {
+            "value": "1536px",
+            "type": "sizing"
+        }
+    },
+    "animation": {
+        "durations": {
+            "fast": {
+                "value": "150ms",
+                "type": "time"
+            },
+            "normal": {
+                "value": "300ms",
+                "type": "time"
+            },
+            "slow": {
+                "value": "500ms",
+                "type": "time"
+            },
+            "verySlow": {
+                "value": "800ms",
+                "type": "time"
+            }
+        },
+        "easings": {
+            "default": {
+                "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+                "type": "timingFunction"
+            },
+            "inOut": {
+                "value": "ease-in-out",
+                "type": "timingFunction"
+            },
+            "in": {
+                "value": "ease-in",
+                "type": "timingFunction"
+            },
+            "out": {
+                "value": "ease-out",
+                "type": "timingFunction"
+            }
+        }
+    }
+}

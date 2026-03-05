@@ -4,6 +4,7 @@ import {
   AlertCircle, CheckCircle2, ArrowLeft, RefreshCw, Archive,
   ShieldOff, Clock, Send,
 } from 'lucide-react';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -137,17 +138,17 @@ function StatusChanger({ currentStatus, loading, onChangeStatus }: StatusChanger
       {options
         .filter((o) => o.value !== currentStatus)
         .map((opt) => (
-          <button
+          <Button
             key={opt.value}
             onClick={() => onChangeStatus(opt.value)}
             disabled={loading}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors disabled:opacity-50 ${
-              opt.value === 'active'
-                ? 'border-emerald-200 text-emerald-600 hover:bg-emerald-50'
-                : opt.value === 'archived'
+            variant="outline"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors disabled:opacity-50 h-auto ${opt.value === 'active'
+              ? 'border-emerald-200 text-emerald-600 hover:bg-emerald-50'
+              : opt.value === 'archived'
                 ? 'border-gray-200 text-gray-500 hover:bg-gray-50'
                 : 'border-red-200 text-red-600 hover:bg-red-50'
-            }`}
+              }`}
           >
             {loading ? (
               <Loader2 size={11} className="animate-spin" />
@@ -159,7 +160,7 @@ function StatusChanger({ currentStatus, loading, onChangeStatus }: StatusChanger
               <Circle size={8} className="fill-emerald-500 text-emerald-500" />
             )}
             Mark {opt.label}
-          </button>
+          </Button>
         ))}
     </div>
   );
@@ -178,9 +179,10 @@ function RoomRow({ room, onSelect }: RoomRowProps) {
   const name = clientDisplayName(room);
 
   return (
-    <button
+    <Button
       onClick={() => onSelect(room)}
-      className="w-full text-left flex items-start gap-4 px-5 py-4 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors group"
+      variant="ghost"
+      className="w-full text-left flex items-start gap-4 px-5 py-4 hover:bg-gray-50 border-b border-gray-100 border-r-0 border-l-0 border-t-0 rounded-none last:border-b-0 transition-colors group h-auto"
     >
       {/* Avatar */}
       <div className="w-9 h-9 rounded-xl bg-[#C8956C]/15 text-[#C8956C] flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">
@@ -204,16 +206,16 @@ function RoomRow({ room, onSelect }: RoomRowProps) {
           </p>
           <div className="flex items-center gap-1.5 shrink-0">
             {room.unread_count > 0 && (
-              <span className="min-w-[18px] h-[18px] px-1 rounded-full bg-[#C8956C] text-white text-[10px] font-bold flex items-center justify-center">
+              <Badge className="min-w-[18px] h-[18px] px-1 rounded-full bg-[#C8956C] text-white text-[10px] font-bold flex items-center justify-center border-0">
                 {room.unread_count > 99 ? '99+' : room.unread_count}
-              </span>
+              </Badge>
             )}
-            <span
-              className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium border ${statusBadgeClass(room.status)}`}
+            <Badge
+              className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium border border-0 ${statusBadgeClass(room.status)}`}
             >
               {statusIcon(room.status)}
               {room.status}
-            </span>
+            </Badge>
           </div>
         </div>
         <div className="flex items-center gap-3 mt-1">
@@ -223,7 +225,7 @@ function RoomRow({ room, onSelect }: RoomRowProps) {
           )}
         </div>
       </div>
-    </button>
+    </Button>
   );
 }
 
@@ -243,13 +245,12 @@ function MessageBubble({ message }: MessageBubbleProps) {
     <div className={`flex ${isClient ? 'justify-start' : 'justify-end'} mb-3`}>
       <div className={`max-w-[75%] ${isClient ? 'order-1' : 'order-2'}`}>
         <div
-          className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-            isClient
-              ? 'bg-gray-100 text-[#1a1a2e] rounded-tl-sm'
-              : isAdmin
+          className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${isClient
+            ? 'bg-gray-100 text-[#1a1a2e] rounded-tl-sm'
+            : isAdmin
               ? 'bg-gray-200 text-gray-700 rounded-br-sm'
               : 'bg-[#C8956C] text-white rounded-br-sm'
-          }`}
+            }`}
         >
           {message.content}
         </div>
@@ -336,12 +337,13 @@ function RoomDetail({ room, onBack, onStatusChanged, onError, onSuccess }: RoomD
       {/* Header */}
       <div className="flex items-center justify-between gap-4 pb-4 border-b border-gray-100 mb-4 flex-wrap">
         <div className="flex items-center gap-3">
-          <button
+          <Button
             onClick={onBack}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            variant="ghost"
+            className="w-8 h-8 flex items-center justify-center p-0 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
           >
             <ArrowLeft size={16} />
-          </button>
+          </Button>
           <div className="w-9 h-9 rounded-xl bg-[#C8956C]/15 text-[#C8956C] flex items-center justify-center text-sm font-bold">
             {clientName.charAt(0).toUpperCase()}
           </div>
@@ -350,10 +352,10 @@ function RoomDetail({ room, onBack, onStatusChanged, onError, onSuccess }: RoomD
             <div className="flex items-center gap-2 text-[10px] text-gray-400">
               <span>Artist: {room.artist_id}</span>
               {room.client_email && <span>{room.client_email}</span>}
-              <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full border ${statusBadgeClass(currentStatus)}`}>
+              <Badge className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full border border-0 ${statusBadgeClass(currentStatus)}`}>
                 {statusIcon(currentStatus)}
                 {currentStatus}
-              </span>
+              </Badge>
             </div>
           </div>
         </div>
@@ -368,16 +370,17 @@ function RoomDetail({ room, onBack, onStatusChanged, onError, onSuccess }: RoomD
       {/* Load older */}
       {pagination && pagination.page < pagination.total_pages && (
         <div className="text-center mb-3">
-          <button
+          <Button
             onClick={() => {
               const nextPage = page + 1;
               setPage(nextPage);
               void fetchMessages(nextPage);
             }}
-            className="text-xs text-[#C8956C] hover:underline"
+            variant="link"
+            className="text-xs text-[#C8956C] hover:underline p-0 h-auto"
           >
             Load older messages
-          </button>
+          </Button>
         </div>
       )}
 
@@ -497,22 +500,23 @@ export function ChatTab() {
             <h2 className="text-xl font-bold text-[#1a1a2e] flex items-center gap-2">
               Chat Rooms
               {totalUnread > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-[#C8956C] text-white text-xs font-bold">
+                <Badge className="px-2 py-0.5 rounded-full bg-[#C8956C] text-white text-xs font-bold border-0">
                   {totalUnread}
-                </span>
+                </Badge>
               )}
             </h2>
             <p className="text-sm text-gray-400 mt-0.5">
               {loading ? 'Loading...' : `${filteredRooms.length} room${filteredRooms.length !== 1 ? 's' : ''}${filterArtist || filterStatus || search ? ' (filtered)' : ''}`}
             </p>
           </div>
-          <button
+          <Button
             onClick={() => void fetchRooms()}
-            className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
+            variant="outline"
+            className="w-9 h-9 p-0 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
             title="Refresh"
           >
             <RefreshCw size={15} />
-          </button>
+          </Button>
         </div>
       )}
 
@@ -557,30 +561,33 @@ export function ChatTab() {
 
             <div className="relative flex-1 min-w-48 max-w-xs">
               <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-              <input
+              <Input
                 type="text"
                 placeholder="Search by client name or email..."
                 value={search}
+                // @ts-ignore
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-200 bg-white text-sm text-[#1a1a2e] placeholder-gray-400 focus:outline-none focus:border-[#C8956C] transition-colors"
               />
               {search && (
-                <button
+                <Button
                   onClick={() => setSearch('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  variant="link"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0 h-auto"
                 >
                   <X size={12} />
-                </button>
+                </Button>
               )}
             </div>
 
             {(filterArtist || filterStatus || search) && (
-              <button
+              <Button
                 onClick={() => { setFilterArtist(''); setFilterStatus(''); setSearch(''); }}
-                className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                variant="link"
+                className="text-xs text-gray-400 hover:text-gray-600 transition-colors p-0 h-auto"
               >
                 Clear filters
-              </button>
+              </Button>
             )}
           </div>
 
@@ -641,9 +648,8 @@ export function ChatTab() {
       {/* Toast */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${
-            toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
-          }`}
+          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
+            }`}
         >
           {toast.type === 'success' ? (
             <CheckCircle2 size={15} className="text-[#C8956C]" />

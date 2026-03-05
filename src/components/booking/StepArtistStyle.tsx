@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { BookingFormData } from '../../types/booking';
 import { ArtistMatcher } from './ArtistMatcher';
+import { Button } from '@cloudflare/kumo';
 
 interface Props {
   form: BookingFormData;
@@ -58,11 +59,11 @@ export function StepArtistStyle({ form, updateForm, onNext }: Props) {
 
   const filteredStyles = selectedArtist
     ? STYLES.filter(s =>
-        selectedArtist.specialties.some(spec =>
-          s.id.toLowerCase().includes(spec.toLowerCase().split(' ')[0]) ||
-          spec.toLowerCase().includes(s.id.toLowerCase().split(' ')[0])
-        ) || s.id === 'Custom Tattoos' || s.id === 'Flash'
-      )
+      selectedArtist.specialties.some(spec =>
+        s.id.toLowerCase().includes(spec.toLowerCase().split(' ')[0]) ||
+        spec.toLowerCase().includes(s.id.toLowerCase().split(' ')[0])
+      ) || s.id === 'Custom Tattoos' || s.id === 'Flash'
+    )
     : STYLES;
 
   return (
@@ -79,17 +80,15 @@ export function StepArtistStyle({ form, updateForm, onNext }: Props) {
       <div className="flex gap-2 p-1 rounded-xl bg-white/5">
         <button
           onClick={() => setMatchMode(true)}
-          className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
-            matchMode ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/60'
-          }`}
+          className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${matchMode ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/60'
+            }`}
         >
           <span className="mr-1.5">🎯</span> Smart Match
         </button>
         <button
           onClick={() => setMatchMode(false)}
-          className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
-            !matchMode ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/60'
-          }`}
+          className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${!matchMode ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/60'
+            }`}
         >
           <span className="mr-1.5">👤</span> Choose Myself
         </button>
@@ -119,11 +118,10 @@ export function StepArtistStyle({ form, updateForm, onNext }: Props) {
                 <button
                   key={artist.id}
                   onClick={() => updateForm({ artist_id: artist.id })}
-                  className={`relative p-4 rounded-2xl text-left transition-all duration-300 group ${
-                    isSelected
-                      ? 'ring-2 bg-white/8'
-                      : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.1]'
-                  }`}
+                  className={`relative p-4 rounded-2xl text-left transition-all duration-300 group ${isSelected
+                    ? 'ring-2 bg-white/8'
+                    : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.1]'
+                    }`}
                   style={{
                     ringColor: isSelected ? artist.accent : undefined,
                     boxShadow: isSelected ? `0 0 20px ${artist.accent}20` : undefined,
@@ -132,9 +130,8 @@ export function StepArtistStyle({ form, updateForm, onNext }: Props) {
                   {/* Artist photo */}
                   <div className="flex items-center gap-3 mb-3">
                     <div
-                      className={`w-14 h-14 rounded-xl bg-cover bg-center flex-shrink-0 transition-all ${
-                        isSelected ? 'ring-2' : 'ring-1 ring-white/10'
-                      }`}
+                      className={`w-14 h-14 rounded-xl bg-cover bg-center flex-shrink-0 transition-all ${isSelected ? 'ring-2' : 'ring-1 ring-white/10'
+                        }`}
                       style={{
                         backgroundImage: `url(${artist.image})`,
                         ringColor: isSelected ? artist.accent : undefined,
@@ -209,11 +206,10 @@ export function StepArtistStyle({ form, updateForm, onNext }: Props) {
               <button
                 key={style.id}
                 onClick={() => updateForm({ service_type: style.id, style: style.id })}
-                className={`p-3 rounded-xl text-left transition-all duration-200 ${
-                  isSelected
-                    ? 'border'
-                    : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
-                }`}
+                className={`p-3 rounded-xl text-left transition-all duration-200 ${isSelected
+                  ? 'border'
+                  : 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
+                  }`}
                 style={isSelected ? {
                   background: `${accent}12`,
                   borderColor: `${accent}40`,
@@ -235,22 +231,20 @@ export function StepArtistStyle({ form, updateForm, onNext }: Props) {
       <div className="flex gap-3">
         <button
           onClick={() => updateForm({ is_cover_up: !form.is_cover_up, is_touch_up: false })}
-          className={`flex-1 p-3 rounded-xl text-sm text-left transition-all ${
-            form.is_cover_up
-              ? 'bg-amber-500/10 border border-amber-500/30 text-amber-400'
-              : 'bg-white/[0.03] border border-white/[0.06] text-white/50 hover:bg-white/[0.06]'
-          }`}
+          className={`flex-1 p-3 rounded-xl text-sm text-left transition-all ${form.is_cover_up
+            ? 'bg-amber-500/10 border border-amber-500/30 text-amber-400'
+            : 'bg-white/[0.03] border border-white/[0.06] text-white/50 hover:bg-white/[0.06]'
+            }`}
         >
           <span className="block font-medium">🔄 Cover-up</span>
           <span className="text-xs opacity-60">Transform existing tattoo (+40%)</span>
         </button>
         <button
           onClick={() => updateForm({ is_touch_up: !form.is_touch_up, is_cover_up: false })}
-          className={`flex-1 p-3 rounded-xl text-sm text-left transition-all ${
-            form.is_touch_up
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-white/[0.03] border border-white/[0.06] text-white/50 hover:bg-white/[0.06]'
-          }`}
+          className={`flex-1 p-3 rounded-xl text-sm text-left transition-all ${form.is_touch_up
+            ? 'bg-green-500/10 border border-green-500/30 text-green-400'
+            : 'bg-white/[0.03] border border-white/[0.06] text-white/50 hover:bg-white/[0.06]'
+            }`}
         >
           <span className="block font-medium">✨ Touch-up</span>
           <span className="text-xs opacity-60">Refresh existing work (-50%)</span>
@@ -259,20 +253,19 @@ export function StepArtistStyle({ form, updateForm, onNext }: Props) {
 
       {/* Navigation */}
       <div className="flex justify-end pt-2">
-        <button
+        <Button
           onClick={onNext}
           disabled={!canProceed}
-          className={`w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${
-            canProceed
-              ? 'text-black hover:brightness-110 active:scale-[0.98]'
-              : 'bg-white/5 text-white/30 cursor-not-allowed'
-          }`}
+          className={`w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${canProceed
+            ? 'text-black hover:brightness-110 active:scale-[0.98]'
+            : 'bg-white/5 text-white/30 cursor-not-allowed'
+            }`}
           style={canProceed ? {
             background: selectedArtist?.accent || '#C8956C',
           } : undefined}
         >
           Continue to Your Vision →
-        </button>
+        </Button>
       </div>
     </div>
   );

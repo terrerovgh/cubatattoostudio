@@ -3,6 +3,7 @@ import {
   Plus, X, Loader2, AlertCircle, CheckCircle2, ChevronDown,
   Zap, Archive, Pencil, ImageOff, BadgeDollarSign, Users,
 } from 'lucide-react';
+import { Badge, Button, Input } from '@cloudflare/kumo';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -211,12 +212,13 @@ function FlashModal({ existing, onClose, onSuccess }: FlashModalProps) {
           <h2 className="text-base font-semibold text-[#1a1a2e]">
             {isEdit ? 'Edit Flash Design' : 'Create Flash Design'}
           </h2>
-          <button
+          <Button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            variant="ghost"
+            className="w-8 h-8 flex items-center justify-center p-0 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
           >
             <X size={16} />
-          </button>
+          </Button>
         </div>
 
         {/* Form */}
@@ -231,7 +233,7 @@ function FlashModal({ existing, onClose, onSuccess }: FlashModalProps) {
           {/* Title */}
           <div>
             <label className={labelClass}>Title *</label>
-            <input type="text" placeholder="e.g. Serpent Dagger" value={form.title} onChange={set('title')} className={inputClass} disabled={loading} />
+            <Input type="text" placeholder="e.g. Serpent Dagger" value={form.title} onChange={set('title')} className={inputClass} disabled={loading} />
           </div>
 
           {/* Description */}
@@ -250,7 +252,7 @@ function FlashModal({ existing, onClose, onSuccess }: FlashModalProps) {
           {/* Image URL */}
           <div>
             <label className={labelClass}>Image URL *</label>
-            <input type="url" placeholder="https://..." value={form.image_url} onChange={set('image_url')} className={inputClass} disabled={loading} />
+            <Input type="url" placeholder="https://..." value={form.image_url} onChange={set('image_url')} className={inputClass} disabled={loading} />
           </div>
 
           {/* Artist + Style */}
@@ -282,11 +284,11 @@ function FlashModal({ existing, onClose, onSuccess }: FlashModalProps) {
           <div className="grid grid-cols-3 gap-3">
             <div>
               <label className={labelClass}>Price ($) *</label>
-              <input type="number" min="0" step="0.01" placeholder="150" value={form.price} onChange={set('price')} className={inputClass} disabled={loading} />
+              <Input type="number" min="0" step="0.01" placeholder="150" value={form.price} onChange={set('price')} className={inputClass} disabled={loading} />
             </div>
             <div>
               <label className={labelClass}>Original ($)</label>
-              <input type="number" min="0" step="0.01" placeholder="200" value={form.original_price} onChange={set('original_price')} className={inputClass} disabled={loading} />
+              <Input type="number" min="0" step="0.01" placeholder="200" value={form.original_price} onChange={set('original_price')} className={inputClass} disabled={loading} />
             </div>
             <div>
               <label className={labelClass}>Size</label>
@@ -322,34 +324,35 @@ function FlashModal({ existing, onClose, onSuccess }: FlashModalProps) {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className={labelClass}>Drop Date</label>
-                <input type="datetime-local" value={form.drop_date} onChange={set('drop_date')} className={inputClass} disabled={loading} />
+                <Input type="datetime-local" value={form.drop_date} onChange={set('drop_date')} className={inputClass} disabled={loading} />
               </div>
               <div>
                 <label className={labelClass}>Quantity</label>
-                <input type="number" min="1" placeholder="10" value={form.drop_quantity} onChange={set('drop_quantity')} className={inputClass} disabled={loading} />
+                <Input type="number" min="1" placeholder="10" value={form.drop_quantity} onChange={set('drop_quantity')} className={inputClass} disabled={loading} />
               </div>
               <div>
                 <label className={labelClass}>Early Bird Discount (%)</label>
-                <input type="number" min="0" max="100" placeholder="20" value={form.early_bird_discount} onChange={set('early_bird_discount')} className={inputClass} disabled={loading} />
+                <Input type="number" min="0" max="100" placeholder="20" value={form.early_bird_discount} onChange={set('early_bird_discount')} className={inputClass} disabled={loading} />
               </div>
               <div>
                 <label className={labelClass}>Early Bird Slots</label>
-                <input type="number" min="0" placeholder="3" value={form.early_bird_slots} onChange={set('early_bird_slots')} className={inputClass} disabled={loading} />
+                <Input type="number" min="0" placeholder="3" value={form.early_bird_slots} onChange={set('early_bird_slots')} className={inputClass} disabled={loading} />
               </div>
             </div>
           )}
 
           {/* Actions */}
           <div className="flex gap-3 pt-2">
-            <button
+            <Button
               type="button"
               onClick={onClose}
               disabled={loading}
+              variant="outline"
               className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-medium hover:bg-gray-50 transition-colors disabled:opacity-60"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={loading}
               className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#C8956C] text-white text-sm font-semibold hover:bg-[#b8825c] transition-colors disabled:opacity-60"
@@ -364,7 +367,7 @@ function FlashModal({ existing, onClose, onSuccess }: FlashModalProps) {
               ) : (
                 'Create Design'
               )}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -408,20 +411,21 @@ function ArchiveDialog({ design, onConfirm, onCancel }: ArchiveDialogProps) {
           "{design.title}" will be archived and hidden from the public. This can be reversed via PATCH.
         </p>
         <div className="flex gap-3">
-          <button
+          <Button
             onClick={onCancel}
+            variant="outline"
             className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 font-medium hover:bg-gray-50 transition-colors"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleConfirm}
             disabled={loading}
             className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors disabled:opacity-60"
           >
             {loading ? <Loader2 size={14} className="animate-spin" /> : null}
             Archive
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -447,7 +451,7 @@ function FlashCard({ design, onEdit, onArchive }: FlashCardProps) {
       : `${design.claimed_count} claimed`;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-sm transition-shadow flex flex-col">
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-sm transition-shadow flex flex-col p-0">
       {/* Thumbnail */}
       <div className="relative aspect-square bg-gray-100">
         {imgError || !design.image_url ? (
@@ -469,11 +473,11 @@ function FlashCard({ design, onEdit, onArchive }: FlashCardProps) {
           </span>
         )}
         {/* Status badge */}
-        <span
+        <Badge
           className={`absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${statusBadgeClass(design.status)}`}
         >
           {design.status}
-        </span>
+        </Badge>
       </div>
 
       {/* Content */}
@@ -503,21 +507,23 @@ function FlashCard({ design, onEdit, onArchive }: FlashCardProps) {
 
         {/* Actions */}
         <div className="flex gap-2 mt-auto pt-2 border-t border-gray-100">
-          <button
+          <Button
             onClick={() => onEdit(design)}
+            variant="outline"
             className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-gray-600 border border-gray-200 hover:bg-gray-50 transition-colors"
           >
             <Pencil size={12} />
             Edit
-          </button>
+          </Button>
           {design.status !== 'archived' && (
-            <button
+            <Button
               onClick={() => onArchive(design)}
+              variant="outline"
               className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-amber-600 border border-amber-200 hover:bg-amber-50 transition-colors"
             >
               <Archive size={12} />
               Archive
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -617,13 +623,13 @@ export function FlashTab() {
             {filterArtist || filterStatus ? ' (filtered)' : ''}
           </p>
         </div>
-        <button
+        <Button
           onClick={() => setShowCreateModal(true)}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C8956C] text-white text-sm font-semibold hover:bg-[#b8825c] transition-colors shadow-sm shadow-[#C8956C]/20"
         >
           <Plus size={16} />
           Create Flash
-        </button>
+        </Button>
       </div>
 
       {/* Filters */}
@@ -653,12 +659,13 @@ export function FlashTab() {
           <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
         </div>
         {(filterArtist || filterStatus) && (
-          <button
+          <Button
             onClick={() => { setFilterArtist(''); setFilterStatus(''); }}
-            className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+            variant="link"
+            className="text-xs text-gray-400 hover:text-gray-600 transition-colors p-0 h-auto"
           >
             Clear filters
-          </button>
+          </Button>
         )}
       </div>
 
@@ -674,7 +681,7 @@ export function FlashTab() {
       {loading && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 overflow-hidden animate-pulse">
+            <div key={i} className="bg-white rounded-xl border border-gray-200 overflow-hidden animate-pulse p-0">
               <div className="aspect-square bg-gray-100" />
               <div className="p-4 space-y-2">
                 <div className="h-3.5 bg-gray-200 rounded w-3/4" />
@@ -747,9 +754,8 @@ export function FlashTab() {
       {/* Toast */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${
-            toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
-          }`}
+          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
+            }`}
         >
           {toast.type === 'success' ? (
             <CheckCircle2 size={15} className="text-[#C8956C]" />

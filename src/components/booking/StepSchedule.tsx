@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import type { BookingFormData, CalendarDay, TimeSlot } from '../../types/booking';
 import { estimateDuration, getDateModifier, getTimeModifier } from '../../lib/pricing';
+import { Button } from '@cloudflare/kumo';
 
 interface Props {
   form: BookingFormData;
@@ -220,25 +221,27 @@ export function StepSchedule({ form, updateForm, onNext, onBack, accentColor = '
       <div className="liquid-glass-elevated rounded-2xl p-4 sm:p-5">
         {/* Month navigation */}
         <div className="flex items-center justify-between mb-4">
-          <button
+          <Button
             onClick={() => navigateMonth(-1)}
+            variant="ghost"
             className="p-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/5 transition-all"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
-          </button>
+          </Button>
           <h3 className="text-lg font-bold text-white">
             {MONTH_NAMES[currentMonth]} {currentYear}
           </h3>
-          <button
+          <Button
             onClick={() => navigateMonth(1)}
+            variant="ghost"
             className="p-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/5 transition-all"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
-          </button>
+          </Button>
         </div>
 
         {/* Day headers */}
@@ -265,13 +268,12 @@ export function StepSchedule({ form, updateForm, onNext, onBack, accentColor = '
                 key={day.date}
                 onClick={() => isClickable && updateForm({ scheduled_date: day.date, scheduled_time: '' })}
                 disabled={!isClickable}
-                className={`relative aspect-square rounded-xl flex flex-col items-center justify-center text-sm transition-all ${
-                  isSelected
-                    ? 'ring-2 bg-white/10 font-bold text-white'
-                    : isClickable
+                className={`relative aspect-square rounded-xl flex flex-col items-center justify-center text-sm transition-all ${isSelected
+                  ? 'ring-2 bg-white/10 font-bold text-white'
+                  : isClickable
                     ? 'hover:bg-white/5 text-white/80 cursor-pointer'
                     : 'text-white/15 cursor-not-allowed'
-                } ${day.isToday ? 'font-bold' : ''}`}
+                  } ${day.isToday ? 'font-bold' : ''}`}
                 style={{
                   ringColor: isSelected ? accentColor : undefined,
                 }}
@@ -374,24 +376,24 @@ export function StepSchedule({ form, updateForm, onNext, onBack, accentColor = '
 
       {/* Navigation */}
       <div className="flex justify-between pt-2">
-        <button
+        <Button
           onClick={onBack}
+          variant="ghost"
           className="px-6 py-3.5 rounded-xl text-sm font-medium text-white/50 hover:text-white/80 hover:bg-white/5 transition-all"
         >
           ← Back
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={onNext}
           disabled={!canProceed}
-          className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${
-            canProceed
-              ? 'text-black hover:brightness-110 active:scale-[0.98]'
-              : 'bg-white/5 text-white/30 cursor-not-allowed'
-          }`}
+          className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${canProceed
+            ? 'text-black hover:brightness-110 active:scale-[0.98]'
+            : 'bg-white/5 text-white/30 cursor-not-allowed'
+            }`}
           style={canProceed ? { background: accentColor } : undefined}
         >
           Continue to Your Info →
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -411,16 +413,16 @@ function TimeSlotButton({ slot, isSelected, accentColor, onClick }: {
   };
 
   return (
-    <button
+    <Button
       onClick={onClick}
       disabled={!slot.available}
-      className={`relative px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-        isSelected
+      variant={isSelected ? "primary" : "secondary"}
+      className={`relative px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${isSelected
           ? 'text-black'
           : slot.available
-          ? 'bg-white/5 text-white/70 hover:bg-white/10'
-          : 'bg-white/[0.02] text-white/15 cursor-not-allowed line-through'
-      }`}
+            ? 'bg-white/5 text-white/70 hover:bg-white/10'
+            : 'bg-white/[0.02] text-white/15 cursor-not-allowed line-through'
+        }`}
       style={isSelected ? {
         background: accentColor,
       } : undefined}
@@ -429,6 +431,6 @@ function TimeSlotButton({ slot, isSelected, accentColor, onClick }: {
       {slot.price_modifier > 1 && slot.available && !isSelected && (
         <span className="ml-1 text-xs text-amber-400">+20%</span>
       )}
-    </button>
+    </Button>
   );
 }
