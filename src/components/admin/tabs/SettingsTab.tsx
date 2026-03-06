@@ -279,8 +279,9 @@ function ProfileSection({ profile, onSaved }: ProfileSectionProps) {
 
         {/* Display name */}
         <div>
-          <label className={labelClass}>Display Name *</label>
+          <label htmlFor="display-name" className={labelClass}>Display Name *</label>
           <Input
+            id="display-name"
             type="text"
             value={displayName}
             // @ts-ignore
@@ -288,24 +289,27 @@ function ProfileSection({ profile, onSaved }: ProfileSectionProps) {
             placeholder="Your name"
             className={inputClass}
             disabled={loading}
+            aria-required="true"
           />
         </div>
 
         {/* Email — read only */}
         <div>
-          <label className={labelClass}>Email Address</label>
+          <label htmlFor="email-address" className={labelClass}>Email Address</label>
           <div className="relative">
             <Input
+              id="email-address"
               type="email"
               value={profile.email}
               readOnly
               className={readonlyInputClass}
+              aria-readonly="true"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded" aria-hidden="true">
               read-only
             </span>
           </div>
-          <p className="text-[10px] text-gray-400 mt-1">Contact a super-admin to change your email.</p>
+          <p className="text-[10px] text-gray-400 mt-1" id="email-help">Contact a super-admin to change your email.</p>
         </div>
 
         {/* Save */}
@@ -563,20 +567,20 @@ function StudioSettingsSection() {
       title="Studio Settings"
       description="Global studio configuration. Contact support to update these."
     >
-      <div className="space-y-3">
+      <div className="space-y-3" role="list" aria-label="Studio Settings List">
         {rows.map(({ icon, label, value }) => (
-          <div key={label} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-b-0">
+          <div key={label} role="listitem" className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-b-0">
             <div className="flex items-center gap-2.5 text-sm text-gray-500">
               {icon}
-              <span>{label}</span>
+              <span id={`label-${label.replace(/\s+/g, '-').toLowerCase()}`}>{label}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#1a1a2e]">{value}</span>
-              <span className="text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">read-only</span>
+              <span className="text-sm font-medium text-[#1a1a2e]" aria-labelledby={`label-${label.replace(/\s+/g, '-').toLowerCase()}`}>{value}</span>
+              <span className="text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded" aria-hidden="true">read-only</span>
             </div>
           </div>
         ))}
-        <p className="text-xs text-gray-400 pt-1">
+        <p className="text-xs text-gray-400 pt-1" aria-live="polite">
           These settings are managed at the infrastructure level and cannot be changed from the dashboard.
         </p>
       </div>
