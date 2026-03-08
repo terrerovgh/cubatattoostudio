@@ -115,13 +115,28 @@ export function BookingWizard() {
     setError(null);
 
     try {
+      // Use FormData to support file uploads
+      const formData = new FormData();
+      
+      // Append non-file fields as a JSON string
+      const textData = { ...form };
+      delete textData.reference_images;
+      formData.append('form_data', JSON.stringify(textData));
+      
+      if (paymentMethodId) {
+        formData.append('stripe_payment_method_id', paymentMethodId);
+      }
+
+      // Append actual files
+      if (form.reference_images && form.reference_images.length > 0) {
+        form.reference_images.forEach((file, index) => {
+          formData.append(`reference_image_${index}`, file);
+        });
+      }
+
       const res = await fetch('/api/booking/create', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          form_data: form,
-          stripe_payment_method_id: paymentMethodId,
-        }),
+        body: formData,
       });
 
       const data = await res.json() as any;
@@ -131,10 +146,11 @@ export function BookingWizard() {
       }
 
       setBookingId(data.data?.booking?.id || 'BOOKING-1234');
-
-      // On success, we can show a confirmation step or redirect
-      // For now, we'll just handle it internally
-      alert(`Booking Successful! ID: ${data.data?.booking?.id}`);
+      
+      // Smooth scroll to top for the confirmation view
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -216,6 +232,7 @@ export function BookingWizard() {
                 isSubmitting={isSubmitting}
                 onSubmit={handleSubmit}
                 onBack={handleBack}
+                bookingId={bookingId}
               />
             )}
           </div>

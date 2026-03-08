@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import type { ArtistMatchResult } from '../../types/booking';
+import { Button } from '@cloudflare/kumo';
 
 interface ArtistData {
   id: string;
@@ -203,13 +204,14 @@ export function ArtistMatcher({ onSelect, accentColor = '#C8956C' }: Props) {
             ))}
           </div>
 
-          <button
+          <Button
+            client:load
             onClick={() => onSelect(matchedArtist.id, text)}
             className="w-full py-2.5 rounded-lg text-sm font-semibold text-black transition-all hover:brightness-110 active:scale-[0.98]"
             style={{ background: matchedArtist.accent }}
           >
             Select {matchedArtist.name}
-          </button>
+          </Button>
         </div>
       )}
 

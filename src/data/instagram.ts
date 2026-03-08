@@ -107,8 +107,32 @@ const instagramData: InstagramData = {
       "isLocal": true
     },
     {
-      "id": "3845520958757278416",
+      "id": "3846971193186746126",
       "imageUrl": img_studio_04,
+      "caption": "Cover up 🌸\nAn old tattoo turned into something completely new.\nNow the question is… can you spot where the old tattoo was",
+      "permalink": "https://www.instagram.com/p/DVjL-sHDn8O/",
+      "artist": "studio",
+      "isLocal": true
+    },
+    {
+      "id": "3846249838657229611",
+      "imageUrl": img_studio_05,
+      "caption": "🔥First session done. This powerful piece is just getting started. More to come\nBooking large scale projects. DM for appointments.",
+      "permalink": "https://www.instagram.com/p/DVgn9mWkVMr/",
+      "artist": "studio",
+      "isLocal": true
+    },
+    {
+      "id": "3845819489375500307",
+      "imageUrl": img_studio_06,
+      "caption": "Small cover-up ✨\n\nSometimes all it takes is a little color to transform something that no longer represents you.\nThis was a small cover-up turned into a vibrant piece. 🎨\n\nMy books are open! If you have a tattoo you’d like to cover with something bold and colorful, feel free to send me a DM and we can talk about a design for you.\n\n📍 Albuquerque, NM\n\n#cubatattoostudio #colortattoo #fullcolortattoo #colortatooartist #coveruptattoo",
+      "permalink": "https://www.instagram.com/p/DVfGHMWgDgT/",
+      "artist": "studio",
+      "isLocal": true
+    },
+    {
+      "id": "3845520958757278416",
+      "imageUrl": img_studio_07,
       "caption": "In Mexican culture, many people believe in La Santa Muerte as a symbol of protection, faith, and guidance. This piece represents that devotion, mixed with time, luck, and life’s journey. 🖤⏳♠️",
       "permalink": "https://www.instagram.com/p/DVeCPADDBLQ/",
       "artist": "studio",
@@ -116,7 +140,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3843656155277417588",
-      "imageUrl": img_studio_05,
+      "imageUrl": img_studio_08,
       "caption": "Although this piece steps a bit outside of my usual style, I truly enjoyed working on it.\nIt’s also part of the 30% off promotion we’re currently offering 🔥\n\nIf you’re thinking about something similar, now’s the time to take advantage.",
       "permalink": "https://www.instagram.com/p/DVXaOieDdx0/",
       "artist": "studio",
@@ -124,7 +148,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3843597864592770207",
-      "imageUrl": img_studio_06,
+      "imageUrl": img_studio_09,
       "caption": "100% healed tattoo ✨\n\nThis is what a piece looks like when the process is respected and the instructions for subsequent care are correctly followed. The final result depends not only on the artist, but also on the customer’s commitment during healing.\n\nLittle reminder: aftercare is as important as the tattoo itself.",
       "permalink": "https://www.instagram.com/p/DVXM-TCgISf/",
       "artist": "studio",
@@ -132,7 +156,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3842622245525633256",
-      "imageUrl": img_studio_07,
+      "imageUrl": img_studio_10,
       "caption": "Another powerful piece done under the 30% OFF Religious Tattoo Promotion 🙏\n\nMarch booking is officially open and the promo is still running.\nIf you’re planning something meaningful, now is the perfect time to start.\n\nLimited availability for March — lock in your spot before it’s gone.",
       "permalink": "https://www.instagram.com/p/DVTvJK-kbjo/",
       "artist": "studio",
@@ -140,7 +164,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3841968206478686450",
-      "imageUrl": img_studio_08,
+      "imageUrl": img_studio_11,
       "caption": "Another piece from our extended March promotion 🔥\nEnjoy 30% OFF on religious tattoos all month long.\n\nMarch spots are filling fast — secure yours now and let’s bring your vision to life.\n\nBook your session before the remaining dates are gone.",
       "permalink": "https://www.instagram.com/p/DVRabppgbjy/",
       "artist": "studio",
@@ -148,33 +172,9 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3841239444540546245",
-      "imageUrl": img_studio_09,
+      "imageUrl": img_studio_12,
       "caption": "Because so many people missed out this month, we’ve decided to extend our 30% OFF promotion on religious themed pieces through March 🙏\n\nFaith-inspired projects like this one are now eligible for the discount — giving more of you the chance to bring meaningful art to life.\n\nIf you were thinking about getting something spiritual done, this is your opportunity before spots fill again.\n\nLet me know what you’ve been wanting to create ✨",
       "permalink": "https://www.instagram.com/p/DVO0uxNDtzF/",
-      "artist": "studio",
-      "isLocal": true
-    },
-    {
-      "id": "3841153399509836708",
-      "imageUrl": img_studio_10,
-      "caption": "Flores de Febrero.  Creando un jardín. #tattooflowers #linetattoos #abq #abqtattooartist #tattoogirl",
-      "permalink": "https://www.instagram.com/p/DVOhKphkWOk/",
-      "artist": "studio",
-      "isLocal": true
-    },
-    {
-      "id": "3840502269272484934",
-      "imageUrl": img_studio_11,
-      "caption": "Faith, family, and purpose. 🙏\nThis piece is part of our 30% OFF promotion on religious-themed tattoos for this month.\n\nIf you’ve been thinking about representing your faith through art, this is the perfect time to make it happen.\n\n📍 @cubatattoostudio – Albuquerque, NM\n📩 Send us a DM to book your appointment before spots fill up.",
-      "permalink": "https://www.instagram.com/p/DVMNHdPEWxG/",
-      "artist": "studio",
-      "isLocal": true
-    },
-    {
-      "id": "3839844037859327047",
-      "imageUrl": img_studio_12,
-      "caption": "Faith turned into art ✝️🔥\nThis piece was part of our 30% OFF religious tattoo promotion this month.\nAll spots are now filled — but if you want me to continue this promotion next month, drop a comment below 👇",
-      "permalink": "https://www.instagram.com/p/DVJ3c7dgbxH/",
       "artist": "studio",
       "isLocal": true
     },
@@ -203,8 +203,24 @@ const instagramData: InstagramData = {
       "isLocal": true
     },
     {
-      "id": "3845520958757278416",
+      "id": "3846971193186746126",
       "imageUrl": img_david_04,
+      "caption": "Cover up 🌸\nAn old tattoo turned into something completely new.\nNow the question is… can you spot where the old tattoo was",
+      "permalink": "https://www.instagram.com/p/DVjL-sHDn8O/",
+      "artist": "david",
+      "isLocal": true
+    },
+    {
+      "id": "3846249838657229611",
+      "imageUrl": img_david_05,
+      "caption": "🔥First session done. This powerful piece is just getting started. More to come\nBooking large scale projects. DM for appointments.",
+      "permalink": "https://www.instagram.com/p/DVgn9mWkVMr/",
+      "artist": "david",
+      "isLocal": true
+    },
+    {
+      "id": "3845520958757278416",
+      "imageUrl": img_david_06,
       "caption": "In Mexican culture, many people believe in La Santa Muerte as a symbol of protection, faith, and guidance. This piece represents that devotion, mixed with time, luck, and life’s journey. 🖤⏳♠️",
       "permalink": "https://www.instagram.com/p/DVeCPADDBLQ/",
       "artist": "david",
@@ -212,7 +228,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3843656155277417588",
-      "imageUrl": img_david_05,
+      "imageUrl": img_david_07,
       "caption": "Although this piece steps a bit outside of my usual style, I truly enjoyed working on it.\nIt’s also part of the 30% off promotion we’re currently offering 🔥\n\nIf you’re thinking about something similar, now’s the time to take advantage.",
       "permalink": "https://www.instagram.com/p/DVXaOieDdx0/",
       "artist": "david",
@@ -220,7 +236,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3842622245525633256",
-      "imageUrl": img_david_06,
+      "imageUrl": img_david_08,
       "caption": "Another powerful piece done under the 30% OFF Religious Tattoo Promotion 🙏\n\nMarch booking is officially open and the promo is still running.\nIf you’re planning something meaningful, now is the perfect time to start.\n\nLimited availability for March — lock in your spot before it’s gone.",
       "permalink": "https://www.instagram.com/p/DVTvJK-kbjo/",
       "artist": "david",
@@ -228,7 +244,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3841968206478686450",
-      "imageUrl": img_david_07,
+      "imageUrl": img_david_09,
       "caption": "Another piece from our extended March promotion 🔥\nEnjoy 30% OFF on religious tattoos all month long.\n\nMarch spots are filling fast — secure yours now and let’s bring your vision to life.\n\nBook your session before the remaining dates are gone.",
       "permalink": "https://www.instagram.com/p/DVRabppgbjy/",
       "artist": "david",
@@ -236,7 +252,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3841239444540546245",
-      "imageUrl": img_david_08,
+      "imageUrl": img_david_10,
       "caption": "Because so many people missed out this month, we’ve decided to extend our 30% OFF promotion on religious themed pieces through March 🙏\n\nFaith-inspired projects like this one are now eligible for the discount — giving more of you the chance to bring meaningful art to life.\n\nIf you were thinking about getting something spiritual done, this is your opportunity before spots fill again.\n\nLet me know what you’ve been wanting to create ✨",
       "permalink": "https://www.instagram.com/p/DVO0uxNDtzF/",
       "artist": "david",
@@ -244,7 +260,7 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3840502269272484934",
-      "imageUrl": img_david_09,
+      "imageUrl": img_david_11,
       "caption": "Faith, family, and purpose. 🙏\nThis piece is part of our 30% OFF promotion on religious-themed tattoos for this month.\n\nIf you’ve been thinking about representing your faith through art, this is the perfect time to make it happen.\n\n📍 @cubatattoostudio – Albuquerque, NM\n📩 Send us a DM to book your appointment before spots fill up.",
       "permalink": "https://www.instagram.com/p/DVMNHdPEWxG/",
       "artist": "david",
@@ -252,25 +268,9 @@ const instagramData: InstagramData = {
     },
     {
       "id": "3839844037859327047",
-      "imageUrl": img_david_10,
+      "imageUrl": img_david_12,
       "caption": "Faith turned into art ✝️🔥\nThis piece was part of our 30% OFF religious tattoo promotion this month.\nAll spots are now filled — but if you want me to continue this promotion next month, drop a comment below 👇",
       "permalink": "https://www.instagram.com/p/DVJ3c7dgbxH/",
-      "artist": "david",
-      "isLocal": true
-    },
-    {
-      "id": "3837874088832772356",
-      "imageUrl": img_david_11,
-      "caption": "Déjenme explicarles por qué esto sí se puede 🗣️🪽",
-      "permalink": "https://www.instagram.com/p/DVC3iZdjakE/",
-      "artist": "david",
-      "isLocal": true
-    },
-    {
-      "id": "3835403837210421073",
-      "imageUrl": img_david_12,
-      "caption": "🔥First session of this cover-up in progress.\nWe started transforming the old piece into this powerful black & grey samurai warrior, building a strong foundation with deep shadows and high contrast to completely take control of the area.\n\nThere’s still more work ahead, but even after the first session you can already see how the new design is dominating what was there before. The goal isn’t just to cover it… it’s to create something stronger, cleaner, and full of presence.\n\nNext session: more detail, more texture, and full integration throughout the forearm.\n\nIf you have a tattoo that no longer represents you, let’s turn it into something that truly does. 💪🔥\n@cubatattoostudio",
-      "permalink": "https://www.instagram.com/p/DU6F3gXGOdR/",
       "artist": "david",
       "isLocal": true
     },
@@ -495,8 +495,32 @@ const instagramData: InstagramData = {
         "isLocal": true
       },
       {
-        "id": "3845520958757278416",
+        "id": "3846971193186746126",
         "imageUrl": img_studio_04,
+        "caption": "Cover up 🌸\nAn old tattoo turned into something completely new.\nNow the question is… can you spot where the old tattoo was",
+        "permalink": "https://www.instagram.com/p/DVjL-sHDn8O/",
+        "artist": "studio",
+        "isLocal": true
+      },
+      {
+        "id": "3846249838657229611",
+        "imageUrl": img_studio_05,
+        "caption": "🔥First session done. This powerful piece is just getting started. More to come\nBooking large scale projects. DM for appointments.",
+        "permalink": "https://www.instagram.com/p/DVgn9mWkVMr/",
+        "artist": "studio",
+        "isLocal": true
+      },
+      {
+        "id": "3845819489375500307",
+        "imageUrl": img_studio_06,
+        "caption": "Small cover-up ✨\n\nSometimes all it takes is a little color to transform something that no longer represents you.\nThis was a small cover-up turned into a vibrant piece. 🎨\n\nMy books are open! If you have a tattoo you’d like to cover with something bold and colorful, feel free to send me a DM and we can talk about a design for you.\n\n📍 Albuquerque, NM\n\n#cubatattoostudio #colortattoo #fullcolortattoo #colortatooartist #coveruptattoo",
+        "permalink": "https://www.instagram.com/p/DVfGHMWgDgT/",
+        "artist": "studio",
+        "isLocal": true
+      },
+      {
+        "id": "3845520958757278416",
+        "imageUrl": img_studio_07,
         "caption": "In Mexican culture, many people believe in La Santa Muerte as a symbol of protection, faith, and guidance. This piece represents that devotion, mixed with time, luck, and life’s journey. 🖤⏳♠️",
         "permalink": "https://www.instagram.com/p/DVeCPADDBLQ/",
         "artist": "studio",
@@ -504,7 +528,7 @@ const instagramData: InstagramData = {
       },
       {
         "id": "3843656155277417588",
-        "imageUrl": img_studio_05,
+        "imageUrl": img_studio_08,
         "caption": "Although this piece steps a bit outside of my usual style, I truly enjoyed working on it.\nIt’s also part of the 30% off promotion we’re currently offering 🔥\n\nIf you’re thinking about something similar, now’s the time to take advantage.",
         "permalink": "https://www.instagram.com/p/DVXaOieDdx0/",
         "artist": "studio",
@@ -512,7 +536,7 @@ const instagramData: InstagramData = {
       },
       {
         "id": "3843597864592770207",
-        "imageUrl": img_studio_06,
+        "imageUrl": img_studio_09,
         "caption": "100% healed tattoo ✨\n\nThis is what a piece looks like when the process is respected and the instructions for subsequent care are correctly followed. The final result depends not only on the artist, but also on the customer’s commitment during healing.\n\nLittle reminder: aftercare is as important as the tattoo itself.",
         "permalink": "https://www.instagram.com/p/DVXM-TCgISf/",
         "artist": "studio",
@@ -520,7 +544,7 @@ const instagramData: InstagramData = {
       },
       {
         "id": "3842622245525633256",
-        "imageUrl": img_studio_07,
+        "imageUrl": img_studio_10,
         "caption": "Another powerful piece done under the 30% OFF Religious Tattoo Promotion 🙏\n\nMarch booking is officially open and the promo is still running.\nIf you’re planning something meaningful, now is the perfect time to start.\n\nLimited availability for March — lock in your spot before it’s gone.",
         "permalink": "https://www.instagram.com/p/DVTvJK-kbjo/",
         "artist": "studio",
@@ -528,7 +552,7 @@ const instagramData: InstagramData = {
       },
       {
         "id": "3841968206478686450",
-        "imageUrl": img_studio_08,
+        "imageUrl": img_studio_11,
         "caption": "Another piece from our extended March promotion 🔥\nEnjoy 30% OFF on religious tattoos all month long.\n\nMarch spots are filling fast — secure yours now and let’s bring your vision to life.\n\nBook your session before the remaining dates are gone.",
         "permalink": "https://www.instagram.com/p/DVRabppgbjy/",
         "artist": "studio",
@@ -536,33 +560,9 @@ const instagramData: InstagramData = {
       },
       {
         "id": "3841239444540546245",
-        "imageUrl": img_studio_09,
+        "imageUrl": img_studio_12,
         "caption": "Because so many people missed out this month, we’ve decided to extend our 30% OFF promotion on religious themed pieces through March 🙏\n\nFaith-inspired projects like this one are now eligible for the discount — giving more of you the chance to bring meaningful art to life.\n\nIf you were thinking about getting something spiritual done, this is your opportunity before spots fill again.\n\nLet me know what you’ve been wanting to create ✨",
         "permalink": "https://www.instagram.com/p/DVO0uxNDtzF/",
-        "artist": "studio",
-        "isLocal": true
-      },
-      {
-        "id": "3841153399509836708",
-        "imageUrl": img_studio_10,
-        "caption": "Flores de Febrero.  Creando un jardín. #tattooflowers #linetattoos #abq #abqtattooartist #tattoogirl",
-        "permalink": "https://www.instagram.com/p/DVOhKphkWOk/",
-        "artist": "studio",
-        "isLocal": true
-      },
-      {
-        "id": "3840502269272484934",
-        "imageUrl": img_studio_11,
-        "caption": "Faith, family, and purpose. 🙏\nThis piece is part of our 30% OFF promotion on religious-themed tattoos for this month.\n\nIf you’ve been thinking about representing your faith through art, this is the perfect time to make it happen.\n\n📍 @cubatattoostudio – Albuquerque, NM\n📩 Send us a DM to book your appointment before spots fill up.",
-        "permalink": "https://www.instagram.com/p/DVMNHdPEWxG/",
-        "artist": "studio",
-        "isLocal": true
-      },
-      {
-        "id": "3839844037859327047",
-        "imageUrl": img_studio_12,
-        "caption": "Faith turned into art ✝️🔥\nThis piece was part of our 30% OFF religious tattoo promotion this month.\nAll spots are now filled — but if you want me to continue this promotion next month, drop a comment below 👇",
-        "permalink": "https://www.instagram.com/p/DVJ3c7dgbxH/",
         "artist": "studio",
         "isLocal": true
       }
@@ -573,7 +573,7 @@ const instagramData: InstagramData = {
       "profile": {
         "username": "david_guzman_tattoo",
         "fullName": "David Guzman Claveria",
-        "profilePicUrl": "https://instagram.fbaq9-1.fna.fbcdn.net/v/t51.2885-19/483495480_981029390787250_8713488228778299054_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmNhbmFyeSJ9&_nc_ht=instagram.fbaq9-1.fna.fbcdn.net&_nc_cat=110&_nc_oc=Q6cZ2QG98DpIqCRT2-IjjxHXXUES_MYDHYpUEG1JtOb6OEArd6MN5KGiCZSa_M1Zvm6vz94&_nc_ohc=zj8gJxtkK58Q7kNvwGhIaHA&_nc_gid=pS8nMYWJeTxFRaOaJQuNjA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Afz6s5Vm-9SxKhPbs8CSFDbfFyOnrCSgUIy3XVQuWnF_YA&oe=69AE8678&_nc_sid=7a9f4b",
+        "profilePicUrl": "https://instagram.fdyu1-1.fna.fbcdn.net/v/t51.2885-19/483495480_981029390787250_8713488228778299054_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fdyu1-1.fna.fbcdn.net&_nc_cat=110&_nc_oc=Q6cZ2QG4hS61od3xLw2si2mpfObNyLtmqwIKnH2SSeAprcSUvCnN_82VX4RrNSkxGuKfDdA&_nc_ohc=zj8gJxtkK58Q7kNvwG8WDC5&_nc_gid=GHqauHQYE3xs5GI4-J_puA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfzH53sHouWmHjKsjIXWsKt8iZWlvqgzIGVXFW6SMm-6Vw&oe=69B0F138&_nc_sid=7a9f4b",
         "localProfilePic": profile_david
       },
       "posts": [
@@ -602,8 +602,24 @@ const instagramData: InstagramData = {
           "isLocal": true
         },
         {
-          "id": "3845520958757278416",
+          "id": "3846971193186746126",
           "imageUrl": img_david_04,
+          "caption": "Cover up 🌸\nAn old tattoo turned into something completely new.\nNow the question is… can you spot where the old tattoo was",
+          "permalink": "https://www.instagram.com/p/DVjL-sHDn8O/",
+          "artist": "david",
+          "isLocal": true
+        },
+        {
+          "id": "3846249838657229611",
+          "imageUrl": img_david_05,
+          "caption": "🔥First session done. This powerful piece is just getting started. More to come\nBooking large scale projects. DM for appointments.",
+          "permalink": "https://www.instagram.com/p/DVgn9mWkVMr/",
+          "artist": "david",
+          "isLocal": true
+        },
+        {
+          "id": "3845520958757278416",
+          "imageUrl": img_david_06,
           "caption": "In Mexican culture, many people believe in La Santa Muerte as a symbol of protection, faith, and guidance. This piece represents that devotion, mixed with time, luck, and life’s journey. 🖤⏳♠️",
           "permalink": "https://www.instagram.com/p/DVeCPADDBLQ/",
           "artist": "david",
@@ -611,7 +627,7 @@ const instagramData: InstagramData = {
         },
         {
           "id": "3843656155277417588",
-          "imageUrl": img_david_05,
+          "imageUrl": img_david_07,
           "caption": "Although this piece steps a bit outside of my usual style, I truly enjoyed working on it.\nIt’s also part of the 30% off promotion we’re currently offering 🔥\n\nIf you’re thinking about something similar, now’s the time to take advantage.",
           "permalink": "https://www.instagram.com/p/DVXaOieDdx0/",
           "artist": "david",
@@ -619,7 +635,7 @@ const instagramData: InstagramData = {
         },
         {
           "id": "3842622245525633256",
-          "imageUrl": img_david_06,
+          "imageUrl": img_david_08,
           "caption": "Another powerful piece done under the 30% OFF Religious Tattoo Promotion 🙏\n\nMarch booking is officially open and the promo is still running.\nIf you’re planning something meaningful, now is the perfect time to start.\n\nLimited availability for March — lock in your spot before it’s gone.",
           "permalink": "https://www.instagram.com/p/DVTvJK-kbjo/",
           "artist": "david",
@@ -627,7 +643,7 @@ const instagramData: InstagramData = {
         },
         {
           "id": "3841968206478686450",
-          "imageUrl": img_david_07,
+          "imageUrl": img_david_09,
           "caption": "Another piece from our extended March promotion 🔥\nEnjoy 30% OFF on religious tattoos all month long.\n\nMarch spots are filling fast — secure yours now and let’s bring your vision to life.\n\nBook your session before the remaining dates are gone.",
           "permalink": "https://www.instagram.com/p/DVRabppgbjy/",
           "artist": "david",
@@ -635,7 +651,7 @@ const instagramData: InstagramData = {
         },
         {
           "id": "3841239444540546245",
-          "imageUrl": img_david_08,
+          "imageUrl": img_david_10,
           "caption": "Because so many people missed out this month, we’ve decided to extend our 30% OFF promotion on religious themed pieces through March 🙏\n\nFaith-inspired projects like this one are now eligible for the discount — giving more of you the chance to bring meaningful art to life.\n\nIf you were thinking about getting something spiritual done, this is your opportunity before spots fill again.\n\nLet me know what you’ve been wanting to create ✨",
           "permalink": "https://www.instagram.com/p/DVO0uxNDtzF/",
           "artist": "david",
@@ -643,7 +659,7 @@ const instagramData: InstagramData = {
         },
         {
           "id": "3840502269272484934",
-          "imageUrl": img_david_09,
+          "imageUrl": img_david_11,
           "caption": "Faith, family, and purpose. 🙏\nThis piece is part of our 30% OFF promotion on religious-themed tattoos for this month.\n\nIf you’ve been thinking about representing your faith through art, this is the perfect time to make it happen.\n\n📍 @cubatattoostudio – Albuquerque, NM\n📩 Send us a DM to book your appointment before spots fill up.",
           "permalink": "https://www.instagram.com/p/DVMNHdPEWxG/",
           "artist": "david",
@@ -651,25 +667,9 @@ const instagramData: InstagramData = {
         },
         {
           "id": "3839844037859327047",
-          "imageUrl": img_david_10,
+          "imageUrl": img_david_12,
           "caption": "Faith turned into art ✝️🔥\nThis piece was part of our 30% OFF religious tattoo promotion this month.\nAll spots are now filled — but if you want me to continue this promotion next month, drop a comment below 👇",
           "permalink": "https://www.instagram.com/p/DVJ3c7dgbxH/",
-          "artist": "david",
-          "isLocal": true
-        },
-        {
-          "id": "3837874088832772356",
-          "imageUrl": img_david_11,
-          "caption": "Déjenme explicarles por qué esto sí se puede 🗣️🪽",
-          "permalink": "https://www.instagram.com/p/DVC3iZdjakE/",
-          "artist": "david",
-          "isLocal": true
-        },
-        {
-          "id": "3835403837210421073",
-          "imageUrl": img_david_12,
-          "caption": "🔥First session of this cover-up in progress.\nWe started transforming the old piece into this powerful black & grey samurai warrior, building a strong foundation with deep shadows and high contrast to completely take control of the area.\n\nThere’s still more work ahead, but even after the first session you can already see how the new design is dominating what was there before. The goal isn’t just to cover it… it’s to create something stronger, cleaner, and full of presence.\n\nNext session: more detail, more texture, and full integration throughout the forearm.\n\nIf you have a tattoo that no longer represents you, let’s turn it into something that truly does. 💪🔥\n@cubatattoostudio",
-          "permalink": "https://www.instagram.com/p/DU6F3gXGOdR/",
           "artist": "david",
           "isLocal": true
         }
@@ -679,7 +679,7 @@ const instagramData: InstagramData = {
       "profile": {
         "username": "goodnina_tattooing",
         "fullName": "Jaline Romero Heredia",
-        "profilePicUrl": "https://scontent-doh1-1.cdninstagram.com/v/t51.82787-15/628057936_18068955278621963_8951441152345468659_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby42MzcuYzIifQ&_nc_ht=scontent-doh1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QFD75-uiufTrRAQHiqk4S8LTOfW7HC9ymkiXjjUnj3aUOIm597DTFJ8QhGwY3FI1Lw&_nc_ohc=A5vBUjOdNZsQ7kNvwFlH9zX&_nc_gid=7H589M8J0pT1UFWzGSYPFw&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfxlXQA9duFpU6-VvX1r_TGfVd74MlRGNjxQxaLrx2joyA&oe=69AE7818&_nc_sid=7a9f4b",
+        "profilePicUrl": "https://scontent-iev1-1.cdninstagram.com/v/t51.82787-15/628057936_18068955278621963_8951441152345468659_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby42MzcuYzIifQ&_nc_ht=scontent-iev1-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QH34TR4vNuoknAF-PftCEFVoyYwvHe9W6Gw3F-VCzkmY91D3fHfdkj4ky7P9JoLwDk&_nc_ohc=A5vBUjOdNZsQ7kNvwHu989W&_nc_gid=YwInctwKIybHeLHLXRyj9w&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Afz_c79SgUlaeaCuIMmEqEN-xYWtxys9dt34aqu0wyEV_w&oe=69B0E2D8&_nc_sid=7a9f4b",
         "localProfilePic": profile_nina
       },
       "posts": [
@@ -785,7 +785,7 @@ const instagramData: InstagramData = {
       "profile": {
         "username": "karlii_castillo_tattoos",
         "fullName": "Karlii Castillo",
-        "profilePicUrl": "https://instagram.fgye1-2.fna.fbcdn.net/v/t51.82787-15/515130174_17954476451963545_5881486759012822711_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby45ODcuYzIifQ&_nc_ht=instagram.fgye1-2.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QF50prKjvw0mGqC7kTw_TH2ZetotFASh6M1ViIskdBTu4beRC-nWPJgsqHJv2I_518&_nc_ohc=7aW__A_7mKAQ7kNvwFcY_P4&_nc_gid=2n1CNXBEQuBgGbgYlXp9UA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Afzjxnk4XJ0vG_whh6bNCpuYitvnIo2qxTAMv3vWEUlgBQ&oe=69AE8E91&_nc_sid=7a9f4b",
+        "profilePicUrl": "https://instagram.fbkk5-6.fna.fbcdn.net/v/t51.82787-15/515130174_17954476451963545_5881486759012822711_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby45ODcuYzIifQ&_nc_ht=instagram.fbkk5-6.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QGuvKrX8oNu-JH_Mtpw2pBKvudbYRYUWDkgGFs9AAJAus0oK8StcyHLiIHuLefxp5FGWzUc_UBmcJWePBqyHubn&_nc_ohc=kr-EYwKn_2EQ7kNvwGOGujk&_nc_gid=hiQmDAJlVRzvjXj-DmYTiQ&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfwUpgjOUoD_am3OzYK8fvGjcjkCXhPIh4vZfQ44sKRIig&oe=69B0F951&_nc_sid=7a9f4b",
         "localProfilePic": profile_karli
       },
       "posts": [
@@ -888,7 +888,7 @@ const instagramData: InstagramData = {
       ]
     }
   },
-  "lastFetched": "2026-03-05T03:32:22.401Z"
+  "lastFetched": "2026-03-06T18:34:35.856Z"
 };
 
 export default instagramData;

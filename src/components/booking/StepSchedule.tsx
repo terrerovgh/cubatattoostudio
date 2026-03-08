@@ -377,6 +377,7 @@ export function StepSchedule({ form, updateForm, onNext, onBack, accentColor = '
       {/* Navigation */}
       <div className="flex justify-between pt-2">
         <Button
+          client:load
           onClick={onBack}
           variant="ghost"
           className="px-6 py-3.5 rounded-xl text-sm font-medium text-white/50 hover:text-white/80 hover:bg-white/5 transition-all"
@@ -384,6 +385,7 @@ export function StepSchedule({ form, updateForm, onNext, onBack, accentColor = '
           ← Back
         </Button>
         <Button
+          client:load
           onClick={onNext}
           disabled={!canProceed}
           className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${canProceed

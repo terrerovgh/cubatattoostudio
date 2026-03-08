@@ -39,9 +39,56 @@ export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const env = locals.runtime.env;
     const db = env.DB;
+    const r2 = env.R2_BUCKET;
+
+    // ─── Parse FormData ────────────────────────────────
+    let bodyData: any = {};
+    let stripe_payment_method_id: string | undefined;
+    const uploadedFileKeys: string[] = [];
+
+    const contentType = request.headers.get('content-type') || '';
+    if (contentType.includes('multipart/form-data')) {
+      const formData = await request.formData();
+      const formJsonString = formData.get('form_data') as string;
+      if (formJsonString) {
+        bodyData = JSON.parse(formJsonString);
+      }
+      stripe_payment_method_id = formData.get('stripe_payment_method_id') as string | undefined;
+
+      // Handle file uploads to R2 if available
+      for (const [key, value] of formData.entries()) {
+        if (key.startsWith('reference_image_') && value instanceof File) {
+          if (r2) {
+            const fileId = crypto.randomUUID().replace(/-/g, '');
+            const ext = value.name.split('.').pop() || 'jpg';
+            const objectKey = `bookings/refs/${fileId}.${ext}`;
+            
+            await r2.put(objectKey, await value.arrayBuffer(), {
+              httpMetadata: { contentType: value.type }
+            });
+            
+            // Assuming R2_PUBLIC_URL is configured
+            const publicUrl = env.R2_PUBLIC_URL 
+              ? `${env.R2_PUBLIC_URL}/${objectKey}` 
+              : `/api/images/${objectKey}`;
+              
+            uploadedFileKeys.push(publicUrl);
+          } else {
+            // Fallback for local testing without R2
+            uploadedFileKeys.push(`local_ref_${Date.now()}_${value.name}`);
+          }
+        }
+      }
+      bodyData.reference_images = uploadedFileKeys;
+
+    } else {
+      const json = await request.json() as any;
+      bodyData = json.form_data;
+      stripe_payment_method_id = json.stripe_payment_method_id;
+    }
 
     // ─── Validate Input ───────────────────────────────
-    const bodyResult = BookingSchema.safeParse(await request.json());
+    const bodyResult = BookingSchema.safeParse({ form_data: bodyData, stripe_payment_method_id });
     if (!bodyResult.success) {
       return Response.json(
         { success: false, error: 'Validation failed', data: bodyResult.error.format() } satisfies ApiResponse,
@@ -49,7 +96,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const { form_data, stripe_payment_method_id } = bodyResult.data;
+    const { form_data } = bodyResult.data;
 
     // ─── Find or create client ────────────────────────
     let client = await db.prepare('SELECT * FROM clients WHERE email = ?').bind(form_data.email).first();

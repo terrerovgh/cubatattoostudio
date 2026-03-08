@@ -1,59 +1,81 @@
-# API Documentation
+# API Documentation — Cuba Tattoo Studio
 
-The Cuba Tattoo Studio API is built on Cloudflare Workers using Astro's SSR mode (`output: 'server'`). It handles dynamic functionality like bookings, flash drops, image management, and admin authentication.
+The Cuba Tattoo Studio API is built on **Cloudflare Workers** using Astro's SSR mode (`output: 'server'`). It leverages **Cloudflare D1** for relational data, **R2** for object storage, and **KV** for session management and rate limiting.
 
 ## Authentication
 
-### Admin Access
-Endpoints under `/api/admin/*` and sensitive operations (like deleting images) are protected by a shared secret (`ADMIN_PASSWORD`).
+### 🔐 Admin & Artist Portals
+Endpoints under `/api/admin/*` and `/api/artist/*` are protected by session-based authentication managed via Cloudflare KV (`AUTH_SESSIONS`).
+- **Method:** `__Host-session` cookie (HttpOnly, Secure).
+- **Fallback:** API requests can also use a Bearer token if configured for automated tasks.
 
-- **Method:** Cookie-based session or `Authorization` header check depending on the route.
-- **Implementation:** Constant-time string comparison to prevent timing attacks.
-
-### Image Uploads
-The upload endpoint requires a Bearer token.
-
+### 🖼️ Image Uploads
+The upload endpoint requires a Bearer token for server-to-server or authenticated client uploads.
 - **Header:** `Authorization: Bearer <UPLOAD_SECRET>`
-- **Env Variable:** `UPLOAD_SECRET` must be set in `.env` or Cloudflare dashboard.
+- **Env Variable:** `UPLOAD_SECRET` must be set in the Cloudflare dashboard.
 
 ---
 
 ## Endpoints
 
-### 📅 Booking
+### 📅 Booking System
 
 #### `GET /api/booking/availability`
-Checks availability for a specific artist and date range.
+Checks availability for a specific artist and date. It cross-references the artist's base schedule with D1 `schedule_overrides` and existing `bookings` to prevent overlaps.
 
 **Query Params:**
-- `artist_id` (string): 'david', 'nina', or 'karli'
-- `start_date` (string): ISO date (YYYY-MM-DD)
-- `end_date` (string): ISO date (YYYY-MM-DD)
+- `artist_id` (string): e.g., 'david', 'nina', 'karli'.
+- `date` (string): ISO date (YYYY-MM-DD).
 
 **Response:**
 ```json
 {
   "success": true,
-  "data": [
-    { "date": "2024-03-20", "slots": ["10:00", "14:00"] }
-  ]
+  "data": {
+    "date": "2026-03-20",
+    "slots": [
+      { "time": "11:00", "available": true, "price_modifier": 1.0 },
+      { "time": "12:00", "available": false, "price_modifier": 1.0 }
+    ],
+    "is_weekend": false,
+    "price_modifier": 1.0
+  }
+}
+```
+
+#### `GET /api/booking/client-lookup`
+Lookup existing client data by email to streamline the booking process.
+
+**Query Params:**
+- `email` (string): Client's email address.
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "client": { "first_name": "John", "last_name": "Doe", "phone": "(505) 555-0123" }
+  }
 }
 ```
 
 #### `POST /api/booking/create`
-Creates a new booking request.
+Creates a new booking and initiates a Stripe Payment Intent. Supports file uploads for reference images via R2.
 
-**Body:**
+**Content-Type:** `multipart/form-data`
+
+**Body (FormData):**
+- `form_data`: JSON string containing client details, tattoo vision, and schedule.
+- `stripe_payment_method_id` (optional): ID from Stripe Elements.
+- `reference_image_{n}` (file): Up to 5 image files (JPG, PNG, WebP).
+
+**Response:**
 ```json
 {
-  "artist_id": "david",
-  "service_id": "custom-tattoo",
-  "date": "2024-03-20",
-  "time": "10:00",
-  "client_details": {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "phone": "555-0123"
+  "success": true,
+  "data": {
+    "booking": { "id": "uuid", "status": "deposit_paid", "consent_url": "..." },
+    "payment_intent": { "client_secret": "pi_...", "amount": 50 }
   }
 }
 ```
@@ -63,7 +85,7 @@ Creates a new booking request.
 ### ⚡ Flash Drops
 
 #### `GET /api/flash/drops`
-Lists active flash designs available for claiming.
+Lists available flash designs. Recommended polling interval: 30s for real-time stock updates.
 
 **Query Params:**
 - `artist_id` (optional): Filter by artist.
@@ -76,12 +98,12 @@ Lists active flash designs available for claiming.
   "data": {
     "designs": [
       {
-        "id": "123",
-        "title": "Snake & Dagger",
-        "price": 150,
-        "is_drop": true,
+        "id": "uuid",
+        "title": "Neo-Trad Dagger",
+        "price": 180,
+        "claimed_count": 2,
         "drop_quantity": 5,
-        "claimed_count": 2
+        "early_bird_discount": 10
       }
     ]
   }
@@ -89,12 +111,12 @@ Lists active flash designs available for claiming.
 ```
 
 #### `POST /api/flash/claim`
-Claims a flash design. Reduces available quantity.
+Claims a specific flash design slot.
 
 **Body:**
 ```json
 {
-  "flash_design_id": "123",
+  "flash_design_id": "uuid",
   "email": "john@example.com",
   "first_name": "John",
   "last_name": "Doe"
@@ -103,67 +125,39 @@ Claims a flash design. Reduces available quantity.
 
 ---
 
-### 🖼️ Images (R2)
+### 💰 Loyalty Program
+
+#### `GET /api/loyalty/points`
+Retrieve client's current points balance and tier status.
+
+#### `POST /api/loyalty/redeem`
+Redeem points for discounts or studio credit.
+
+---
+
+### 🖼️ Media Management (R2)
 
 #### `POST /api/images/upload`
-Uploads an image to Cloudflare R2 bucket.
+Uploads an image directly to the R2 bucket.
+- **Path:** `/bookings/refs/` for booking references or `/gallery/` for portfolio.
+- **Optimization:** Automatic format conversion to WebP via Astro pipeline when requested via `/api/images/...`.
 
-**Headers:**
-- `Authorization: Bearer <UPLOAD_SECRET>`
-- `Content-Type: multipart/form-data`
-
-**Body (FormData):**
-- `file`: The image file.
-- `artist`: Artist ID (folder name).
-- `caption`: Optional description.
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "id": "unique-id",
-    "url": "https://cubatattoostudio.com/api/images/gallery/david/unique-id.jpg"
-  }
-}
-```
-
-#### `GET /api/images/:id`
-Serves an image from R2.
-- Supports `If-None-Match` (ETag) for caching.
-- Returns 304 Not Modified if cached.
-
-#### `DELETE /api/images/:id`
-Deletes an image from R2. Requires Admin Auth.
+#### `GET /api/images/[...id]`
+Serves optimized images from R2 with ETag support for browser caching.
 
 ---
 
-### 🔐 Admin
+### 💳 Payments & Webhooks
 
-#### `POST /api/admin/login`
-Verifies the admin password and sets a session cookie.
-
-**Body:**
-```json
-{
-  "password": "your-admin-password"
-}
-```
-
-#### `GET /api/admin/bookings`
-Lists all bookings with status.
-
-**Query Params:**
-- `status` (optional): 'pending', 'confirmed', 'completed'.
-- `limit` (optional): Pagination limit.
-- `offset` (optional): Pagination offset.
+#### `POST /api/payments/webhook`
+Handles asynchronous events from Stripe.
+- **Events:** `payment_intent.succeeded` (updates booking to `deposit_paid`), `payment_intent.payment_failed`, `charge.refunded`.
+- **Security:** Requires `stripe-signature` header verification using `STRIPE_WEBHOOK_SECRET`.
 
 ---
 
-## Database Schema (D1)
+## Database (Cloudflare D1)
 
-The API interacts with a SQLite database (Cloudflare D1). See `src/lib/db/schema.sql` for table definitions:
-- `bookings`
-- `flash_designs`
-- `flash_claims`
-- `clients`
+The platform uses a single D1 instance `cubatattoostudio-db`.
+- **Schema:** Defined in `src/lib/db/schema.sql`.
+- **Total Tables:** 15 (including `bookings`, `payments`, `consent_forms`, `loyalty_transactions`, `inventory_items`).

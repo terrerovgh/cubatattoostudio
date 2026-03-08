@@ -428,6 +428,7 @@ export function StepReviewPay({
       {/* Navigation */}
       <div className="flex justify-between pt-2">
         <Button
+          client:load
           onClick={onBack}
           variant="ghost"
           className="px-6 py-3.5 rounded-xl text-sm font-medium text-white/50 hover:text-white/80 hover:bg-white/5 transition-all"
@@ -435,6 +436,7 @@ export function StepReviewPay({
           ← Back
         </Button>
         <Button
+          client:load
           onClick={() => onSubmit(`pm_simulated_${Date.now()}`)}
           disabled={!canSubmit}
           className={`px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 ${canSubmit

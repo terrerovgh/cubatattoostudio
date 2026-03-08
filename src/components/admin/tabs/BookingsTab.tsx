@@ -142,6 +142,12 @@ export function BookingsTab() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('');
   const [artistFilter, setArtistFilter] = useState<ArtistFilter>('');
   const [page, setPage] = useState(1);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
 
   const LIMIT = 20;
 
@@ -204,8 +210,9 @@ export function BookingsTab() {
       setBookings((prev) =>
         prev.map((b) => (b.id === bookingId ? { ...b, status: newStatus } : b))
       );
+      showToast(`Booking ${newStatus.replace('_', ' ')} successfully.`);
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to update booking');
+      showToast(err instanceof Error ? err.message : 'Failed to update booking', 'error');
     } finally {
       setActionLoading(null);
     }
@@ -548,6 +555,21 @@ export function BookingsTab() {
               <ChevronRight size={15} />
             </Button>
           </div>
+        </div>
+      )}
+
+      {/* Toast */}
+      {toast && (
+        <div
+          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${toast.type === 'success' ? 'bg-[#1a1a2e] text-white' : 'bg-red-600 text-white'
+            }`}
+        >
+          {toast.type === 'success' ? (
+            <CheckCircle2 size={15} className="text-[#C8956C]" />
+          ) : (
+            <AlertCircle size={15} />
+          )}
+          {toast.message}
         </div>
       )}
 

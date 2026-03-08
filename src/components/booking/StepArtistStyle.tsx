@@ -254,6 +254,7 @@ export function StepArtistStyle({ form, updateForm, onNext }: Props) {
       {/* Navigation */}
       <div className="flex justify-end pt-2">
         <Button
+          client:load
           onClick={onNext}
           disabled={!canProceed}
           className={`w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 ${canProceed

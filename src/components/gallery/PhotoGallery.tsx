@@ -226,6 +226,8 @@ export default function PhotoGallery({
                          hover:border-white/[0.15] hover:bg-white/[0.04]
                          group relative outline outline-1 outline-transparent hover:outline-white/10 outline-offset-[-1px] card-hover-lift cursor-pointer block text-left outline-none"
               onClick={() => post.imageUrl && setSelectedItem(post)}
+              aria-label={post.caption || `View tattoo by ${post.artist || 'studio'}`}
+              aria-haspopup="dialog"
             >
               <div className="relative w-full rounded-xl sm:rounded-[1.5rem] overflow-hidden bg-black/50 aspect-auto">
                 {post.imageUrl ? (

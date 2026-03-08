@@ -128,44 +128,58 @@ export function BodyMapSVG({ value, onChange, accentColor = '#C8956C' }: Props) 
             strokeWidth="0.5"
           />
 
-          {/* Interactive zones */}
-          {visibleZones.map(zone => {
-            const path = view === 'front' ? zone.frontPath : zone.backPath;
-            if (!path) return null;
-            const isSelected = value === zone.id;
-            const isHovered = hoveredZone === zone.id;
-
-            return (
-              <path
-                key={zone.id}
-                d={path}
-                fill={
-                  isSelected
-                    ? `${accentColor}40`
-                    : isHovered
-                    ? 'rgba(255,255,255,0.12)'
-                    : 'rgba(255,255,255,0.02)'
-                }
-                stroke={isSelected ? accentColor : isHovered ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.06)'}
-                strokeWidth={isSelected ? '1.5' : '0.5'}
-                className="cursor-pointer transition-all duration-200"
-                onClick={() => onChange(zone.id, zone.label)}
-                onMouseEnter={() => setHoveredZone(zone.id)}
-                onMouseLeave={() => setHoveredZone(null)}
-                role="button"
-                aria-label={zone.label}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    onChange(zone.id, zone.label);
+                    {/* Interactive zones */}
+                    {visibleZones.map(zone => {
+                      const path = view === 'front' ? zone.frontPath : zone.backPath;
+                      if (!path) return null;
+                      const isSelected = value === zone.id;
+                      const isHovered = hoveredZone === zone.id;
+          
+                      return (
+                        <path
+                          key={zone.id}
+                          d={path}
+                          fill={
+                            isSelected
+                              ? `${accentColor}60`
+                              : isHovered
+                              ? 'rgba(255, 255, 255, 0.15)'
+                              : 'rgba(255, 255, 255, 0.02)'
+                          }
+                          stroke={isSelected ? accentColor : isHovered ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.08)'}
+                          strokeWidth={isSelected ? '1.5' : '0.5'}
+                          className={`cursor-pointer transition-all duration-300 outline-none ${isSelected ? 'animate-pulse-subtle' : ''}`}
+                          onClick={() => onChange(zone.id, zone.label)}
+                          onMouseEnter={() => setHoveredZone(zone.id)}
+                          onMouseLeave={() => setHoveredZone(null)}
+                          role="button"
+                          aria-label={zone.label}
+                          aria-pressed={isSelected}
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              onChange(zone.id, zone.label);
+                            }
+                          }}
+                          style={{
+                            filter: isSelected ? `drop-shadow(0 0 8px ${accentColor}40)` : 'none'
+                          }}
+                        />
+                      );
+                    })}
+                  </svg>
+                </div>
+          
+                <style>{`
+                  @keyframes pulse-subtle {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.7; }
                   }
-                }}
-              />
-            );
-          })}
-        </svg>
-      </div>
+                  .animate-pulse-subtle {
+                    animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                  }
+                `}</style>
 
       {/* Hovered zone label tooltip */}
       {hoveredZone && !selectedZone && (
